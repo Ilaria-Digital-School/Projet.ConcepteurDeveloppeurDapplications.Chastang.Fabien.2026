@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.png">
+    <title>Connexion - My Shop</title>
+
+    <!-- CSS files -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <header>
+            <!-- Titre principal – Info : Connectez-vous -->
+            <h1>My Shop</h1>
+
+            <!-- Menu de navigation -->
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <button class="navbar-toggler btn-burger" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li><a href="../index.html">Accueil</a></li>
+                            <li><a href="registration.html">Inscription</a></li>
+                            <li><span class="selected-page">Connexion</span></li>
+                            <li><a href="products.html">Articles</a></li>
+                            <li><a href="shopping.html">Panier</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="about.html">À propos</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <section>
+                <!-- Formulaire de connexion -->
+                <form class="form">
+                    <h2>Connection</h2>
+
+                    <div>
+                        <label for="email">E-mail&nbsp;:</label>
+                        <input type="email" name="email" id="email" placeholder="votre@adresse.email" required>
+                    </div>
+                    <div>
+                        <label for="psw">Mot de passe&nbsp;:</label>
+                        <input type="password" name="psw" id="psw" placeholder="Votre mot de passe" autocomplete="current-password" required>
+                    </div>
+                    <div class="div-button">
+                        <button type="submit">Se connecter</button>
+                        <button type="reset">Effacer</button>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <button id="SCROLL_TOP" title="Retour en haut de la page" aria-label="Retour en haut de la page"><i class="fa-solid fa-arrow-up"></i></button>
+
+    <!-- Pied de la page -->
+    <footer>
+        <h2>Contactez-nous :</h2>
+        <p>
+            <a href="https://www.linkedin.com/in/fabien-chastang/" target="_blank"><i class="fa-brands fa-square-linkedin"></i>LinkedIn</a>
+            <a href="https://github.com/fabien-chastang" target="_blank"><i class="fa-brands fa-github"></i>GitHub</a>
+            <span class="copyright">Copyright © <span id="COPYRIGHT_YEAR"></span> My Shop</span>
+        </p>
+    </footer>
+
+    <!-- JavaScript files -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+</body>
+
+</html>
