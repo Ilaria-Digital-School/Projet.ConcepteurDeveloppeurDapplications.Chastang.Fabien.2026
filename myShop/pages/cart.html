@@ -46,12 +46,10 @@
         <main id="main-shopping">
             <!-- Présentation du site -->
             <section>
-                <h2>Mon Panier</h2>
-
                 <div class="table-responsive">
-                    <table class="table table-bordered border-primary">
+                    <table class="table table-striped table-hover table-sm">
                         <thead>
-                            <tr class="table-info">
+                            <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Produit</th>
                                 <th scope="col">Prix</th>
@@ -61,14 +59,14 @@
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody class="table-group-divider">
                             <tr>
                                 <th scope="row">1</th>
                                 <td>Produit 1</td>
                                 <td>20€</td>
                                 <td>1</td>
                                 <td>20€</td>
-                                <td><button type="button" class="btn btn-danger">Supprimer</button></td>
+                                <td><button type="button" class="btn btn-danger" title="Supprimer" aria-label="Supprimer"><i class="fa-solid fa-xmark"></i></button></td>
                             </tr>
                             <tr>
                                 <th scope="row">2</th>
@@ -76,7 +74,7 @@
                                 <td>15€</td>
                                 <td>3</td>
                                 <td>45€</td>
-                                <td><button type="button" class="btn btn-danger">Supprimer</button></td>
+                                <td><button type="button" class="btn btn-danger" title="Supprimer" aria-label="Supprimer"><i class="fa-solid fa-xmark"></i></button></td>
                             </tr>
                             <tr>
                                 <th scope="row">3</th>
@@ -84,11 +82,12 @@
                                 <td>10€</td>
                                 <td>4</td>
                                 <td>40€</td>
-                                <td><button type="button" class="btn btn-danger">Supprimer</button></td>
+                                <td><button type="button" class="btn btn-danger" title="Supprimer" aria-label="Supprimer"><i class="fa-solid fa-xmark"></i></button></td>
                             </tr>
                             <tr>
-                                <td colspan="5">Total</td>
-                                <td><button type="button" class="btn btn-success">Commander</button></td>
+                                <td colspan="4">Total</td>
+                                <td>105€</td>
+                                <td><button type="button" class="btn btn-success" title="Commander" aria-label="Commander"><i class="fa-brands fa-cc-visa"></i></button></td>
                             </tr>
                         </tbody>
                     </table>

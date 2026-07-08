@@ -28,12 +28,13 @@ class Product {
         if (CLASSPROD[0]) CLASSPROD.forEach(c => ARTICLE_PRODUCT.classList.add(c));
 
         // Button definition
-        let btn = '<button type="button"';
+        const BTN_ID = `btn-product-${this.id}`;
+        let btn = `<button type="button" id="${BTN_ID}"`;
         if (button.name) btn += ` name="${button.name}"`;
-        if (button.id) btn += ` id="${button.id}"`;
-        if (button.attribute) btn += ` ${button.attribute.name}="${button.attribute.value}"`;
+        if (button.attributes) button.attributes.forEach(attribute => btn += ` ${attribute.name}="${attribute.value}"`);
         btn += `>${button.text}</button>`;
 
+        // Fill in the article
         if (info && this.info)
             // With information message
             ARTICLE_PRODUCT.innerHTML = `
@@ -59,6 +60,14 @@ class Product {
 
         // Add the product to the container
         container.appendChild(ARTICLE_PRODUCT);
+
+        // Add an event to the button
+        if (button.url) {
+            document.getElementById(BTN_ID).addEventListener("click", () => {
+                window.location.href = `${button.url}?id=${this.id}`;
+            });
+        }
+
         return ARTICLE_PRODUCT;
     }
 
@@ -80,7 +89,7 @@ class Product {
     }
 
     // Display the product in the carousel
-    iniCarousel(carouselInner, productId, index, container, url) {
+    iniCarousel(carouselInner, productId, index, container, button) {
         let activeProduct = null;
 
         // Fill the carousel
@@ -102,16 +111,8 @@ class Product {
 
         // Display the product in the container
         if (container) {
-            const ID = `btn-product-${this.id}`;
-            const PRODUCT_DETAIL = this.display(container, "article-product inactive", { id: ID, text: "Acheter" }, false);
+            const PRODUCT_DETAIL = this.display(container, "article-product inactive", button, false);
             PRODUCT_DETAIL.id = `product-${this.id}`;
-
-            if (url) {
-                // Add an event to add the product to the user's cart
-                document.getElementById(ID).addEventListener("click", () => {
-                    window.location.href = `${url}?id=${this.id}`;
-                });
-            }
         }
 
         return activeProduct;
@@ -190,11 +191,8 @@ function removeProduct(productId) {
     lsGetItems("products").lsRemoveItem("products", productId);
 }
 
-//////////////////////////////////////////////////////////////////////////
-// Display the products
-
 // Fill the carousel and display the products
-function fillCarousel(products, productId, url) {
+function fillCarousel(products, productId, button) {
     const CAROUSEL_INNER = document.querySelector(".carousel-inner");
     const CONTAINER = document.querySelector(".product-container");
     const PRODUCT_ID = parseInt(productId) || 0;
@@ -204,7 +202,7 @@ function fillCarousel(products, productId, url) {
         const PRODUCT = new Product();
         Object.assign(PRODUCT, product);
 
-        const ACTIVE_PRODUCT = PRODUCT.iniCarousel(CAROUSEL_INNER, PRODUCT_ID, index, CONTAINER, url);
+        const ACTIVE_PRODUCT = PRODUCT.iniCarousel(CAROUSEL_INNER, PRODUCT_ID, index, CONTAINER, button);
         if (ACTIVE_PRODUCT) activeProduct = ACTIVE_PRODUCT;
     });
 

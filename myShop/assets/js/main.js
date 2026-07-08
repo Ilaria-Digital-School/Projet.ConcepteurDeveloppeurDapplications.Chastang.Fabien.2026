@@ -82,13 +82,15 @@ function init() {
                 Object.assign(PRODUCT, product);
 
                 // Display the product
-                const ID = `btn-product-${PRODUCT.id}`;
-                PRODUCT.display(CONTAINER, "article-product", { id: ID, text: "Voir" });
-
-                // Add an event to navigate to the products.html page and target the product the user clicked on
-                document.getElementById(ID).addEventListener("click", () => {
-                    window.location.href = `pages/products.html?id=${PRODUCT.id}`;
-                });
+                PRODUCT.display(
+                    CONTAINER,
+                    "article-product",
+                    {
+                        text: '<i class="fa-regular fa-eye"></i>',
+                        attributes: [{ name: "title", value: "Voir" }, { name: "aria-label", value: "Voir" }],
+                        url: "pages/products.html"
+                    }
+                );
             });
         } else {
             const title = MAIN_INDEX.querySelector("section:nth-of-type(3) .h2-title");
@@ -143,7 +145,15 @@ function init() {
             const SELECTED_ID = URL_PARAMS.get("id");
 
             // Fill the carousel and display the products
-            fillCarousel(PRODUCTS, SELECTED_ID, "cart.html");
+            fillCarousel(
+                PRODUCTS,
+                SELECTED_ID,
+                {
+                    text: '<i class="fa-solid fa-cart-arrow-down"></i>',
+                    attributes: [{ name: "title", value: "Acheter" }, { name: "aria-label", value: "Acheter" }],
+                    url: "cart.html"
+                }
+            );
 
             // Set a delay for the display of the carousel and the active product
             const CAROUSEL_PRODUCT = document.getElementById("carousel-product");
