@@ -88,7 +88,7 @@ function init() {
                     {
                         text: '<i class="fa-regular fa-eye"></i>',
                         attributes: [{ name: "title", value: "Voir" }, { name: "aria-label", value: "Voir" }],
-                        url: "pages/products.html"
+                        callback: id => { window.location.href = `pages/products.html?id=${id}`; }
                     }
                 );
             });
@@ -151,7 +151,7 @@ function init() {
                 {
                     text: '<i class="fa-solid fa-cart-arrow-down"></i>',
                     attributes: [{ name: "title", value: "Acheter" }, { name: "aria-label", value: "Acheter" }],
-                    url: "cart.html"
+                    callback: id => { window.location.href = `cart.html?id=${id}`; }
                 }
             );
 

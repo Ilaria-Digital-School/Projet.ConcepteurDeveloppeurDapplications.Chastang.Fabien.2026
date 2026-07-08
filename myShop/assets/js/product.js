@@ -62,9 +62,9 @@ class Product {
         container.appendChild(ARTICLE_PRODUCT);
 
         // Add an event to the button
-        if (button.url) {
+        if (button.callback) {
             document.getElementById(BTN_ID).addEventListener("click", () => {
-                window.location.href = `${button.url}?id=${this.id}`;
+                button.callback(this.id);
             });
         }
 
