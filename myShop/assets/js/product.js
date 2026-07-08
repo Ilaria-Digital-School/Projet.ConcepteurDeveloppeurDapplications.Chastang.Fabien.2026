@@ -137,7 +137,7 @@ function addProduct(toConsole = false) {
         lsGetItems("products").lsAddItem("products", PRODUCT);
 
         // Reset the form and display the validation message
-        FORM_PRODUCT.reset();
+        document.getElementById("form-product").reset();
         displayMsg(PREFIX_MSG + "Le produit a été ajouté.");
     } else
         displayMsg(PREFIX_MSG + "Le nom et/ou le prix sont incorrects !");
