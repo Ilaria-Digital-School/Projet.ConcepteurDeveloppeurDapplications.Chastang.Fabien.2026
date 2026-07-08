@@ -80,7 +80,7 @@ class Product {
     }
 
     // Display the product in the carousel
-    iniCarousel(carouselInner, container, productId, index) {
+    iniCarousel(carouselInner, productId, index, container, url) {
         let activeProduct = null;
 
         // Fill the carousel
@@ -106,10 +106,12 @@ class Product {
             const PRODUCT_DETAIL = this.display(container, "article-product inactive", { id: ID, text: "Acheter" }, false);
             PRODUCT_DETAIL.id = `product-${this.id}`;
 
-            // Add an event to add the product to the user's cart
-            document.getElementById(ID).addEventListener("click", () => {
-                window.location.href = `shopping.html?id=${this.id}`;
-            });
+            if (url) {
+                // Add an event to add the product to the user's cart
+                document.getElementById(ID).addEventListener("click", () => {
+                    window.location.href = `${url}?id=${this.id}`;
+                });
+            }
         }
 
         return activeProduct;
@@ -192,7 +194,7 @@ function removeProduct(productId) {
 // Display the products
 
 // Fill the carousel and display the products
-function fillCarousel(products, productId) {
+function fillCarousel(products, productId, url) {
     const CAROUSEL_INNER = document.querySelector(".carousel-inner");
     const CONTAINER = document.querySelector(".product-container");
     const PRODUCT_ID = parseInt(productId) || 0;
@@ -202,7 +204,7 @@ function fillCarousel(products, productId) {
         const PRODUCT = new Product();
         Object.assign(PRODUCT, product);
 
-        const ACTIVE_PRODUCT = PRODUCT.iniCarousel(CAROUSEL_INNER, CONTAINER, PRODUCT_ID, index);
+        const ACTIVE_PRODUCT = PRODUCT.iniCarousel(CAROUSEL_INNER, PRODUCT_ID, index, CONTAINER, url);
         if (ACTIVE_PRODUCT) activeProduct = ACTIVE_PRODUCT;
     });
 

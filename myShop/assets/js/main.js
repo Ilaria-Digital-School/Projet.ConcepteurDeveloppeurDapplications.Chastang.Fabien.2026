@@ -143,7 +143,7 @@ function init() {
             const SELECTED_ID = URL_PARAMS.get("id");
 
             // Fill the carousel and display the products
-            fillCarousel(PRODUCTS, (SELECTED_ID) ? SELECTED_ID : 0);
+            fillCarousel(PRODUCTS, SELECTED_ID, "cart.html");
 
             // Set a delay for the display of the carousel and the active product
             const CAROUSEL_PRODUCT = document.getElementById("carousel-product");
