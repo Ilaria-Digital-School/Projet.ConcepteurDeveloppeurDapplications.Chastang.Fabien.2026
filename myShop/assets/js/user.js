@@ -319,7 +319,7 @@ function login(toConsole = false) {
     const USER = USERS.find(user => user.email == EMAIL && user.password == PASSWORD);
     if (USER) {
         // Save the user ID to session storage and redirect the page
-        ssSetUser(USER.id);
+        loginUser(USER.id, document.querySelector('input[id="permanent-login"]:checked'));
         window.location.href = "/myShop/index.html";
     } else {
         // Invalid login: display the error message and redirect the page
@@ -328,7 +328,7 @@ function login(toConsole = false) {
     }
 }
 function logout(toConsole = false) {
-    ssRemoveUser();
+    logoutUser();
     displayMsg(((toConsole) ? "[logout] - " : "") + "Vous êtes déconnecté.", toConsole);
 }
 

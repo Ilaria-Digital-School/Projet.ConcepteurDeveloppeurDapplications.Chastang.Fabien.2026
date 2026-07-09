@@ -41,18 +41,22 @@ function lsRemoveItem(nameArray, id) {
 
 // Manage the user session ///////////////////////////////////////////////
 
-// Retrieve the logged-in user stored in session storage
-function ssGetUser() {
-    return parseInt(sessionStorage.getItem("sessionId")) || 0;
+// Retrieve the logged-in user stored in session storage or local storage
+function getLoggedIn() {
+    return parseInt(localStorage.getItem("sessionId")) || parseInt(sessionStorage.getItem("sessionId")) || 0;
 }
 
-// Save the logged-in user to session storage
-function ssSetUser(userId) {
-    sessionStorage.setItem("sessionId", userId);
+// Save the logged-in user to session storage or local storage
+function loginUser(userId, permanent) {
+    if (permanent)
+        localStorage.setItem("sessionId", userId);
+    else
+        sessionStorage.setItem("sessionId", userId);
 }
 
-// Remove the logged-in user from session storage
-function ssRemoveUser() {
+// Remove the logged-in user from session storage or local storage
+function logoutUser() {
+    localStorage.removeItem("sessionId");
     sessionStorage.removeItem("sessionId");
 }
 
@@ -151,7 +155,7 @@ function init() {
                 {
                     text: '<i class="fa-solid fa-cart-arrow-down"></i>',
                     attributes: [{ name: "title", value: "Acheter" }, { name: "aria-label", value: "Acheter" }],
-                    callback: id => { window.location.href = `cart.html?id=${id}`; }
+                    callback: id => addCartProduct(id)
                 }
             );
 
