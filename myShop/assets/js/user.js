@@ -181,15 +181,15 @@ class User {
 
 // UTILITIES: functions to validate the 'name', 'email', and 'password' parameters
 function checkName(name) {
-    const NAME = (typeof name == "string" || name instanceof String) ? name.trim() : "";
-    return (NAME.length >= 3) ? NAME : null;
+    const NAME = (name) ? name.toString().trim() : "";
+    return (NAME.replace(/\s/g, "").length >= 3) ? NAME.replace(/\s{2,}/g, " ") : null;
 }
 function checkEmail(email) {
-    const EMAIL = (typeof email == "string" || email instanceof String) ? email.trim() : "";
+    const EMAIL = (email) ? email.toString().trim() : "";
     return (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(EMAIL)) ? EMAIL : null;
 }
 function checkPassword(password) {
-    const PASSWORD = (typeof password == "string" || password instanceof String) ? password : "";
+    const PASSWORD = (password) ? password.toString() : "";
     return (PASSWORD.length >= 8 && !/\s/.test(PASSWORD)) ? PASSWORD : null;
 }
 // UTILITIES: error message display
@@ -204,13 +204,13 @@ function checkParams(isAdded, name, email, password, pswdConfirm, toConsole, pre
     if (!isAdded && !ID) return displayMsg(prefixMsg + "L'identifiant est incorrect !", toConsole);
 
     const NAME = checkName(name);
-    if (isAdded && !NAME) return displayMsg(prefixMsg + "Le nom est invalide !", toConsole);
+    if (isAdded && !NAME) return displayMsg(prefixMsg + "Le nom doit contenir au moins trois caractères non blancs !", toConsole);
 
     const EMAIL = checkEmail(email);
     if (isAdded && !EMAIL) return displayMsg(prefixMsg + "L'e-mail est invalide !", toConsole);
 
     const PASSWORD = checkPassword(password);
-    if (isAdded && !PASSWORD) return displayMsg(prefixMsg + "Le mot de passe est invalide !", toConsole);
+    if (isAdded && !PASSWORD) return displayMsg(prefixMsg + "Le mot de passe doit contenir au moins 8 caractères et aucun caractère blanc !", toConsole);
 
     if ((isAdded || PASSWORD) && PASSWORD != pswdConfirm)
         return displayMsg(prefixMsg + "La confirmation du mot de passe est incorrecte !", toConsole);
@@ -251,6 +251,11 @@ function addUser(toConsole = false) {
     if (!PARAMS) return false;
 
     const [NAME, EMAIL, PASSWORD, USERS] = PARAMS;
+
+    // Updating formatted fields
+    document.getElementById("name-user").value = NAME;
+    document.getElementById("email-user").value = EMAIL;
+
     let objGender = document.querySelector('input[name="gender-user"]:checked');
     const GENDER = (objGender) ? Gender.get(objGender.value) : Gender.other;
     let objInterests = document.querySelectorAll('input[name="interests-user"]:checked');

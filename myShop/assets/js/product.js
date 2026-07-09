@@ -119,29 +119,47 @@ class Product {
     }
 }
 
+// UTILITIES: functions to validate the 'name' and 'price'
+function checkName(name) {
+    const NAME = (name) ? name.toString().trim() : "";
+    return (NAME.replace(/\s/g, "").length >= 3) ? NAME.replace(/\s{2,}/g, " ") : null;
+}
+function checkPrice(price) {
+    const PRICE = parseFloat(price);
+    return (PRICE > 0) ? PRICE : null;
+}
+
 // Add a new product to local storage
 function addProduct(toConsole = false) {
     const displayMsg = (toConsole) ? console.log : alert;
     const PREFIX_MSG = (toConsole) ? "[add product] - " : "";
 
-    // Get the parameters
-    const NAME = document.getElementById("name-product").value.trim();
+    // Check the parameters
+    const NAME = checkName(document.getElementById("name-product").value);
+    if (!NAME) {
+        displayMsg(PREFIX_MSG + "Le nom doit contenir au moins trois caractères non blancs !");
+        return false;
+    }
+    const PRICE = checkPrice(document.getElementById("price-product").value);
+    if (!PRICE) {
+        displayMsg(PREFIX_MSG + "Prix doit être un nombre positif !");
+        return false;
+    }
+
+    // Retrieve the other parameters
     const DESCRIPTION = document.getElementById("description-product").value.trim();
-    const PRICE = parseFloat(document.getElementById("price-product").value.trim());
     const IMG = document.getElementById("img-product").value.trim();
     let info = document.getElementById("info-product").value.trim();
     if (info == "") info = undefined;
 
-    if (NAME && PRICE > 0) {
-        // Create a new product and save it to local storage
-        const PRODUCT = new Product(NAME, DESCRIPTION, PRICE, IMG, info);
-        lsGetItems("products").lsAddItem("products", PRODUCT);
+    // Create a new product and save it to local storage
+    const PRODUCT = new Product(NAME, DESCRIPTION, PRICE, IMG, info);
+    lsGetItems("products").lsAddItem("products", PRODUCT);
 
-        // Reset the form and display the validation message
-        document.getElementById("form-product").reset();
-        displayMsg(PREFIX_MSG + "Le produit a été ajouté.");
-    } else
-        displayMsg(PREFIX_MSG + "Le nom et/ou le prix sont incorrects !");
+    // Reset the form and display the validation message
+    document.getElementById("form-product").reset();
+    displayMsg(PREFIX_MSG + "Le produit a été ajouté.");
+    return true;
 }
 
 // Update a product in local storage
@@ -149,41 +167,56 @@ function updateProduct(productId, name, description, price, img, info, toConsole
     const displayMsg = (toConsole) ? console.log : alert;
     const PREFIX_MSG = (toConsole) ? "[update product] - " : "";
 
+    // Retrieve the products
     const PRODUCTS = lsGetItems("products");
-    if (PRODUCTS.length > 0) {
-        const ID = parseInt(productId);
-        let product;
-
-        if (ID && (product = PRODUCTS.find(p => p.id == ID))) {
-            // Retrieve the parameters and perform the update
-            let isChanged = false;
-
-            const NAME = (typeof name == "string" || name instanceof String) ? name.trim() : "";
-            isChanged ||= product.updateProperty("name", NAME, NAME && product.name != NAME);
-
-            const DESCRIPTION = (typeof description == "string" || description instanceof String) ? description.trim() : "";
-            isChanged ||= product.updateProperty("description", DESCRIPTION, DESCRIPTION && product.description != DESCRIPTION);
-
-            const PRICE = parseFloat(price);
-            isChanged ||= product.updateProperty("price", PRICE, PRICE && product.price != PRICE);
-
-            const IMG = (typeof img == "string" || img instanceof String) ? img.trim() : "";
-            isChanged ||= product.updateProperty("img", IMG, IMG && product.img != IMG);
-
-            const INFO = (typeof info == "string" || info instanceof String) ? info.trim() : undefined;
-            isChanged ||= product.updateProperty("info", INFO, product.info != INFO);
-
-            if (isChanged) {
-                // Save the changes to local storage and display the confirmation message
-                localStorage.setItem("products", JSON.stringify(PRODUCTS));
-                displayMsg(PREFIX_MSG + "Votre produit a été mis à jour.", toConsole);
-            } else
-                // No changes have been done
-                displayMsg(PREFIX_MSG + "Aucune modification n'a été apportée à votre produit !");
-        } else
-            displayMsg(PREFIX_MSG + "L'identifiant est incorrect !");
-    } else
+    if (PRODUCTS.length == 0) {
         displayMsg(PREFIX_MSG + "Mise à jour impossible : aucun produit n'est enregistré !");
+        return false;
+    }
+
+    // Retrieve the product by its ID
+    let product;
+    const ID = parseInt(productId);
+    if (!ID || !(product = PRODUCTS.find(p => p.id == ID))) {
+        displayMsg(PREFIX_MSG + "L'identifiant est incorrect !");
+        return false;
+    }
+
+    // Check the parameters
+    const NAME = checkName(name);
+    if (!NAME) {
+        displayMsg(PREFIX_MSG + "Le nom doit contenir au moins trois caractères non blancs !");
+        return false;
+    }
+    const PRICE = checkPrice(price);
+    if (!PRICE) {
+        displayMsg(PREFIX_MSG + "Prix doit être un nombre positif !");
+        return false;
+    }
+
+    // Perform the update
+    let isChanged = false;
+    isChanged ||= product.updateProperty("name", NAME, product.name != NAME);
+    isChanged ||= product.updateProperty("price", PRICE, product.price != PRICE);
+
+    const DESCRIPTION = (description) ? description.toString().trim() : "";
+    isChanged ||= product.updateProperty("description", DESCRIPTION, DESCRIPTION && product.description != DESCRIPTION);
+
+    const IMG = (img) ? img.toString().trim() : "";
+    isChanged ||= product.updateProperty("img", IMG, IMG && product.img != IMG);
+
+    const INFO = (info) ? info.toString().trim() : undefined;
+    isChanged ||= product.updateProperty("info", INFO, product.info != INFO);
+
+    if (isChanged) {
+        // Save the changes to local storage and display the confirmation message
+        localStorage.setItem("products", JSON.stringify(PRODUCTS));
+        displayMsg(PREFIX_MSG + "Votre produit a été mis à jour.", toConsole);
+    } else
+        // No changes have been done
+        displayMsg(PREFIX_MSG + "Aucune modification n'a été apportée à votre produit !");
+
+    return true;
 }
 
 // Remove a product from local storage
@@ -196,8 +229,8 @@ function fillCarousel(products, productId, button) {
     const CAROUSEL_INNER = document.querySelector(".carousel-inner");
     const CONTAINER = document.querySelector(".product-container");
     const PRODUCT_ID = parseInt(productId) || 0;
-    let activeProduct;
 
+    let activeProduct;
     products.forEach((product, index) => {
         const PRODUCT = new Product();
         Object.assign(PRODUCT, product);
@@ -205,6 +238,5 @@ function fillCarousel(products, productId, button) {
         const ACTIVE_PRODUCT = PRODUCT.iniCarousel(CAROUSEL_INNER, PRODUCT_ID, index, CONTAINER, button);
         if (ACTIVE_PRODUCT) activeProduct = ACTIVE_PRODUCT;
     });
-
     activeProduct.classList.add("active");
 }

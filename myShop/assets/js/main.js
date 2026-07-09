@@ -60,6 +60,17 @@ function logoutUser() {
     sessionStorage.removeItem("sessionId");
 }
 
+function checkNumber(objInput, isInt, maxValue, defaultValue) {
+    let value = objInput.value.replace(",", ".").replace(/[^\d.]/g, "");
+    value = (isInt) ? parseInt(value) : parseFloat(value);
+
+    if (value > 0) {
+        if (!isInt) value = Math.round(100 * value) / 100;
+        objInput.value = (value <= maxValue) ? value : maxValue;
+    } else
+        objInput.value = (defaultValue) ? defaultValue : "";
+}
+
 // General functions /////////////////////////////////////////////////////
 
 // When resizing the window
@@ -189,8 +200,20 @@ function init() {
 
     // Handle the addProduct.html page ///////////////////////////////////
 
+    const MAIN_CART = document.getElementById("main-cart");
+    if (MAIN_CART) {
+        displayCart();
+    }
+
+    // Handle the addProduct.html page ///////////////////////////////////
+
     const MAIN_ADD_PRODUCT = document.getElementById("main-add-product");
     if (MAIN_ADD_PRODUCT) {
+        const INPUT_PRICE = document.getElementById("price-product");
+        INPUT_PRICE.addEventListener("input", () => {
+            checkNumber(INPUT_PRICE, false, 9999.99);
+        });
+
         document.getElementById("form-product").addEventListener("submit", event => {
             // Prevents the browser's default behavior associated with an event; in this case, reloading the page
             event.preventDefault();

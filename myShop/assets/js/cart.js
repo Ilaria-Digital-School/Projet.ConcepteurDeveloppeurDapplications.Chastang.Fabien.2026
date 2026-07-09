@@ -8,7 +8,7 @@ class Cart {
         this.products = [{ id: productId, quantity: quantity }];
     }
 
-    add(productId, quantity) {
+    addProduct(productId, quantity) {
         const PRODUCT = this.products.find(p => p.id == productId);
         if (PRODUCT)
             PRODUCT.quantity += quantity;
@@ -16,66 +16,88 @@ class Cart {
             this.products.push({ id: productId, quantity: quantity });
     }
 
-    remove(productId, quantity) {
+    removeProduct(productId) {
         const INDEX = this.products.findIndex(p => p.id == productId);
         if (INDEX > -1) {
-            if (quantity == -1 || quantity >= this.products[INDEX].quantity)
-                this.products.splice(INDEX, 1);
-            else
-                this.products[INDEX].quantity -= quantity;
+            this.products.splice(INDEX, 1);
             return true;
         } else
             return false;
     }
+
+    updateQuantity(productId, quantity) {
+        const PRODUCT = this.products.find(p => p.id == productId);
+        if (PRODUCT) {
+            PRODUCT.quantity = quantity;
+            return true;
+        } else
+            return false;
+    }
+
+    display(allProducts, tbody) {
+        let totalPrice = 0;
+        this.products.forEach((product, index) => {
+            const PRODUCT = allProducts.find(p => p.id == product.id);
+            if (PRODUCT) {
+                const FULL_PRICE = PRODUCT.price * product.quantity;
+                totalPrice += FULL_PRICE;
+
+                const TR = document.createElement("tr");
+                TR.id = "tr-${index}";
+                TR.innerHTML = `
+                    <th scope="row">${index + 1}</th>
+                    <td>${PRODUCT.name}</td>
+                    <td>${PRODUCT.price}€</td>
+                    <td><input type="number" onchange="changeCartQuantity(this, ${product.id}, ${product.quantity})" value="${product.quantity}" size="2" oninput="checkNumber(this, true, 99, ${product.quantity})" required></td>
+                    <td>${FULL_PRICE}€</td>
+                    <td>
+                        <button type="button" onclick="deleteCartProduct(${product.id})" class="btn btn-danger" title="Supprimer" aria-label="Supprimer">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(TR);
+            }
+        });
+        return totalPrice;
+    }
 }
 
-// UTILITIES: check the parameters and retrieve the user's cart
-function checkParams(isAdded, productId, quantity, userId, prefixMsg) {
-    // Check the parameters
+// Add a product to a cart and save the change to local storage
+function addCartProduct(productId, quantity = 1, userId = null, toConsole = false) {
+    // Get session ID
+    const USER_ID = parseInt(userId) || getLoggedIn() || 0;
+    if (!USER_ID || USER_ID < 0) {
+        const displayMsg = (toConsole) ? console.log : alert;
+        const PREFIX_MSG = (toConsole) ? "[cart: add product] - " : "";
+
+        displayMsg(PREFIX_MSG + "Pour ajouter un produit à votre panier, veuillez vous connecter.");
+        return false;
+    }
+
+    // Retrieve the parameters
     const PRODUCT_ID = parseInt(productId);
     if (!PRODUCT_ID || PRODUCT_ID < 0) {
-        console.log(`[cart: ${prefixMsg}] - Invalid productId parameter!`);
+        console.log("[cart: add product] - Invalid productId parameter!");
         return false;
     }
     const QUANTITY = parseInt(quantity);
-    if (!QUANTITY || (!isAdded || QUANTITY < 0) && QUANTITY < -1) {
-        console.log(`[cart: ${prefixMsg}] - Invalid quantity parameter!`);
+    if (!QUANTITY || QUANTITY < 0) {
+        console.log("[cart: add product] - Invalid quantity parameter!");
         return false;
     }
 
     // Retrieve the user's cart
     const CARTS = lsGetItems("carts");
-    const CART = CARTS.find(c => c.userId == userId);
-    if (!isAdded && !CART) {
-        console.log(`[cart: ${prefixMsg}] - The user does not have a cart!`);
-        return false;
-    }
+    const CART_FOUND = CARTS.find(c => c.userId == USER_ID);
 
-    return [PRODUCT_ID, QUANTITY, CARTS, CART];
-}
+    if (CART_FOUND) {
+        const CART = new Cart();
+        Object.assign(CART, CART_FOUND);
 
-// Add a product to a cart and save the change to local storage
-function addCartProduct(productId, quantity = 1, userId = null, toConsole = false) {
-    const displayMsg = (toConsole) ? console.log : alert;
-    const PREFIX_MSG = (toConsole) ? "[cart: add product] - " : "";
-
-    // Get session ID
-    const USER_ID = parseInt(userId) || getLoggedIn() || 0;
-    if (!USER_ID || USER_ID < 0) {
-        displayMsg(PREFIX_MSG + "Pour ajouter un produit à votre panier, veuillez vous connecter.");
-        return false;
-    }
-
-    // Retrieve the parameters and the user's cart
-    const PARAMS = checkParams(true, productId, quantity, USER_ID, "add product");
-    if (!PARAMS) return false;
-
-    const [PRODUCT_ID, QUANTITY, CARTS, CART] = PARAMS;
-
-    if (CART)
         // Add the product to the found cart
-        CART.add(PRODUCT_ID, QUANTITY);
-    else
+        CART.addProduct(PRODUCT_ID, QUANTITY);
+    } else
         // Add a new cart
         CARTS.push(new Cart(USER_ID, PRODUCT_ID, QUANTITY));
 
@@ -86,7 +108,7 @@ function addCartProduct(productId, quantity = 1, userId = null, toConsole = fals
 }
 
 // Remove a product from a cart and save the change to local storage
-function removeCartProduct(productId, quantity = 1, userId = null) {
+function removeCartProduct(productId, userId = null) {
     // Get session ID
     const USER_ID = parseInt(userId) || getLoggedIn() || 0;
     if (!USER_ID || USER_ID < 0) {
@@ -94,20 +116,157 @@ function removeCartProduct(productId, quantity = 1, userId = null) {
         return false;
     }
 
-    // Retrieve the parameters and the user's cart
-    const PARAMS = checkParams(false, productId, quantity, USER_ID, "remove product");
-    if (!PARAMS) return false;
+    // Retrieve the parameter
+    const PRODUCT_ID = parseInt(productId);
+    if (!PRODUCT_ID || PRODUCT_ID < 0) {
+        console.log("[cart: remove product] - Invalid productId parameter!");
+        return false;
+    }
 
-    const [PRODUCT_ID, QUANTITY, CARTS, CART] = PARAMS;
+    // Retrieve the user's cart
+    const CARTS = lsGetItems("carts");
+    const CART_FOUND = CARTS.find(c => c.userId == USER_ID);
 
-    // Remove the product from the cart
-    if (CART.remove(PRODUCT_ID, QUANTITY)) {
-        // Save the change to local storage
-        localStorage.setItem("carts", JSON.stringify(CARTS));
-        console.log("[cart: remove product] - Success !");
+    if (CART_FOUND) {
+        const CART = new Cart();
+        Object.assign(CART, CART_FOUND);
+
+        // Remove the product from the cart
+        if (CART.removeProduct(PRODUCT_ID)) {
+            // Save the change to local storage
+            localStorage.setItem("carts", JSON.stringify(CARTS));
+            console.log("[cart: remove product] - Success !");
+            return true;
+        } else {
+            console.log("[cart: remove product] - The product is not in the cart!");
+            return false;
+        }
+    } else {
+        console.log("[cart: remove product] - The user does not have a cart!");
+        return false;
+    }
+}
+
+// Update the quantity of a product in a cart and save the change to local storage
+function updateCartProduct(productId, quantity, userId = null) {
+    // Get session ID
+    const USER_ID = parseInt(userId) || getLoggedIn() || 0;
+    if (!USER_ID || USER_ID < 0) {
+        console.log("[cart: update product] - Invalid userId parameter and session ID!");
+        return false;
+    }
+
+    // Retrieve the parameters
+    const PRODUCT_ID = parseInt(productId);
+    if (!PRODUCT_ID || PRODUCT_ID < 0) {
+        console.log("[cart: update product] - Invalid productId parameter!");
+        return false;
+    }
+    const QUANTITY = parseInt(quantity);
+    if (!QUANTITY || QUANTITY < 0) {
+        console.log("[cart: update product] - Invalid quantity parameter!");
+        return false;
+    }
+
+    // Retrieve the user's cart
+    const CARTS = lsGetItems("carts");
+    const CART_FOUND = CARTS.find(c => c.userId == USER_ID);
+
+    if (CART_FOUND) {
+        const CART = new Cart();
+        Object.assign(CART, CART_FOUND);
+
+        // Remove the product from the cart
+        if (CART.updateQuantity(PRODUCT_ID, QUANTITY)) {
+            // Save the change to local storage
+            localStorage.setItem("carts", JSON.stringify(CARTS));
+            console.log("[cart: update product] - Success !");
+            return true;
+        } else {
+            console.log("[cart: update product] - The product is not in the cart!");
+            return false;
+        }
+    } else {
+        console.log("[cart: update product] - The user does not have a cart!");
+        return false;
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////
+// View and edit the user's shopping cart
+
+// Display the user's cart
+function displayCart(userId = null, toConsole = false) {
+    const displayMsg = (toConsole) ? console.log : alert;
+    const PREFIX_MSG = (toConsole) ? "[cart: display products] - " : "";
+
+    // Get session ID
+    const USER_ID = parseInt(userId) || getLoggedIn() || 0;
+    if (!USER_ID || USER_ID < 0) {
+        displayMsg(PREFIX_MSG + "Pour afficher votre panier, veuillez vous connecter.");
+        return false;
+    }
+
+    // Retrieve the HTML containers
+    const [H2_INFO, CONTAINER] = [document.getElementById("h2-cart"), document.getElementById("cart-container")];
+
+    // Retrieve the user's cart
+    const CARTS = lsGetItems("carts");
+    const CART_FOUND = CARTS.find(c => c.userId == USER_ID);
+    if (!CART_FOUND) {
+        H2_INFO.textContent = "Votre panier est vide.";
+        CONTAINER.style.display = "none";
+        return false;
+    }
+
+    // Retrieve all products stored in local storage
+    const PRODUCTS = lsGetItems("products");
+    if (PRODUCTS.length == 0) {
+        displayMsg(PREFIX_MSG + "Il n'y a plus aucun produit enregistré !");
+        return false;
+    }
+
+    // Display the cart
+    const [CART, TBODY] = [new Cart(), document.getElementById("tbody-cart")];
+    Object.assign(CART, CART_FOUND);
+
+    const TOTAL_PRICE = CART.display(PRODUCTS, TBODY);
+    if (TOTAL_PRICE > 0) {
+        H2_INFO.style.marginBottom = "30px";
+
+        const TR = document.createElement("tr");
+        TR.innerHTML = `
+            <td colspan="4">Total</td>
+            <td>${TOTAL_PRICE}€</td>
+            <td>
+                <button type="button" id="btn-order" class="btn btn-success" title="Commander" aria-label="Commander">
+                    <i class="fa-brands fa-cc-visa"></i>
+                </button>
+            </td>
+        `;
+        TBODY.appendChild(TR);
         return true;
     } else {
-        console.log("[cart: remove product] - The product is not in the cart!");
+        H2_INFO.textContent = "Votre panier est vide.";
+        CONTAINER.style.display = "none";
         return false;
+    }
+}
+
+// Remove a product from the cart after a user click
+function deleteCartProduct(productId) {
+    removeCartProduct(productId);
+    window.location.reload();
+}
+
+// Change the quantity
+function changeCartQuantity(objInput, productId, quantity) {
+    const QUANTITY = parseInt(objInput.value.replace(/\D/g, ""));
+    if (!QUANTITY || QUANTITY < 0) {
+        objInput.value = quantity;
+        alert("La quantité doit être un nombre entier positif !");
+    } else {
+        updateCartProduct(productId, QUANTITY);
+        window.location.reload();
     }
 }
