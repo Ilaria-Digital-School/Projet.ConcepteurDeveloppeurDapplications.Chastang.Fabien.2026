@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-// Handle the product
+// Manage products
 
 // Main class
 class Product {
@@ -119,6 +119,9 @@ class Product {
     }
 }
 
+//////////////////////////////////////////////////////////////////////////
+// Add, update and remove a product
+
 // UTILITIES: functions to validate the 'name' and 'price'
 function checkName(name) {
     const NAME = (name) ? name.toString().trim() : "";
@@ -224,7 +227,10 @@ function removeProduct(productId) {
     lsGetItems("products").lsRemoveItem("products", productId);
 }
 
-// Fill the carousel and display the products
+//////////////////////////////////////////////////////////////////////////
+// Manage the carousel
+
+// Fill the carousel and display the products in the container
 function fillCarousel(products, productId, button) {
     const CAROUSEL_INNER = document.querySelector(".carousel-inner");
     const CONTAINER = document.querySelector(".product-container");

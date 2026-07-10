@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 // Classes for the 'gender', 'interests', 'country', and 'role' fields
 
-// Gender class: static object
+// Gender class: static object //////////////////
 class Gender {
     static fieldName = "gender-user";
     static list = [
@@ -35,7 +35,7 @@ class Gender {
     };
 }
 
-// Interests class: static object
+// Interests class: static object ///////////////
 class Interests {
     static fieldName = "interests-user";
     static list = [
@@ -69,7 +69,7 @@ class Interests {
     };
 }
 
-// Country class: static object
+// Country class: static object /////////////////
 class Country {
     static list = [
         { value: 1, label: "Canada" },
@@ -124,7 +124,7 @@ class Country {
     };
 }
 
-// Role class: static object
+// Role class: static object ////////////////////
 class Role {
     static user = 0;
     static admin = 1;
@@ -137,7 +137,7 @@ class Role {
 }
 
 //////////////////////////////////////////////////////////////////////////
-// Handle the user
+// Manage users
 
 // Main class
 class User {
@@ -188,6 +188,9 @@ class User {
         return false;
     }
 }
+
+//////////////////////////////////////////////////////////////////////////
+// Add, update and remove a user
 
 // UTILITIES: functions to validate the 'name', 'email', and 'password' parameters
 function checkName(name) {
@@ -325,7 +328,9 @@ function removeUser(userId, toConsole = true) {
     displayLog(((toConsole) ? "[remove user] - " : "") + "Votre profile a été supprimé.", toConsole);
 }
 
-// Login/Logout functions
+//////////////////////////////////////////////////////////////////////////
+// Manage user login/logout
+
 function login(toConsole = false) {
     // Retrieve the users from local storage and verify that the email/password are registered
     const USERS = lsGetItems("users");
@@ -343,13 +348,14 @@ function login(toConsole = false) {
         window.location.href = "addUser.html";
     }
 }
+
 function logout(toConsole = false) {
     logoutUser();
     displayLog(((toConsole) ? "[logout] - " : "") + "Vous êtes déconnecté.", toConsole);
 }
 
 //////////////////////////////////////////////////////////////////////////
-// BACKEND functions (normally)
+// BACKEND (normally): manage administrators
 
 // Add a new admin to local storage
 function addAdmin(name, email, password, pswdConfirm, genderId, countryId, isSuper = false, toConsole = true) {

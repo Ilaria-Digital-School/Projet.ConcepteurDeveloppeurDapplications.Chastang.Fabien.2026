@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-// Manage the cart
+// Manage shopping carts
 
 // Main class
 class Cart {
@@ -63,6 +63,9 @@ class Cart {
     }
 }
 
+//////////////////////////////////////////////////////////////////////////
+// Add, update and remove a shopping cart
+
 // Add a product to a cart and save the change to local storage
 function addCartProduct(productId, quantity = 1, userId = null, toConsole = false) {
     // Get session ID
@@ -105,46 +108,6 @@ function addCartProduct(productId, quantity = 1, userId = null, toConsole = fals
     localStorage.setItem("carts", JSON.stringify(CARTS));
     console.log("[cart: add product] - Success !");
     return true;
-}
-
-// Remove a product from a cart and save the change to local storage
-function removeCartProduct(productId, userId = null) {
-    // Get session ID
-    const USER_ID = parseInt(userId) || getLoggedIn() || 0;
-    if (!USER_ID || USER_ID < 0) {
-        console.log("[cart: remove product] - Invalid userId parameter and session ID!");
-        return false;
-    }
-
-    // Retrieve the parameter
-    const PRODUCT_ID = parseInt(productId);
-    if (!PRODUCT_ID || PRODUCT_ID < 0) {
-        console.log("[cart: remove product] - Invalid productId parameter!");
-        return false;
-    }
-
-    // Retrieve the user's cart
-    const CARTS = lsGetItems("carts");
-    const CART_FOUND = CARTS.find(cart => cart.userId == USER_ID);
-
-    if (CART_FOUND) {
-        const CART = new Cart();
-        Object.assign(CART, CART_FOUND);
-
-        // Remove the product from the cart
-        if (CART.removeProduct(PRODUCT_ID)) {
-            // Save the change to local storage
-            localStorage.setItem("carts", JSON.stringify(CARTS));
-            console.log("[cart: remove product] - Success !");
-            return true;
-        } else {
-            console.log("[cart: remove product] - The product is not in the cart!");
-            return false;
-        }
-    } else {
-        console.log("[cart: remove product] - The user does not have a cart!");
-        return false;
-    }
 }
 
 // Update the quantity of a product in a cart and save the change to local storage
@@ -192,6 +155,46 @@ function updateCartProduct(productId, quantity, userId = null) {
     }
 }
 
+// Remove a product from a cart and save the change to local storage
+function removeCartProduct(productId, userId = null) {
+    // Get session ID
+    const USER_ID = parseInt(userId) || getLoggedIn() || 0;
+    if (!USER_ID || USER_ID < 0) {
+        console.log("[cart: remove product] - Invalid userId parameter and session ID!");
+        return false;
+    }
+
+    // Retrieve the parameter
+    const PRODUCT_ID = parseInt(productId);
+    if (!PRODUCT_ID || PRODUCT_ID < 0) {
+        console.log("[cart: remove product] - Invalid productId parameter!");
+        return false;
+    }
+
+    // Retrieve the user's cart
+    const CARTS = lsGetItems("carts");
+    const CART_FOUND = CARTS.find(cart => cart.userId == USER_ID);
+
+    if (CART_FOUND) {
+        const CART = new Cart();
+        Object.assign(CART, CART_FOUND);
+
+        // Remove the product from the cart
+        if (CART.removeProduct(PRODUCT_ID)) {
+            // Save the change to local storage
+            localStorage.setItem("carts", JSON.stringify(CARTS));
+            console.log("[cart: remove product] - Success !");
+            return true;
+        } else {
+            console.log("[cart: remove product] - The product is not in the cart!");
+            return false;
+        }
+    } else {
+        console.log("[cart: remove product] - The user does not have a cart!");
+        return false;
+    }
+}
+
 //////////////////////////////////////////////////////////////////////////
 // View and edit the user's shopping cart
 
@@ -203,7 +206,7 @@ function displayCartMsg(msg) {
     return H2_INFO;
 }
 
-// Display the user's cart
+// Display the user's shopping cart
 function displayCart(userId = null, toConsole = false) {
     // Retrieve all products stored in local storage
     const PRODUCTS = lsGetItems("products");
@@ -262,13 +265,7 @@ function displayCart(userId = null, toConsole = false) {
     }
 }
 
-// Remove a product from the cart after a user click
-function deleteCartProduct(productId) {
-    removeCartProduct(productId);
-    window.location.reload();
-}
-
-// Change the quantity
+// Change the quantity of a product
 function changeCartQuantity(objInput, productId, quantity) {
     const QUANTITY = parseInt(objInput.value.replace(/\D/g, ""));
     if (!QUANTITY || QUANTITY < 0) {
@@ -278,4 +275,10 @@ function changeCartQuantity(objInput, productId, quantity) {
         updateCartProduct(productId, QUANTITY);
         window.location.reload();
     }
+}
+
+// Remove a product from the cart after a user click
+function deleteCartProduct(productId) {
+    removeCartProduct(productId);
+    window.location.reload();
 }
