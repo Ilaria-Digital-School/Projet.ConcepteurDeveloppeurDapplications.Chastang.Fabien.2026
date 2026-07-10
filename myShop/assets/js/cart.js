@@ -195,6 +195,12 @@ function updateCartProduct(productId, quantity, userId = null) {
 //////////////////////////////////////////////////////////////////////////
 // View and edit the user's shopping cart
 
+// Display the "Empty cart" message
+function emptyCartMsg(h2Info) {
+    h2Info.textContent = "Votre panier est vide.";
+    h2Info.classList.remove("inactive");
+}
+
 // Display the user's cart
 function displayCart(toConsole = false) {
     const displayMsg = (toConsole) ? console.log : alert;
@@ -206,13 +212,13 @@ function displayCart(toConsole = false) {
     // Retrieve the user
     const USERS = lsGetItems("users");
     if (USERS.length == 0) {
-        H2_INFO.textContent = "Votre panier est vide.";
+        emptyCartMsg(H2_INFO);
         displayMsg(PREFIX_MSG + "Veuillez vous enregistrer !");
         window.location.href = "addUser.html";
     }
     const USER_ID = getLoggedIn() || 0;
     if (!USER_ID) {
-        H2_INFO.textContent = "Votre panier est vide.";
+        emptyCartMsg(H2_INFO);
         displayMsg(PREFIX_MSG + "Veuillez vous enregistrer ou vous connecter !");
         return false;
     }
@@ -220,7 +226,7 @@ function displayCart(toConsole = false) {
     // Retrieve all products stored in local storage
     const PRODUCTS = lsGetItems("products");
     if (PRODUCTS.length == 0) {
-        H2_INFO.textContent = "Votre panier est vide.";
+        emptyCartMsg(H2_INFO);
         displayMsg(PREFIX_MSG + "Il n'y a pas de produit enregistré !");
         return false;
     }
@@ -229,7 +235,7 @@ function displayCart(toConsole = false) {
     const CARTS = lsGetItems("carts");
     const CART_FOUND = CARTS.find(c => c.userId == USER_ID);
     if (!CART_FOUND) {
-        H2_INFO.textContent = "Votre panier est vide.";
+        emptyCartMsg(H2_INFO);
         return false;
     }
 
@@ -239,8 +245,9 @@ function displayCart(toConsole = false) {
 
     const TOTAL_PRICE = CART.display(PRODUCTS, TBODY);
     if (TOTAL_PRICE > 0) {
-        H2_INFO.style.marginBottom = "30px";
         CONTAINER.classList.remove("inactive");
+        H2_INFO.classList.remove("inactive");
+        H2_INFO.style.marginBottom = "30px";
 
         const TR = document.createElement("tr");
         TR.innerHTML = `
@@ -255,7 +262,7 @@ function displayCart(toConsole = false) {
         TBODY.appendChild(TR);
         return true;
     } else {
-        H2_INFO.textContent = "Votre panier est vide.";
+        emptyCartMsg(H2_INFO);
         return false;
     }
 }
