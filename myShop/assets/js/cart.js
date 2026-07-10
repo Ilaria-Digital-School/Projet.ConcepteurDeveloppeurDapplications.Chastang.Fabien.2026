@@ -208,7 +208,7 @@ function displayCart(userId = null, toConsole = false) {
     // Retrieve all products stored in local storage
     const PRODUCTS = lsGetItems("products");
     if (PRODUCTS.length == 0) {
-        displayCartMsg("Il n'y a pas de produit enregistré !");
+        displayCartMsg("Il n'y a pas de produit enregistré.");
         return false;
     }
 
@@ -223,7 +223,7 @@ function displayCart(userId = null, toConsole = false) {
     }
     const USER_ID = parseInt(userId) || getLoggedIn() || 0;
     if (!USER_ID || USER_ID < 0) {
-        displayCartMsg("Veuillez vous enregistrer ou vous connecter !");
+        displayCartMsg("Veuillez vous enregistrer ou vous connecter.");
         return false;
     }
 
