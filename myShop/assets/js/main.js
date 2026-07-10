@@ -24,19 +24,15 @@ Array.prototype.lsAddItem = function (nameArray, item) {
         console.log(`The item ID is not 0 (ID is ${item.id}): the item cannot be added to local storage.`);
 };
 
-// Remove an item from an array in local storage
-function lsRemoveItem(nameArray, id) {
-    const DATA = JSON.parse(localStorage.getItem(nameArray));
-    if (Array.isArray(DATA)) {
-        const INDEX = DATA.findIndex(item => item.id == id);
-        if (INDEX > -1) {
-            DATA.splice(INDEX, 1);
-            localStorage.setItem(nameArray, JSON.stringify(DATA));
-            console.log("The item has been removed from local storage.");
-        } else
-            console.log("The item to be removed does not exist in local storage.");
+// Array method to remove an item from an array in local storage
+Array.prototype.lsRemoveItem = function (nameArray, id) {
+    const INDEX = this.findIndex(item => item.id == id);
+    if (INDEX > -1) {
+        this.splice(INDEX, 1);
+        localStorage.setItem(nameArray, JSON.stringify(this));
+        console.log("The item has been removed from local storage.");
     } else
-        console.log("No items to remove from local storage: no data.");
+        console.log("The item to be removed does not exist in local storage.");
 }
 
 // Manage the user session ///////////////////////////////////////////////
@@ -62,16 +58,23 @@ function logoutUser() {
 
 // General functions /////////////////////////////////////////////////////
 
-// Validate the input of a 'number' type field
-function checkPositiveNumber(objInput, isInt, maxValue, defaultValue) {
-    let value = objInput.value.replace(",", ".").replace(/[^\d.]/g, "");
+// Method of the HTML input object used to validate the input of a "number" or "text" type field
+HTMLInputElement.prototype.checkPositiveNumber = function (isInt, maxValue, defaultValue) {
+    let value = this.value.replace(",", ".").replace(/[^\d.]/g, "");
     if (isInt)
         value = parseInt(value);
     else {
         value = parseFloat(value);
         value = Math.round(100 * value) / 100;
     }
-    objInput.value = (value > 0) ? ((value <= maxValue) ? value : maxValue) : ((defaultValue) ? defaultValue : "");
+    this.value = (value > 0) ? ((value <= maxValue) ? value : maxValue) : ((defaultValue) ? defaultValue : "");
+}
+
+// Method of the HTML select object to retrieve and potentially select or deselect an option by its value
+HTMLSelectElement.prototype.select = function (value, selected) {
+    const OPTION = Array.from(this.options).find(item => item.value == value);
+    if (typeof selected == "boolean" && OPTION) OPTION.selected = selected;
+    return OPTION;
 }
 
 // When resizing the window
@@ -118,10 +121,13 @@ function init() {
 
     const MAIN_ADD_USER = document.getElementById("main-add-user");
     if (MAIN_ADD_USER) {
+        // To initialize the default country
+        const COUNTRY_ID = Country.getId("France");
+
         // Fill in the 'gender', 'interests' and 'country' fields
         Gender.fill();
         Interests.fill();
-        Country.fill(5);
+        Country.fill(COUNTRY_ID);
 
         // Add an administrator
         const pswd = `3kb!BWFe;dgXqV]`;
@@ -132,7 +138,7 @@ function init() {
             event.preventDefault();
 
             // Add a new user
-            addUser();
+            addUser(COUNTRY_ID);
         });
     }
 
@@ -212,7 +218,7 @@ function init() {
     if (MAIN_ADD_PRODUCT) {
         const INPUT_PRICE = document.getElementById("price-product");
         INPUT_PRICE.addEventListener("change", () => {
-            checkPositiveNumber(INPUT_PRICE, false, 9999.99);
+            INPUT_PRICE.checkPositiveNumber(false, 9999.99);
         });
 
         document.getElementById("form-product").addEventListener("submit", event => {

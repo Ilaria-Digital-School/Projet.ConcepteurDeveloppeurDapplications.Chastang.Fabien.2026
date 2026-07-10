@@ -9,7 +9,7 @@ class Cart {
     }
 
     addProduct(productId, quantity) {
-        const PRODUCT = this.products.find(p => p.id == productId);
+        const PRODUCT = this.products.find(product => product.id == productId);
         if (PRODUCT)
             PRODUCT.quantity += quantity;
         else
@@ -17,7 +17,7 @@ class Cart {
     }
 
     removeProduct(productId) {
-        const INDEX = this.products.findIndex(p => p.id == productId);
+        const INDEX = this.products.findIndex(product => product.id == productId);
         if (INDEX > -1) {
             this.products.splice(INDEX, 1);
             return true;
@@ -26,7 +26,7 @@ class Cart {
     }
 
     updateQuantity(productId, quantity) {
-        const PRODUCT = this.products.find(p => p.id == productId);
+        const PRODUCT = this.products.find(product => product.id == productId);
         if (PRODUCT) {
             PRODUCT.quantity = quantity;
             return true;
@@ -37,7 +37,7 @@ class Cart {
     display(allProducts, tbody) {
         let totalPrice = 0;
         this.products.forEach((product, index) => {
-            const PRODUCT = allProducts.find(p => p.id == product.id);
+            const PRODUCT = allProducts.find(item => item.id == product.id);
             if (PRODUCT) {
                 const FULL_PRICE = PRODUCT.price * product.quantity;
                 totalPrice += FULL_PRICE;
@@ -48,7 +48,7 @@ class Cart {
                     <th scope="row">${index + 1}</th>
                     <td>${PRODUCT.name}</td>
                     <td>${PRODUCT.price}€</td>
-                    <td><input type="number" onchange="changeCartQuantity(this, ${product.id}, ${product.quantity})" value="${product.quantity}" size="2" oninput="checkPositiveNumber(this, true, 99, ${product.quantity})" required></td>
+                    <td><input type="number" onchange="changeCartQuantity(this, ${product.id}, ${product.quantity})" value="${product.quantity}" size="2" oninput="this.checkPositiveNumber(true, 99, ${product.quantity})" required></td>
                     <td>${FULL_PRICE}€</td>
                     <td>
                         <button type="button" onclick="deleteCartProduct(${product.id})" class="btn btn-danger" title="Supprimer" aria-label="Supprimer">
@@ -89,7 +89,7 @@ function addCartProduct(productId, quantity = 1, userId = null, toConsole = fals
 
     // Retrieve the user's cart
     const CARTS = lsGetItems("carts");
-    const CART_FOUND = CARTS.find(c => c.userId == USER_ID);
+    const CART_FOUND = CARTS.find(cart => cart.userId == USER_ID);
 
     if (CART_FOUND) {
         const CART = new Cart();
@@ -125,7 +125,7 @@ function removeCartProduct(productId, userId = null) {
 
     // Retrieve the user's cart
     const CARTS = lsGetItems("carts");
-    const CART_FOUND = CARTS.find(c => c.userId == USER_ID);
+    const CART_FOUND = CARTS.find(cart => cart.userId == USER_ID);
 
     if (CART_FOUND) {
         const CART = new Cart();
@@ -170,7 +170,7 @@ function updateCartProduct(productId, quantity, userId = null) {
 
     // Retrieve the user's cart
     const CARTS = lsGetItems("carts");
-    const CART_FOUND = CARTS.find(c => c.userId == USER_ID);
+    const CART_FOUND = CARTS.find(cart => cart.userId == USER_ID);
 
     if (CART_FOUND) {
         const CART = new Cart();
@@ -229,7 +229,7 @@ function displayCart(userId = null, toConsole = false) {
 
     // Retrieve the user's cart
     const CARTS = lsGetItems("carts");
-    const CART_FOUND = CARTS.find(c => c.userId == USER_ID);
+    const CART_FOUND = CARTS.find(cart => cart.userId == USER_ID);
     if (!CART_FOUND) {
         displayCartMsg("Votre panier est vide.");
         return false;

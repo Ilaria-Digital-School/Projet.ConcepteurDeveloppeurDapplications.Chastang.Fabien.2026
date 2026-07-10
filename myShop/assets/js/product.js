@@ -25,7 +25,7 @@ class Product {
 
         // Add the classes if necessary
         const CLASSPROD = classProd.trim().split(/\s+/);
-        if (CLASSPROD[0]) CLASSPROD.forEach(c => ARTICLE_PRODUCT.classList.add(c));
+        if (CLASSPROD[0]) CLASSPROD.forEach(css => ARTICLE_PRODUCT.classList.add(css));
 
         // Button definition
         const BTN_ID = `btn-product-${this.id}`;
@@ -102,7 +102,7 @@ class Product {
         DIV_PRODUCT.setAttribute("data-item-id", this.id);
 
         const IMG = document.createElement("img");
-        ["d-block", "w-100", "carousel-img"].forEach(c => IMG.classList.add(c));
+        ["d-block", "w-100", "carousel-img"].forEach(css => IMG.classList.add(css));
         IMG.src = this.img;
         IMG.alt = this.description;
 
@@ -177,7 +177,7 @@ function updateProduct(productId, name, description, price, img, info, toConsole
     // Retrieve the product by its ID
     let product;
     const ID = parseInt(productId);
-    if (!ID || !(product = PRODUCTS.find(p => p.id == ID))) {
+    if (!ID || !(product = PRODUCTS.find(item => item.id == ID))) {
         displayLog(PREFIX_MSG + "L'identifiant est incorrect !");
         return false;
     }

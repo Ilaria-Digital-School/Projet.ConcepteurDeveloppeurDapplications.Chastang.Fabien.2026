@@ -11,10 +11,10 @@ class Gender {
     static other = 0;
 
     // Return a valid gender
-    static get = gender => {
-        if (gender) {
-            const GENDER = parseInt(gender);
-            return (this.list.some(g => g.value == GENDER)) ? GENDER : this.other;
+    static get = genderId => {
+        if (genderId) {
+            const GENDER_ID = parseInt(genderId);
+            return (this.list.some(item => item.value == GENDER_ID)) ? GENDER_ID : this.other;
         } else
             return this.other;
     };
@@ -23,12 +23,12 @@ class Gender {
     static fill = () => {
         const GENDER = document.getElementById("gender-container");
 
-        this.list.forEach(i => {
+        this.list.forEach(item => {
             const DIV = document.createElement("div");
             DIV.classList.add("field");
             DIV.innerHTML = `
-                <input type="radio" name="${this.fieldName}" id="${i.id}" value="${i.value}">
-                <label for="${i.id}"> ${i.label}&ensp;</label>
+                <input type="radio" name="${this.fieldName}" id="${item.id}" value="${item.value}">
+                <label for="${item.id}"> ${item.label}&ensp;</label>
             `;
             GENDER.appendChild(DIV);
         });
@@ -45,10 +45,10 @@ class Interests {
     static other = [];
 
     // Return a valid array of interests
-    static get = interests => {
-        if (Array.isArray(interests) && interests.length > 0) {
-            const INTERESTS = interests.map(i => parseInt(i));
-            return this.list.filter(i => INTERESTS.some(j => j == i.value));
+    static get = interestIDs => {
+        if (Array.isArray(interestIDs) && interestIDs.length > 0) {
+            const INTEREST_IDS = interestIDs.map(item => parseInt(item));
+            return this.list.filter(item => INTEREST_IDS.some(item2 => item2 == item.value));
         } else
             return this.other;
     };
@@ -57,12 +57,12 @@ class Interests {
     static fill = () => {
         const INTERESTS = document.getElementById("interests-container");
 
-        this.list.forEach(i => {
+        this.list.forEach(item => {
             const DIV = document.createElement("div");
             DIV.classList.add("field");
             DIV.innerHTML = `
-                <input type="checkbox" name="${this.fieldName}" id="${i.id}" value="${i.value}">
-                <label for="${i.id}"> ${i.label}&ensp;</label>
+                <input type="checkbox" name="${this.fieldName}" id="${item.id}" value="${item.value}">
+                <label for="${item.id}"> ${item.label}&ensp;</label>
             `;
             INTERESTS.appendChild(DIV);
         });
@@ -85,10 +85,10 @@ class Country {
     static other = { value: 0, label: "– Autre –" };
 
     // Return a valid country
-    static get = country => {
-        if (country) {
-            const COUNTRY = parseInt(country);
-            return (this.list.some(c => c.value == COUNTRY)) ? COUNTRY : this.other.value;
+    static get = countryId => {
+        if (countryId) {
+            const COUNTRY_ID = parseInt(countryId);
+            return (this.list.some(item => item.value == COUNTRY_ID)) ? COUNTRY_ID : this.other.value;
         } else
             return this.other.value;
     };
@@ -99,9 +99,9 @@ class Country {
         const COUNTRY_ID = parseInt(countryId) || this.other.value;
 
         let selected = false;
-        this.list.forEach(i => {
-            const OPTION = new Option(i.label, i.value);
-            if (i.value == COUNTRY_ID) {
+        this.list.forEach(item => {
+            const OPTION = new Option(item.label, item.value);
+            if (item.value == COUNTRY_ID) {
                 selected = true;
                 OPTION.selected = true;
             }
@@ -111,6 +111,16 @@ class Country {
         const OTHER = new Option(this.other.label, this.other.value);
         if (!selected) OTHER.selected = true;
         COUNTRY.add(OTHER);
+    };
+
+    // Get the ID from the name and the name from the ID
+    static getId = countryName => {
+        const COUNTRY = this.list.find(item => item.label == countryName);
+        return (COUNTRY) ? COUNTRY.value : this.other.value;
+    };
+    static getName = countryId => {
+        const COUNTRY = this.list.find(item => item.value == countryId);
+        return (COUNTRY) ? COUNTRY.label : this.other.label;
     };
 }
 
@@ -131,14 +141,14 @@ class Role {
 
 // Main class
 class User {
-    constructor(name, email, password, gender, interests, country, role = Role.user) {
+    constructor(name, email, password, genderId, interestIDs, countryId, role = Role.user) {
         this.id = 0
         this.name = name;
         this.email = email;
         this.password = password;
-        this.gender = gender;
-        this.interests = interests;
-        this.country = country;
+        this.gender = genderId;
+        this.interests = interestIDs;
+        this.country = countryId;
         this.role = role;
     }
 
@@ -147,22 +157,22 @@ class User {
         return toChange;
     }
 
-    update(name, email, password, gender, interests, country) {
+    update(name, email, password, genderId, interestIDs, countryId) {
         let isChanged = false;
         isChanged ||= this.updateProperty("name", name, name && this.name != name);
         isChanged ||= this.updateProperty("email", email, email && this.email != email);
         isChanged ||= this.updateProperty("password", password, password && this.password != password);
-        if (gender) {
-            const GENDER = Gender.get(gender);
-            isChanged ||= this.updateProperty("gender", GENDER, this.gender != GENDER);
+        if (genderId) {
+            const GENDER_ID = Gender.get(genderId);
+            isChanged ||= this.updateProperty("gender", GENDER_ID, this.gender != GENDER_ID);
         }
-        if (interests) {
-            const INTERESTS = Interests.get(interests);
-            isChanged ||= this.updateProperty("interests", INTERESTS, JSON.stringify(this.interests) != JSON.stringify(INTERESTS));
+        if (interestIDs) {
+            const INTEREST_IDS = Interests.get(interestIDs);
+            isChanged ||= this.updateProperty("interests", INTEREST_IDS, JSON.stringify(this.interests) != JSON.stringify(INTEREST_IDS));
         }
-        if (country) {
-            const COUNTRY = Country.get(country);
-            isChanged ||= this.updateProperty("country", COUNTRY, this.country != COUNTRY);
+        if (countryId) {
+            const COUNTRY_ID = Country.get(countryId);
+            isChanged ||= this.updateProperty("country", COUNTRY_ID, this.country != COUNTRY_ID);
         }
         return isChanged;
     }
@@ -222,7 +232,7 @@ function checkParams(isAdded, name, email, password, pswdConfirm, toConsole, pre
         if (USERS.length == 0)
             return displayLog(prefixMsg + "Mise à jour impossible : aucun utilisateur n'est enregistré !", toConsole);
 
-        const USER = USERS.find(u => u.id == ID);
+        const USER = USERS.find(user => user.id == ID);
         if (!USER) return displayLog(prefixMsg + "L'identifiant est incorrect !", toConsole);
 
         if (EMAIL && USER.email != EMAIL && USERS.some(user => user.email == EMAIL))
@@ -235,7 +245,7 @@ function checkParams(isAdded, name, email, password, pswdConfirm, toConsole, pre
 }
 
 // Add a new user to local storage
-function addUser(toConsole = false) {
+function addUser(countryId = 0, toConsole = false) {
     const PREFIX_MSG = (toConsole) ? "[add user] - " : "";
 
     // Get the parameters
@@ -257,25 +267,26 @@ function addUser(toConsole = false) {
     document.getElementById("email-user").value = EMAIL;
 
     let objGender = document.querySelector('input[name="gender-user"]:checked');
-    const GENDER = (objGender) ? Gender.get(objGender.value) : Gender.other;
+    const GENDER_ID = (objGender) ? Gender.get(objGender.value) : Gender.other;
     let objInterests = document.querySelectorAll('input[name="interests-user"]:checked');
-    const INTERESTS = (objInterests) ? Interests.get(Array.from(objInterests).map(i => i.value)) : Interests.other;
+    const INTEREST_IDS = (objInterests) ? Interests.get(Array.from(objInterests).map(item => item.value)) : Interests.other;
     let objCountry = document.getElementById("country-user");
-    const COUNTRY = Country.get(objCountry.options[objCountry.selectedIndex].value);
+    const COUNTRY_ID = Country.get(objCountry.options[objCountry.selectedIndex].value);
 
     // Create a new user and save it to local storage
-    const USER = new User(NAME, EMAIL, PASSWORD, GENDER, INTERESTS, COUNTRY);
+    const USER = new User(NAME, EMAIL, PASSWORD, GENDER_ID, INTEREST_IDS, COUNTRY_ID);
     USERS.lsAddItem("users", USER);
 
     // Reset the form and display the validation message
     document.getElementById("form-user").reset();
+    if (countryId) objCountry.select(countryId);
     displayLog(PREFIX_MSG + "Votre profile est créé.", toConsole);
 
     return true;
 }
 
 // Update a user (except their role) in local storage
-function updateUser(userId, name, email, password, pswdConfirm, gender, interests, country, toConsole = false) {
+function updateUser(userId, name, email, password, pswdConfirm, genderId, interestIDs, countryId, toConsole = false) {
     let prefixMsg = (toConsole) ? "[update user] - " : "";
 
     // Get the parameters
@@ -295,7 +306,7 @@ function updateUser(userId, name, email, password, pswdConfirm, gender, interest
     prefixMsg = (toConsole) ? `[update ${(USER.role != Role.superAdmin) ? (USER.role != Role.admin) ? "user" : "admin" : "super-admin"}] - ` : "";
 
     // Perform the update
-    const IS_CHANGED = USER.update(NAME, EMAIL, PASSWORD, gender, interests, country);
+    const IS_CHANGED = USER.update(NAME, EMAIL, PASSWORD, genderId, interestIDs, countryId);
 
     if (IS_CHANGED) {
         // Save the changes to local storage and display the confirmation message
@@ -341,7 +352,7 @@ function logout(toConsole = false) {
 // BACKEND functions (normally)
 
 // Add a new admin to local storage
-function addAdmin(name, email, password, pswdConfirm, gender, country, isSuper = false, toConsole = true) {
+function addAdmin(name, email, password, pswdConfirm, genderId, countryId, isSuper = false, toConsole = true) {
     const PREFIX_MSG = (toConsole) ? `[add ${(isSuper) ? "super-admin" : "admin"}] - ` : "";
 
     // Get the parameters
@@ -357,11 +368,11 @@ function addAdmin(name, email, password, pswdConfirm, gender, country, isSuper =
     if (!PARAMS) return false;
 
     const [NAME, EMAIL, PASSWORD, USERS] = PARAMS;
-    const GENDER = Gender.get(gender);
-    const COUNTRY = Country.get(country);
+    const GENDER_ID = Gender.get(genderId);
+    const COUNTRY_ID = Country.get(countryId);
 
     // Create a new admin and save it to local storage
-    const ADMIN = new User(NAME, EMAIL, PASSWORD, GENDER, [], COUNTRY, (isSuper) ? Role.superAdmin : Role.admin);
+    const ADMIN = new User(NAME, EMAIL, PASSWORD, GENDER_ID, [], COUNTRY_ID, (isSuper) ? Role.superAdmin : Role.admin);
     USERS.lsAddItem("users", ADMIN);
 
     // Display the validation message
@@ -384,7 +395,7 @@ function updateRole(userId, role, toConsole = true) {
         return displayLog(PREFIX_MSG + "Mise à jour impossible : aucun utilisateur n'est enregistré !", toConsole);
 
     // Retrieve the user by ID
-    const USER = USERS.find(u => u.id == ID);
+    const USER = USERS.find(user => user.id == ID);
     if (!USER) return displayLog(PREFIX_MSG + "L'identifiant est incorrect !", toConsole);
 
     // Retrieve the user's role
