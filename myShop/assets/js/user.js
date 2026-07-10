@@ -193,7 +193,7 @@ function checkPassword(password) {
     return (PASSWORD.length >= 8 && !/\s/.test(PASSWORD)) ? PASSWORD : null;
 }
 // UTILITIES: error message display
-function displayMsg(msg, toConsole = true) {
+function displayLog(msg, toConsole = true) {
     ((toConsole) ? console.log : alert)(msg);
     return false;
 }
@@ -201,35 +201,35 @@ function displayMsg(msg, toConsole = true) {
 function checkParams(isAdded, name, email, password, pswdConfirm, toConsole, prefixMsg = "", userId = 0) {
     // Check the parameters
     const ID = parseInt(userId);
-    if (!isAdded && !ID) return displayMsg(prefixMsg + "L'identifiant est incorrect !", toConsole);
+    if (!isAdded && !ID) return displayLog(prefixMsg + "L'identifiant est incorrect !", toConsole);
 
     const NAME = checkName(name);
-    if (isAdded && !NAME) return displayMsg(prefixMsg + "Le nom doit contenir au moins trois caractères non blancs !", toConsole);
+    if (isAdded && !NAME) return displayLog(prefixMsg + "Le nom doit contenir au moins trois caractères non blancs !", toConsole);
 
     const EMAIL = checkEmail(email);
-    if (isAdded && !EMAIL) return displayMsg(prefixMsg + "L'e-mail est invalide !", toConsole);
+    if (isAdded && !EMAIL) return displayLog(prefixMsg + "L'e-mail est invalide !", toConsole);
 
     const PASSWORD = checkPassword(password);
-    if (isAdded && !PASSWORD) return displayMsg(prefixMsg + "Le mot de passe doit contenir au moins 8 caractères et aucun caractère blanc !", toConsole);
+    if (isAdded && !PASSWORD) return displayLog(prefixMsg + "Le mot de passe doit contenir au moins 8 caractères et aucun caractère blanc !", toConsole);
 
     if ((isAdded || PASSWORD) && PASSWORD != pswdConfirm)
-        return displayMsg(prefixMsg + "La confirmation du mot de passe est incorrecte !", toConsole);
+        return displayLog(prefixMsg + "La confirmation du mot de passe est incorrecte !", toConsole);
 
     // Retrieve the users from local storage and verify that the email is not already registered
     const USERS = lsGetItems("users");
 
     if (!isAdded) {
         if (USERS.length == 0)
-            return displayMsg(prefixMsg + "Mise à jour impossible : aucun utilisateur n'est enregistré !", toConsole);
+            return displayLog(prefixMsg + "Mise à jour impossible : aucun utilisateur n'est enregistré !", toConsole);
 
         const USER = USERS.find(u => u.id == ID);
-        if (!USER) return displayMsg(prefixMsg + "L'identifiant est incorrect !", toConsole);
+        if (!USER) return displayLog(prefixMsg + "L'identifiant est incorrect !", toConsole);
 
         if (EMAIL && USER.email != EMAIL && USERS.some(user => user.email == EMAIL))
-            return displayMsg(prefixMsg + "Cet e-mail existe déjà !", toConsole);
+            return displayLog(prefixMsg + "Cet e-mail existe déjà !", toConsole);
 
     } else if (USERS.some(user => user.email == EMAIL))
-        return displayMsg(prefixMsg + "Cet e-mail existe déjà !", toConsole);
+        return displayLog(prefixMsg + "Cet e-mail existe déjà !", toConsole);
 
     return (isAdded) ? [NAME, EMAIL, PASSWORD, USERS] : [NAME, EMAIL, PASSWORD, USERS, USER];
 }
@@ -269,7 +269,7 @@ function addUser(toConsole = false) {
 
     // Reset the form and display the validation message
     document.getElementById("form-user").reset();
-    displayMsg(PREFIX_MSG + "Votre profile est créé.", toConsole);
+    displayLog(PREFIX_MSG + "Votre profile est créé.", toConsole);
 
     return true;
 }
@@ -300,10 +300,10 @@ function updateUser(userId, name, email, password, pswdConfirm, gender, interest
     if (IS_CHANGED) {
         // Save the changes to local storage and display the confirmation message
         localStorage.setItem("users", JSON.stringify(USERS));
-        displayMsg(prefixMsg + "Votre profile a été mis à jour.", toConsole);
+        displayLog(prefixMsg + "Votre profile a été mis à jour.", toConsole);
     } else
         // No changes have been done
-        displayMsg(prefixMsg + "Aucune modification n'a été apportée à votre profile !", toConsole);
+        displayLog(prefixMsg + "Aucune modification n'a été apportée à votre profile !", toConsole);
 
     return true;
 }
@@ -311,7 +311,7 @@ function updateUser(userId, name, email, password, pswdConfirm, gender, interest
 // Remove a user from local storage
 function removeUser(userId, toConsole = true) {
     lsGetItems("users").lsRemoveItem("users", userId);
-    displayMsg(((toConsole) ? "[remove user] - " : "") + "Votre profile a été supprimé.", toConsole);
+    displayLog(((toConsole) ? "[remove user] - " : "") + "Votre profile a été supprimé.", toConsole);
 }
 
 // Login/Logout functions
@@ -328,13 +328,13 @@ function login(toConsole = false) {
         window.location.href = "../index.html";
     } else {
         // Invalid login: display the error message and redirect the page
-        displayMsg(((toConsole) ? "[login] - " : "") + "E-mail ou mot de passe incorrect !", toConsole);
+        displayLog(((toConsole) ? "[login] - " : "") + "E-mail ou mot de passe incorrect !", toConsole);
         window.location.href = "addUser.html";
     }
 }
 function logout(toConsole = false) {
     logoutUser();
-    displayMsg(((toConsole) ? "[logout] - " : "") + "Vous êtes déconnecté.", toConsole);
+    displayLog(((toConsole) ? "[logout] - " : "") + "Vous êtes déconnecté.", toConsole);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -365,7 +365,7 @@ function addAdmin(name, email, password, pswdConfirm, gender, country, isSuper =
     USERS.lsAddItem("users", ADMIN);
 
     // Display the validation message
-    displayMsg(PREFIX_MSG + "Le profile est créé.", toConsole);
+    displayLog(PREFIX_MSG + "Le profile est créé.", toConsole);
 
     return true;
 }
@@ -376,28 +376,28 @@ function updateRole(userId, role, toConsole = true) {
 
     // Retrieve the user ID
     const ID = parseInt(userId);
-    if (!ID) return displayMsg(PREFIX_MSG + "L'identifiant est incorrect !", toConsole);
+    if (!ID) return displayLog(PREFIX_MSG + "L'identifiant est incorrect !", toConsole);
 
     // Retrieve the list of users
     const USERS = lsGetItems("users");
     if (USERS.length == 0)
-        return displayMsg(PREFIX_MSG + "Mise à jour impossible : aucun utilisateur n'est enregistré !", toConsole);
+        return displayLog(PREFIX_MSG + "Mise à jour impossible : aucun utilisateur n'est enregistré !", toConsole);
 
     // Retrieve the user by ID
     const USER = USERS.find(u => u.id == ID);
-    if (!USER) return displayMsg(PREFIX_MSG + "L'identifiant est incorrect !", toConsole);
+    if (!USER) return displayLog(PREFIX_MSG + "L'identifiant est incorrect !", toConsole);
 
     // Retrieve the user's role
     const IS_CHANGED = USER.updateRole(role);
-    if (IS_CHANGED === null) return displayMsg(PREFIX_MSG + "Le rôle de l'utilisateur est incorrect !", toConsole);
+    if (IS_CHANGED === null) return displayLog(PREFIX_MSG + "Le rôle de l'utilisateur est incorrect !", toConsole);
 
     if (IS_CHANGED) {
         // Save the change made to the user's role in local storage and display a confirmation message
         localStorage.setItem("users", JSON.stringify(USERS));
-        displayMsg(PREFIX_MSG + "Le rôle de l'utilisateur a été mis à jour.", toConsole);
+        displayLog(PREFIX_MSG + "Le rôle de l'utilisateur a été mis à jour.", toConsole);
     } else
         // No changes have been done
-        displayMsg(PREFIX_MSG + "Aucune modification n'a été apporté au rôle de l'utilisateur !", toConsole);
+        displayLog(PREFIX_MSG + "Aucune modification n'a été apporté au rôle de l'utilisateur !", toConsole);
 
     return true;
 }

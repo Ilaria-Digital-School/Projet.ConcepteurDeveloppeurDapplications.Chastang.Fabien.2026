@@ -68,10 +68,10 @@ function addCartProduct(productId, quantity = 1, userId = null, toConsole = fals
     // Get session ID
     const USER_ID = parseInt(userId) || getLoggedIn() || 0;
     if (!USER_ID || USER_ID < 0) {
-        const displayMsg = (toConsole) ? console.log : alert;
+        const displayLog = (toConsole) ? console.log : alert;
         const PREFIX_MSG = (toConsole) ? "[cart: add product] - " : "";
 
-        displayMsg(PREFIX_MSG + "Pour ajouter un produit à votre panier, veuillez vous connecter.");
+        displayLog(PREFIX_MSG + "Pour ajouter un produit à votre panier, veuillez vous connecter.");
         return false;
     }
 
@@ -195,39 +195,35 @@ function updateCartProduct(productId, quantity, userId = null) {
 //////////////////////////////////////////////////////////////////////////
 // View and edit the user's shopping cart
 
-// Display the "Empty cart" message
-function emptyCartMsg(h2Info) {
-    h2Info.textContent = "Votre panier est vide.";
-    h2Info.classList.remove("inactive");
+// Display the title
+function displayCartMsg(msg) {
+    const H2_INFO = document.getElementById("h2-cart");
+    H2_INFO.textContent = msg;
+    H2_INFO.classList.remove("inactive");
+    return H2_INFO;
 }
 
 // Display the user's cart
 function displayCart(toConsole = false) {
-    const displayMsg = (toConsole) ? console.log : alert;
-    const PREFIX_MSG = (toConsole) ? "[cart: display products] - " : "";
-
-    // Retrieve the HTML container and its title
-    const [H2_INFO, CONTAINER] = [document.getElementById("h2-cart"), document.getElementById("cart-container")];
+    // Retrieve all products stored in local storage
+    const PRODUCTS = lsGetItems("products");
+    if (PRODUCTS.length == 0) {
+        displayCartMsg("Il n'y a pas de produit enregistré !");
+        return false;
+    }
 
     // Retrieve the user
     const USERS = lsGetItems("users");
     if (USERS.length == 0) {
-        emptyCartMsg(H2_INFO);
-        displayMsg(PREFIX_MSG + "Veuillez vous enregistrer !");
+        const displayLog = (toConsole) ? console.log : alert;
+        const PREFIX_MSG = (toConsole) ? "[cart: display products] - " : "";
+
+        displayLog(PREFIX_MSG + "Veuillez vous enregistrer !");
         window.location.href = "addUser.html";
     }
     const USER_ID = getLoggedIn() || 0;
     if (!USER_ID) {
-        emptyCartMsg(H2_INFO);
-        displayMsg(PREFIX_MSG + "Veuillez vous enregistrer ou vous connecter !");
-        return false;
-    }
-
-    // Retrieve all products stored in local storage
-    const PRODUCTS = lsGetItems("products");
-    if (PRODUCTS.length == 0) {
-        emptyCartMsg(H2_INFO);
-        displayMsg(PREFIX_MSG + "Il n'y a pas de produit enregistré !");
+        displayCartMsg("Veuillez vous enregistrer ou vous connecter !");
         return false;
     }
 
@@ -235,7 +231,7 @@ function displayCart(toConsole = false) {
     const CARTS = lsGetItems("carts");
     const CART_FOUND = CARTS.find(c => c.userId == USER_ID);
     if (!CART_FOUND) {
-        emptyCartMsg(H2_INFO);
+        displayCartMsg("Votre panier est vide.");
         return false;
     }
 
@@ -245,9 +241,8 @@ function displayCart(toConsole = false) {
 
     const TOTAL_PRICE = CART.display(PRODUCTS, TBODY);
     if (TOTAL_PRICE > 0) {
-        CONTAINER.classList.remove("inactive");
-        H2_INFO.classList.remove("inactive");
-        H2_INFO.style.marginBottom = "30px";
+        document.getElementById("cart-container").classList.remove("inactive");
+        displayCartMsg("Mon panier").style.marginBottom = "30px";
 
         const TR = document.createElement("tr");
         TR.innerHTML = `
@@ -262,7 +257,7 @@ function displayCart(toConsole = false) {
         TBODY.appendChild(TR);
         return true;
     } else {
-        emptyCartMsg(H2_INFO);
+        displayCartMsg("Votre panier est vide.");
         return false;
     }
 }

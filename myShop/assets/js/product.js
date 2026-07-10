@@ -131,18 +131,18 @@ function checkPrice(price) {
 
 // Add a new product to local storage
 function addProduct(toConsole = false) {
-    const displayMsg = (toConsole) ? console.log : alert;
+    const displayLog = (toConsole) ? console.log : alert;
     const PREFIX_MSG = (toConsole) ? "[add product] - " : "";
 
     // Check the parameters
     const NAME = checkName(document.getElementById("name-product").value);
     if (!NAME) {
-        displayMsg(PREFIX_MSG + "Le nom doit contenir au moins trois caractères non blancs !");
+        displayLog(PREFIX_MSG + "Le nom doit contenir au moins trois caractères non blancs !");
         return false;
     }
     const PRICE = checkPrice(document.getElementById("price-product").value);
     if (!PRICE) {
-        displayMsg(PREFIX_MSG + "Prix doit être un nombre positif !");
+        displayLog(PREFIX_MSG + "Prix doit être un nombre positif !");
         return false;
     }
 
@@ -158,19 +158,19 @@ function addProduct(toConsole = false) {
 
     // Reset the form and display the validation message
     document.getElementById("form-product").reset();
-    displayMsg(PREFIX_MSG + "Le produit a été ajouté.");
+    displayLog(PREFIX_MSG + "Le produit a été ajouté.");
     return true;
 }
 
 // Update a product in local storage
 function updateProduct(productId, name, description, price, img, info, toConsole = false) {
-    const displayMsg = (toConsole) ? console.log : alert;
+    const displayLog = (toConsole) ? console.log : alert;
     const PREFIX_MSG = (toConsole) ? "[update product] - " : "";
 
     // Retrieve the products
     const PRODUCTS = lsGetItems("products");
     if (PRODUCTS.length == 0) {
-        displayMsg(PREFIX_MSG + "Mise à jour impossible : aucun produit n'est enregistré !");
+        displayLog(PREFIX_MSG + "Mise à jour impossible : aucun produit n'est enregistré !");
         return false;
     }
 
@@ -178,19 +178,19 @@ function updateProduct(productId, name, description, price, img, info, toConsole
     let product;
     const ID = parseInt(productId);
     if (!ID || !(product = PRODUCTS.find(p => p.id == ID))) {
-        displayMsg(PREFIX_MSG + "L'identifiant est incorrect !");
+        displayLog(PREFIX_MSG + "L'identifiant est incorrect !");
         return false;
     }
 
     // Check the parameters
     const NAME = checkName(name);
     if (!NAME) {
-        displayMsg(PREFIX_MSG + "Le nom doit contenir au moins trois caractères non blancs !");
+        displayLog(PREFIX_MSG + "Le nom doit contenir au moins trois caractères non blancs !");
         return false;
     }
     const PRICE = checkPrice(price);
     if (!PRICE) {
-        displayMsg(PREFIX_MSG + "Prix doit être un nombre positif !");
+        displayLog(PREFIX_MSG + "Prix doit être un nombre positif !");
         return false;
     }
 
@@ -211,10 +211,10 @@ function updateProduct(productId, name, description, price, img, info, toConsole
     if (isChanged) {
         // Save the changes to local storage and display the confirmation message
         localStorage.setItem("products", JSON.stringify(PRODUCTS));
-        displayMsg(PREFIX_MSG + "Votre produit a été mis à jour.", toConsole);
+        displayLog(PREFIX_MSG + "Votre produit a été mis à jour.", toConsole);
     } else
         // No changes have been done
-        displayMsg(PREFIX_MSG + "Aucune modification n'a été apportée à votre produit !");
+        displayLog(PREFIX_MSG + "Aucune modification n'a été apportée à votre produit !");
 
     return true;
 }
