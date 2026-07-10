@@ -325,11 +325,11 @@ function login(toConsole = false) {
     if (USER) {
         // Save the user ID to session storage and redirect the page
         loginUser(USER.id, document.querySelector('input[id="permanent-login"]:checked'));
-        window.location.href = "/myShop/index.html";
+        window.location.href = "../index.html";
     } else {
         // Invalid login: display the error message and redirect the page
         displayMsg(((toConsole) ? "[login] - " : "") + "E-mail ou mot de passe incorrect !", toConsole);
-        window.location.href = "/myShop/addUser.html";
+        window.location.href = "addUser.html";
     }
 }
 function logout(toConsole = false) {

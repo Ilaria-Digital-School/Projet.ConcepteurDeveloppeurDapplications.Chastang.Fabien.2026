@@ -195,34 +195,47 @@ function updateCartProduct(productId, quantity, userId = null) {
 //////////////////////////////////////////////////////////////////////////
 // View and edit the user's shopping cart
 
+// Display the "Empty cart" message
+function emptyCartMsg(h2Info, container) {
+    h2Info.textContent = "Votre panier est vide.";
+    container.style.display = "none";
+}
+
 // Display the user's cart
-function displayCart(userId = null, toConsole = false) {
+function displayCart(toConsole = false) {
     const displayMsg = (toConsole) ? console.log : alert;
     const PREFIX_MSG = (toConsole) ? "[cart: display products] - " : "";
 
-    // Get session ID
-    const USER_ID = parseInt(userId) || getLoggedIn() || 0;
-    if (!USER_ID || USER_ID < 0) {
-        displayMsg(PREFIX_MSG + "Pour afficher votre panier, veuillez vous connecter.");
-        return false;
-    }
-
-    // Retrieve the HTML containers
+    // Retrieve the HTML container and its title
     const [H2_INFO, CONTAINER] = [document.getElementById("h2-cart"), document.getElementById("cart-container")];
 
-    // Retrieve the user's cart
-    const CARTS = lsGetItems("carts");
-    const CART_FOUND = CARTS.find(c => c.userId == USER_ID);
-    if (!CART_FOUND) {
-        H2_INFO.textContent = "Votre panier est vide.";
-        CONTAINER.style.display = "none";
+    // Retrieve the user
+    const USERS = lsGetItems("users");
+    if (USERS.length == 0) {
+        emptyCartMsg(H2_INFO, CONTAINER);
+        displayMsg(PREFIX_MSG + "Veuillez vous enregistrer !");
+        window.location.href = "addUser.html";
+    }
+    const USER_ID = getLoggedIn() || 0;
+    if (!USER_ID) {
+        emptyCartMsg(H2_INFO, CONTAINER);
+        displayMsg(PREFIX_MSG + "Veuillez vous enregistrer ou vous connecter !");
         return false;
     }
 
     // Retrieve all products stored in local storage
     const PRODUCTS = lsGetItems("products");
     if (PRODUCTS.length == 0) {
-        displayMsg(PREFIX_MSG + "Il n'y a plus aucun produit enregistré !");
+        emptyCartMsg(H2_INFO, CONTAINER);
+        displayMsg(PREFIX_MSG + "Il n'y a pas de produit enregistré !");
+        return false;
+    }
+
+    // Retrieve the user's cart
+    const CARTS = lsGetItems("carts");
+    const CART_FOUND = CARTS.find(c => c.userId == USER_ID);
+    if (!CART_FOUND) {
+        emptyCartMsg(H2_INFO, CONTAINER);
         return false;
     }
 
