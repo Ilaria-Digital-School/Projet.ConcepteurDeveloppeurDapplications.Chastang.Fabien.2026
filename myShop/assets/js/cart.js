@@ -204,7 +204,7 @@ function displayCartMsg(msg) {
 }
 
 // Display the user's cart
-function displayCart(toConsole = false) {
+function displayCart(userId = null, toConsole = false) {
     // Retrieve all products stored in local storage
     const PRODUCTS = lsGetItems("products");
     if (PRODUCTS.length == 0) {
@@ -221,8 +221,8 @@ function displayCart(toConsole = false) {
         displayLog(PREFIX_MSG + "Veuillez vous enregistrer !");
         window.location.href = "addUser.html";
     }
-    const USER_ID = getLoggedIn() || 0;
-    if (!USER_ID) {
+    const USER_ID = parseInt(userId) || getLoggedIn() || 0;
+    if (!USER_ID || USER_ID < 0) {
         displayCartMsg("Veuillez vous enregistrer ou vous connecter !");
         return false;
     }
