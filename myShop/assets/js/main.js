@@ -60,18 +60,19 @@ function logoutUser() {
     sessionStorage.removeItem("sessionId");
 }
 
-function checkNumber(objInput, isInt, maxValue, defaultValue) {
-    let value = objInput.value.replace(",", ".").replace(/[^\d.]/g, "");
-    value = (isInt) ? parseInt(value) : parseFloat(value);
-
-    if (value > 0) {
-        if (!isInt) value = Math.round(100 * value) / 100;
-        objInput.value = (value <= maxValue) ? value : maxValue;
-    } else
-        objInput.value = (defaultValue) ? defaultValue : "";
-}
-
 // General functions /////////////////////////////////////////////////////
+
+// Validate the input of a 'number' type field
+function checkPositiveNumber(objInput, isInt, maxValue, defaultValue) {
+    let value = objInput.value.replace(",", ".").replace(/[^\d.]/g, "");
+    if (isInt)
+        value = parseInt(value);
+    else {
+        value = parseFloat(value);
+        value = Math.round(100 * value) / 100;
+    }
+    objInput.value = (value > 0) ? ((value <= maxValue) ? value : maxValue) : ((defaultValue) ? defaultValue : "");
+}
 
 // When resizing the window
 function resizeWindow() {
@@ -210,8 +211,8 @@ function init() {
     const MAIN_ADD_PRODUCT = document.getElementById("main-add-product");
     if (MAIN_ADD_PRODUCT) {
         const INPUT_PRICE = document.getElementById("price-product");
-        INPUT_PRICE.addEventListener("input", () => {
-            checkNumber(INPUT_PRICE, false, 9999.99);
+        INPUT_PRICE.addEventListener("change", () => {
+            checkPositiveNumber(INPUT_PRICE, false, 9999.99);
         });
 
         document.getElementById("form-product").addEventListener("submit", event => {

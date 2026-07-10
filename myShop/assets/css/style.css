@@ -627,6 +627,11 @@ button.carousel-control-next:active {
     margin-top: 5px;
 }
 
+.form .number {
+    max-width: 100px;
+    height: 30px;
+}
+
 .form input[type="checkbox"],
 .form input[type="radio"] {
     height: auto;

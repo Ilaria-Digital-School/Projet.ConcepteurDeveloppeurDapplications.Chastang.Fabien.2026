@@ -48,7 +48,7 @@ class Cart {
                     <th scope="row">${index + 1}</th>
                     <td>${PRODUCT.name}</td>
                     <td>${PRODUCT.price}€</td>
-                    <td><input type="number" onchange="changeCartQuantity(this, ${product.id}, ${product.quantity})" value="${product.quantity}" size="2" oninput="checkNumber(this, true, 99, ${product.quantity})" required></td>
+                    <td><input type="number" onchange="changeCartQuantity(this, ${product.id}, ${product.quantity})" value="${product.quantity}" size="2" oninput="checkPositiveNumber(this, true, 99, ${product.quantity})" required></td>
                     <td>${FULL_PRICE}€</td>
                     <td>
                         <button type="button" onclick="deleteCartProduct(${product.id})" class="btn btn-danger" title="Supprimer" aria-label="Supprimer">
