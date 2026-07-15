@@ -210,6 +210,149 @@ function displayCartNProducts() {
     return 0;
 }
 
+// DOM management functions //////////////////////////////////////////////
+
+const LOGOUT = '<a href="javascript:logout()"><i class="fa-solid fa-power-off"></i>Déconnexion</a>';
+
+const NAVBAR = [
+    {
+        page: "index.html",
+        link: '<a href="../index.html" title="Accueil" aria-label="Accueil"><i class="fa-regular fa-house"></i></a>',
+        selected: '<span class="selected-page" title="Accueil" aria-label="Accueil"><i class="fa-regular fa-house"></i></span>'
+    },
+    {
+        page: "products.html",
+        link: '<a href="./pages/products.html">Nos Articles</a>',
+        selected: '<span class="selected-page">Nos Articles</span>'
+    },
+    {
+        page: "addProduct.html",
+        link: '<a href="./pages/addProduct.html">Nouvel Article</a>',
+        selected: '<span class="selected-page">Nouvel Article</span>',
+        id: "navbar-add-product",
+        className: "inactive"
+    },
+    {
+        page: "cart.html",
+        link: '<a href="./pages/cart.html" title="Mon panier" aria-label="Mon panier"><i class="fa-solid fa-cart-arrow-down"></i></a><span id="cart-sticker"></span>',
+        selected: '<span class="selected-page" title="Mon panier" aria-label="Mon panier"><i class="fa-solid fa-cart-arrow-down"></i></span><span id="cart-sticker"></span>'
+    },
+    {
+        page: "login.html",
+        submenu: true,
+        link: '<a href="./pages/login.html">Connexion</a>',
+        selected: '<span class="selected-page">Connexion</span>'
+    },
+    {
+        page: "addUser.html",
+        submenu: true,
+        link: '<a href="./pages/addUser.html">Inscription</a>',
+        selected: '<span class="selected-page">Inscription</span>'
+    },
+    {
+        page: "orders.html",
+        submenu: true,
+        link: '<a href="./pages/orders.html">Commandes</a>',
+        selected: '<span class="selected-page">Commandes</span>',
+        last: true
+    },
+    {
+        page: "contact.html",
+        link: '<a href="./pages/contact.html" title="Contactez-nous" aria-label="Contactez-nous"><i class="fa-regular fa-envelope"></i></a>',
+        selected: '<span class="selected-page" title="Contactez-nous" aria-label="Contactez-nous"><i class="fa-regular fa-envelope"></i></span>'
+    },
+    {
+        page: "about.html",
+        link: '<a href="./pages/about.html" title="À propos de My Shop" aria-label="À propos de My Shop"><i class="fa-solid fa-circle-info"></i></a>',
+        selected: '<span class="selected-page" title="À propos de My Shop" aria-label="À propos de My Shop"><i class="fa-solid fa-circle-info"></i></span>'
+    }
+];
+
+// Display the page header
+function setHeader() {
+    const HEADER = document.querySelector("header");
+
+    const H1 = document.createElement("h1");
+    H1.textContent = "My Shop";
+    HEADER.appendChild(H1);
+
+    const NAV = document.createElement("nav");
+    NAV.classList.add("navbar");
+    NAV.classList.add("navbar-expand-lg");
+    NAV.innerHTML = `
+        <div class="container-fluid">
+            <button class="navbar-toggler btn-burger" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 menu"></ul>
+            </div>
+        </div>
+    `;
+    HEADER.appendChild(NAV);
+
+    const UL = NAV.querySelector("ul");
+    const HREF = window.location.href;
+    const getLink = item => (!HREF.includes(item.page)) ? (HREF.includes("index.html")) ? item.link : item.link.replace("./pages/", "") : item.selected;
+
+    let li, anchor, submenu = null;
+    NAVBAR.forEach(item => {
+        if (item.submenu) {
+            if (!submenu) {
+                li = document.createElement("li");
+                li.innerHTML = `
+                    <a href="#" aria-label="Mon profile"><i class="fa-regular fa-circle-user"></i></a>
+                    <ul class="submenu"></ul>
+                `;
+                UL.appendChild(li);
+
+                anchor = li.querySelector("a");
+                submenu = li.querySelector("ul");
+            }
+
+            if (HREF.includes(item.page)) anchor.classList.add("selected-page");
+
+            let submenuLi = document.createElement("li");
+            submenuLi.innerHTML = getLink(item);
+            submenu.appendChild(submenuLi);
+
+            if (item.last) {
+                submenuLi = document.createElement("li");
+                submenuLi.innerHTML = LOGOUT;
+                submenu.appendChild(submenuLi);
+            }
+        } else {
+            li = document.createElement("li");
+            if (item.id) li.id = item.id;
+            if (item.className) li.classList.add(item.className);
+            li.innerHTML = getLink(item);
+            UL.appendChild(li);
+        }
+    });
+}
+
+// Display the page footer
+function setFooter() {
+    const BTN_TOP = document.createElement("button");
+    BTN_TOP.id = "scroll-top";
+    BTN_TOP.ariaLabel = BTN_TOP.title = "Retour en haut de la page";
+    BTN_TOP.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
+    document.body.appendChild(BTN_TOP);
+
+    const FOOTER = document.createElement("footer");
+    FOOTER.innerHTML = `
+        <h2>Retrouvez-nous :</h2>
+        <p>
+            <a href="https://www.linkedin.com/in/fabien-chastang/" target="_blank"><i class="fa-brands fa-square-linkedin"></i>LinkedIn</a>
+            <a href="https://github.com/fabien-chastang" target="_blank"><i class="fa-brands fa-github"></i>GitHub</a>
+            <span class="copyright">Copyright © ${(new Date()).getFullYear()} My Shop</span>
+        </p>
+    `;
+    document.body.appendChild(FOOTER);
+}
+
 // Window resizing management
 function resizeWindow() {
     // Show the back-to-top button
@@ -497,9 +640,11 @@ function init() {
     //////////////////////////////////////////////////////////////////////
     // For all pages
 
-    // Set the copyright year
-    const COPYRIGHT_YEAR = document.getElementById("copyright-year");
-    if (COPYRIGHT_YEAR) COPYRIGHT_YEAR.innerHTML = (new Date()).getFullYear();
+    // Display the page header
+    setHeader();
+
+    // Display the button to return to the top of the page and the footer
+    setFooter();
 
     // Show or hide the 'New Product' tab
     const ADD_PRODUCT = document.getElementById("navbar-add-product");
