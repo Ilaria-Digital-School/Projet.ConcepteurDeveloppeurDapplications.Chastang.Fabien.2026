@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.png">
-    <title>Connexion – My Shop</title>
+    <title>Mes Commandes – My Shop</title>
 
     <!-- CSS files -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
@@ -16,7 +16,7 @@
 <body>
     <div class="page-container">
         <header>
-            <!-- Titre principal – Info: Log in -->
+            <!-- Main title – Info: Your Orders -->
             <h1>My Shop</h1>
 
             <!-- Navigation menu -->
@@ -39,9 +39,9 @@
                             <li>
                                 <a href="#" class="selected-page" aria-label="Mon profile"><i class="fa-regular fa-circle-user"></i></a>
                                 <ul class="submenu">
-                                    <li><span class="selected-page">Connexion</span></li>
+                                    <li><a href="login.html">Connexion</a></li>
                                     <li><a href="addUser.html">Inscription</a></li>
-                                    <li><a href="orders.html">Commandes</a></li>
+                                    <li><span class="selected-page">Commandes</span></li>
                                     <li><a href="javascript:logout()"><i class="fa-solid fa-power-off"></i>Déconnexion</a></li>
                                 </ul>
                             </li>
@@ -53,29 +53,24 @@
             </nav>
         </header>
 
-        <main id="main-login">
+        <main id="main-orders">
             <section>
-                <!-- Login form -->
-                <form class="form">
-                    <h2>Connexion</h2>
+                <h2 class="h2-title-order">Commande du <span></span></h2>
 
-                    <div>
-                        <label for="email-user">E-mail&nbsp;:</label>
-                        <input type="email" name="email-user" id="email-user" placeholder="votre@adresse.email" required>
-                    </div>
-                    <div>
-                        <label for="password-user">Mot de passe&nbsp;:</label>
-                        <input type="password" name="password-user" id="password-user" placeholder="Votre mot de passe" autocomplete="current-password" required>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="permanent-login" id="permanent-login" value="1">
-                        <label for="permanent-login"> Restez connecté.e</label>
-                    </div>
-                    <div class="div-button">
-                        <button type="submit">Se connecter</button>
-                        <button type="reset" title="Effacer" aria-label="Effacer"><i class="fa-solid fa-eraser"></i></button>
-                    </div>
-                </form>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Produit</th>
+                                <th scope="col">Prix</th>
+                                <th scope="col">Quantité</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider"></tbody>
+                    </table>
+                </div>
             </section>
         </main>
     </div>
@@ -94,7 +89,8 @@
     <!-- JavaScript files -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/user.js"></script>
+    <script src="../assets/js/cart.js"></script>
+    <script src="../assets/js/orders.js"></script>
 </body>
 
 </html>

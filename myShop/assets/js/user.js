@@ -1,33 +1,57 @@
 //////////////////////////////////////////////////////////////////////////
-// Classes for the 'gender', 'interests', 'country', and 'role' fields
+// Classes for the 'gender', 'interests' and 'country' fields
+//////////////////////////////////////////////////////////////////////////
 
-// Gender class: static object //////////////////
+
+// Gender class: static object ///////////////////////////////////////////
 class Gender {
+    static fieldId = "gender-container";
     static fieldName = "gender-user";
+
+    static other = { value: 0, id: "other", label: "Je le garde pour moi" };
     static list = [
         { value: 1, id: "female", label: "Femme" },
-        { value: 2, id: "male", label: "Homme" }
+        { value: 2, id: "male", label: "Homme" },
+        this.other
     ];
-    static other = 0;
 
     // Return a valid gender
     static get = genderId => {
         if (genderId) {
             const GENDER_ID = parseInt(genderId);
-            return (this.list.some(item => item.value == GENDER_ID)) ? GENDER_ID : this.other;
+            return (this.list.some(item => item.value == GENDER_ID)) ? GENDER_ID : this.other.value;
         } else
-            return this.other;
+            return this.other.value;
+    };
+
+    // Get the ID from the name and the name from the ID
+    static getId = genderName => {
+        const NAME = genderName.trim().toLowerCase();
+        const GENDER = this.list.find(item => item.label.toLowerCase() == NAME);
+        return (GENDER) ? GENDER.value : this.other.value;
+    };
+    static getName = genderId => {
+        const GENDER = this.list.find(item => item.value == genderId);
+        return (GENDER) ? GENDER.label : undefined;
+    };
+
+    // Initialize the field
+    static init = genderId => {
+        const GENDER_ID = parseInt(genderId) || this.other.value;
+        this.list.forEach(item => document.getElementById(item.id).checked = item.value == GENDER_ID);
     };
 
     // Fill in the 'gender' field
-    static fill = () => {
-        const GENDER = document.getElementById("gender-container");
+    static fill = genderId => {
+        const GENDER = document.getElementById(this.fieldId);
+        const GENDER_ID = parseInt(genderId) || this.other.value;
 
         this.list.forEach(item => {
             const DIV = document.createElement("div");
             DIV.classList.add("field");
             DIV.innerHTML = `
-                <input type="radio" name="${this.fieldName}" id="${item.id}" value="${item.value}">
+                <input type="radio" name="${this.fieldName}" id="${item.id}" value="${item.value}"
+                    ${(item.value == GENDER_ID) ? "checked" : ""}>
                 <label for="${item.id}"> ${item.label}&ensp;</label>
             `;
             GENDER.appendChild(DIV);
@@ -35,33 +59,54 @@ class Gender {
     };
 }
 
-// Interests class: static object ///////////////
+// Interests class: static object ////////////////////////////////////////
 class Interests {
+    static fieldId = "interests-container";
     static fieldName = "interests-user";
+
+    static other = [];
     static list = [
         { value: 1, id: "clothes", label: "Vêtements" },
         { value: 2, id: "accessories", label: "Accessoires" }
     ];
-    static other = [];
 
     // Return a valid array of interests
     static get = interestIDs => {
         if (Array.isArray(interestIDs) && interestIDs.length > 0) {
             const INTEREST_IDS = interestIDs.map(item => parseInt(item));
-            return this.list.filter(item => INTEREST_IDS.some(item2 => item2 == item.value));
+            return this.list.filter(item => INTEREST_IDS.some(param => param == item.value));
         } else
             return this.other;
     };
 
+    // Get the ID from the name and the name from the ID
+    static getId = interestName => {
+        const NAME = interestName.trim().toLowerCase();
+        const INTEREST = this.list.find(item => item.label.toLowerCase() == NAME);
+        return (INTEREST) ? INTEREST.value : 0;
+    };
+    static getName = interestId => {
+        const INTEREST = this.list.find(item => item.value == interestId);
+        return (INTEREST) ? INTEREST.label : undefined;
+    };
+
+    // Initialize the field
+    static init = interestIDs => {
+        const INTEREST_IDS = (Array.isArray(interestIDs)) ? interestIDs : this.other;
+        this.list.forEach(item => document.getElementById(item.id).checked = INTEREST_IDS.some(param => item.value == param));
+    };
+
     // Fill in the 'interests' field
-    static fill = () => {
-        const INTERESTS = document.getElementById("interests-container");
+    static fill = interestIDs => {
+        const INTERESTS = document.getElementById(this.fieldId);
+        const INTEREST_IDS = (Array.isArray(interestIDs)) ? interestIDs : this.other;
 
         this.list.forEach(item => {
             const DIV = document.createElement("div");
             DIV.classList.add("field");
             DIV.innerHTML = `
-                <input type="checkbox" name="${this.fieldName}" id="${item.id}" value="${item.value}">
+                <input type="checkbox" name="${this.fieldName}" id="${item.id}" value="${item.value}"
+                    ${(INTEREST_IDS.some(interest => interest == item.value)) ? "checked" : ""}>
                 <label for="${item.id}"> ${item.label}&ensp;</label>
             `;
             INTERESTS.appendChild(DIV);
@@ -69,8 +114,11 @@ class Interests {
     };
 }
 
-// Country class: static object /////////////////
+// Country class: static object //////////////////////////////////////////
 class Country {
+    static fieldId = "country-user";
+
+    static other = { value: 0, label: "– Autre –" };
     static list = [
         { value: 1, label: "Canada" },
         { value: 2, label: "Chine" },
@@ -80,9 +128,9 @@ class Country {
         { value: 6, label: "Italie" },
         { value: 7, label: "Japon" },
         { value: 8, label: "Royaume-Uni" },
-        { value: 9, label: "Tunisie" }
+        { value: 9, label: "Tunisie" },
+        this.other
     ];
-    static other = { value: 0, label: "– Autre –" };
 
     // Return a valid country
     static get = countryId => {
@@ -93,9 +141,26 @@ class Country {
             return this.other.value;
     };
 
+    // Get the ID from the name and the name from the ID
+    static getId = countryName => {
+        const NAME = countryName.trim().toLowerCase();
+        const COUNTRY = this.list.find(item => item.label.toLowerCase() == NAME);
+        return (COUNTRY) ? COUNTRY.value : this.other.value;
+    };
+    static getName = countryId => {
+        const COUNTRY = this.list.find(item => item.value == countryId);
+        return (COUNTRY) ? COUNTRY.label : this.other.label;
+    };
+
+    // Initialize the field
+    static init = countryId => {
+        const COUNTRY_ID = parseInt(countryId) || this.other.value;
+        document.getElementById(this.fieldId).select(COUNTRY_ID);
+    };
+
     // Fill in the 'country' field
     static fill = countryId => {
-        const COUNTRY = document.getElementById("country-user");
+        const COUNTRY = document.getElementById(this.fieldId);
         const COUNTRY_ID = parseInt(countryId) || this.other.value;
 
         let selected = false;
@@ -107,37 +172,14 @@ class Country {
             }
             COUNTRY.add(OPTION);
         });
-
-        const OTHER = new Option(this.other.label, this.other.value);
-        if (!selected) OTHER.selected = true;
-        COUNTRY.add(OTHER);
-    };
-
-    // Get the ID from the name and the name from the ID
-    static getId = countryName => {
-        const COUNTRY = this.list.find(item => item.label == countryName);
-        return (COUNTRY) ? COUNTRY.value : this.other.value;
-    };
-    static getName = countryId => {
-        const COUNTRY = this.list.find(item => item.value == countryId);
-        return (COUNTRY) ? COUNTRY.label : this.other.label;
     };
 }
 
-// Role class: static object ////////////////////
-class Role {
-    static user = 0;
-    static admin = 1;
-    static superAdmin = 2;
-
-    static validate = role => {
-        const ROLE = parseInt(role);
-        return (ROLE == Role.user || ROLE == Role.admin || ROLE == Role.superAdmin) ? ROLE : null;
-    };
-}
 
 //////////////////////////////////////////////////////////////////////////
 // Manage users
+//////////////////////////////////////////////////////////////////////////
+
 
 // Main class
 class User {
@@ -150,7 +192,10 @@ class User {
         this.interests = interestIDs;
         this.country = countryId;
         this.role = role;
+        this.isVisible = true;
     }
+
+    // Update methods ////////////////////////////////////////////////////
 
     updateProperty(property, value, toChange) {
         if (toChange) this[property] = value;
@@ -187,10 +232,38 @@ class User {
         }
         return false;
     }
+
+    // Manage the form ///////////////////////////////////////////////////
+
+    // Fill in the 'gender', 'interests' and 'country' fields
+    static fill = (genderId, interestIDs, countryId) => {
+        Gender.fill(genderId);
+        Interests.fill(interestIDs);
+        Country.fill(countryId);
+    };
+
+    // Initialize the 'gender', 'interests' and 'country' fields
+    static init = (genderId, interestIDs, countryId) => {
+        Gender.init(genderId);
+        Interests.init(interestIDs);
+        Country.init(countryId);
+    };
+
+    // Reset the form
+    static reset = (genderId, interestIDs, countryId) => {
+        document.querySelector("form").reset();
+
+        Gender.init(genderId);
+        Interests.init(interestIDs);
+        Country.init(countryId);
+    };
 }
+
 
 //////////////////////////////////////////////////////////////////////////
 // Add, update and remove a user
+//////////////////////////////////////////////////////////////////////////
+
 
 // UTILITIES: functions to validate the 'name', 'email', and 'password' parameters
 function checkName(name) {
@@ -205,51 +278,50 @@ function checkPassword(password) {
     const PASSWORD = (password) ? password.toString() : "";
     return (PASSWORD.length >= 8 && !/\s/.test(PASSWORD)) ? PASSWORD : null;
 }
-// UTILITIES: error message display
-function displayLog(msg, toConsole = true) {
-    ((toConsole) ? console.log : alert)(msg);
-    return false;
-}
 // UTILITIES: global function for parameter validation and user retrieval by ID if necessary
-function checkParams(isAdded, name, email, password, pswdConfirm, toConsole, prefixMsg = "", userId = 0) {
+function checkParams(isAdded, name, email, password, pswdConfirm, toConsole, prefixMsg = null, userId = 0) {
     // Check the parameters
     const ID = parseInt(userId);
-    if (!isAdded && !ID) return displayLog(prefixMsg + "L'identifiant est incorrect !", toConsole);
+    if (!isAdded && !ID)
+        return displayLog("L'identifiant est incorrect !", toConsole, prefixMsg);
 
     const NAME = checkName(name);
-    if (isAdded && !NAME) return displayLog(prefixMsg + "Le nom doit contenir au moins trois caractères non blancs !", toConsole);
+    if (isAdded && !NAME)
+        return displayLog("Le nom doit contenir au moins trois caractères non blancs !", toConsole, prefixMsg);
 
     const EMAIL = checkEmail(email);
-    if (isAdded && !EMAIL) return displayLog(prefixMsg + "L'e-mail est invalide !", toConsole);
+    if (isAdded && !EMAIL)
+        return displayLog("L'e-mail est invalide !", toConsole, prefixMsg);
 
     const PASSWORD = checkPassword(password);
-    if (isAdded && !PASSWORD) return displayLog(prefixMsg + "Le mot de passe doit contenir au moins 8 caractères et aucun caractère blanc !", toConsole);
+    if (isAdded && !PASSWORD)
+        return displayLog("Le mot de passe doit contenir au moins 8 caractères et aucun caractère blanc !", toConsole, prefixMsg);
 
     if ((isAdded || PASSWORD) && PASSWORD != pswdConfirm)
-        return displayLog(prefixMsg + "La confirmation du mot de passe est incorrecte !", toConsole);
+        return displayLog("La confirmation du mot de passe est incorrecte !", toConsole, prefixMsg);
 
     // Retrieve the users from local storage and verify that the email is not already registered
-    const USERS = lsGetItems("users");
+    const [USERS, USER] = lsFind("users", user => user.id == ID);
 
     if (!isAdded) {
         if (USERS.length == 0)
-            return displayLog(prefixMsg + "Mise à jour impossible : aucun utilisateur n'est enregistré !", toConsole);
+            return displayLog("Mise à jour impossible : aucun utilisateur n'est enregistré !", toConsole, prefixMsg);
 
-        const USER = USERS.find(user => user.id == ID);
-        if (!USER) return displayLog(prefixMsg + "L'identifiant est incorrect !", toConsole);
+        if (!USER)
+            return displayLog("L'identifiant est incorrect !", toConsole, prefixMsg);
 
         if (EMAIL && USER.email != EMAIL && USERS.some(user => user.email == EMAIL))
-            return displayLog(prefixMsg + "Cet e-mail existe déjà !", toConsole);
+            return displayLog("Cet e-mail existe déjà !", toConsole, prefixMsg);
 
     } else if (USERS.some(user => user.email == EMAIL))
-        return displayLog(prefixMsg + "Cet e-mail existe déjà !", toConsole);
+        return displayLog("Cet e-mail existe déjà !", toConsole, prefixMsg);
 
     return (isAdded) ? [NAME, EMAIL, PASSWORD, USERS] : [NAME, EMAIL, PASSWORD, USERS, USER];
 }
 
 // Add a new user to local storage
 function addUser(countryId = 0, toConsole = false) {
-    const PREFIX_MSG = (toConsole) ? "[add user] - " : "";
+    const PREFIX_LOG = (toConsole) ? "[add user] - " : null;
 
     // Get the parameters
     const PARAMS = checkParams(
@@ -259,7 +331,7 @@ function addUser(countryId = 0, toConsole = false) {
         document.getElementById("password-user").value,
         document.getElementById("password-confirm").value,
         toConsole,
-        PREFIX_MSG
+        PREFIX_LOG
     );
     if (!PARAMS) return false;
 
@@ -269,28 +341,27 @@ function addUser(countryId = 0, toConsole = false) {
     document.getElementById("name-user").value = NAME;
     document.getElementById("email-user").value = EMAIL;
 
-    let objGender = document.querySelector('input[name="gender-user"]:checked');
+    let objGender = document.querySelector(`input[name="${Gender.fieldName}"]:checked`);
     const GENDER_ID = (objGender) ? Gender.get(objGender.value) : Gender.other;
-    let objInterests = document.querySelectorAll('input[name="interests-user"]:checked');
+    let objInterests = document.querySelectorAll(`input[name="${Interests.fieldName}"]:checked`);
     const INTEREST_IDS = (objInterests) ? Interests.get(Array.from(objInterests).map(item => item.value)) : Interests.other;
-    let objCountry = document.getElementById("country-user");
+    let objCountry = document.getElementById(Country.fieldId);
     const COUNTRY_ID = Country.get(objCountry.options[objCountry.selectedIndex].value);
 
     // Create a new user and save it to local storage
     const USER = new User(NAME, EMAIL, PASSWORD, GENDER_ID, INTEREST_IDS, COUNTRY_ID);
-    USERS.lsAddItem("users", USER);
+    USERS.lsAddItem("users", "id", USER);
 
     // Reset the form and display the validation message
-    document.getElementById("form-user").reset();
-    if (countryId) objCountry.select(countryId);
-    displayLog(PREFIX_MSG + "Votre profile est créé.", toConsole);
+    User.reset(null, null, countryId);
+    displayLog("Votre profile est créé.", toConsole, PREFIX_LOG);
 
     return true;
 }
 
 // Update a user (except their role) in local storage
 function updateUser(userId, name, email, password, pswdConfirm, genderId, interestIDs, countryId, toConsole = false) {
-    let prefixMsg = (toConsole) ? "[update user] - " : "";
+    let prefixMsg = (toConsole) ? "[update user] - " : null;
 
     // Get the parameters
     const PARAMS = checkParams(
@@ -306,60 +377,75 @@ function updateUser(userId, name, email, password, pswdConfirm, genderId, intere
     if (!PARAMS) return false;
 
     const [NAME, EMAIL, PASSWORD, USERS, USER] = PARAMS;
-    prefixMsg = (toConsole) ? `[update ${(USER.role != Role.superAdmin) ? (USER.role != Role.admin) ? "user" : "admin" : "super-admin"}] - ` : "";
+    prefixMsg = (toConsole) ? `[update ${(USER.role != Role.superAdmin) ? (USER.role != Role.admin) ? "user" : "admin" : "super-admin"}] - ` : null;
 
     // Perform the update
     const IS_CHANGED = USER.update(NAME, EMAIL, PASSWORD, genderId, interestIDs, countryId);
 
     if (IS_CHANGED) {
         // Save the changes to local storage and display the confirmation message
-        localStorage.setItem("users", JSON.stringify(USERS));
-        displayLog(prefixMsg + "Votre profile a été mis à jour.", toConsole);
+        USERS.saveToLS("users");
+        displayLog("Votre profile a été mis à jour.", toConsole, prefixMsg);
     } else
         // No changes have been done
-        displayLog(prefixMsg + "Aucune modification n'a été apportée à votre profile !", toConsole);
+        displayLog("Aucune modification n'a été apportée à votre profile !", toConsole, prefixMsg);
 
     return true;
 }
 
-// Remove a user from local storage
-function removeUser(userId, toConsole = true) {
-    lsGetItems("users").lsRemoveItem("users", userId);
-    displayLog(((toConsole) ? "[remove user] - " : "") + "Votre profile a été supprimé.", toConsole);
+// Enable or disable a product from local storage
+function setVisibilityUser(userId, isVisible, toConsole = true) {
+    lsGetItems("users").lsSetVisibilityItem("users", "id", userId, isVisible);
+    displayLog(`Votre profile a été ${(isVisible) ? "réactivé" : "archivé"}.`, toConsole, (toConsole) ? "[visibility user] - " : null);
 }
 
+// Remove a user from local storage
+function removeUser(userId, toConsole = true) {
+    lsGetItems("users").lsRemoveItem("users", "id", userId);
+    displayLog("Votre profile a été supprimé.", toConsole, (toConsole) ? "[remove user] - " : null);
+}
+
+
 //////////////////////////////////////////////////////////////////////////
-// Manage user login/logout
+// Manage user login
+//////////////////////////////////////////////////////////////////////////
+
+
+// Save the logged-in user to session storage or local storage
+function loginUser(userId, permanent) {
+    if (permanent)
+        localStorage.setItem("sessionId", userId);
+    else
+        sessionStorage.setItem("sessionId", userId);
+}
 
 function login(toConsole = false) {
-    // Retrieve the users from local storage and verify that the email/password are registered
-    const USERS = lsGetItems("users");
     const EMAIL = document.getElementById("email-user").value.trim();
     const PASSWORD = document.getElementById("password-user").value;
 
-    const USER = USERS.find(user => user.email == EMAIL && user.password == PASSWORD);
+    // Retrieve the users from local storage and verify that the email/password are registered
+    const [USERS, USER] = lsFind("users", user => user.email == EMAIL && user.password == PASSWORD);
+
     if (USER) {
-        // Save the user ID to session storage and redirect the page
+        // Save the user ID to session or local storage and redirect the page
         loginUser(USER.id, document.querySelector('input[id="permanent-login"]:checked'));
         window.location.href = "../index.html";
     } else {
         // Invalid login: display the error message and redirect the page
-        displayLog(((toConsole) ? "[login] - " : "") + "E-mail ou mot de passe incorrect !", toConsole);
+        displayLog("E-mail ou mot de passe incorrect !", toConsole, (toConsole) ? "[login] - " : null);
         window.location.href = "addUser.html";
     }
 }
 
-function logout(toConsole = false) {
-    logoutUser();
-    displayLog(((toConsole) ? "[logout] - " : "") + "Vous êtes déconnecté.", toConsole);
-}
 
 //////////////////////////////////////////////////////////////////////////
 // BACKEND (normally): manage administrators
+//////////////////////////////////////////////////////////////////////////
+
 
 // Add a new admin to local storage
-function addAdmin(name, email, password, pswdConfirm, genderId, countryId, isSuper = false, toConsole = true) {
-    const PREFIX_MSG = (toConsole) ? `[add ${(isSuper) ? "super-admin" : "admin"}] - ` : "";
+function addAdmin(name, email, password, pswdConfirm, genderId = 0, countryId = 0, isSuper = false, toConsole = true) {
+    const PREFIX_LOG = (toConsole) ? `[add ${(isSuper) ? "super-admin" : "admin"}] - ` : null;
 
     // Get the parameters
     const PARAMS = checkParams(
@@ -369,7 +455,7 @@ function addAdmin(name, email, password, pswdConfirm, genderId, countryId, isSup
         password,
         pswdConfirm,
         toConsole,
-        PREFIX_MSG
+        PREFIX_LOG
     );
     if (!PARAMS) return false;
 
@@ -379,42 +465,44 @@ function addAdmin(name, email, password, pswdConfirm, genderId, countryId, isSup
 
     // Create a new admin and save it to local storage
     const ADMIN = new User(NAME, EMAIL, PASSWORD, GENDER_ID, [], COUNTRY_ID, (isSuper) ? Role.superAdmin : Role.admin);
-    USERS.lsAddItem("users", ADMIN);
+    USERS.lsAddItem("users", "id", ADMIN);
 
     // Display the validation message
-    displayLog(PREFIX_MSG + "Le profile est créé.", toConsole);
+    displayLog("Le profile est créé.", toConsole, PREFIX_LOG);
 
     return true;
 }
 
 // Update a user's role in local storage
 function updateRole(userId, role, toConsole = true) {
-    const PREFIX_MSG = (toConsole) ? "[update user's role] - " : "";
+    const PREFIX_LOG = (toConsole) ? "[update user's role] - " : null;
 
     // Retrieve the user ID
     const ID = parseInt(userId);
-    if (!ID) return displayLog(PREFIX_MSG + "L'identifiant est incorrect !", toConsole);
+    if (!ID)
+        return displayLog("L'identifiant est incorrect !", toConsole, PREFIX_LOG);
 
-    // Retrieve the list of users
-    const USERS = lsGetItems("users");
+    // Retrieve the list of users and the user by ID
+    const [USERS, USER] = lsFind("users", user => user.id == ID);
+
     if (USERS.length == 0)
-        return displayLog(PREFIX_MSG + "Mise à jour impossible : aucun utilisateur n'est enregistré !", toConsole);
+        return displayLog("Mise à jour impossible : aucun utilisateur n'est enregistré !", toConsole, PREFIX_LOG);
 
-    // Retrieve the user by ID
-    const USER = USERS.find(user => user.id == ID);
-    if (!USER) return displayLog(PREFIX_MSG + "L'identifiant est incorrect !", toConsole);
+    if (!USER)
+        return displayLog("L'identifiant est incorrect !", toConsole, PREFIX_LOG);
 
     // Retrieve the user's role
     const IS_CHANGED = USER.updateRole(role);
-    if (IS_CHANGED === null) return displayLog(PREFIX_MSG + "Le rôle de l'utilisateur est incorrect !", toConsole);
+    if (IS_CHANGED === null)
+        return displayLog("Le rôle de l'utilisateur est incorrect !", toConsole, PREFIX_LOG);
 
     if (IS_CHANGED) {
         // Save the change made to the user's role in local storage and display a confirmation message
-        localStorage.setItem("users", JSON.stringify(USERS));
-        displayLog(PREFIX_MSG + "Le rôle de l'utilisateur a été mis à jour.", toConsole);
+        USERS.saveToLS("users");
+        displayLog("Le rôle de l'utilisateur a été mis à jour.", toConsole, PREFIX_LOG);
     } else
         // No changes have been done
-        displayLog(PREFIX_MSG + "Aucune modification n'a été apporté au rôle de l'utilisateur !", toConsole);
+        displayLog("Aucune modification n'a été apporté au rôle de l'utilisateur !", toConsole, PREFIX_LOG);
 
     return true;
 }

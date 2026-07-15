@@ -33,7 +33,7 @@ footer {
 \*****************************/
 
 body {
-    background-color: #e8f0ff;
+    background-color: rgb(232, 240, 255);
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -55,11 +55,12 @@ section:last-of-type {
 h1 {
     font-size: 28px;
     font-weight: 600;
+    letter-spacing: 1px;
 }
 
 h2 {
     font-size: 24px;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .h2-title,
@@ -71,9 +72,11 @@ h2 {
     text-align: center;
 }
 
-/*
-    Table
-*/
+.h2-title-order {
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 20px;
+}
 
 th,
 td {
@@ -82,10 +85,48 @@ td {
 }
 
 /*
+    about.html page
+*/
+
+.about p:first-of-type {
+    margin-top: 20px;
+}
+
+.about p {
+    margin: 10px 0;
+}
+
+.about p:last-of-type {
+    margin-bottom: 0;
+}
+
+#main-about section:nth-of-type(2) aside {
+    margin-top: 10px;
+    font-style: italic;
+}
+
+#main-about section:nth-of-type(2) mark {
+    margin-left: 50px;
+}
+
+#main-about section:last-of-type ol li:last-child {
+    margin-bottom: 20px;
+}
+
+/*
     Responsive design: smartphone
 */
 
 @media only screen and (max-width: 767px) {
+    body {
+        font-size: 15px;
+    }
+    h1 {
+        font-size: 24px;
+    }
+    h2 {
+        font-size: 20px;
+    }
     section {
         margin: 10px;
         padding: 5px;
@@ -99,7 +140,7 @@ td {
 button {
     border: 2px solid darkblue;
     border-radius: 5px;
-    background-color: #2b58d4;
+    background-color: rgb(43, 88, 212);
     color: white;
     padding: 5px 15px;
 }
@@ -121,10 +162,18 @@ button {
 #scroll-top,
 .article-product button,
 .navbar-toggler.btn-burger {
-    border: 2px solid white;
-    border-radius: 5px;
     background-color: darkblue;
-    color: white;
+    color: rgb(232, 240, 255);
+    border-radius: 5px;
+}
+
+#scroll-top {
+    border: 2px solid white;
+}
+
+.article-product button,
+.navbar-toggler.btn-burger {
+    border: 2px solid rgb(232, 240, 255);
 }
 
 .navbar-toggler.btn-burger {
@@ -135,7 +184,7 @@ button {
 button:hover,
 #scroll-top:hover,
 .navbar-toggler.btn-burger:hover {
-    background-color: #5683ff;
+    background-color: rgb(86, 131, 255);
 }
 
 button:active,
@@ -149,29 +198,88 @@ button:active,
 }
 
 /*
-    Test
+    Submenu (only used for Profile)
 */
+
+.menu li {
+    position: relative;
+}
+
+.submenu {
+    z-index: 150;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    padding: 0;
+    list-style: none;
+    display: none;
+    width: 135px;
+    background-color: #fff;
+    border: 1px solid #777;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.menu li:hover .submenu {
+    display: block;
+}
+
+.submenu li a {
+    padding: 4px 10px;
+    color: #777;
+    text-decoration: none;
+}
+
+.submenu li a:hover {
+    transform: translateX(4px) scale(1.1);
+    text-decoration: underline;
+    color: black;
+}
+
+.submenu .selected-page {
+    padding: 4px 10px;
+    cursor: default;
+    transform: translateX(4px) scale(1.1);
+    color: black;
+    font-weight: 600;
+}
+
+.submenu li:last-of-type {
+    border-top: 1px solid #777;
+    margin-top: 6px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.submenu li:last-of-type i {
+    margin-right: 5px;
+}
+
 /*
-.btn-hover {
-    background-color: red !important;
-    font-weight: bold !important;
-}
-.btn-leave {
-    background-color: darkblue !important;
-    font-weight: normal !important;
-}
+    Cart's sticker
 */
+
+#cart-sticker {
+    z-index: 150;
+    position: absolute;
+    bottom: 18px;
+    left: 20px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
 /*****************************\
     Header / Footer
 \*****************************/
 
 header,
 footer {
-    border: 5px solid #e8f0ff;
+    border: 5px solid rgb(232, 240, 255);
     border-radius: 10px;
-    background-color: #2b58d4;
     text-align: center;
-    color: white;
+    color: rgb(232, 240, 255);
     padding: 10px;
 }
 
@@ -183,6 +291,7 @@ header {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    background: linear-gradient(to bottom, darkblue, rgb(86, 131, 255));
 }
 
 header ul {
@@ -196,7 +305,7 @@ header a,
 footer a {
     display: inline-block;
     text-decoration: none;
-    color: white;
+    color: rgb(232, 240, 255);
 }
 
 header a:hover,
@@ -207,9 +316,16 @@ footer a:hover {
 
 header .selected-page {
     display: inline-block;
-    cursor: default;
     transform: translateY(-1px) scale(1.2);
-    color: yellow;
+    color: rgb(255, 230, 0);
+}
+
+header span .selected-page {
+    cursor: default;
+}
+
+footer {
+    background: linear-gradient(to top, darkblue, rgb(86, 131, 255));
 }
 
 footer h2 {
@@ -287,8 +403,16 @@ footer .copyright {
 }
 
 .section-banner h2 {
-    color: #b90000;
+    color: rgb(185, 0, 0);
+    font-size: 28px;
+    font-weight: 600;
     margin-bottom: 15px;
+    letter-spacing: 1px;
+    text-shadow:
+        -1px -1px 0 rgb(255, 230, 0),
+        1px -1px 0 rgb(255, 230, 0),
+        -1px 1px 0 rgb(255, 230, 0),
+        1px 1px 0 rgb(255, 230, 0);
 }
 
 .section-banner p {
@@ -297,19 +421,19 @@ footer .copyright {
 
 .section-banner a {
     display: inline-block;
-    background-color: #b90000;
+    background: linear-gradient(rgb(220, 10, 0), rgb(185, 0, 0), rgb(220, 10, 0));;
     text-decoration: none;
-    color: white;
+    color: rgb(255, 230, 0);
     font-weight: bold;
     white-space: nowrap;
-    border: 2px solid #b90000;
+    border: 2px solid rgb(185, 0, 0);
     border-radius: 5px;
     padding: 5px 15px;
 }
 
 .section-banner a:hover {
-    background-color: #ffe600;
-    color: #b90000;
+    background: rgb(255, 230, 0);
+    color: rgb(185, 0, 0);
 }
 
 .section-banner a:active {
@@ -333,7 +457,7 @@ footer .copyright {
 .category-container a {
     text-decoration: none;
     text-align: center;
-    border: 1px solid #afabab;
+    border: 1px solid rgb(175, 171, 171);
     border-radius: 10px;
     overflow: hidden;
     width: 150px;
@@ -397,7 +521,7 @@ footer .copyright {
 
 .article-product {
     position: relative;
-    background-color: #d4d2d3;
+    background-color: rgb(212, 211, 210);
     text-align: center;
     width: 300px;
     border-radius: 10px;
@@ -421,12 +545,12 @@ footer .copyright {
 }
 
 .article-product p span {
-    color: #b90000;
+    color: rgb(185, 0, 0);
     font-weight: bold;
 }
 
 .article-product p:last-of-type {
-    color: #b90000;
+    color: rgb(185, 0, 0);
     font-size: 20px;
     font-weight: 900;
 }
@@ -435,7 +559,7 @@ footer .copyright {
     display: inline-block;
     width: 200px;
     height: 200px;
-    border: 2px solid #afabab;
+    border: 2px solid rgb(175, 171, 171);
     border-radius: 5px;
     padding: 5px;
 }
@@ -460,23 +584,23 @@ footer .copyright {
 
 .article-badge {
     right: 7px;
-    background-color: yellow;
-    color: #b90000;
-    border: 1px solid #b90000;
+    background-color: rgb(255, 230, 0);
+    color: rgb(185, 0, 0);
+    border: 1px solid rgb(185, 0, 0);
 }
 
 .article-new {
     left: 7px;
     background-color: lightgreen;
-    color: #004000;
-    border: 1px solid #004000;
+    color: rgb(0, 64, 0);
+    border: 1px solid rgb(0, 64, 0);
 }
 
 .article-favorite {
     position: absolute;
     right: 10px;
     top: 10px;
-    color: #009600;
+    color: rgb(0, 150, 0);
     font-size: 24px;
 }
 
@@ -495,15 +619,15 @@ footer .copyright {
 }
 .article-top {
     right: 7px;
-    background-color: yellow;
-    color: #b90000;
-    border: 1px solid #b90000;
+    background-color: rgb(255, 230, 0);
+    color: rgb(185, 0, 0);
+    border: 1px solid rgb(185, 0, 0);
 }
 .article-good {
     left: 7px;
     background-color: lightgreen;
-    color: #004000;
-    border: 1px solid #004000;
+    color: rgb(0, 64, 0);
+    border: 1px solid rgb(0, 64, 0);
 }
 
 /*
@@ -511,7 +635,7 @@ footer .copyright {
 */
 
 .carousel-product {
-    background-color: #e8f0ff;
+    background-color: rgb(232, 240, 255);
     width: 350px;
     visibility: hidden;
 }
@@ -568,7 +692,7 @@ button.carousel-control-next:active {
 .form {
     max-width: 500px;
     background-color: white;
-    border: 1px solid #afabab;
+    border: 1px solid rgb(175, 171, 171);
     border-radius: 10px;
     padding: 20px 10px 5px 10px;
     margin: 20px auto;
@@ -579,7 +703,7 @@ button.carousel-control-next:active {
 }
 
 .form fieldset {
-    border: 1px solid #afabab;
+    border: 1px solid rgb(175, 171, 171);
     border-radius: 5px;
     padding: 10px 30px 20px 30px;
     margin: 10px;
@@ -608,6 +732,10 @@ button.carousel-control-next:active {
     white-space: nowrap;
 }
 
+.field-label {
+    cursor: default;
+}
+
 .form label,
 .form span,
 .field-label {
@@ -620,7 +748,7 @@ button.carousel-control-next:active {
 .form textarea,
 .form select {
     background-color: white;
-    border: 1px solid #afabab;
+    border: 1px solid rgb(175, 171, 171);
     border-radius: 5px;
     width: 100%;
     padding: 10px;
@@ -683,7 +811,7 @@ button.carousel-control-next:active {
 }
 
 /* .grid-container div {
-  background: #3498db;
+  background: rgb(52, 152, 219);
   color: white;
   padding: 20px;
   text-align: center;

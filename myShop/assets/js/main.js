@@ -1,35 +1,84 @@
 //////////////////////////////////////////////////////////////////////////
 // Utilities
+//////////////////////////////////////////////////////////////////////////
 
-// Manage user and product lists saved in local storage //////////////////
+
+// Manage user, product and order lists saved in local storage ///////////
 
 // Retrieve an array from local storage
 function lsGetItems(nameArray) {
-    const DATA = JSON.parse(localStorage.getItem(nameArray));
-    return (Array.isArray(DATA)) ? DATA : [];
+    const ITEMS = JSON.parse(localStorage.getItem(nameArray));
+    return (Array.isArray(ITEMS)) ? ITEMS : [];
+}
+function lsGetItemsByFilter(nameArray, predicate) {
+    return lsGetItems(nameArray).filter(predicate);
+}
+function lsGetItemsByVisibility(nameArray, isVisible = true) {
+    return lsGetItemsByFilter(nameArray, item => item.isVisible == isVisible);
+}
+
+// Retrieve an element or its index from an array stored in local storage
+function lsFind(nameArray, predicate) {
+    const ITEMS = lsGetItems(nameArray);
+    if (ITEMS.length > 0) {
+        const ITEM = ITEMS.find(predicate);
+        if (ITEM) return [ITEMS, ITEM];
+    }
+    return [ITEMS, null];
+}
+function lsFindIndex(nameArray, predicate) {
+    const ITEMS = lsGetItems(nameArray);
+    if (ITEMS.length > 0) {
+        const INDEX = ITEMS.findIndex(predicate);
+        if (INDEX > -1) return [ITEMS, INDEX];
+    }
+    return [ITEMS, null];
+}
+
+// Save an array to local storage
+Array.prototype.saveToLS = function (nameArray) {
+    localStorage.setItem(nameArray, JSON.stringify(this));
 }
 
 // Array method to save an item to local storage and update the last item ID
-Array.prototype.lsAddItem = function (nameArray, item) {
-    if (item.id === 0) {
+Array.prototype.lsAddItem = function (nameArray, nameId, item) {
+    if (item[nameId] === 0) {
         // Initialize the item's identifier and push the item to the array
-        item.id = (parseInt(localStorage.getItem(nameArray + "ID")) || 0) + 1;
+        item[nameId] = (parseInt(localStorage.getItem(nameArray + "ID")) || 0) + 1;
         this.push(item);
 
         // Save the item to local storage and update the last item ID
-        localStorage.setItem(nameArray, JSON.stringify(this));
-        localStorage.setItem(nameArray + "ID", item.id);
+        this.saveToLS(nameArray);
+        localStorage.setItem(nameArray + "ID", item[nameId]);
         console.log("The item has been added to local storage.")
     } else
-        console.log(`The item ID is not 0 (ID is ${item.id}): the item cannot be added to local storage.`);
+        console.log(`The item ID is not 0 (ID is ${item[nameId]}): the item cannot be added to local storage.`);
 };
 
-// Array method to remove an item from an array in local storage
-Array.prototype.lsRemoveItem = function (nameArray, id) {
-    const INDEX = this.findIndex(item => item.id == id);
+// Array method to delete an item from an array in local storage
+Array.prototype.lsRemoveItem = function (nameArray, nameId, id) {
+    const INDEX = this.findIndex(item => item[nameId] == id);
     if (INDEX > -1) {
         this.splice(INDEX, 1);
-        localStorage.setItem(nameArray, JSON.stringify(this));
+
+        if (this.length == 0)
+            localStorage.removeItem(nameArray);
+        else
+            this.saveToLS(nameArray);
+
+        console.log("The item has been removed from local storage.");
+    } else
+        console.log("The item to be removed does not exist in local storage.");
+}
+
+// Array method to enable or disable an item from an array in local storage
+Array.prototype.lsSetVisibilityItem = function (nameArray, nameId, id, isVisible) {
+    const ITEM = this.find(item => item[nameId] == id);
+    if (ITEM) {
+        ITEM.isVisible = isVisible;
+
+        // Save the item to local storage
+        this.saveToLS(nameArray);
         console.log("The item has been removed from local storage.");
     } else
         console.log("The item to be removed does not exist in local storage.");
@@ -37,23 +86,53 @@ Array.prototype.lsRemoveItem = function (nameArray, id) {
 
 // Manage the user session ///////////////////////////////////////////////
 
+// Role class: static object
+class Role {
+    static user = 0;
+    static admin = 1;
+    static superAdmin = 2;
+
+    static validate = role => {
+        const ROLE = parseInt(role);
+        return (ROLE == Role.user || ROLE == Role.admin || ROLE == Role.superAdmin) ? ROLE : null;
+    };
+}
+
 // Retrieve the logged-in user stored in session storage or local storage
 function getLoggedIn() {
     return parseInt(localStorage.getItem("sessionId")) || parseInt(sessionStorage.getItem("sessionId")) || 0;
-}
-
-// Save the logged-in user to session storage or local storage
-function loginUser(userId, permanent) {
-    if (permanent)
-        localStorage.setItem("sessionId", userId);
-    else
-        sessionStorage.setItem("sessionId", userId);
 }
 
 // Remove the logged-in user from session storage or local storage
 function logoutUser() {
     localStorage.removeItem("sessionId");
     sessionStorage.removeItem("sessionId");
+}
+function logout(toConsole = false) {
+    // Logout
+    if (getLoggedIn()) logoutUser();
+
+    // Display the logout message
+    const displayLog = (toConsole) ? console.log : alert;
+    displayLog(((toConsole) ? "[logout] - " : "") + "Vous êtes déconnecté.");
+
+    const ADD_PRODUCT = document.getElementById("navbar-add-product");
+    if (ADD_PRODUCT && !ADD_PRODUCT.className.includes("inactive")) ADD_PRODUCT.classList.add("inactive");
+
+    // Redirecting to the homepage
+    const [HREF, PAGES] = [window.location.href, ["index.html", "contact.html", "about.html"]];
+    if (PAGES.every(page => !HREF.includes(page))) window.location.href = "../index.html";
+}
+
+// Check if the user is logged in as an administrator
+function isLoggedInAdmin() {
+    const USER_ID = getLoggedIn();
+    if (USER_ID > 0) {
+        const USERS = lsGetItems("users");
+        const USER = USERS.find(user => user.id == USER_ID);
+        if (USER) return USER.role == Role.admin || USER.role == Role.superAdmin;
+    }
+    return false;
 }
 
 // General functions /////////////////////////////////////////////////////
@@ -71,32 +150,135 @@ HTMLInputElement.prototype.checkPositiveNumber = function (isInt, maxValue, defa
 }
 
 // Method of the HTML select object to retrieve and potentially select or deselect an option by its value
-HTMLSelectElement.prototype.select = function (value, selected) {
-    const OPTION = Array.from(this.options).find(item => item.value == value);
-    if (typeof selected == "boolean" && OPTION) OPTION.selected = selected;
+HTMLSelectElement.prototype.select = function (value) {
+    const OPTION = Array.from(this.options).find(option => option.value == value);
+    if (OPTION) OPTION.selected = true;
     return OPTION;
 }
 
-// When resizing the window
+// Display log
+function displayLog(message, toConsole = false, prefixMsg = null) {
+    ((toConsole) ? console.log : alert)(((prefixMsg) ? prefixMsg : "") + message);
+    return false;
+}
+
+// Display an error message in the title
+function displayError(message, classRemove = null, classAdd = null, divToHide = false) {
+    // Display the error mesaage
+    const H2 = document.querySelector("main section h2");
+    H2.textContent = message;
+
+    // Manage the class
+    if (classRemove) H2.classList.remove(classRemove);
+    if (classAdd) H2.classList.add(classAdd);
+
+    // Hide the container if necessary
+    if (divToHide) document.querySelector("main section div").classList.add("inactive");
+
+    return false;
+}
+
+// Display the number of products in the cart
+function displayCartNProducts() {
+    const USER_ID = getLoggedIn();
+    const STICKER = document.getElementById("cart-sticker");
+
+    if (USER_ID > 0) {
+        const [CARTS, FOUND] = lsFind("carts", cart => cart.userId == USER_ID);
+        if (FOUND) {
+            let counter = 0;
+            FOUND.products.forEach(item => counter += item.quantity);
+            STICKER.textContent = counter;
+            return counter;
+        }
+    }
+    STICKER.textContent = "";
+    return 0;
+}
+
+// Window resizing management
 function resizeWindow() {
     // Show the back-to-top button
     document.getElementById("scroll-top").style.display = (window.innerHeight >= document.body.scrollHeight) ? "none" : "block";
 }
 
+
 //////////////////////////////////////////////////////////////////////////
-// Initialize the page
+// Initialize the pages
+//////////////////////////////////////////////////////////////////////////
+
+
+// Flag for development
+const DEVELOPMENT = true;
 
 function init() {
-    // Handle the index.html page ////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    // 'Home' page >> index.html
 
     const MAIN_INDEX = document.getElementById("main-index");
     if (MAIN_INDEX) {
-        const PRODUCTS = lsGetItems("products");
+        const PROMO = document.querySelector("#main-index section:last-of-type mark");
+        if (PROMO) {
+            // Display the end date of the current month
+            const TODAY = new Date();
+            let datePromo = new Date(TODAY.setMonth(TODAY.getMonth() + 1));
+            datePromo = new Date(datePromo.getFullYear(), datePromo.getMonth(), 0);
+            PROMO.textContent = "jusqu'au " + datePromo.toLocaleDateString();
+        }
 
-        if (PRODUCTS.length > 0) {
+        // Array of products saved in local storage
+        let products;
+
+        // Add data for development
+        if (DEVELOPMENT) {
+            // Add an administrator
+            const ADMIN_NAME = "Fabien";
+            const ADMIN_EMAIL = "admin.fabien@myshop.com";
+            const ADMIN_PSWD = `3kb!BWFe;dgXqV]`;
+
+            addAdmin(ADMIN_NAME, ADMIN_EMAIL, ADMIN_PSWD, ADMIN_PSWD);
+
+            products = lsGetItems("products");
+            if (products.length == 0) {
+                // Fill in the product array
+                let path = (self.location.href.includes(".github.io/")) ? "/Projet.ConcepteurDeveloppeurDapplications.Chastang.Fabien.2026" : "";
+                path += "/myShop-native/assets/img/clothing/";
+
+                let product = new Product(
+                    "Chemise",
+                    "Chemise homme en coton bleu clair",
+                    20,
+                    path + "men/shirts/cms1.png",
+                    `Cet article est <span>fortement recommendé</span> par nos client`
+                );
+                products.lsAddItem("products", "id", product);
+
+                product = new Product(
+                    "Robe",
+                    "Robe en jean denim indigo",
+                    40,
+                    path + "women/dresses/cwd1.png"
+                );
+                products.lsAddItem("products", "id", product);
+
+                product = new Product(
+                    "Robe",
+                    "Robe en coton bleu nuit",
+                    70,
+                    path + "women/dresses/cwd2.png"
+                );
+                products.lsAddItem("products", "id", product);
+            }
+        }
+
+        // Array of non-archived products saved in local storage
+        products = lsGetItemsByVisibility("products");
+
+        if (products.length > 0) {
             // Display the products
             const CONTAINER = document.querySelector(".product-container");
-            PRODUCTS.forEach(product => {
+
+            products.forEach(product => {
                 const PRODUCT = new Product();
                 Object.assign(PRODUCT, product);
 
@@ -107,87 +289,50 @@ function init() {
                     {
                         text: '<i class="fa-regular fa-eye"></i>',
                         attributes: [{ name: "title", value: "Voir" }, { name: "aria-label", value: "Voir" }],
-                        callback: id => { window.location.href = `pages/products.html?id=${id}`; }
+                        callbackfn: id => window.location.href = `pages/products.html?id=${id}`
                     }
                 );
             });
-        } else {
-            const title = MAIN_INDEX.querySelector("section:nth-of-type(3) .h2-title");
-            title.textContent = "Aucun produit";
-        }
+        } else
+            // Display a message indicating that no products have been saved
+            document.querySelector("main section:nth-of-type(3) h2").textContent = "Aucun article n'est référencé";
     }
 
-    // Handle the addUser.html page //////////////////////////////////////
-
-    const MAIN_ADD_USER = document.getElementById("main-add-user");
-    if (MAIN_ADD_USER) {
-        // To initialize the default country
-        const COUNTRY_ID = Country.getId("France");
-
-        // Fill in the 'gender', 'interests' and 'country' fields
-        Gender.fill();
-        Interests.fill();
-        Country.fill(COUNTRY_ID);
-
-        // Add an administrator
-        const pswd = `3kb!BWFe;dgXqV]`;
-        addAdmin("Fabien", "chastangfabien0@gmail.com", pswd, pswd, 2, 5);
-
-        document.getElementById("form-user").addEventListener("submit", event => {
-            // Prevents the browser's default behavior associated with an event; in this case, reloading the page
-            event.preventDefault();
-
-            // Add a new user
-            addUser(COUNTRY_ID);
-        });
-    }
-
-    // Handle the login.html page ////////////////////////////////////////
-
-    const MAIN_LOGIN = document.getElementById("main-login");
-    if (MAIN_LOGIN) {
-        document.getElementById("form-login").addEventListener("submit", event => {
-            // Prevents the browser's default behavior associated with an event; in this case, reloading the page
-            event.preventDefault();
-
-            // Log in
-            login();
-        });
-    }
-
-    // Handle the products.html page /////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    // 'Product presentation' page >> products.html 
 
     const MAIN_PRODUCTS = document.getElementById("main-products");
     if (MAIN_PRODUCTS) {
-        const PRODUCTS = lsGetItems("products");
+        const DELAY = 333; // Delay in milliseconds for displaying the carousel and the active product
 
+        // Array of non-archived products saved in local storage
+        const PRODUCTS = lsGetItemsByVisibility("products");
         if (PRODUCTS.length > 0) {
             // Get URL parameters
             const URL_PARAMS = new URLSearchParams(window.location.search);
-            const SELECTED_ID = URL_PARAMS.get("id");
 
             // Fill the carousel and display the products
             fillCarousel(
                 PRODUCTS,
-                SELECTED_ID,
+                URL_PARAMS.get("id"),
                 {
                     text: '<i class="fa-solid fa-cart-arrow-down"></i>',
                     attributes: [{ name: "title", value: "Acheter" }, { name: "aria-label", value: "Acheter" }],
-                    callback: id => addCartProduct(id)
+                    callbackfn: id => addCartProduct(id)
                 }
             );
 
-            // Set a delay for the display of the carousel and the active product
-            const CAROUSEL_PRODUCT = document.getElementById("carousel-product");
+            // Delay in milliseconds for displaying the carousel and the active product
+            const CAROUSEL = document.getElementById("carousel-product");
             let activeItemId = "product-" + this.querySelector(".carousel-item.active").getAttribute("data-item-id");
 
             setTimeout(() => {
-                CAROUSEL_PRODUCT.style.visibility = "visible";
+                CAROUSEL.style.visibility = "visible";
                 document.getElementById(activeItemId).style.display = "block";
-            }, 200);
+            }, DELAY);
 
             // Add an event to handle the carousel
-            CAROUSEL_PRODUCT.addEventListener("slid.bs.carousel", () => {
+            CAROUSEL.addEventListener("slid.bs.carousel", () => {
                 // The new active product
                 const NEW_ITEM_ID = "product-" + this.querySelector(".carousel-item.active").getAttribute("data-item-id");
 
@@ -198,30 +343,27 @@ function init() {
                 // Update the ID of the new active product
                 activeItemId = NEW_ITEM_ID;
             });
-        } else {
-            const title = MAIN_PRODUCTS.querySelector("section:first-of-type .h2-title");
-            title.textContent = "Aucun produit";
-            title.style.display = "block";
-        }
+        } else
+            // Display a message indicating that no products have been saved
+            displayError("Aucun article n'est référencé", "inactive");
     }
 
-    // Handle the addProduct.html page ///////////////////////////////////
-
-    const MAIN_CART = document.getElementById("main-cart");
-    if (MAIN_CART) {
-        displayCart();
-    }
-
-    // Handle the addProduct.html page ///////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    // 'Product addition' form page >> addProduct.html
 
     const MAIN_ADD_PRODUCT = document.getElementById("main-add-product");
     if (MAIN_ADD_PRODUCT) {
+        // Set focus on the first field
+        document.getElementById("name-product").focus();
+
+        // Validate the input for the 'price' field of type "text"
         const INPUT_PRICE = document.getElementById("price-product");
         INPUT_PRICE.addEventListener("change", () => {
             INPUT_PRICE.checkPositiveNumber(false, 9999.99);
         });
 
-        document.getElementById("form-product").addEventListener("submit", event => {
+        // Add a new product when submitting the form
+        document.querySelector("form").addEventListener("submit", event => {
             // Prevents the browser's default behavior associated with an event; in this case, reloading the page
             event.preventDefault();
 
@@ -230,13 +372,132 @@ function init() {
         });
     }
 
-    // For all pages /////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    // 'User's cart' page >> cart.html
+
+    const MAIN_CART = document.getElementById("main-cart");
+    if (MAIN_CART) {
+        // Display the user's shopping cart
+        displayCart();
+
+        // Add a new product when submitting the form
+        document.querySelector("form").addEventListener("submit", event => {
+            // Prevents the browser's default behavior associated with an event; in this case, reloading the page
+            event.preventDefault();
+
+            // Add a new product to local storage
+            window.location.href = "addOrder.html";
+        });
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    // 'Order payment' form page >> addOrder.html
+
+    const MAIN_ADD_ORDER = document.getElementById("main-add-order");
+    if (MAIN_ADD_ORDER) {
+        // Add a new product when submitting the form
+        document.querySelector("form").addEventListener("submit", event => {
+            // Prevents the browser's default behavior associated with an event; in this case, reloading the page
+            event.preventDefault();
+
+            // Add a new user's order to local storage
+            addOrder();
+        });
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    // 'Login' page >> login.html
+
+    const MAIN_LOGIN = document.getElementById("main-login");
+    if (MAIN_LOGIN) {
+        // Set focus on the first field
+        document.getElementById("email-user").focus();
+
+        // Log the user in when the form is submitted
+        document.querySelector("form").addEventListener("submit", event => {
+            // Prevents the browser's default behavior associated with an event; in this case, reloading the page
+            event.preventDefault();
+
+            // Log in
+            login();
+        });
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    // 'User registration' form page >> addUser.html
+
+    const MAIN_ADD_USER = document.getElementById("main-add-user");
+    if (MAIN_ADD_USER) {
+        // To initialize the default country
+        const COUNTRY_ID = Country.getId("France");
+
+        // Fill in the 'gender', 'interests' and 'country' fields
+        User.fill(null, null, COUNTRY_ID);
+
+        // Set focus on the first field
+        document.getElementById("name-user").focus();
+
+        // Add a new user when submitting the form
+        document.querySelector("form").addEventListener("submit", event => {
+            // Prevents the browser's default behavior associated with an event; in this case, reloading the page
+            event.preventDefault();
+
+            // Add a new user
+            addUser(COUNTRY_ID);
+        });
+
+        // Reset the form
+        document.querySelector("form").addEventListener("reset", event => {
+            // Prevents the browser's default behavior associated with an event
+            event.preventDefault();
+
+            // Reset the form
+            User.reset(null, null, COUNTRY_ID)
+        });
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    // 'User's orders' presentation page >> orders.html
+
+    const MAIN_ORDERS = document.getElementById("main-orders");
+    if (MAIN_ORDERS) {
+        // Display the logged-in user's orders
+        displayOrders();
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    // 'Contact us' page >> contact.html
+
+    const MAIN_CONTACT = document.getElementById("main-contact");
+    if (MAIN_CONTACT) {
+        // Set focus on the first field
+        document.getElementById("name-user").focus();
+
+        // Log the user in when the form is submitted
+        document.querySelector("form").addEventListener("submit", event => {
+            // Prevents the browser's default behavior associated with an event; in this case, reloading the page
+            event.preventDefault();
+        });
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    // For all pages
 
     // Set the copyright year
     const COPYRIGHT_YEAR = document.getElementById("copyright-year");
     if (COPYRIGHT_YEAR) COPYRIGHT_YEAR.innerHTML = (new Date()).getFullYear();
 
-    // When resizing the window
+    // Show or hide the 'New Product' tab
+    const ADD_PRODUCT = document.getElementById("navbar-add-product");
+    if (isLoggedInAdmin())
+        ADD_PRODUCT.classList.remove("inactive");
+    else if (!ADD_PRODUCT.className.includes("inactive"))
+        ADD_PRODUCT.classList.add("inactive");
+
+    // Show or hide the number of products in the cart
+    displayCartNProducts();
+
+    // Window resizing management
     resizeWindow();
     window.addEventListener("resize", resizeWindow); // BAD WAY: uses the "resize" event to handle page resizing
 

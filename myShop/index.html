@@ -16,10 +16,10 @@
 <body>
     <div class="page-container">
         <header>
-            <!-- Titre principal – Slogan : Habillez chaque moment avec style -->
+            <!-- Main title – Slogan: Dress every moment in style -->
             <h1>My Shop</h1>
 
-            <!-- Menu de navigation -->
+            <!-- Navigation menu -->
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid">
                     <button class="navbar-toggler btn-burger" type="button" data-bs-toggle="collapse"
@@ -28,15 +28,25 @@
                         <i class="fas fa-bars"></i>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li><span class="selected-page">Accueil</span></li>
-                            <li><a href="./pages/addUser.html">Inscription</a></li>
-                            <li><a href="./pages/login.html">Connexion</a></li>
-                            <li><a href="./pages/products.html">Articles</a></li>
-                            <li><a href="./pages/cart.html">Panier</a></li>
-                            <li><a href="./pages/addProduct.html">Nouvel Article</a></li>
-                            <li><a href="./pages/contact.html">Contact</a></li>
-                            <li><a href="./pages/about.html">À propos</a></li>
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 menu">
+                            <li><span class="selected-page" title="Accueil" aria-label="Accueil"><i class="fa-regular fa-house"></i></span></li>
+                            <li><a href="./pages/products.html">Nos Articles</a></li>
+                            <li id="navbar-add-product" class="inactive"><a href="./pages/addProduct.html">Nouvel Article</a></li>
+                            <li>
+                                <a href="./pages/cart.html" title="Mon panier" aria-label="Mon panier"><i class="fa-solid fa-cart-arrow-down"></i></a>
+                                <span id="cart-sticker"></span>
+                            </li>
+                            <li>
+                                <a href="#" aria-label="Mon profile"><i class="fa-regular fa-circle-user"></i></a>
+                                <ul class="submenu">
+                                    <li><a href="./pages/login.html">Connexion</a></li>
+                                    <li><a href="./pages/addUser.html">Inscription</a></li>
+                                    <li><a href="./pages/orders.html">Commandes</a></li>
+                                    <li><a href="javascript:logout()"><i class="fa-solid fa-power-off"></i>Déconnexion</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="./pages/contact.html" title="Contacter-nous" aria-label="Contacter-nous"><i class="fa-regular fa-envelope"></i></a></li>
+                            <li><a href="./pages/about.html" title="À propos de My Shop" aria-label="À propos de My Shop"><i class="fa-solid fa-circle-info"></i></a></li>
                         </ul>
                     </div>
                 </div>
@@ -44,7 +54,7 @@
         </header>
 
         <main id="main-index">
-            <!-- Présentation du site -->
+            <!-- Banner: site preview -->
             <section class="section-banner">
                 <div class="container">
                     <div class="row">
@@ -60,7 +70,7 @@
                 </div>
             </section>
 
-            <!-- Catégories -->
+            <!-- Categories -->
             <section>
                 <h2 class="h2-title">Catégories</h2>
 
@@ -79,7 +89,7 @@
                     </a>
                 </div>
 
-                <!-- Liste des catégories (désactivée) -->
+                <!-- List of categories (disabled) -->
                 <!--
                 <ul style="display: none;">
                     <li>Femmes
@@ -136,7 +146,7 @@
 
                 <div class="product-container"></div>
 
-                <!-- Bootstrap : grid (désactivée) -->
+                <!-- Bootstrap: grid (disabled) -->
                 <!--
                 <div class="container">
                     <div class="row">
@@ -184,14 +194,14 @@
                 -->
             </section>
 
-            <!-- Passer une commande -->
+            <!-- Place an order -->
             <section>
                 <h2 class="h2-info">Pour passer une commande</h2>
 
                 <ul>
-                    <li>Choisir les articles</li>
-                    <li>Ajouter les au panier</li>
-                    <li>Confirmer la commande</li>
+                    <li>Choisissez vos articles</li>
+                    <li>Ajoutez les à votre panier</li>
+                    <li>Confirmez la commande</li>
                 </ul>
 
                 <aside>
@@ -203,9 +213,8 @@
 
     <button id="scroll-top" title="Retour en haut de la page" aria-label="Retour en haut de la page"><i class="fa-solid fa-arrow-up"></i></button>
 
-    <!-- Pied de la page -->
     <footer>
-        <h2>Contactez-nous :</h2>
+        <h2>Retrouvez-nous :</h2>
         <p>
             <a href="https://www.linkedin.com/in/fabien-chastang/" target="_blank"><i class="fa-brands fa-square-linkedin"></i>LinkedIn</a>
             <a href="https://github.com/fabien-chastang" target="_blank"><i class="fa-brands fa-github"></i>GitHub</a>
@@ -216,6 +225,7 @@
     <!-- JavaScript files -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/js/main.js"></script>
+    <script src="./assets/js/user.js"></script>
     <script src="./assets/js/product.js"></script>
     <script src="./assets/js/examples/exercices.js"></script>
 </body>

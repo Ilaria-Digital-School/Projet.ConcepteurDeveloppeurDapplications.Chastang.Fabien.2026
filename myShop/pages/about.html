@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.png">
-    <title>À propos - My Shop</title>
+    <title>À propos – My Shop</title>
 
     <!-- CSS files -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
@@ -16,10 +16,10 @@
 <body>
     <div class="page-container">
         <header>
-            <!-- Titre principal – Slogan : Habillez chaque moment avec style -->
+            <!-- Main title – Slogan: Dress every moment in style -->
             <h1>My Shop</h1>
 
-            <!-- Menu de navigation -->
+            <!-- Navigation menu -->
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid">
                     <button class="navbar-toggler btn-burger" type="button" data-bs-toggle="collapse"
@@ -28,15 +28,25 @@
                         <i class="fas fa-bars"></i>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li><a href="../index.html">Accueil</a></li>
-                            <li><a href="addUser.html">Inscription</a></li>
-                            <li><a href="login.html">Connexion</a></li>
-                            <li><a href="cart.html">Panier</a></li>
-                            <li><a href="products.html">Articles</a></li>
-                            <li><a href="addProduct.html">Nouvel Article</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                            <li><span class="selected-page">À propos</span></li>
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 menu">
+                            <li><a href="../index.html" title="Accueil" aria-label="Accueil"><i class="fa-regular fa-house"></i></a></li>
+                            <li><a href="products.html">Nos Articles</a></li>
+                            <li id="navbar-add-product" class="inactive"><a href="addProduct.html">Nouvel Article</a></li>
+                            <li>
+                                <a href="cart.html" title="Mon panier" aria-label="Mon panier"><i class="fa-solid fa-cart-arrow-down"></i></a>
+                                <span id="cart-sticker"></span>
+                            </li>
+                            <li>
+                                <a href="#" aria-label="Mon profile"><i class="fa-regular fa-circle-user"></i></a>
+                                <ul class="submenu">
+                                    <li><a href="login.html">Connexion</a></li>
+                                    <li><a href="addUser.html">Inscription</a></li>
+                                    <li><a href="orders.html">Commandes</a></li>
+                                    <li><a href="javascript:logout()"><i class="fa-solid fa-power-off"></i>Déconnexion</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="contact.html" title="Contactez-nous" aria-label="Contactez-nous"><i class="fa-regular fa-envelope"></i></a></li>
+                            <li><span class="selected-page" title="À propos de My Shop" aria-label="À propos de My Shop"><i class="fa-solid fa-circle-info"></i></span></li>
                         </ul>
                     </div>
                 </div>
@@ -44,10 +54,9 @@
         </header>
 
         <main id="main-about">
-            <!-- À propos du site -->
-            <section>
+            <!-- About the site -->
+            <section class="about">
                 <h2 class="h2-info">À propos de My Shop</h2>
-
                 <p>
                     My Shop est <strong>une boutique de vente en ligne</strong>.
                 </p>
@@ -60,10 +69,24 @@
                 </p>
             </section>
 
-            <!-- Services & Avantages -->
+            <!-- Information -->
+            <section>
+                <h2 class="h2-info">Information</h2>
+                <p>
+                    Pour référencer un article, il faut être connecté.e avec un compte administrateur ou super-administateur.
+                </p>
+                <aside>
+                    <p>
+                        Pour tester :<br>
+                        <mark>admin.fabien@myshop.com<br></mark>
+                        <mark>3kb!BWFe;dgXqV]<br></mark>
+                    </p>
+                </aside>
+            </section>
+
+            <!-- Services and Benefits -->
             <section>
                 <h2 class="h2-info">Services & Avantages</h2>
-
                 <ol>
                     <li>Achat
                         <ul>
@@ -72,7 +95,7 @@
                             <li>Livraison internationale</li>
                             <li>Retours et échanges gratuits (30, 60 ou 90 jours)</li>
                             <li>Paiement en plusieurs fois sans frais (Klarna, Alma…)</li>
-                            <li>Paiement sécurisé (Apple Pay, PayPal, carte bancaire…)<br><br></li>
+                            <li>Paiement sécurisé (Apple Pay, PayPal, carte bancaire…)</li>
                         </ul>
                     </li>
                     <li>Conseil
@@ -81,7 +104,7 @@
                             <li>Essayage virtuel (IA ou réalité augmentée pour visualiser les vêtements)</li>
                             <li>Conseil en style personnalisé (quiz de style, recommandations algorithmiques)</li>
                             <li>Personal shopper en ligne (chat ou visio avec un conseiller)</li>
-                            <li>Lookbooks & inspirations saisonniers<br><br></li>
+                            <li>Lookbooks & inspirations saisonniers</li>
                         </ul>
                     </li>
                     <li>Fidélité & Relation client
@@ -90,7 +113,7 @@
                             <li>Abonnement premium (livraisons illimitées, accès aux ventes privées…)</li>
                             <li>Alertes disponibilité (notification quand un article revient en stock)</li>
                             <li>Liste de souhaits partageable</li>
-                            <li>Carte cadeau digitale ou physique<br><br></li>
+                            <li>Carte cadeau digitale ou physique</li>
                         </ul>
                     </li>
                     <li>Valeur ajoutée
@@ -99,7 +122,7 @@
                             <li>Location de vêtements (pour occasions spéciales)</li>
                             <li>Box abonnement (sélection mensuelle personnalisée)</li>
                             <li>Personnalisation des articles (broderie, impression, initiales)</li>
-                            <li>Service de retouche partenaire<br><br></li>
+                            <li>Service de retouche partenaire</li>
                         </ul>
                     </li>
                     <li>Support client
@@ -117,9 +140,8 @@
 
     <button id="scroll-top" title="Retour en haut de la page" aria-label="Retour en haut de la page"><i class="fa-solid fa-arrow-up"></i></button>
 
-    <!-- Pied de la page -->
     <footer>
-        <h2>Contactez-nous :</h2>
+        <h2>Retrouvez-nous :</h2>
         <p>
             <a href="https://www.linkedin.com/in/fabien-chastang/" target="_blank"><i class="fa-brands fa-square-linkedin"></i>LinkedIn</a>
             <a href="https://github.com/fabien-chastang" target="_blank"><i class="fa-brands fa-github"></i>GitHub</a>

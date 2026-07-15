@@ -1,5 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 // Manage products
+//////////////////////////////////////////////////////////////////////////
+
 
 // Main class
 class Product {
@@ -10,22 +12,23 @@ class Product {
         this.price = price;
         this.img = img;
         this.info = info;
+        this.isVisible = true;
     }
 
-    // Update a property
+    // Update a property /////////////////////////////////////////////////
     updateProperty(property, value, toChange) {
         if (toChange) this[property] = value;
         return toChange;
     }
 
-    // Display the product
+    // Display the product ///////////////////////////////////////////////
     display(container, classProd, button, info = true, sticker = true) {
-        const ARTICLE_PRODUCT = document.createElement("article");
-        ARTICLE_PRODUCT.setAttribute("tabindex", "0");
+        const ARTICLE = document.createElement("article");
+        ARTICLE.setAttribute("tabindex", "0");
 
         // Add the classes if necessary
         const CLASSPROD = classProd.trim().split(/\s+/);
-        if (CLASSPROD[0]) CLASSPROD.forEach(css => ARTICLE_PRODUCT.classList.add(css));
+        if (CLASSPROD[0]) CLASSPROD.forEach(css => ARTICLE.classList.add(css));
 
         // Button definition
         const BTN_ID = `btn-product-${this.id}`;
@@ -37,7 +40,7 @@ class Product {
         // Fill in the article
         if (info && this.info)
             // With information message
-            ARTICLE_PRODUCT.innerHTML = `
+            ARTICLE.innerHTML = `
                 <h3 class="product-title">${this.name}</h3>
                 <p>${this.info}</p>
                 <div><img src="${this.img}" alt="${this.description}"></div>
@@ -47,7 +50,7 @@ class Product {
             `;
         else
             // Without information message
-            ARTICLE_PRODUCT.innerHTML = `
+            ARTICLE.innerHTML = `
                 <h3 class="product-title">${this.name}</h3>
                 <div><img src="${this.img}" alt="${this.description}"></div>
                 <p>${this.description}</p>
@@ -56,22 +59,22 @@ class Product {
             `;
 
         // Display stickers by price if necessary
-        if (sticker) this.addSticker(ARTICLE_PRODUCT);
+        if (sticker) this.addSticker(ARTICLE);
 
         // Add the product to the container
-        container.appendChild(ARTICLE_PRODUCT);
+        container.appendChild(ARTICLE);
 
         // Add an event to the button
-        if (button.callback) {
+        if (button.callbackfn) {
             document.getElementById(BTN_ID).addEventListener("click", () => {
-                button.callback(this.id);
+                button.callbackfn(this.id);
             });
         }
 
-        return ARTICLE_PRODUCT;
+        return ARTICLE;
     }
 
-    // Display stickers by price
+    // Display stickers by price /////////////////////////////////////////
     addSticker(article) {
         if (this.price < 25 || this.price > 50) {
             const STICKER = document.createElement("span");
@@ -88,39 +91,42 @@ class Product {
         return null;
     }
 
-    // Display the product in the carousel
-    iniCarousel(carouselInner, productId, index, container, button) {
+    // Display the product in the carousel ///////////////////////////////
+    iniCarousel(productId, index, carouselInner, container, button) {
         let activeProduct = null;
 
         // Fill the carousel
-        const DIV_PRODUCT = document.createElement("div");
-        DIV_PRODUCT.classList.add("carousel-item");
+        const DIV = document.createElement("div");
+        DIV.classList.add("carousel-item");
         if (this.id == productId)
-            activeProduct = DIV_PRODUCT;
+            activeProduct = DIV;
         else if (index == 0)
-            activeProduct = DIV_PRODUCT;
-        DIV_PRODUCT.setAttribute("data-item-id", this.id);
+            activeProduct = DIV;
+        DIV.setAttribute("data-item-id", this.id);
 
         const IMG = document.createElement("img");
         ["d-block", "w-100", "carousel-img"].forEach(css => IMG.classList.add(css));
         IMG.src = this.img;
         IMG.alt = this.description;
 
-        DIV_PRODUCT.appendChild(IMG);
-        carouselInner.appendChild(DIV_PRODUCT);
+        DIV.appendChild(IMG);
+        carouselInner.appendChild(DIV);
 
         // Display the product in the container
         if (container) {
-            const PRODUCT_DETAIL = this.display(container, "article-product inactive", button, false);
-            PRODUCT_DETAIL.id = `product-${this.id}`;
+            const DETAIL = this.display(container, "article-product inactive", button, false);
+            DETAIL.id = `product-${this.id}`;
         }
 
         return activeProduct;
     }
 }
 
+
 //////////////////////////////////////////////////////////////////////////
 // Add, update and remove a product
+//////////////////////////////////////////////////////////////////////////
+
 
 // UTILITIES: functions to validate the 'name' and 'price'
 function checkName(name) {
@@ -134,20 +140,16 @@ function checkPrice(price) {
 
 // Add a new product to local storage
 function addProduct(toConsole = false) {
-    const displayLog = (toConsole) ? console.log : alert;
-    const PREFIX_MSG = (toConsole) ? "[add product] - " : "";
+    const PREFIX_LOG = (toConsole) ? "[add product] - " : null;
 
     // Check the parameters
     const NAME = checkName(document.getElementById("name-product").value);
-    if (!NAME) {
-        displayLog(PREFIX_MSG + "Le nom doit contenir au moins trois caractères non blancs !");
-        return false;
-    }
+    if (!NAME)
+        return displayLog("Le nom doit contenir au moins trois caractères non blancs !", toConsole, PREFIX_LOG);
+
     const PRICE = checkPrice(document.getElementById("price-product").value);
-    if (!PRICE) {
-        displayLog(PREFIX_MSG + "Prix doit être un nombre positif !");
-        return false;
-    }
+    if (!PRICE)
+        return displayLog("Prix doit être un nombre positif !", toConsole, PREFIX_LOG);
 
     // Retrieve the other parameters
     const DESCRIPTION = document.getElementById("description-product").value.trim();
@@ -157,45 +159,37 @@ function addProduct(toConsole = false) {
 
     // Create a new product and save it to local storage
     const PRODUCT = new Product(NAME, DESCRIPTION, PRICE, IMG, info);
-    lsGetItems("products").lsAddItem("products", PRODUCT);
+    lsGetItems("products").lsAddItem("products", "id", PRODUCT);
 
     // Reset the form and display the validation message
-    document.getElementById("form-product").reset();
-    displayLog(PREFIX_MSG + "Le produit a été ajouté.");
+    document.querySelector("form").reset();
+    displayLog("Le produit a été ajouté.", toConsole, PREFIX_LOG);
     return true;
 }
 
 // Update a product in local storage
 function updateProduct(productId, name, description, price, img, info, toConsole = false) {
-    const displayLog = (toConsole) ? console.log : alert;
-    const PREFIX_MSG = (toConsole) ? "[update product] - " : "";
+    const PREFIX_LOG = (toConsole) ? "[update product] - " : null;
 
     // Retrieve the products
     const PRODUCTS = lsGetItems("products");
-    if (PRODUCTS.length == 0) {
-        displayLog(PREFIX_MSG + "Mise à jour impossible : aucun produit n'est enregistré !");
-        return false;
-    }
+    if (PRODUCTS.length == 0)
+        return displayLog("Mise à jour impossible : aucun produit n'est enregistré !", toConsole, PREFIX_LOG);
 
     // Retrieve the product by its ID
     let product;
     const ID = parseInt(productId);
-    if (!ID || !(product = PRODUCTS.find(item => item.id == ID))) {
-        displayLog(PREFIX_MSG + "L'identifiant est incorrect !");
-        return false;
-    }
+    if (!ID || !(product = PRODUCTS.find(item => item.id == ID)))
+        return displayLog("L'identifiant est incorrect !", toConsole, PREFIX_LOG);
 
     // Check the parameters
     const NAME = checkName(name);
-    if (!NAME) {
-        displayLog(PREFIX_MSG + "Le nom doit contenir au moins trois caractères non blancs !");
-        return false;
-    }
+    if (!NAME)
+        return displayLog("Le nom doit contenir au moins trois caractères non blancs !", toConsole, PREFIX_LOG);
+
     const PRICE = checkPrice(price);
-    if (!PRICE) {
-        displayLog(PREFIX_MSG + "Prix doit être un nombre positif !");
-        return false;
-    }
+    if (!PRICE)
+        return displayLog("Prix doit être un nombre positif !", toConsole, PREFIX_LOG);
 
     // Perform the update
     let isChanged = false;
@@ -213,27 +207,36 @@ function updateProduct(productId, name, description, price, img, info, toConsole
 
     if (isChanged) {
         // Save the changes to local storage and display the confirmation message
-        localStorage.setItem("products", JSON.stringify(PRODUCTS));
-        displayLog(PREFIX_MSG + "Votre produit a été mis à jour.", toConsole);
+        PRODUCTS.saveToLS("products");
+        displayLog("Votre produit a été mis à jour.", toConsole, PREFIX_LOG);
     } else
         // No changes have been done
-        displayLog(PREFIX_MSG + "Aucune modification n'a été apportée à votre produit !");
+        displayLog("Aucune modification n'a été apportée à votre produit !", toConsole, PREFIX_LOG);
 
     return true;
 }
 
-// Remove a product from local storage
-function removeProduct(productId) {
-    lsGetItems("products").lsRemoveItem("products", productId);
+// Enable or disable a product from local storage
+function setVisibilityProduct(productId, isVisible, toConsole = true) {
+    lsGetItems("products").lsSetVisibilityItem("products", "id", productId, isVisible);
+    ((toConsole) ? console.log : alert)(((toConsole) ? "[visibility product] - " : "") + `Le produit a été ${(isVisible) ? "réactivé" : "archivé"}.`);
 }
+
+// Remove a product from local storage
+function removeProduct(productId, toConsole = true) {
+    lsGetItems("products").lsRemoveItem("products", "id", productId);
+    ((toConsole) ? console.log : alert)(((toConsole) ? "[remove product] - " : "") + "Le produit a été supprimé.");
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 // Manage the carousel
+//////////////////////////////////////////////////////////////////////////
+
 
 // Fill the carousel and display the products in the container
 function fillCarousel(products, productId, button) {
-    const CAROUSEL_INNER = document.querySelector(".carousel-inner");
-    const CONTAINER = document.querySelector(".product-container");
+    const CONTAINERS = [document.querySelector(".carousel-inner"), document.querySelector(".product-container")];
     const PRODUCT_ID = parseInt(productId) || 0;
 
     let activeProduct;
@@ -241,7 +244,7 @@ function fillCarousel(products, productId, button) {
         const PRODUCT = new Product();
         Object.assign(PRODUCT, product);
 
-        const ACTIVE_PRODUCT = PRODUCT.iniCarousel(CAROUSEL_INNER, PRODUCT_ID, index, CONTAINER, button);
+        const ACTIVE_PRODUCT = PRODUCT.iniCarousel(PRODUCT_ID, index, ...CONTAINERS, button);
         if (ACTIVE_PRODUCT) activeProduct = ACTIVE_PRODUCT;
     });
     activeProduct.classList.add("active");
