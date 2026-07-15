@@ -204,21 +204,21 @@ function displayCart(userId = null) {
     // Retrieve all products stored in local storage
     const PRODUCTS = lsGetItems("products");
     if (PRODUCTS.length == 0)
-        return displayError("Aucun article n'est référencé", "h2-info", "h2-title");
+        return displayError("Aucun article n'est référencé", "h2-info inactive", "h2-title");
 
     // Retrieve the user
     const USERS = lsGetItems("users");
     if (USERS.length == 0)
-        return displayError("Veuillez créer un compte ou vous connecter", "h2-info", "h2-title");
+        return displayError("Veuillez créer un compte ou vous connecter", "h2-info inactive", "h2-title");
 
     const USER_ID = parseInt(userId) || getLoggedIn();
     if (!USER_ID || USER_ID < 0)
-        return displayError("Veuillez créer un compte ou vous connecter", "h2-info", "h2-title");
+        return displayError("Veuillez créer un compte ou vous connecter", "h2-info inactive", "h2-title");
 
     // Retrieve the user's cart
     const [CARTS, FOUND] = lsFind("carts", cart => cart.userId == USER_ID);
     if (!FOUND)
-        return displayError("Votre panier est vide", "h2-info", "h2-title");
+        return displayError("Votre panier est vide", "h2-info inactive", "h2-title");
 
     // Display the cart
     const [CART, TBODY] = [new Cart(), document.querySelector("tbody")];
@@ -228,11 +228,12 @@ function displayCart(userId = null) {
 
     // Empty shopping cart
     if (TOTAL_PRICE == 0)
-        return displayError("Votre panier est vide", "h2-info", "h2-title");
+        return displayError("Votre panier est vide", "h2-info inactive", "h2-title");
 
     // Display the title
     document.querySelector("main section div").classList.remove("inactive");
     const H2 = document.querySelector("main section h2");
+    H2.classList.remove("inactive");
     H2.textContent = "Mon panier";
     H2.style.marginBottom = "30px";
 

@@ -122,25 +122,27 @@ function displayOrders(userId = null) {
     // Retrieve all products stored in local storage
     const PRODUCTS = lsGetItems("products");
     if (PRODUCTS.length == 0)
-        return displayError("Aucun article n'est référencé", "h2-title-order", "h2-title", true);
+        return displayError("Aucun article n'est référencé", "h2-title-order inactive", "h2-title");
 
     // Retrieve the user
     const USERS = lsGetItems("users");
     if (USERS.length == 0)
-        return displayError("Veuillez créer un compte ou vous connecter", "h2-title-order", "h2-title", true);
+        return displayError("Veuillez créer un compte ou vous connecter", "h2-title-order inactive", "h2-title");
 
     const USER_ID = parseInt(userId) || getLoggedIn();
     if (!USER_ID || USER_ID < 0)
-        return displayError("Veuillez créer un compte ou vous connecter", "h2-title-order", "h2-title", true);
+        return displayError("Veuillez créer un compte ou vous connecter", "h2-title-order inactive", "h2-title");
 
     // Retrieve the user's cart
     const ORDERS = lsGetItemsByFilter("orders", order => order.isVisible && order.userId == USER_ID).reverse();
     if (ORDERS.length == 0)
-        return displayError("Vous n'avez effectué aucune commande", "h2-title-order", "h2-title", true);
+        return displayError("Vous n'avez effectué aucune commande", "h2-title-order inactive", "h2-title");
 
     // Initializing variables containing the DOM elements
     const MAIN = document.querySelector("main");
     let section = MAIN.querySelector("section");
+    section.querySelector("h2").classList.remove("inactive");
+    section.querySelector("div").classList.remove("inactive");
     const SECTION_HTML = section.innerHTML;
 
     const DATE_OPTIONS = {

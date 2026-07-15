@@ -236,8 +236,9 @@ function removeProduct(productId, toConsole = true) {
 
 // Fill the carousel and display the products in the container
 function fillCarousel(products, productId, button) {
-    const CONTAINERS = [document.querySelector(".carousel-inner"), document.querySelector(".product-container")];
     const PRODUCT_ID = parseInt(productId) || 0;
+    const CONTAINERS = [document.querySelector(".carousel-inner"), document.querySelector(".product-container")];
+    CONTAINERS[1].classList.remove("inactive");
 
     let activeProduct;
     products.forEach((product, index) => {

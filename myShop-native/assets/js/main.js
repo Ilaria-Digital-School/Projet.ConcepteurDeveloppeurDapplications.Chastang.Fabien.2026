@@ -163,17 +163,31 @@ function displayLog(message, toConsole = false, prefixMsg = null) {
 }
 
 // Display an error message in the title
-function displayError(message, classRemove = null, classAdd = null, divToHide = false) {
+function displayError(message, classRemove = null, classAdd = null, showContainer = null) {
     // Display the error mesaage
     const H2 = document.querySelector("main section h2");
     H2.textContent = message;
 
     // Manage the class
-    if (classRemove) H2.classList.remove(classRemove);
-    if (classAdd) H2.classList.add(classAdd);
+    if (classRemove) {
+        const REMOVE = classRemove.split(" ");
+        REMOVE.forEach(css => H2.classList.remove(css));
+    }
+    if (classAdd) {
+        const ADD = classAdd.split(" ");
+        ADD.forEach(css => H2.classList.add(css));
+    }
 
-    // Hide the container if necessary
-    if (divToHide) document.querySelector("main section div").classList.add("inactive");
+    // Show/Hide the container if necessary
+    if (typeof showContainer == "boolean") {
+        const CONTAINER = document.querySelector("main section div");
+        const INACTIVE = CONTAINER.className.includes("inactive");
+        if (showContainer) {
+            if (INACTIVE) CONTAINER.classList.remove("inactive");
+        } else {
+            if (!INACTIVE) CONTAINER.classList.add("inactive");
+        }
+    }
 
     return false;
 }
