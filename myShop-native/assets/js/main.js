@@ -301,7 +301,8 @@ function setHeader() {
     let li, submenuLi, anchor, submenu = null;
 
     // Local functions
-    const getLink = item => (!item.pages.split(",").some(page => HREF.includes(page))) ? (HREF.includes("index.html")) ? item.link : item.link.replace("./pages/", "") : item.selected;
+    const isSelected = item => item.pages.split(",").some(page => HREF.includes(page));
+    const getLink = item => (!isSelected(item)) ? (HREF.includes("index.html")) ? item.link : item.link.replace("./pages/", "") : item.selected;
     const setLi = (item, html) => {
         li = document.createElement("li");
         if (item.id) li.id = item.id;
@@ -330,7 +331,7 @@ function setHeader() {
             }
 
             // Fill the submenu
-            if (HREF.includes(item.page)) anchor.classList.add("selected-page");
+            if (isSelected(item)) anchor.classList.add("selected-page");
             setSubmenuLi(getLink(item));
             if (item.last) setSubmenuLi(LOGOUT); // Add the logout link
         } else
