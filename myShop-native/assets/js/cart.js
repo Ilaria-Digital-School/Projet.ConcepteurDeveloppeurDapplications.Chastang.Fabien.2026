@@ -199,6 +199,7 @@ function removeCartProduct(productId, userId = null) {
 // View and edit the user's shopping cart
 //////////////////////////////////////////////////////////////////////////
 
+
 // Display the user's shopping cart
 function displayCart(userId = null) {
     // Retrieve all products stored in local storage
@@ -223,10 +224,9 @@ function displayCart(userId = null) {
     // Display the cart
     const [CART, TBODY] = [new Cart(), document.querySelector("tbody")];
     Object.assign(CART, FOUND);
-
     const TOTAL_PRICE = CART.display(PRODUCTS, TBODY);
 
-    // Empty shopping cart
+    // Empty shopping cart (normally, that shouldn't happen)
     if (TOTAL_PRICE == 0)
         return displayError("Votre panier est vide", "h2-info inactive", "h2-title");
 

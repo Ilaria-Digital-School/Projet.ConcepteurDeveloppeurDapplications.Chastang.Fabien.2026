@@ -3,7 +3,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 
-// Manage user, product and order lists saved in local storage ///////////
+//////////////////////////////////////////////////////////////////////////
+// Manage user, product and order lists saved in local storage
 
 // Retrieve an array from local storage
 function lsGetItems(nameArray) {
@@ -84,7 +85,8 @@ Array.prototype.lsSetItemVisibility = function (nameArray, nameId, id, isVisible
         console.log("The item to be removed does not exist in local storage.");
 }
 
-// Manage the user session ///////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+// Manage the user session
 
 // Role class: static object
 class Role {
@@ -135,7 +137,8 @@ function isLoggedInAdmin() {
     return false;
 }
 
-// General functions /////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+// General functions
 
 // Method of the HTML input object used to validate the input of a "number" or "text" type field
 HTMLInputElement.prototype.checkPositiveNumber = function (isInt, maxValue, defaultValue) {
@@ -170,11 +173,11 @@ function displayError(message, classRemove = null, classAdd = null, showContaine
 
     // Manage the class
     if (classRemove) {
-        const REMOVE = classRemove.split(" ");
+        const REMOVE = classRemove.trim().split(/\s+/);
         REMOVE.forEach(css => H2.classList.remove(css));
     }
     if (classAdd) {
-        const ADD = classAdd.split(" ");
+        const ADD = classAdd.trim().split(/\s+/);
         ADD.forEach(css => H2.classList.add(css));
     }
 
@@ -210,9 +213,10 @@ function displayCartNbProducts() {
     return 0;
 }
 
-// DOM management functions //////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+// DOM management functions
 
-// Data for displaying the navigation bar
+// Data for displaying the navigation bar ////////////////////////////////
 const H1_TITLE = "My Shop";
 const NAV_HTML = `
     <div class="container-fluid">
@@ -304,11 +308,12 @@ function setHeader() {
 
     // Constants and variables
     const [UL, HREF] = [NAV.querySelector("ul"), window.location.href];
+    const INDEX_PAGE = HREF.includes("index.html");
     let li, submenuLi, anchor, submenu = null;
 
     // Local functions
     const isSelected = item => item.pages.split(",").some(page => HREF.includes(page));
-    const getLink = item => (!isSelected(item)) ? (HREF.includes("index.html")) ? item.link : item.link.replace("./pages/", "./") : item.selected;
+    const getLink = item => (!isSelected(item)) ? (INDEX_PAGE) ? item.link : item.link.replace("./pages/", "./") : item.selected;
     const setLi = (item, html) => {
         li = document.createElement("li");
         if (item.id) li.id = item.id;
@@ -341,7 +346,7 @@ function setHeader() {
     });
 }
 
-// Data for displaying the "back to top" button and the footer
+// Data for displaying the back-to-top button and the footer /////////////
 const BTNTOP_HTML = {
     id: "scroll-top",
     label: "Retour en haut de la page",
@@ -356,14 +361,14 @@ const FOOTER_HTML = `
     </p>
 `;
 
-// Display the "back to top" button and the footer
+// Display the back-to-top button and the footer
 function setFooter() {
-    // Display the "back to top" button
-    const BTN_TOP = document.createElement("button");
-    BTN_TOP.id = BTNTOP_HTML.id;
-    BTN_TOP.ariaLabel = BTN_TOP.title = BTNTOP_HTML.label;
-    BTN_TOP.innerHTML = BTNTOP_HTML.html;
-    document.body.appendChild(BTN_TOP);
+    // Display the back-to-top button
+    const BTNTOP = document.createElement("button");
+    BTNTOP.id = BTNTOP_HTML.id;
+    BTNTOP.ariaLabel = BTNTOP.title = BTNTOP_HTML.label;
+    BTNTOP.innerHTML = BTNTOP_HTML.html;
+    document.body.appendChild(BTNTOP);
 
     // Display the page footer
     const FOOTER = document.createElement("footer");
@@ -371,7 +376,7 @@ function setFooter() {
     document.body.appendChild(FOOTER);
 }
 
-// Window resizing management
+// Window resizing management ////////////////////////////////////////////
 function resizeWindow() {
     // Show the back-to-top button
     document.getElementById("scroll-top").style.display = (window.innerHeight >= document.body.scrollHeight) ? "none" : "block";
@@ -388,7 +393,7 @@ const DEVELOPMENT = true;
 
 function init() {
     //////////////////////////////////////////////////////////////////////
-    // 'Home' page >> index.html
+    // Homepage  >> index.html
 
     const MAIN_INDEX = document.getElementById("main-index");
     if (MAIN_INDEX) {
@@ -475,7 +480,7 @@ function init() {
     }
 
     //////////////////////////////////////////////////////////////////////
-    // 'Product presentation' page >> products.html 
+    // Products overview page >> products.html 
 
     const MAIN_PRODUCTS = document.getElementById("main-products");
     if (MAIN_PRODUCTS) {
@@ -525,7 +530,7 @@ function init() {
     }
 
     //////////////////////////////////////////////////////////////////////
-    // 'Product addition' form page >> addProduct.html
+    // Products registration form page >> addProduct.html
 
     const MAIN_ADD_PRODUCT = document.getElementById("main-add-product");
     if (MAIN_ADD_PRODUCT) {
@@ -549,7 +554,7 @@ function init() {
     }
 
     //////////////////////////////////////////////////////////////////////
-    // 'User's cart' page >> cart.html
+    // User shopping cart form page >> cart.html
 
     const MAIN_CART = document.getElementById("main-cart");
     if (MAIN_CART) {
@@ -567,7 +572,7 @@ function init() {
     }
 
     //////////////////////////////////////////////////////////////////////
-    // 'Order payment' form page >> addOrder.html
+    // Order payment form page >> addOrder.html
 
     const MAIN_ADD_ORDER = document.getElementById("main-add-order");
     if (MAIN_ADD_ORDER) {
@@ -582,7 +587,7 @@ function init() {
     }
 
     //////////////////////////////////////////////////////////////////////
-    // 'Login' page >> login.html
+    // Login form page >> login.html
 
     const MAIN_LOGIN = document.getElementById("main-login");
     if (MAIN_LOGIN) {
@@ -600,7 +605,7 @@ function init() {
     }
 
     //////////////////////////////////////////////////////////////////////
-    // 'User registration' form page >> addUser.html
+    // User registration form page >> addUser.html
 
     const MAIN_ADD_USER = document.getElementById("main-add-user");
     if (MAIN_ADD_USER) {
@@ -633,7 +638,7 @@ function init() {
     }
 
     //////////////////////////////////////////////////////////////////////
-    // 'User's orders' presentation page >> orders.html
+    // User orders summary page >> orders.html
 
     const MAIN_ORDERS = document.getElementById("main-orders");
     if (MAIN_ORDERS) {
@@ -642,7 +647,7 @@ function init() {
     }
 
     //////////////////////////////////////////////////////////////////////
-    // 'Contact us' page >> contact.html
+    // Contact form page >> contact.html
 
     const MAIN_CONTACT = document.getElementById("main-contact");
     if (MAIN_CONTACT) {
@@ -662,7 +667,7 @@ function init() {
     // Display the page header
     setHeader();
 
-    // Display the "back to top" button and the footer
+    // Display the back-to-top button and the footer
     setFooter();
 
     // Show or hide the 'New product' tab depending on whether the user is an administrator or not

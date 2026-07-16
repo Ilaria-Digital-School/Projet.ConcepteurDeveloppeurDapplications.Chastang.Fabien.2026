@@ -77,13 +77,7 @@ class Order {
     }
 }
 
-
-//////////////////////////////////////////////////////////////////////////
-// Add an order
-//////////////////////////////////////////////////////////////////////////
-
-
-// Add a new user's cart to local storage
+// Add a new user's cart to local storage ////////////////////////////////
 function addOrder(userId = null, toConsole = false) {
     const PREFIX_LOG = (toConsole) ? "[add order] - " : null;
 
@@ -115,9 +109,7 @@ function addOrder(userId = null, toConsole = false) {
     }
 }
 
-//////////////////////////////////////////////////////////////////////////
-// Display the user's orders
-
+// Display the user's orders /////////////////////////////////////////////
 function displayOrders(userId = null) {
     // Retrieve all products stored in local storage
     const PRODUCTS = lsGetItems("products");

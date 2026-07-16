@@ -431,7 +431,6 @@ function loginUser(userId, permanent) {
     else
         sessionStorage.setItem("sessionId", userId);
 }
-
 function login(toConsole = false) {
     const EMAIL = document.getElementById("email-user").value.trim();
     const PASSWORD = document.getElementById("password-user").value;
