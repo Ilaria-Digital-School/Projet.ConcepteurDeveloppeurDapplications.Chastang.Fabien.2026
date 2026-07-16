@@ -36,7 +36,7 @@ function lsFindIndex(nameArray, predicate) {
 }
 
 // Save an array to local storage
-Array.prototype.saveToLS = function (nameArray) {
+Array.prototype.lsSetItems = function (nameArray) {
     localStorage.setItem(nameArray, JSON.stringify(this));
 }
 
@@ -48,7 +48,7 @@ Array.prototype.lsAddItem = function (nameArray, nameId, item) {
         this.push(item);
 
         // Save the item to local storage and update the last item ID
-        this.saveToLS(nameArray);
+        this.lsSetItems(nameArray);
         localStorage.setItem(nameArray + "ID", item[nameId]);
         console.log("The item has been added to local storage.")
     } else
@@ -64,7 +64,7 @@ Array.prototype.lsRemoveItem = function (nameArray, nameId, id) {
         if (this.length == 0)
             localStorage.removeItem(nameArray);
         else
-            this.saveToLS(nameArray);
+            this.lsSetItems(nameArray);
 
         console.log("The item has been removed from local storage.");
     } else
@@ -72,13 +72,13 @@ Array.prototype.lsRemoveItem = function (nameArray, nameId, id) {
 }
 
 // Array method to enable or disable an item from an array in local storage
-Array.prototype.lsSetVisibilityItem = function (nameArray, nameId, id, isVisible) {
+Array.prototype.lsSetItemVisibility = function (nameArray, nameId, id, isVisible) {
     const ITEM = this.find(item => item[nameId] == id);
     if (ITEM) {
         ITEM.isVisible = isVisible;
 
         // Save the item to local storage
-        this.saveToLS(nameArray);
+        this.lsSetItems(nameArray);
         console.log("The item has been removed from local storage.");
     } else
         console.log("The item to be removed does not exist in local storage.");
@@ -193,7 +193,7 @@ function displayError(message, classRemove = null, classAdd = null, showContaine
 }
 
 // Display the number of products in the cart
-function displayCartNProducts() {
+function displayCartNbProducts() {
     const USER_ID = getLoggedIn();
     const STICKER = document.getElementById("cart-sticker");
 
@@ -212,57 +212,57 @@ function displayCartNProducts() {
 
 // DOM management functions //////////////////////////////////////////////
 
+// Data for displaying the navigation bar
 const LOGOUT = '<a href="javascript:logout()"><i class="fa-solid fa-power-off"></i>Déconnexion</a>';
-
 const NAVBAR = [
     {
-        page: "index.html",
+        pages: "index.html",
         link: '<a href="../index.html" title="Accueil" aria-label="Accueil"><i class="fa-regular fa-house"></i></a>',
         selected: '<span class="selected-page" title="Accueil" aria-label="Accueil"><i class="fa-regular fa-house"></i></span>'
     },
     {
-        page: "products.html",
+        pages: "products.html",
         link: '<a href="./pages/products.html">Nos Articles</a>',
         selected: '<span class="selected-page">Nos Articles</span>'
     },
     {
-        page: "addProduct.html",
+        pages: "addProduct.html",
         link: '<a href="./pages/addProduct.html">Nouvel Article</a>',
         selected: '<span class="selected-page">Nouvel Article</span>',
         id: "navbar-add-product",
         className: "inactive"
     },
     {
-        page: "cart.html",
+        pages: "cart.html,addOrder.html",
         link: '<a href="./pages/cart.html" title="Mon panier" aria-label="Mon panier"><i class="fa-solid fa-cart-arrow-down"></i></a><span id="cart-sticker"></span>',
         selected: '<span class="selected-page" title="Mon panier" aria-label="Mon panier"><i class="fa-solid fa-cart-arrow-down"></i></span><span id="cart-sticker"></span>'
     },
     {
-        page: "login.html",
+        pages: "login.html",
         submenu: true,
         link: '<a href="./pages/login.html">Connexion</a>',
         selected: '<span class="selected-page">Connexion</span>'
     },
     {
-        page: "addUser.html",
+        pages: "addUser.html",
         submenu: true,
         link: '<a href="./pages/addUser.html">Inscription</a>',
         selected: '<span class="selected-page">Inscription</span>'
     },
     {
-        page: "orders.html",
+        pages: "orders.html",
         submenu: true,
         link: '<a href="./pages/orders.html">Commandes</a>',
         selected: '<span class="selected-page">Commandes</span>',
         last: true
     },
     {
-        page: "contact.html",
+        pages: "contact.html",
         link: '<a href="./pages/contact.html" title="Contactez-nous" aria-label="Contactez-nous"><i class="fa-regular fa-envelope"></i></a>',
         selected: '<span class="selected-page" title="Contactez-nous" aria-label="Contactez-nous"><i class="fa-regular fa-envelope"></i></span>'
     },
     {
-        page: "about.html",
+        pages: "about.html",
         link: '<a href="./pages/about.html" title="À propos de My Shop" aria-label="À propos de My Shop"><i class="fa-solid fa-circle-info"></i></a>',
         selected: '<span class="selected-page" title="À propos de My Shop" aria-label="À propos de My Shop"><i class="fa-solid fa-circle-info"></i></span>'
     }
@@ -270,12 +270,15 @@ const NAVBAR = [
 
 // Display the page header
 function setHeader() {
+    // Retrieve the 'header' DOM object
     const HEADER = document.querySelector("header");
 
+    // Display the title
     const H1 = document.createElement("h1");
     H1.textContent = "My Shop";
     HEADER.appendChild(H1);
 
+    // Set up the navigation bar structure
     const NAV = document.createElement("nav");
     NAV.classList.add("navbar");
     NAV.classList.add("navbar-expand-lg");
@@ -293,54 +296,58 @@ function setHeader() {
     `;
     HEADER.appendChild(NAV);
 
-    const UL = NAV.querySelector("ul");
-    const HREF = window.location.href;
-    const getLink = item => (!HREF.includes(item.page)) ? (HREF.includes("index.html")) ? item.link : item.link.replace("./pages/", "") : item.selected;
+    // Constants and variables
+    const [UL, HREF] = [NAV.querySelector("ul"), window.location.href];
+    let li, submenuLi, anchor, submenu = null;
 
-    let li, anchor, submenu = null;
+    // Local functions
+    const getLink = item => (!item.pages.split(",").some(page => HREF.includes(page))) ? (HREF.includes("index.html")) ? item.link : item.link.replace("./pages/", "") : item.selected;
+    const setLi = (item, html) => {
+        li = document.createElement("li");
+        if (item.id) li.id = item.id;
+        if (item.className) li.classList.add(item.className);
+        li.innerHTML = html;
+        UL.appendChild(li);
+    };
+    const setSubmenuLi = html => {
+        submenuLi = document.createElement("li");
+        submenuLi.innerHTML = html;
+        submenu.appendChild(submenuLi);
+    };
+
+    // Display the navigation bar
     NAVBAR.forEach(item => {
         if (item.submenu) {
             if (!submenu) {
-                li = document.createElement("li");
-                li.innerHTML = `
+                // Set the submenu
+                const HTML = `
                     <a href="#" aria-label="Mon profile"><i class="fa-regular fa-circle-user"></i></a>
                     <ul class="submenu"></ul>
                 `;
-                UL.appendChild(li);
-
+                setLi(item, HTML);
                 anchor = li.querySelector("a");
                 submenu = li.querySelector("ul");
             }
 
+            // Fill the submenu
             if (HREF.includes(item.page)) anchor.classList.add("selected-page");
-
-            let submenuLi = document.createElement("li");
-            submenuLi.innerHTML = getLink(item);
-            submenu.appendChild(submenuLi);
-
-            if (item.last) {
-                submenuLi = document.createElement("li");
-                submenuLi.innerHTML = LOGOUT;
-                submenu.appendChild(submenuLi);
-            }
-        } else {
-            li = document.createElement("li");
-            if (item.id) li.id = item.id;
-            if (item.className) li.classList.add(item.className);
-            li.innerHTML = getLink(item);
-            UL.appendChild(li);
-        }
+            setSubmenuLi(getLink(item));
+            if (item.last) setSubmenuLi(LOGOUT); // Add the logout link
+        } else
+            setLi(item, getLink(item)); // Fill the navigation bar
     });
 }
 
-// Display the page footer
+// Display the button to return to the top of the page, and the page footer
 function setFooter() {
+    // Display the button to return to the top of the page
     const BTN_TOP = document.createElement("button");
     BTN_TOP.id = "scroll-top";
     BTN_TOP.ariaLabel = BTN_TOP.title = "Retour en haut de la page";
     BTN_TOP.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
     document.body.appendChild(BTN_TOP);
 
+    // Display the page footer
     const FOOTER = document.createElement("footer");
     FOOTER.innerHTML = `
         <h2>Retrouvez-nous :</h2>
@@ -374,6 +381,7 @@ function init() {
 
     const MAIN_INDEX = document.getElementById("main-index");
     if (MAIN_INDEX) {
+        // Display the promotion end date
         const PROMO = document.querySelector("#main-index section:last-of-type mark");
         if (PROMO) {
             // Display the end date of the current month
@@ -397,7 +405,7 @@ function init() {
 
             products = lsGetItems("products");
             if (products.length == 0) {
-                // Fill in the product array
+                // Fill the product array
                 let path = (self.location.href.includes(".github.io/")) ? "/Projet.ConcepteurDeveloppeurDapplications.Chastang.Fabien.2026" : "";
                 path += "/myShop-native/assets/img/clothing/";
 
@@ -588,7 +596,7 @@ function init() {
         // To initialize the default country
         const COUNTRY_ID = Country.getId("France");
 
-        // Fill in the 'gender', 'interests' and 'country' fields
+        // Fill the 'gender', 'interests' and 'country' fields
         User.fill(null, null, COUNTRY_ID);
 
         // Set focus on the first field
@@ -643,10 +651,10 @@ function init() {
     // Display the page header
     setHeader();
 
-    // Display the button to return to the top of the page and the footer
+    // Display the button to return to the top of the page, and the page footer
     setFooter();
 
-    // Show or hide the 'New Product' tab
+    // Show or hide the 'New product' tab depending on whether the user is an administrator or not
     const ADD_PRODUCT = document.getElementById("navbar-add-product");
     if (isLoggedInAdmin())
         ADD_PRODUCT.classList.remove("inactive");
@@ -654,7 +662,7 @@ function init() {
         ADD_PRODUCT.classList.add("inactive");
 
     // Show or hide the number of products in the cart
-    displayCartNProducts();
+    displayCartNbProducts();
 
     // Window resizing management
     resizeWindow();

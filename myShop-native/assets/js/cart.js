@@ -104,11 +104,11 @@ function addCartProduct(productId, quantity = 1, userId = null, toConsole = fals
         CARTS.push(new Cart(USER_ID, PRODUCT_ID, QUANTITY));
 
     // Save the change to local storage
-    CARTS.saveToLS("carts");
+    CARTS.lsSetItems("carts");
     displayLog("Success!", true, "[cart: add product] - ");
 
     // Display the number of products in the cart
-    displayCartNProducts();
+    displayCartNbProducts();
 
     return true;
 }
@@ -139,11 +139,11 @@ function updateCartProduct(productId, quantity, userId = null) {
         // Remove the product from the cart
         if (CART.updateQuantity(PRODUCT_ID, QUANTITY)) {
             // Save the change to local storage
-            CARTS.saveToLS("carts");
+            CARTS.lsSetItems("carts");
             displayLog("Success!", true, "[cart: update product] - ");
 
             // Display the number of products in the cart
-            displayCartNProducts();
+            displayCartNbProducts();
 
             return true;
         } else
@@ -180,12 +180,12 @@ function removeCartProduct(productId, userId = null) {
             if (CARTS.length == 0)
                 localStorage.removeItem("carts");
             else
-                CARTS.saveToLS("carts");
+                CARTS.lsSetItems("carts");
 
             displayLog("Success!", true, "[cart: remove product] - ");
 
             // Display the number of products in the cart
-            displayCartNProducts();
+            displayCartNbProducts();
 
             return true;
         } else

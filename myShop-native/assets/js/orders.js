@@ -104,7 +104,7 @@ function addOrder(userId = null, toConsole = false) {
         if (CARTS.length == 0)
             localStorage.removeItem("carts");
         else
-            CARTS.saveToLS("carts");
+            CARTS.lsSetItems("carts");
 
         displayLog("La commande a été passée avec succès.", toConsole, PREFIX_LOG);
         window.location.href = "orders.html";
@@ -165,7 +165,7 @@ function displayOrders(userId = null) {
         const DATE = new Date(ORDER.date);
         H2.querySelector("span").textContent = DATE.toLocaleDateString() + " à " + DATE.toLocaleTimeString(undefined, DATE_OPTIONS);
 
-        // Fill in the table containing the order
+        // Fill the table containing the order
         const TBODY = section.querySelector("tbody");
         ORDER.display(TBODY);
 

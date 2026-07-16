@@ -41,7 +41,7 @@ class Gender {
         this.list.forEach(item => document.getElementById(item.id).checked = item.value == GENDER_ID);
     };
 
-    // Fill in the 'gender' field
+    // Fill the 'gender' field
     static fill = genderId => {
         const GENDER = document.getElementById(this.fieldId);
         const GENDER_ID = parseInt(genderId) || this.other.value;
@@ -96,7 +96,7 @@ class Interests {
         this.list.forEach(item => document.getElementById(item.id).checked = INTEREST_IDS.some(param => item.value == param));
     };
 
-    // Fill in the 'interests' field
+    // Fill the 'interests' field
     static fill = interestIDs => {
         const INTERESTS = document.getElementById(this.fieldId);
         const INTEREST_IDS = (Array.isArray(interestIDs)) ? interestIDs : this.other;
@@ -158,7 +158,7 @@ class Country {
         document.getElementById(this.fieldId).select(COUNTRY_ID);
     };
 
-    // Fill in the 'country' field
+    // Fill the 'country' field
     static fill = countryId => {
         const COUNTRY = document.getElementById(this.fieldId);
         const COUNTRY_ID = parseInt(countryId) || this.other.value;
@@ -235,7 +235,7 @@ class User {
 
     // Manage the form ///////////////////////////////////////////////////
 
-    // Fill in the 'gender', 'interests' and 'country' fields
+    // Fill the 'gender', 'interests' and 'country' fields
     static fill = (genderId, interestIDs, countryId) => {
         Gender.fill(genderId);
         Interests.fill(interestIDs);
@@ -384,7 +384,7 @@ function updateUser(userId, name, email, password, pswdConfirm, genderId, intere
 
     if (IS_CHANGED) {
         // Save the changes to local storage and display the confirmation message
-        USERS.saveToLS("users");
+        USERS.lsSetItems("users");
         displayLog("Votre profile a été mis à jour.", toConsole, prefixMsg);
     } else
         // No changes have been done
@@ -394,8 +394,8 @@ function updateUser(userId, name, email, password, pswdConfirm, genderId, intere
 }
 
 // Enable or disable a product from local storage
-function setVisibilityUser(userId, isVisible, toConsole = true) {
-    lsGetItems("users").lsSetVisibilityItem("users", "id", userId, isVisible);
+function setUserVisibility(userId, isVisible, toConsole = true) {
+    lsGetItems("users").lsSetItemVisibility("users", "id", userId, isVisible);
     displayLog(`Votre profile a été ${(isVisible) ? "réactivé" : "archivé"}.`, toConsole, (toConsole) ? "[visibility user] - " : null);
 }
 
@@ -498,7 +498,7 @@ function updateRole(userId, role, toConsole = true) {
 
     if (IS_CHANGED) {
         // Save the change made to the user's role in local storage and display a confirmation message
-        USERS.saveToLS("users");
+        USERS.lsSetItems("users");
         displayLog("Le rôle de l'utilisateur a été mis à jour.", toConsole, PREFIX_LOG);
     } else
         // No changes have been done

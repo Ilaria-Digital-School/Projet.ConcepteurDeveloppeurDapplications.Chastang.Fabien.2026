@@ -37,7 +37,7 @@ class Product {
         if (button.attributes) button.attributes.forEach(attribute => btn += ` ${attribute.name}="${attribute.value}"`);
         btn += `>${button.text}</button>`;
 
-        // Fill in the article
+        // Fill the article tag
         if (info && this.info)
             // With information message
             ARTICLE.innerHTML = `
@@ -207,7 +207,7 @@ function updateProduct(productId, name, description, price, img, info, toConsole
 
     if (isChanged) {
         // Save the changes to local storage and display the confirmation message
-        PRODUCTS.saveToLS("products");
+        PRODUCTS.lsSetItems("products");
         displayLog("Votre produit a été mis à jour.", toConsole, PREFIX_LOG);
     } else
         // No changes have been done
@@ -217,8 +217,8 @@ function updateProduct(productId, name, description, price, img, info, toConsole
 }
 
 // Enable or disable a product from local storage
-function setVisibilityProduct(productId, isVisible, toConsole = true) {
-    lsGetItems("products").lsSetVisibilityItem("products", "id", productId, isVisible);
+function setProductVisibility(productId, isVisible, toConsole = true) {
+    lsGetItems("products").lsSetItemVisibility("products", "id", productId, isVisible);
     ((toConsole) ? console.log : alert)(((toConsole) ? "[visibility product] - " : "") + `Le produit a été ${(isVisible) ? "réactivé" : "archivé"}.`);
 }
 
