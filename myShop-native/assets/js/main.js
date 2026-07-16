@@ -213,6 +213,23 @@ function displayCartNbProducts() {
 // DOM management functions //////////////////////////////////////////////
 
 // Data for displaying the navigation bar
+const H1_TITLE = "My Shop";
+const NAV_HTML = `
+    <div class="container-fluid">
+        <button class="navbar-toggler btn-burger" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 menu"></ul>
+        </div>
+    </div>
+`;
+const SUBMENU = `
+    <a href="#" aria-label="Mon profile"><i class="fa-regular fa-circle-user"></i></a>
+    <ul class="submenu"></ul>
+`;
 const LOGOUT = '<a href="javascript:logout()"><i class="fa-solid fa-power-off"></i>Déconnexion</a>';
 const NAVBAR = [
     {
@@ -275,25 +292,14 @@ function setHeader() {
 
     // Display the title
     const H1 = document.createElement("h1");
-    H1.textContent = "My Shop";
+    H1.textContent = H1_TITLE;
     HEADER.appendChild(H1);
 
     // Set up the navigation bar structure
     const NAV = document.createElement("nav");
     NAV.classList.add("navbar");
     NAV.classList.add("navbar-expand-lg");
-    NAV.innerHTML = `
-        <div class="container-fluid">
-            <button class="navbar-toggler btn-burger" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 menu"></ul>
-            </div>
-        </div>
-    `;
+    NAV.innerHTML = NAV_HTML;
     HEADER.appendChild(NAV);
 
     // Constants and variables
@@ -302,7 +308,7 @@ function setHeader() {
 
     // Local functions
     const isSelected = item => item.pages.split(",").some(page => HREF.includes(page));
-    const getLink = item => (!isSelected(item)) ? (HREF.includes("index.html")) ? item.link : item.link.replace("./pages/", "") : item.selected;
+    const getLink = item => (!isSelected(item)) ? (HREF.includes("index.html")) ? item.link : item.link.replace("./pages/", "./") : item.selected;
     const setLi = (item, html) => {
         li = document.createElement("li");
         if (item.id) li.id = item.id;
@@ -321,11 +327,7 @@ function setHeader() {
         if (item.submenu) {
             if (!submenu) {
                 // Set the submenu
-                const HTML = `
-                    <a href="#" aria-label="Mon profile"><i class="fa-regular fa-circle-user"></i></a>
-                    <ul class="submenu"></ul>
-                `;
-                setLi(item, HTML);
+                setLi(item, SUBMENU);
                 anchor = li.querySelector("a");
                 submenu = li.querySelector("ul");
             }
@@ -339,25 +341,33 @@ function setHeader() {
     });
 }
 
-// Display the button to return to the top of the page, and the page footer
+// Data for displaying the "back to top" button and the footer
+const BTNTOP_HTML = {
+    id: "scroll-top",
+    label: "Retour en haut de la page",
+    html: '<i class="fa-solid fa-arrow-up"></i>'
+};
+const FOOTER_HTML = `
+    <h2>Retrouvez-nous :</h2>
+    <p>
+        <a href="https://www.linkedin.com/in/fabien-chastang/" target="_blank"><i class="fa-brands fa-square-linkedin"></i>LinkedIn</a>
+        <a href="https://github.com/fabien-chastang" target="_blank"><i class="fa-brands fa-github"></i>GitHub</a>
+        <span class="copyright">Copyright © ${(new Date()).getFullYear()} My Shop</span>
+    </p>
+`;
+
+// Display the "back to top" button and the footer
 function setFooter() {
-    // Display the button to return to the top of the page
+    // Display the "back to top" button
     const BTN_TOP = document.createElement("button");
-    BTN_TOP.id = "scroll-top";
-    BTN_TOP.ariaLabel = BTN_TOP.title = "Retour en haut de la page";
-    BTN_TOP.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
+    BTN_TOP.id = BTNTOP_HTML.id;
+    BTN_TOP.ariaLabel = BTN_TOP.title = BTNTOP_HTML.label;
+    BTN_TOP.innerHTML = BTNTOP_HTML.html;
     document.body.appendChild(BTN_TOP);
 
     // Display the page footer
     const FOOTER = document.createElement("footer");
-    FOOTER.innerHTML = `
-        <h2>Retrouvez-nous :</h2>
-        <p>
-            <a href="https://www.linkedin.com/in/fabien-chastang/" target="_blank"><i class="fa-brands fa-square-linkedin"></i>LinkedIn</a>
-            <a href="https://github.com/fabien-chastang" target="_blank"><i class="fa-brands fa-github"></i>GitHub</a>
-            <span class="copyright">Copyright © ${(new Date()).getFullYear()} My Shop</span>
-        </p>
-    `;
+    FOOTER.innerHTML = FOOTER_HTML;
     document.body.appendChild(FOOTER);
 }
 
@@ -652,7 +662,7 @@ function init() {
     // Display the page header
     setHeader();
 
-    // Display the button to return to the top of the page, and the page footer
+    // Display the "back to top" button and the footer
     setFooter();
 
     // Show or hide the 'New product' tab depending on whether the user is an administrator or not
