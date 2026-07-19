@@ -49,37 +49,38 @@ VS Code is a free, lightweight, open-source source code editor developed by Micr
 
 ## 2. Installation
 
-> ### Windows
->
-> 1. Download:
->     - Visit the official website:&nbsp; https://code.visualstudio.com.
->     - Click the "Download for Windows" button (the `.exe` file downloads automatically).
->
-> 2. Installation:
->     - Double-click the downloaded `.exe` file. 
->     - Follow the installer's instructions (choose the default options if you are a beginner). 
->     - Once the installation is complete, VS Code is ready to use.
->
-> 3. Launching:
->     - Search for "Visual Studio Code" in the Start menu and click on it. 
->     - Or double-click the shortcut created on the desktop.
-> ***
+### Windows
 
-> ### macOS
->
-> 1. Download:
->     - Go to https://code.visualstudio.com.
->     - Click "Download for macOS" (the `.zip` file downloads).
->
-> 2. Installation:
->     - Double-click the `.zip` file to extract it. 
->     - Drag the "Visual Studio Code" application into the Applications folder. 
->     - If you see a security message, go to System Preferences > Security & Privacy and allow it to open.
->
-> 3. Launching:
->     - Open the Applications folder and double-click Visual Studio Code.
-> ***
+1. Download:
+    - Visit the official website:&nbsp; https://code.visualstudio.com.
+    - Click the "Download for Windows" button (the `.exe` file downloads automatically).
 
+2. Installation:
+    - Double-click the downloaded `.exe` file. 
+    - Follow the installer's instructions (choose the default options if you are a beginner). 
+    - Once the installation is complete, VS Code is ready to use.
+
+3. Launching:
+    - Search for "Visual Studio Code" in the Start menu and click on it. 
+    - Or double-click the shortcut created on the desktop.
+
+<br />
+
+### macOS
+
+1. Download:
+    - Go to https://code.visualstudio.com.
+    - Click "Download for macOS" (the `.zip` file downloads).
+
+2. Installation:
+    - Double-click the `.zip` file to extract it. 
+    - Drag the "Visual Studio Code" application into the Applications folder. 
+    - If you see a security message, go to System Preferences > Security & Privacy and allow it to open.
+
+3. Launching:
+    - Open the Applications folder and double-click Visual Studio Code.
+
+***
 <br />
 
 ## 3. Documentation

@@ -34,79 +34,81 @@ Git and GitHub are complementary tools widely used for software development, as 
 
 ## 2. Installing Git
 
-> ### Windows
->
-> 1. Download the installer from the official website: https://git-scm.com/install/windows
-> 2. Run the downloaded `.exe` file. 
-> 3. Follow the installer's instructions (the default options are generally suitable). 
-> ***
+### Windows
 
-> ### macOS
->
-> 1. <strong>Homebrew</strong>
->     - Install [homebrew](https://brew.sh/) if you don't already have it.
->     - Then, open your terminal:
-> > ```
-> >        bash
-> >
-> >        $ brew install git
-> > ```
-> 2. <strong>MacPorts</strong>
->     - Install [MacPorts](https://www.macports.org/) if you don't already have it.
->     - Then, open your terminal:
-> > ```
-> >        bash
-> >
-> >        $ sudo port install git
-> > ```
-> 3. <strong>Xcode Command Line Tools</strong>
->     - Apple ships a binary package of Git with [Xcode Command Line](https://developer.apple.com/xcode/resources/) Tools.
->     - You can install this via:
-> > ```
-> >        bash
-> >
-> >        $ xcode-select --install
-> > ```
-> <strong>Note:&nbsp; installing git-gui</strong><br />
-> If you would like to install [git-gui](https://git-scm.com/docs/git-gui) and [gitk](https://git-scm.com/docs/gitk), git's commit GUI and interactive history browser, you can do so using [homebrew](https://brew.sh/):
-> > ```
-> >   bash
-> >
-> >   $ brew install git-gui
-> > ```
-> ***
+1. Download the installer from the official website: https://git-scm.com/install/windows
+2. Run the downloaded `.exe` file. 
+3. Follow the installer's instructions (the default options are generally suitable). 
 
-> ### Once the installation is complete, open your terminal or Git Bash (a Git-specific terminal required on Windows and installed with Git) to verify the installation by running:
-> > ```
-> >   bash
-> >
-> >   $ git --version
-> > ```
-> This should display the installed version of Git.
-> ***
+<br />
 
+### macOS
+
+1. <strong>Homebrew</strong>
+    - Install [homebrew](https://brew.sh/) if you don't already have it.
+    - Then, open your terminal:
+```
+        bash
+
+        $ brew install git
+```
+2. <strong>MacPorts</strong>
+    - Install [MacPorts](https://www.macports.org/) if you don't already have it.
+    - Then, open your terminal:
+```
+        bash
+
+        $ sudo port install git
+```
+3. <strong>Xcode Command Line Tools</strong>
+    - Apple ships a binary package of Git with [Xcode Command Line](https://developer.apple.com/xcode/resources/) Tools.
+    - You can install this via:
+```
+        bash
+
+        $ xcode-select --install
+```
+4. <strong>Note:&nbsp; installing git-gui</strong><br />
+If you would like to install [git-gui](https://git-scm.com/docs/git-gui) and [gitk](https://git-scm.com/docs/gitk), git's commit GUI and interactive history browser, you can do so using [homebrew](https://brew.sh/):
+```
+    bash
+
+    $ brew install git-gui
+```
+
+<br />
+
+### Once the installation is complete, open your terminal or Git Bash (a Git-specific terminal required on Windows and installed with Git) to verify the installation by running:
+```
+    bash
+
+    $ git --version
+```
+This should display the installed version of Git.
+
+***
 <br />
 
 ## 3. Git configuration
 
 1. Open your terminal or Git Bash, then run the commands:
-> ```
->   bash
->
->   $ git config --global user.name "Your Name"
->   $ git config --global user.email "your@address.email"
-> ```
+```
+    bash
+
+    $ git config --global user.name "Your Name"
+    $ git config --global user.email "your@address.email"
+```
 2. To check the configuration:
-> ```
->   bash
-> 
->   $ git config list
-> ```
+```
+    bash
+
+    $ git config list
+```
 3. Among the information displayed, you should have:
-> ```
->   user.name=Your Name
->   user.email=your@address.email
-> ```
+```
+    user.name=Your Name
+    user.email=your@address.email
+```
 <strong>Note:</strong>&nbsp; the `--global` option applies a configuration to all Git repositories on your machine, not just the current one. You do not need to configure the same settings (such as your name or email) for each new project. This does not override a local configuration (`--local`) if a project requires specific settings.
 
 ***
@@ -156,42 +158,42 @@ Git and GitHub are complementary tools widely used for software development, as 
 ## 6. Initializing a Git repository and linking it to a GitHub repository
 
 1. Open your terminal or Git Bash in your project's root directory, then run the following command; this creates a `.git` subfolder containing the repository's entire configuration and history:
-> ```
->   bash
->
->   $ git init
-> ```
+```
+    bash
+
+    $ git init
+```
 2. To verify the initialization, run the following command; you should see a message indicating that you are on the `main` or `master` branch and that there are untracked files:
-> ```
->   bash
->
->   $ git status
-> ```
+```
+    bash
+
+    $ git status
+```
 3. If the created branch is named `master`, rename it `main` by running the command:
-> ```
->   bash
->
->   $ git branch -m master main
-> ```
+```
+    bash
+
+    $ git branch -m master main
+```
 4. Add the files to be tracked:
-> ```
->   bash
->
->   $ git add .
-> ```
+```
+    bash
+
+    $ git add .
+```
 5. Perform an initial `commit`:
-> ```
->   bash
->
->   $ git commit -m "Initial commit"
-> ```
+```
+    bash
+
+    $ git commit -m "Initial commit"
+```
 6. To link the local Git repository with the remote GitHub (or GitLab, or Bitbucket) repository, run the commands:
-> ```
->   bash
->
->   $ git remote add origin <remote_repository_url>
->   $ git push -u origin main
-> ```
+```
+    bash
+
+    $ git remote add origin <remote_repository_url>
+    $ git push -u origin main
+```
 
 ***
 <br />
