@@ -423,7 +423,7 @@ function init() {
             if (products.length == 0) {
                 // Fill the product array
                 let path = (self.location.href.includes(".github.io/")) ? "/Projet.ConcepteurDeveloppeurDapplications.Chastang.Fabien.2026" : "";
-                path += "/myShop-native/assets/img/clothing/";
+                path += "/myShop-assets/img/clothing/";
 
                 let product = new Product(
                     "Chemise",
