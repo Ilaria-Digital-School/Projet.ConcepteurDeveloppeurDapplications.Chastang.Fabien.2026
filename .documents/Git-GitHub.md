@@ -1,33 +1,10 @@
 # Git & GitHub
 
-Git and GitHub are complementary tools widely used for software development, as well as for managing any project requiring change tracking and collaboration.
+Git et GitHub sont des outils complémentaires largement utilisés pour le dévelop-pement logiciel, mais aussi pour gérer tout type de projet nécessitant un suivi des modifications et une collaboration.
 
-## 1. Why use Git and GitHub?
+## 1.Notes de configuration
 
-1. <strong>Git:&nbsp; a distributed version control system</strong>
-    - <strong>Complete history:</strong>&nbsp; Git records every change (who, when, why) in an immutable history. You can revert to any previous version of the project.
-    - <strong>Offline work:</strong>&nbsp; unlike some centralized tools, Git allows you to work without an internet connection and synchronize changes later.
-    - <strong>Lightweight branches:</strong>&nbsp; creating a branch to test a new feature or fix a bug is fast and does not duplicate the entire project. You can easily merge or delete a branch.
-    - <strong>Data integrity:</strong>&nbsp; Git uses checksums (hashes) to ensure the code is not corrupted.
-    - <strong>Performance:</strong>&nbsp; Git is optimized to handle projects of all sizes, even those with thousands of files.
 
-2. <strong>GitHub:&nbsp; a collaborative, cloud-based platform for Git</strong><br />
-   GitHub extends Git's capabilities with practical tools for teams and open-source projects:
-    - <strong>Repository hosting:</strong>&nbsp; Git projects are stored on remote servers (the cloud), making sharing and backups easy.
-    - <strong>Simplified collaboration:</strong>
-        - Pull Requests (PRs):&nbsp; for proposing changes to a main branch and discussing them before merging.
-        - Code review:&nbsp; for commenting on specific lines of code.
-        - Bug management:&nbsp; tracking bugs, feature requests, or tasks.
-    - <strong>Automation:</strong>
-        - GitHub Actions:&nbsp; automates testing, deployment, or notifications upon every change.
-        - CI/CD:&nbsp; integrates continuous delivery pipelines (Continuous Integration / Continuous Deployment).
-    - <strong>Documentation and visibility:</strong>
-        - Wikis:&nbsp; ability to create internal or public project documentation.
-        - GitHub Pages:&nbsp; for hosting a static website directly from your repository.
-    - <strong>Security and access control:</strong>
-        - Granular permission management (read/write/admin) for team members.
-        - Vulnerability detection in dependencies (via Dependabot).
-    - <strong>Open source ecosystem:</strong>&nbsp; for accessing and contributing to millions of public projects. GitHub is the go-to platform for open source.
 
 ***
 <br />

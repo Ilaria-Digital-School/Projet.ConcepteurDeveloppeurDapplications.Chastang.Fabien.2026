@@ -1,48 +1,10 @@
 # Visual Studio Code (VS Code)
 
-VS Code is a free, lightweight, open-source source code editor developed by Microsoft.
+VS Code est un éditeur de code source gratuit, léger et open source développé par Microsoft.
 
-## 1. Why use Visual Studio Code?
+## 1. Notes de configuration
 
-1. <strong>Free and open-source</strong>
-    - No licensing costs.
-    - Accessible and modifiable source code.
 
-2. <strong>Lightweight and high-performance</strong>
-    - Starts quickly and consumes few resources.
-    - Ideal for projects of all sizes.
-
-3. <strong>Cross-platform</strong>
-    - Runs on Windows, macOS, and Linux.
-
-4. <strong>Support for numerous languages</strong>
-    - Native support for JavaScript, TypeScript, Python, Java, C++, PHP, Go, Rust, etc.
-    - Extensions available for dozens of other languages.
-
-5. <strong>Powerful built-in features</strong>
-    - Advanced editing:&nbsp; auto-completion, syntax highlighting, auto-indentation.
-    - Integrated debugging:&nbsp; step-by-step execution, breakpoints, variable inspection.
-    - Version control:&nbsp; native integration with Git (and other systems like SVN or Mercurial).
-    - Integrated terminal:&nbsp; direct command-line access without leaving the editor.
-
-6. <strong>Extensibility</strong>
-    - Extension Marketplace:&nbsp; over 30,000 extensions to add functionality (linters, themes, specific tools, etc.).
-    - Extensive customization:&nbsp; keyboard shortcuts, settings, snippets.
-
-7. <strong>Real-time collaboration</strong>
-    - Live Share:&nbsp; allows multiple people to code on the same project in real-time, like Google Docs for code.
-
-8. <strong>Active community</strong>
-    - Abundant documentation, tutorials, and dedicated forums.
-    - Frequent updates with new features.
-
-9. <strong>Integration with modern tools</strong>
-    - Compatible with Docker, Kubernetes, Azure, AWS, etc.
-    - Support for containers and virtual environments.
-
-10. <strong>Accessibility</strong>
-    - Intuitive and adaptable interface.
-    - Dark/light modes and theme customization.
 
 ***
 <br />
