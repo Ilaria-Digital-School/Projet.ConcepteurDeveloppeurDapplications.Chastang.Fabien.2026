@@ -1,0 +1,46 @@
+<header>
+    <!-- Main title – Slogan: Dress every moment in style -->
+    <h1>{{title}}</h1>
+
+    <!-- Navigation menu -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <button class="navbar-toggler btn-burger" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 menu">
+                    <li><a routerLink="/"><i class="fa-regular fa-house"></i></a></li>
+                    <li><a routerLink="/products">Nos Articles</a></li>
+                    <!--
+                    <li id="navbar-add-product" class="inactive">
+                    -->
+                    <li>
+                        <a class="pointer" aria-label="Administration"><i class="fa-solid fa-tachograph-digital"></i></a>
+                        <ul class="submenu">
+                            <li><a routerLink="/add-product">Nouvel Article</a></li>
+                            <li><a routerLink="/dashboard">Administration</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a routerLink="/cart" title="Mon panier" aria-label="Mon panier"><i class="fa-solid fa-cart-arrow-down"></i></a>
+                        <span id="cart-sticker"></span>
+                    </li>
+                    <li>
+                        <a class="pointer" aria-label="Mon profile"><i class="fa-regular fa-circle-user"></i></a>
+                        <ul class="submenu separated">
+                            <li><a routerLink="/login">Connexion</a></li>
+                            <li><a routerLink="/add-user">Inscription</a></li>
+                            <li><a routerLink="/orders">Commandes</a></li>
+                            <li><a href="javascript:logout()"><i class="fa-solid fa-power-off"></i>Déconnexion</a></li>
+                        </ul>
+                    </li>
+                    <li><a routerLink="/contact" title="Contacter-nous" aria-label="Contacter-nous"><i class="fa-regular fa-envelope"></i></a></li>
+                    <li><a routerLink="/about" title="À propos de My Shop" aria-label="À propos de My Shop"><i class="fa-solid fa-circle-info"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

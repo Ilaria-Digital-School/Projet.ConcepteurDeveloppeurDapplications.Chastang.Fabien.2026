@@ -1,0 +1,29 @@
+<section>
+    @if (products.length > 0) {
+    <h2 class="h2-title">Nos Articles</h2>
+
+    <div class="product-container">
+        @for (product of products; track product.id; let i=$index) {
+        <article tabindex="0" class="article-product">
+            @if (product.price < 25 || product.price > 50) {
+                @if (product.price < 25) {
+                    <span [class]="'article-good'">Bonne<br>Affaire</span>
+                } @else {
+                    <span [class]="'article-top'">Top<br>Produit</span>
+                }
+            }
+            <h3>{{product.name}}</h3>
+            @if (typeof product.info !== undefined && product.info !== null && product.info != "") {
+                <p><span>{{product.info}}</span></p>
+            }
+            <div><img [src]="product.img" [alt]="product.name"></div>
+            <p>{{product.description}}</p>
+            <p>Prix: {{product.price}} €</p>
+            <button type="button"><i class="fa-solid fa-cart-arrow-down"></i></button>
+        </article>
+        }
+    </div>
+    } @else {
+    <h2 class="h2-title">Aucun article n'est référencé</h2> 
+    }
+</section>

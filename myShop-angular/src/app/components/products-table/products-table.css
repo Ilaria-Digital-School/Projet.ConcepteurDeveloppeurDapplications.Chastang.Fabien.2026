@@ -1,0 +1,8 @@
+.high-price {
+    color: rgb(220, 10, 0);
+    font-weight: bold;
+}
+
+.low-price {
+    color: rgb(0, 64, 0);
+}

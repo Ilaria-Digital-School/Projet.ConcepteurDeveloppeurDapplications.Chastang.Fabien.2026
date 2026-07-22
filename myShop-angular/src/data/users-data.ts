@@ -1,0 +1,59 @@
+export class UsersData {
+    users:any=[
+        {
+            id: 1, 
+            name: "Fabien", 
+            email:"admin.fabien@myshop.com", 
+            password:"●●●●●●●●●●●●", 
+            gender: 0, 
+            interest: [], 
+            country: 0, 
+            role: 1, 
+            isVisible: true
+        },
+        {
+            id: 2, 
+            name: "Erica", 
+            email:"cartman@south.park", 
+            password:"●●●●●●●●●●●●", 
+            gender: 2, 
+            interest: [1, 2], 
+            country: 8, 
+            role: 0, 
+            isVisible: true
+        },
+        {
+            id: 4, 
+            name: "Kenny", 
+            email:"mccormick@south.park", 
+            password:"●●●●●●●●●●●●", 
+            gender: 1, 
+            interest: [1, 2], 
+            country: 8, 
+            role: 0, 
+            isVisible: true
+        },
+        {
+            id: 5, 
+            name: "Stan", 
+            email:"marsh@south.park", 
+            password:"●●●●●●●●●●●●", 
+            gender: 1, 
+            interest: [2], 
+            country: 8, 
+            role: 0, 
+            isVisible: true
+        },
+        {
+            id: 6, 
+            name: "Kyle", 
+            email:"broflovski@south.park", 
+            password:"●●●●●●●●●●●●", 
+            gender: 1, 
+            interest: [1], 
+            country: 9, 
+            role: 0, 
+            isVisible: true
+        }
+    ];
+}

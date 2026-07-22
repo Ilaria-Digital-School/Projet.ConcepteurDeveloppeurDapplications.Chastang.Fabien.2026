@@ -1,0 +1,31 @@
+<section>
+    <!-- Product addition form -->
+    <form class="form">
+        <h2>Nouvel Article</h2>
+
+        <div>
+            <label for="name-product">Nom&nbsp;:</label>
+            <input type="text" name="name-product" id="name-product" placeholder="Nom de l'article" required>
+        </div>
+        <div>
+            <label for="description-product">Description&nbsp;:</label>
+            <textarea name="description-product" id="description-product" placeholder="Description de l'article" required></textarea>
+        </div>
+        <div>
+            <label for="price-product">Prix&nbsp;:</label>
+            <input type="text" name="price-product" id="price-product" class="number" maxlength="7" required>
+        </div>
+        <div>
+            <label for="img-product">Image&nbsp;:</label>
+            <input type="text" name="img-product" id="img-product" placeholder="Chemin de l'image" required>
+        </div>
+        <div>
+            <label for="info-product">Information optionnelle&nbsp;:</label>
+            <textarea name="info" id="info-product"></textarea>
+        </div>
+        <div class="div-button">
+            <button type="submit">Ajouter</button>
+            <button type="reset" title="Effacer" aria-label="Effacer"><i class="fa-solid fa-eraser"></i></button>
+        </div>
+    </form>
+</section>
