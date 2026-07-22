@@ -363,17 +363,19 @@ const FOOTER_HTML = `
 
 // Display the back-to-top button and the footer
 function setFooter() {
+    const CONTAINER = document.querySelector(".wrapper");
+
     // Display the back-to-top button
     const BTNTOP = document.createElement("button");
     BTNTOP.id = BTNTOP_HTML.id;
     BTNTOP.ariaLabel = BTNTOP.title = BTNTOP_HTML.label;
     BTNTOP.innerHTML = BTNTOP_HTML.html;
-    document.body.appendChild(BTNTOP);
+    CONTAINER.appendChild(BTNTOP);
 
     // Display the page footer
     const FOOTER = document.createElement("footer");
     FOOTER.innerHTML = FOOTER_HTML;
-    document.body.appendChild(FOOTER);
+    CONTAINER.appendChild(FOOTER);
 }
 
 // Window resizing management ////////////////////////////////////////////

@@ -8,24 +8,25 @@
     box-sizing: border-box;
 }
 
-/*************************************************************************\
+/*****************************\
     Sticky footer
-    https://css-tricks.com/couple-takes-sticky-footer/#article-header-id-3
-*/
+\*****************************/
 
 html {
     height: 100%;
+    box-sizing: border-box;
 }
 body {
     height: 100%;
+}
+.wrapper {
+    box-sizing: border-box;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
 }
-footer {
-    flex-shrink: 0;
-}
-.page-container {
-    flex: 1 0 auto;
+main {
+  flex-grow: 1;
 }
 
 /*****************************\
@@ -134,7 +135,7 @@ td {
 }
 
 /*****************************\
-    Button / Navbar boutton
+    Button / Navbar
 \*****************************/
 
 button {
@@ -195,6 +196,32 @@ button:active,
 .navbar-toggler.btn-burger:focus {
     padding: 3px 13px;
     border-width: 4px;
+}
+
+/*
+    Bootstrap: navbar
+*/
+
+.navbar-collapse:not(.show) {
+    display: none;
+}
+
+.navbar-collapse.show {
+    text-align: left;
+    padding-top: 10px;
+}
+
+.navbar-collapse.show {
+    gap: 5px;
+}
+
+.navbar-collapse.show a:hover,
+.navbar-collapse.show .selected-page {
+    transform: translateY(0) scale(1);
+}
+
+.navbar-collapse.show .selected-page {
+    font-weight: bold;
 }
 
 /*
@@ -369,32 +396,6 @@ footer .copyright {
     footer p {
         transform: scale(0.9);
     }
-}
-
-/*****************************\
-    Bootstrap: navbar
-\*****************************/
-
-.navbar-collapse:not(.show) {
-    display: none;
-}
-
-.navbar-collapse.show {
-    text-align: left;
-    padding-top: 10px;
-}
-
-.navbar-collapse.show ul {
-    gap: 5px;
-}
-
-.navbar-collapse.show a:hover,
-.navbar-collapse.show .selected-page {
-    transform: translateY(0) scale(1);
-}
-
-.navbar-collapse.show .selected-page {
-    font-weight: bold;
 }
 
 /*****************************\
@@ -614,10 +615,6 @@ footer .copyright {
     color: rgb(0, 150, 0);
     font-size: 24px;
 }
-
-/*
-    Other flags
-*/
 
 .article-top,
 .article-good {
