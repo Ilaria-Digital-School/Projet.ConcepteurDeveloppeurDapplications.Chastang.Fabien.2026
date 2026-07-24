@@ -7,5 +7,4 @@ import { ProductsData } from '../../../data/products-data';
   templateUrl: './products-table.html',
   styleUrl: './products-table.css',
 })
-export class ProductsTable extends ProductsData {
-}
+export class ProductsTable extends ProductsData {}

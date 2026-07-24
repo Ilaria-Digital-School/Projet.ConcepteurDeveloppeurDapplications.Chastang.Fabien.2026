@@ -11,14 +11,14 @@ import { Contact } from './components/contact/contact';
 import { About } from './components/about/about';
 
 export const routes: Routes = [
-    {path: '', component: Home},
-    {path: 'products', component: Products},
-    {path: 'dashboard', component: Dashboard},
-    {path: 'add-product', component: AddProduct},
-    {path: 'cart', component: Cart},
-    {path: 'login', component: Login},
-    {path: 'add-user', component: AddUser},
-    {path: 'orders', component: Orders},
-    {path: 'contact', component: Contact},
-    {path: 'about', component: About}
+  { path: '', component: Home },
+  { path: 'products', component: Products },
+  { path: 'dashboard', component: Dashboard },
+  { path: 'add-product', component: AddProduct },
+  { path: 'cart', component: Cart },
+  { path: 'login', component: Login },
+  { path: 'add-user', component: AddUser },
+  { path: 'orders', component: Orders },
+  { path: 'contact', component: Contact },
+  { path: 'about', component: About },
 ];

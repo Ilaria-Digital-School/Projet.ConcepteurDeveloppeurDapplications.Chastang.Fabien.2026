@@ -1,0 +1,17 @@
+.field-container {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.field-label {
+  cursor: default;
+  font-weight: bold;
+}
+
+.field {
+  display: inline-block;
+  margin-bottom: 0;
+  white-space: nowrap;
+}

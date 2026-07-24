@@ -8,12 +8,12 @@ import { RouterLink } from '@angular/router';
   styleUrl: './header.css',
 })
 export class Header {
-  title:string="My Shop";
-  name!:string; // Without initialization
-  var!:any;     // Any type, mainly for objects and data originating from the database 
+  title: string = 'My Shop';
+  name!: string; // Without initialization
+  var!: any; // Any type, mainly for objects and data originating from the database
 
   // Method
-  sum(a:number, b:number) {
-    return a+b;
+  sum(a: number, b: number) {
+    return a + b;
   }
 }

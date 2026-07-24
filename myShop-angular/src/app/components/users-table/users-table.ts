@@ -11,7 +11,7 @@ import { Roles } from '../../../data/roles';
   styleUrl: './users-table.css',
 })
 export class UsersTable extends UsersData {
-  countries:any = new Countries();
-  genders:any = new Genders();
-  roles:any = new Roles();
+  genders: any = new Genders();
+  countries: any = new Countries();
+  roles: any = new Roles();
 }
