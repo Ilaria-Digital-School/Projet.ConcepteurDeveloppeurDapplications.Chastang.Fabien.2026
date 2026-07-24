@@ -1,0 +1,130 @@
+header {
+  z-index: 100;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to bottom, darkblue, rgb(86, 131, 255));
+}
+
+header .selected-page {
+  display: inline-block;
+  transform: translateY(-1px) scale(1.2);
+  color: rgb(255, 230, 0);
+}
+
+header span .selected-page {
+  cursor: default;
+}
+
+/*
+    Cart's sticker
+*/
+
+#cart-sticker {
+  z-index: 150;
+  position: absolute;
+  bottom: 18px;
+  left: 20px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/*
+    Bootstrap: navbar
+*/
+
+.navbar-collapse:not(.show) {
+  display: none;
+}
+
+.navbar-collapse.show {
+  text-align: left;
+  padding-top: 10px;
+}
+
+.navbar-collapse.show ul {
+  gap: 5px;
+}
+
+.navbar-collapse.show a:hover,
+.navbar-collapse.show .selected-page {
+  transform: translateY(0) scale(1);
+}
+
+.navbar-collapse.show .selected-page {
+  font-weight: bold;
+}
+
+/*
+    Submenu (only used for Profile)
+*/
+
+.menu li {
+  position: relative;
+}
+
+.submenu {
+  display: inline-block;
+  z-index: 150;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  padding: 0;
+  list-style: none;
+  width: 135px;
+  background-color: #fff;
+  border: 1px solid #777;
+  border-radius: 5px;
+  text-align: left;
+
+  box-shadow: 0.2em 0.2em 0.8em 0.2em rgba(0, 0, 0, 0.3);
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    visibility 0.3s ease;
+}
+
+.menu li:hover .submenu {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.submenu li a {
+  padding: 4px 10px;
+  color: #777;
+  text-decoration: none;
+}
+
+.submenu li a:hover {
+  transform: translateX(4px) scale(1.1);
+  text-decoration: underline;
+  color: black;
+}
+
+.submenu .selected-page {
+  padding: 4px 10px;
+  cursor: default;
+  transform: translateX(4px) scale(1.1);
+  color: black;
+  font-weight: 600;
+}
+
+.submenu.separated li:last-of-type {
+  border-top: 1px solid #777;
+  margin-top: 6px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.submenu.separated li:last-of-type i {
+  margin-right: 5px;
+}

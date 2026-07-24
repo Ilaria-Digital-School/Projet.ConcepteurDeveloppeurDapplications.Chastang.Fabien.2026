@@ -51,16 +51,18 @@
           placeholder="Votre mot de passe"
           required
         />
-        <label for="pswdConfirm">Confirmation du mot de passe&nbsp;:</label>
-        <input
-          type="password"
-          id="pswdConfirm"
-          formControlName="pswdConfirm"
-          autocomplete="new-password"
-          placeholder="Confirmez de votre mot de passe"
-          aria-label="Confirmez de votre mot de passe"
-          required
-        />
+        <div [class]="'pswd-confirm'">
+          <label for="pswdConfirm">Confirmation du mot de passe&nbsp;:</label>
+          <input
+            type="password"
+            id="pswdConfirm"
+            formControlName="pswdConfirm"
+            autocomplete="new-password"
+            placeholder="Confirmez de votre mot de passe"
+            aria-label="Confirmez de votre mot de passe"
+            required
+          />
+        </div>
         <!-- Error message -->
         @if (
           userForm.get('pswd')?.invalid &&
@@ -82,7 +84,7 @@
       <legend>Informations supplémentaires</legend>
       <div class="field-container">
         <div class="field-label" aria-label="Genre">Genre&nbsp;:&ensp;</div>
-        <div>
+        <div id="genders" #genders>
           <div class="field">
             <input type="radio" name="gender" id="female" formControlName="gender" value="1" />
             <label for="female"> Femme&ensp;</label>
@@ -95,15 +97,6 @@
             <input type="radio" name="gender" id="other" formControlName="gender" value="0" />
             <label for="other"> Je le garde pour moi&ensp;</label>
           </div>
-          <!-- Error message -->
-          @if (
-            userForm.get('gender')?.invalid &&
-            (userForm.get('gender')?.touched || userForm.get('gender')?.dirty)
-          ) {
-            @if (userForm.get('gender')?.errors?.['required']) {
-              <div class="text-danger">Ce champ est obligatoire</div>
-            }
-          }
         </div>
       </div>
       <div class="field-container">
@@ -133,46 +126,13 @@
       </div>
       <div>
         <label for="country">Pays&nbsp;:</label>
-        <select id="country" formControlName="country">
-          <option value="1">Allemagne</option>
-          <option value="2">Autriche</option>
-          <option value="3">Belgique</option>
-          <option value="4">Brésil</option>
-          <option value="5">Canada</option>
-          <option value="6">Chine</option>
-          <option value="7">Espagne</option>
-          <option value="8">États-Unis</option>
-          <option value="9">France</option>
-          <option value="10">Grèce</option>
-          <option value="11">Inde</option>
-          <option value="12">Italie</option>
-          <option value="13">Japon</option>
-          <option value="14">Luxembourg</option>
-          <option value="15">Mauritanie</option>
-          <option value="16">Mexique</option>
-          <option value="17">Portugal</option>
-          <option value="18">Royaume-Uni</option>
-          <option value="19">Sénégal</option>
-          <option value="20">Suisse</option>
-          <option value="21">Taïwan</option>
-          <option value="22">Tunisie</option>
-          <option value="0">– Autre –</option>
-        </select>
-        <!-- Error message -->
-        @if (
-          userForm.get('country')?.invalid &&
-          (userForm.get('country')?.touched || userForm.get('country')?.dirty)
-        ) {
-          @if (userForm.get('country')?.errors?.['required']) {
-            <div class="text-danger">Ce champ est obligatoire</div>
-          }
-        }
+        <select id="country" #country formControlName="country"></select>
       </div>
     </fieldset>
 
     <div class="div-button">
       <button type="submit">S'inscrire</button>
-      <button type="reset" title="Effacer" aria-label="Effacer">
+      <button type="button" title="Effacer" aria-label="Effacer" (click)="reset()">
         <i class="fa-solid fa-eraser"></i>
       </button>
     </div>

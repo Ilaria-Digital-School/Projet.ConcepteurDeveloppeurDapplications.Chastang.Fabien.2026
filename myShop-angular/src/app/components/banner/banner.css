@@ -1,0 +1,49 @@
+.section-banner {
+  height: 600px;
+  background-image: url(/assets/img/slider-bg.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.section-banner div.container {
+  height: 100%;
+}
+
+.section-banner h2 {
+  color: rgb(185, 0, 0);
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+  text-shadow:
+    -1px -1px 0 rgb(255, 230, 0),
+    1px -1px 0 rgb(255, 230, 0),
+    -1px 1px 0 rgb(255, 230, 0),
+    1px 1px 0 rgb(255, 230, 0);
+}
+
+.section-banner p {
+  margin-bottom: 30px;
+}
+
+.section-banner a {
+  display: inline-block;
+  background: linear-gradient(rgb(220, 10, 0), rgb(185, 0, 0), rgb(220, 10, 0));
+  text-decoration: none;
+  color: rgb(255, 230, 0);
+  font-weight: bold;
+  white-space: nowrap;
+  border: 2px solid rgb(185, 0, 0);
+  border-radius: 5px;
+  padding: 5px 15px;
+}
+
+.section-banner a:hover {
+  background: rgb(255, 230, 0);
+  color: rgb(185, 0, 0);
+}
+
+.section-banner a:active {
+  transform: scale(0.9);
+}

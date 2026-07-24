@@ -1,35 +1,35 @@
 <section>
   <!-- Product addition form -->
-  <form id="productForm" #productForm="ngForm" (ngSubmit)="addProduct(productForm)" class="form">
+  <form id="productForm" #productForm="ngForm" (ngSubmit)="add(productForm)" class="form">
     <h2>Nouvel Article</h2>
 
     <div>
-      <label for="name-product">Nom&nbsp;:</label>
+      <label for="name">Nom&nbsp;:</label>
       <input
         type="text"
-        name="name-product"
-        id="name-product"
+        name="name"
+        id="name"
         [(ngModel)]="product.name"
         placeholder="Nom de l'article"
         required
       />
     </div>
     <div>
-      <label for="description-product">Description&nbsp;:</label>
+      <label for="description">Description&nbsp;:</label>
       <textarea
-        name="description-product"
-        id="description-product"
+        name="description"
+        id="description"
         [(ngModel)]="product.description"
         placeholder="Description de l'article"
         required
       ></textarea>
     </div>
     <div>
-      <label for="price-product">Prix&nbsp;:&nbsp;</label>
+      <label for="price">Prix&nbsp;:&nbsp;</label>
       <input
         type="text"
-        name="price-product"
-        id="price-product"
+        name="price"
+        id="price"
         [(ngModel)]="product.price"
         class="number"
         maxlength="7"
@@ -37,19 +37,19 @@
       />
     </div>
     <div>
-      <label for="img-product">Image&nbsp;:</label>
+      <label for="img">Image&nbsp;:</label>
       <input
         type="text"
-        name="img-product"
-        id="img-product"
+        name="img"
+        id="img"
         [(ngModel)]="product.img"
         placeholder="Chemin de l'image"
         required
       />
     </div>
     <div>
-      <label for="info-product">Information optionnelle&nbsp;:</label>
-      <textarea name="info" id="info-product" [(ngModel)]="product.name"></textarea>
+      <label for="info">Information optionnelle&nbsp;:</label>
+      <textarea name="info" id="info" [(ngModel)]="product.info"></textarea>
     </div>
     <div class="div-button">
       <button type="submit">Ajouter</button>

@@ -15,3 +15,7 @@
   margin-bottom: 0;
   white-space: nowrap;
 }
+
+.pswd-confirm {
+  padding-top: 5px;
+}

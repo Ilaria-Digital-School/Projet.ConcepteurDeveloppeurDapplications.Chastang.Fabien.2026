@@ -1,0 +1,32 @@
+footer {
+  background: linear-gradient(to top, darkblue, rgb(86, 131, 255));
+}
+
+footer h2 {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+footer a {
+  margin: 0 15px;
+}
+
+footer a i {
+  margin-right: 3px;
+}
+
+footer .copyright {
+  display: inline-block;
+  margin: 0 15px;
+  font-style: italic;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+#scroll-top {
+  z-index: 90;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  border: 2px solid white;
+}

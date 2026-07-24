@@ -18,7 +18,7 @@ export class AddProduct {
     info: '',
   };
 
-  addProduct(productForm: NgForm) {
+  add(productForm: NgForm) {
     this.products = JSON.parse(localStorage.getItem('products') || '[]');
     this.products.push(this.product);
     localStorage.setItem('products', JSON.stringify(this.products));
