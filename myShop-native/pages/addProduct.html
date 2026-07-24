@@ -1,61 +1,95 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.png">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="../assets/img/favicon/favicon.png"
+    />
     <title>Nouvel Article – My Shop</title>
 
     <!-- CSS files -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
-</head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+  </head>
 
-<body>
+  <body>
     <div class="wrapper">
-        <header></header>
+      <header></header>
 
-        <main id="main-add-product">
-            <section>
-                <!-- Product addition form -->
-                <form class="form">
-                    <h2>Nouvel Article</h2>
+      <main id="main-add-product">
+        <section>
+          <!-- Product addition form -->
+          <form class="form">
+            <h2>Nouvel Article</h2>
 
-                    <div>
-                        <label for="name-product">Nom&nbsp;:</label>
-                        <input type="text" name="name-product" id="name-product" placeholder="Nom de l'article" required>
-                    </div>
-                    <div>
-                        <label for="description-product">Description&nbsp;:</label>
-                        <textarea name="description-product" id="description-product" placeholder="Description de l'article" required></textarea>
-                    </div>
-                    <div>
-                        <label for="price-product">Prix&nbsp;:</label>
-                        <input type="text" name="price-product" id="price-product" class="number" maxlength="7" required>
-                    </div>
-                    <div>
-                        <label for="img-product">Image&nbsp;:</label>
-                        <input type="text" name="img-product" id="img-product" placeholder="Chemin de l'image" required>
-                    </div>
-                    <div>
-                        <label for="info-product">Information optionnelle&nbsp;:</label>
-                        <textarea name="info" id="info-product"></textarea>
-                    </div>
-                    <div class="div-button">
-                        <button type="submit">Ajouter</button>
-                        <button type="reset" title="Effacer" aria-label="Effacer"><i class="fa-solid fa-eraser"></i></button>
-                    </div>
-                </form>
-            </section>
-        </main>
+            <div>
+              <label for="name-product">Nom&nbsp;:</label>
+              <input
+                type="text"
+                name="name-product"
+                id="name-product"
+                placeholder="Nom de l'article"
+                required
+              />
+            </div>
+            <div>
+              <label for="description-product">Description&nbsp;:</label>
+              <textarea
+                name="description-product"
+                id="description-product"
+                placeholder="Description de l'article"
+                required
+              ></textarea>
+            </div>
+            <div>
+              <label for="price-product">Prix&nbsp;:</label>
+              <input
+                type="text"
+                name="price-product"
+                id="price-product"
+                class="number"
+                maxlength="7"
+                required
+              />
+            </div>
+            <div>
+              <label for="img-product">Image&nbsp;:</label>
+              <input
+                type="text"
+                name="img-product"
+                id="img-product"
+                placeholder="Chemin de l'image"
+                required
+              />
+            </div>
+            <div>
+              <label for="info-product">Information optionnelle&nbsp;:</label>
+              <textarea name="info" id="info-product"></textarea>
+            </div>
+            <div class="div-button">
+              <button type="submit">Ajouter</button>
+              <button type="reset" title="Effacer" aria-label="Effacer">
+                <i class="fa-solid fa-eraser"></i>
+              </button>
+            </div>
+          </form>
+        </section>
+      </main>
     </div>
 
     <!-- JavaScript files -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/product.js"></script>
-</body>
-
+  </body>
 </html>
