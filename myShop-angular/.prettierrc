@@ -1,6 +1,9 @@
 {
+  "useTabs": false,
+  "tabWidth": 2,
   "printWidth": 100,
   "singleQuote": true,
+  "ternaryOperatorParentheses": "always",
   "overrides": [
     {
       "files": "*.html",

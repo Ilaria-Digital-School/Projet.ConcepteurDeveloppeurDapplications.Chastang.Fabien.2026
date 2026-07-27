@@ -1,24 +1,26 @@
 <section>
   <!-- Login form -->
-  <form class="form">
+  <form id="loginForm" #loginForm="ngForm" (ngSubmit)="login(loginForm)" class="form">
     <h2>Connexion</h2>
 
     <div>
-      <label for="email-user">E-mail&nbsp;:</label>
+      <label for="email">E-mail&nbsp;:</label>
       <input
         type="email"
-        name="email-user"
-        id="email-user"
+        name="email"
+        id="email"
+        [(ngModel)]="user.email"
         placeholder="votre@adresse.email"
         required
       />
     </div>
     <div>
-      <label for="password-user">Mot de passe&nbsp;:</label>
+      <label for="pswd">Mot de passe&nbsp;:</label>
       <input
         type="password"
-        name="password-user"
-        id="password-user"
+        name="pswd"
+        id="pswd"
+        [(ngModel)]="user.pswd"
         placeholder="Votre mot de passe"
         autocomplete="current-password"
         required
@@ -37,7 +39,7 @@
 
     <div>
       <p>
-        Vous n'avez pas encore un compte ?
+        Vous n'avez pas encore un compte ? &nbsp;
         <a routerLink="/add-user">S'inscrire</a>
       </p>
     </div>

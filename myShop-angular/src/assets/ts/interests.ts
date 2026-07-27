@@ -1,7 +1,5 @@
 export class Interests {
-  fieldName = 'interests';
-
-  other = [];
+  other = { value: 0, label: null };
   list = [
     { value: 1, id: 'clothes', label: 'Vêtements' },
     { value: 2, id: 'accessories', label: 'Accessoires' },
@@ -11,10 +9,10 @@ export class Interests {
   getId(interestName: string) {
     const NAME = interestName.trim().toLowerCase();
     const INTEREST = this.list.find((item) => item.label.toLowerCase() == NAME);
-    return INTEREST ? INTEREST.value : 0;
+    return INTEREST ? INTEREST.value : this.other.value;
   }
   getName(interestId: number) {
     const INTEREST = this.list.find((item) => item.value == interestId);
-    return INTEREST ? INTEREST.label : undefined;
+    return INTEREST ? INTEREST.label : this.other.label;
   }
 }

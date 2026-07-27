@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { UsersData } from '../../../data/users-data';
-import { Countries } from '../../../data/countries';
-import { Genders } from '../../../data/genders';
-import { Roles } from '../../../data/roles';
+import { UsersData } from '../../../assets/ts/users-data';
+import { Countries } from '../../../assets/ts/countries';
+import { Genders } from '../../../assets/ts/genders';
+import { Roles } from '../../../assets/ts/roles';
 
 @Component({
   selector: 'app-users-table',

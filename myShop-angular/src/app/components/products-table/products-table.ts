@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProductsData } from '../../../data/products-data';
+import { ProductsData } from '../../../assets/ts/products-data';
 
 @Component({
   selector: 'app-products-table',

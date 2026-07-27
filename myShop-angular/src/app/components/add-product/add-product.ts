@@ -9,16 +9,16 @@ import { FormsModule, NgForm } from '@angular/forms';
 })
 export class AddProduct {
   products: any[] = [];
-
   product = {
     name: '',
     description: '',
     price: '',
     img: '',
     info: '',
+    isVisible: true,
   };
 
-  add(productForm: NgForm) {
+  add(productForm: NgForm): void {
     this.products = JSON.parse(localStorage.getItem('products') || '[]');
     this.products.push(this.product);
     localStorage.setItem('products', JSON.stringify(this.products));

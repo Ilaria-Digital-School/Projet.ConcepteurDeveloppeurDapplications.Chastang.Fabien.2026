@@ -1,7 +1,5 @@
 export class Genders {
-  fieldName = 'gender';
-
-  other = { value: 0, id: 'other', label: 'Je le garde pour moi' };
+  other = { value: 0, id: 'other', label: '– Indéfini –' };
   list = [
     { value: 1, id: 'female', label: 'Femme' },
     { value: 2, id: 'male', label: 'Homme' },
@@ -15,6 +13,6 @@ export class Genders {
   }
   getName(genderId: number) {
     const GENDER = this.list.find((item) => item.value == genderId);
-    return GENDER ? GENDER.label : '';
+    return GENDER ? GENDER.label : this.other.label;
   }
 }

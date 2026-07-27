@@ -5,7 +5,7 @@
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">ID</th>
+            <th scope="col" [style.font-style]="'italic'">ID</th>
             <th scope="col">Genre</th>
             <th scope="col">Nom</th>
             <th scope="col">E-mail</th>
@@ -16,18 +16,20 @@
         </thead>
         <tbody class="table-group-divider">
           @for (user of users; track user.id; let i = $index) {
-            <tr [class]="user.role != 0 ? 'admin' : 'user'">
+            <tr [style.font-weight]="user.role != 0 ? '600' : 'normal'">
               <th scope="row">{{ i + 1 }}</th>
-              <td>{{ user.id }}</td>
-              @if (user.gender != 0) {
-                <td>{{ genders.getName(user.gender) }}</td>
-              } @else {
-                <td>– Indéfini –</td>
-              }
-              <td [style.text-align]="'left'">{{ user.name }}</td>
-              <td [style.text-align]="'left'">{{ user.email }}</td>
+              <td [style.font-style]="'italic'">{{ user.id }}</td>
+              <td>{{ genders.getName(user.gender) }}</td>
+              <td [style.text-align]="'left'" [style.color]="user.role != 0 ? 'red' : 'black'">
+                {{ user.name }}
+              </td>
+              <td [style.text-align]="'left'" [style.color]="user.role != 0 ? 'red' : 'black'">
+                {{ user.email }}
+              </td>
               <td>{{ countries.getName(user.country) }}</td>
-              <td>{{ roles.getName(user.role) }}</td>
+              <td [style.color]="user.role != 0 ? 'red' : 'black'">
+                {{ roles.getName(user.role) }}
+              </td>
               <td>
                 <button
                   type="button"

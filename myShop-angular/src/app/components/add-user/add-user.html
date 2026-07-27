@@ -14,9 +14,9 @@
           (userForm.get('name')?.touched || userForm.get('name')?.dirty)
         ) {
           @if (userForm.get('name')?.errors?.['required']) {
-            <div class="text-danger">Ce champ est obligatoire</div>
+            <div class="text-danger error">Ce champ est obligatoire</div>
           } @else if (userForm.get('name')?.errors?.['minlength']) {
-            <div class="text-danger">Saisissez au moins 3 caractères</div>
+            <div class="text-danger error">Saisissez au moins 3 caractères</div>
           }
         }
       </div>
@@ -35,9 +35,9 @@
           (userForm.get('email')?.touched || userForm.get('email')?.dirty)
         ) {
           @if (userForm.get('email')?.errors?.['required']) {
-            <div class="text-danger">Ce champ est obligatoire</div>
+            <div class="text-danger error">Ce champ est obligatoire</div>
           } @else if (userForm.get('email')?.errors?.['email']) {
-            <div class="text-danger">Saisissez une adresse mail valide : votre@adresse.email</div>
+            <div class="text-danger error">Saisissez une adresse mail valide : votre@adresse.email</div>
           }
         }
       </div>
@@ -51,32 +51,43 @@
           placeholder="Votre mot de passe"
           required
         />
-        <div [class]="'pswd-confirm'">
-          <label for="pswdConfirm">Confirmation du mot de passe&nbsp;:</label>
-          <input
-            type="password"
-            id="pswdConfirm"
-            formControlName="pswdConfirm"
-            autocomplete="new-password"
-            placeholder="Confirmez de votre mot de passe"
-            aria-label="Confirmez de votre mot de passe"
-            required
-          />
-        </div>
         <!-- Error message -->
         @if (
           userForm.get('pswd')?.invalid &&
           (userForm.get('pswd')?.touched || userForm.get('pswd')?.dirty)
         ) {
           @if (userForm.get('pswd')?.errors?.['required']) {
-            <div class="text-danger">Ce champ est obligatoire</div>
-          } @else if (
-            userForm.get('pswd')?.errors?.['minlength'] ||
-            userForm.get('pswd')?.errors?.['maxlength']
-          ) {
-            <div class="text-danger">Le mot de passe doit contenir entre 6 et 10 caractères</div>
+            <div class="text-danger error">Ce champ est obligatoire</div>
+          } @else if (userForm.get('pswd')?.errors?.['pattern']) {
+            <div class="text-danger error">
+              Le mot de passe doit contenir au moins 8 caractères, tous non blancs, avec au moins
+              une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial
+            </div>
           }
         }
+        <div [class]="'confirm'">
+          <label for="confirm">Confirmation du mot de passe&nbsp;:</label>
+          <input
+            type="password"
+            id="confirm"
+            formControlName="confirm"
+            autocomplete="new-password"
+            placeholder="Confirmez de votre mot de passe"
+            aria-label="Confirmez de votre mot de passe"
+            required
+          />
+          <!-- Error message -->
+          @if (
+            userForm.get('confirm')?.invalid &&
+            (userForm.get('confirm')?.touched || userForm.get('confirm')?.dirty)
+          ) {
+            @if (userForm.get('confirm')?.errors?.['required']) {
+              <div class="text-danger error">Ce champ est obligatoire</div>
+            } @else if (userForm.get('confirm')?.errors?.['notSame']) {
+              <div class="text-danger error">La confirmation du mot de passe est incorrecte</div>
+            }
+          }
+        </div>
       </div>
     </fieldset>
 
@@ -139,7 +150,7 @@
 
     <div>
       <p>
-        Vous avez déjà un compte ?
+        Vous avez déjà un compte ? &nbsp;
         <a routerLink="/login">Se connecter</a>
       </p>
     </div>
