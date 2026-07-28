@@ -1,21 +1,27 @@
 <section>
   <!-- User registration form -->
-  <form class="form" [formGroup]="userForm" (ngSubmit)="add()">
-    <h2>Inscription</h2>
+  <form class="form" [formGroup]="userForm" (ngSubmit)="submit()">
+    <h2>{{ title }}</h2>
 
     <fieldset>
       <legend>Informations personnelles</legend>
       <div>
-        <label for="name">Nom&nbsp;:</label>
-        <input type="text" id="name" formControlName="name" placeholder="Votre nom" required />
+        <label for="nameItem">Nom&nbsp;:</label>
+        <input
+          type="text"
+          id="nameItem"
+          formControlName="nameItem"
+          placeholder="Votre nom"
+          autocomplete="off"
+        />
         <!-- Error message -->
         @if (
-          userForm.get('name')?.invalid &&
-          (userForm.get('name')?.touched || userForm.get('name')?.dirty)
+          userForm.get('nameItem')?.invalid &&
+          (userForm.get('nameItem')?.touched || userForm.get('nameItem')?.dirty)
         ) {
-          @if (userForm.get('name')?.errors?.['required']) {
+          @if (userForm.get('nameItem')?.errors?.['required']) {
             <div class="text-danger error">Ce champ est obligatoire</div>
-          } @else if (userForm.get('name')?.errors?.['minlength']) {
+          } @else if (userForm.get('nameItem')?.errors?.['minlength']) {
             <div class="text-danger error">Saisissez au moins 3 caractères</div>
           }
         }
@@ -27,7 +33,7 @@
           id="email"
           formControlName="email"
           placeholder="votre@adresse.email"
-          required
+          autocomplete="off"
         />
         <!-- Error message -->
         @if (
@@ -37,58 +43,57 @@
           @if (userForm.get('email')?.errors?.['required']) {
             <div class="text-danger error">Ce champ est obligatoire</div>
           } @else if (userForm.get('email')?.errors?.['email']) {
-            <div class="text-danger error">Saisissez une adresse mail valide : votre@adresse.email</div>
-          }
-        }
-      </div>
-      <div>
-        <label for="pswd">Mot de passe&nbsp;:</label>
-        <input
-          type="password"
-          id="pswd"
-          formControlName="pswd"
-          autocomplete="new-password"
-          placeholder="Votre mot de passe"
-          required
-        />
-        <!-- Error message -->
-        @if (
-          userForm.get('pswd')?.invalid &&
-          (userForm.get('pswd')?.touched || userForm.get('pswd')?.dirty)
-        ) {
-          @if (userForm.get('pswd')?.errors?.['required']) {
-            <div class="text-danger error">Ce champ est obligatoire</div>
-          } @else if (userForm.get('pswd')?.errors?.['pattern']) {
             <div class="text-danger error">
-              Le mot de passe doit contenir au moins 8 caractères, tous non blancs, avec au moins
-              une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial
+              Saisissez une adresse mail valide : votre@adresse.email
             </div>
           }
         }
-        <div [class]="'confirm'">
-          <label for="confirm">Confirmation du mot de passe&nbsp;:</label>
+      </div>
+      @if (!isEditMode) {
+        <div>
+          <label for="pswd">Mot de passe&nbsp;:</label>
           <input
             type="password"
-            id="confirm"
-            formControlName="confirm"
+            id="pswd"
+            formControlName="pswd"
             autocomplete="new-password"
-            placeholder="Confirmez de votre mot de passe"
-            aria-label="Confirmez de votre mot de passe"
-            required
+            placeholder="Votre mot de passe"
           />
           <!-- Error message -->
           @if (
-            userForm.get('confirm')?.invalid &&
-            (userForm.get('confirm')?.touched || userForm.get('confirm')?.dirty)
+            userForm.get('pswd')?.invalid &&
+            (userForm.get('pswd')?.touched || userForm.get('pswd')?.dirty)
           ) {
-            @if (userForm.get('confirm')?.errors?.['required']) {
+            @if (userForm.get('pswd')?.errors?.['required']) {
               <div class="text-danger error">Ce champ est obligatoire</div>
-            } @else if (userForm.get('confirm')?.errors?.['notSame']) {
-              <div class="text-danger error">La confirmation du mot de passe est incorrecte</div>
+            } @else if (userForm.get('pswd')?.errors?.['pattern']) {
+              <div class="text-danger error">
+                Le mot de passe doit contenir au moins 8 caractères, tous non blancs, avec au moins
+                une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial
+              </div>
             }
           }
+          <div [class]="'confirm'">
+            <label for="confirm">Confirmation du mot de passe&nbsp;:</label>
+            <input
+              type="password"
+              id="confirm"
+              formControlName="confirm"
+              autocomplete="new-password"
+              placeholder="Confirmez de votre mot de passe"
+              aria-label="Confirmez de votre mot de passe"
+            />
+            <!-- Error message -->
+            @if (userForm.get('confirm')?.touched || userForm.get('confirm')?.dirty) {
+              @if (userForm.get('confirm')?.errors?.['required']) {
+                <div class="text-danger error">Ce champ est obligatoire</div>
+              } @else if (userForm.hasError('pswdMismatch')) {
+                <div class="text-danger error">La confirmation du mot de passe est incorrecte</div>
+              }
+            }
+          </div>
         </div>
-      </div>
+      }
     </fieldset>
 
     <fieldset>
@@ -114,45 +119,37 @@
         <div class="field-label" aria-label="Intérêts">Intérêts&nbsp;:&ensp;</div>
         <div>
           <div class="field">
-            <input
-              type="checkbox"
-              name="interests"
-              id="clothes"
-              formControlName="clothes"
-              value="1"
-            />
+            <input type="checkbox" id="clothes" formControlName="clothes" value="1" />
             <label for="clothes"> Vêtements&ensp;</label>
           </div>
           <div class="field">
-            <input
-              type="checkbox"
-              name="interests"
-              id="accessories"
-              formControlName="accessories"
-              value="2"
-            />
+            <input type="checkbox" id="accessories" formControlName="accessories" value="2" />
             <label for="accessories"> Accessores&ensp;</label>
           </div>
         </div>
       </div>
       <div>
         <label for="country">Pays&nbsp;:</label>
-        <select id="country" #country formControlName="country"></select>
+        <select id="country" #country formControlName="country" autocomplete="off"></select>
       </div>
     </fieldset>
 
     <div class="div-button">
-      <button type="submit">S'inscrire</button>
+      <button type="submit" [disabled]="userForm.invalid" [class.btn-disabled]="userForm.invalid">
+        {{ btnAction }}
+      </button>
       <button type="button" title="Effacer" aria-label="Effacer" (click)="reset()">
         <i class="fa-solid fa-eraser"></i>
       </button>
     </div>
 
-    <div>
-      <p>
-        Vous avez déjà un compte ? &nbsp;
-        <a routerLink="/login">Se connecter</a>
-      </p>
-    </div>
+    @if (!isEditMode) {
+      <div>
+        <p>
+          Vous avez déjà un compte ? &nbsp;
+          <a routerLink="/login">Se connecter</a>
+        </p>
+      </div>
+    }
   </form>
 </section>

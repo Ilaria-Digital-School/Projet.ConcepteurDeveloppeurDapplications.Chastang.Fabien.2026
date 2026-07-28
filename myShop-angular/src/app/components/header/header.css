@@ -74,7 +74,7 @@ header span .selected-page {
   left: 0;
   padding: 0;
   list-style: none;
-  width: 135px;
+  width: 140px;
   background-color: #fff;
   border: 1px solid #777;
   border-radius: 5px;
@@ -97,7 +97,7 @@ header span .selected-page {
 }
 
 .submenu li a {
-  padding: 4px 10px;
+  padding: 3px 10px;
   color: #777;
   text-decoration: none;
 }
@@ -109,7 +109,7 @@ header span .selected-page {
 }
 
 .submenu .selected-page {
-  padding: 4px 10px;
+  padding: 3px 10px;
   cursor: default;
   transform: translateX(4px) scale(1.1);
   color: black;
@@ -118,7 +118,6 @@ header span .selected-page {
 
 .submenu.separated li:last-of-type {
   border-top: 1px solid #777;
-  margin-top: 6px;
   padding-top: 3px;
   padding-bottom: 3px;
   font-size: 14px;

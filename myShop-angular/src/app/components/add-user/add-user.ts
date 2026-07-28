@@ -1,4 +1,4 @@
-import { Component, Renderer2, ViewChild, ElementRef, AfterViewInit, inject } from '@angular/core';
+import { Component, inject, Renderer2, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,28 +7,15 @@ import {
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Countries } from '../../../assets/ts/countries';
 
-// Validators: check if the password confirmation is valid
+// Custom validators for the entire form
 export class CustomValidators {
-  static confirmPswd() {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const [PSWD, CONFIRM] = [control.get('pswd')?.value, control.get('confirm')?.value];
-
-      console.log(control?.value);
-
-      if (!CONFIRM) {
-        control.get('confirm')?.setErrors({ required: true });
-        return { required: true };
-      } else if (PSWD !== CONFIRM) {
-        control.get('confirm')?.setErrors({ notSame: true });
-        return { notSame: true };
-      } else {
-        control.get('confirm')?.setErrors(null);
-        return null;
-      }
-    }
+  // Confirm password
+  static confirmPswd(control: AbstractControl): ValidationErrors | null {
+    const [PSWD, CONFIRM] = [control.get('pswd')?.value, control.get('confirm')?.value];
+    return PSWD !== CONFIRM ? { pswdMismatch: true } : null;
   }
 }
 
@@ -39,12 +26,14 @@ export class CustomValidators {
   styleUrl: './add-user.css',
 })
 export class AddUser implements AfterViewInit {
+  private activatedRoute = inject(ActivatedRoute);
+
   // The list of genders //////////////////////////////////////////////////////
   @ViewChild('genders') gendersDiv!: ElementRef;
   gendersHTMLInput!: NodeListOf<HTMLInputElement>;
 
   // The list of countries ////////////////////////////////////////////////////
-  countries: any = new Countries();
+  countries: any = Countries;
   countriesHTMLSelect!: HTMLSelectElement;
   countriesHTMLOptions!: HTMLOptionsCollection;
 
@@ -65,7 +54,13 @@ export class AddUser implements AfterViewInit {
 
   // The form and its data: initialization and validation /////////////////////
   userForm!: FormGroup;
+  isEditMode!: boolean;
   users: any[] = [];
+  userId!: number;
+  title!: string;
+  btnAction!: string;
+  user!: any;
+  userIni!: any;
 
   // Oldest version of Angular
   // constructor(private formBuilder: FormBuilder) {}
@@ -78,25 +73,64 @@ export class AddUser implements AfterViewInit {
     // Populating the HTML <select> element for countries
     this.setCountries();
 
-    const PSWD_PATTERN =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[&~"#'{([|_\\^@)\]=+}€¨$£¤%*<>,?;.:\/!§-])[a-zA-Z\d&~"#'{([|_\\^@)\]=+}€¨$£¤%*<>,?;.:\/!§-]{8,}$/;
+    // Get the data
+    this.users = JSON.parse(localStorage.getItem('users') || '[]');
+    this.userId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+    this.isEditMode = this.userId ? true : false;
+
+    if (this.isEditMode) {
+      // Edit mode: retrieve the product by its ID
+      this.title = 'Mise à jour';
+      this.btnAction = 'Modifier';
+      this.user = this.users.find((item: any) => (item.id = this.userId));
+      this.userIni = structuredClone(this.user);
+    } else {
+      this.title = 'Inscription';
+      this.btnAction = 'Ajouter';
+      this.userIni = {
+        id: 0,
+        name: '',
+        email: '',
+        pswd: '',
+        gender: 0,
+        interests: [],
+        country: 0,
+        role: 0,
+        isVisible: true,
+      };
+    }
+
+    // The password must contain at least 8 characters, all non-whitespace, including at least
+    // one lowercase letter, one uppercase letter, one digit, and one special character
+    const SPECIAL_CHR = '&~"#\'{([|_\\\\^@)\\]=+}€¨$£¤%*<>,?;.:/!§-';
+    const PSWD_PATTERN = new RegExp(
+      '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[' +
+        SPECIAL_CHR +
+        '])[a-zA-Z\\d' +
+        SPECIAL_CHR +
+        ']{8,}$',
+    );
 
     // Form initialization and field validation setup
     this.userForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.pattern(/\S{3,}/), Validators.maxLength(50)]],
-      email: ['', [Validators.required, Validators.email]],
-      pswd: ['', [Validators.required, Validators.pattern(PSWD_PATTERN)]],
-      confirm: [''],
-      gender: ['0'],
-      clothes: [false],
-      accessories: [false],
-      country: ['0'],
+      nameItem: [
+        this.userIni.name,
+        [Validators.required, Validators.pattern(/\S{3,}/), Validators.maxLength(50)],
+      ],
+      email: [this.userIni.email, [Validators.required, Validators.email]],
+      pswd: [this.userIni.pswd, [Validators.required, Validators.pattern(PSWD_PATTERN)]],
+      confirm: [this.userIni.pswd, Validators.required],
+      gender: [this.userIni.gender.toString()],
+      clothes: [this.userIni.interests.includes(1)],
+      accessories: [this.userIni.interests.includes(2)],
+      country: [this.userIni.country.toString()],
     });
 
-    this.userForm
-      .get('confirm')
-      ?.setValidators([Validators.required, CustomValidators.confirmPswd]);
-    this.userForm.get('confirm')?.updateValueAndValidity();
+    if (!this.isEditMode) {
+      // Custom validator for the entire form
+      this.userForm.setValidators(CustomValidators.confirmPswd);
+      this.userForm.updateValueAndValidity();
+    }
   }
 
   // Method called after ngOnInit
@@ -107,47 +141,94 @@ export class AddUser implements AfterViewInit {
   }
 
   // Method called when the form is submitted /////////////////////////////////
-  add(): boolean {
+  submit(): void {
     const FORM_VAL = this.userForm.value;
 
-    // Check if the email does not exist
-    this.users = JSON.parse(localStorage.getItem('users') || '[]');
-    if (this.users.some((user: any) => user.email == FORM_VAL.email)) {
-      alert('Cet e-mail existe déjà !');
-      return false;
+    if (!this.isEditMode || (this.isEditMode && this.userIni.email != FORM_VAL.email)) {
+      // Check if the email does not exist
+      if (this.users.some((user: any) => user.email == FORM_VAL.email)) {
+        alert('Cet e-mail existe déjà !');
+        return;
+      }
     }
 
     // Manage the checkboxes
     let interests = [];
-    if (FORM_VAL.clothes) interests.push(parseInt(FORM_VAL.clothes));
-    if (FORM_VAL.accessories) interests.push(parseInt(FORM_VAL.accessories));
+    if (FORM_VAL.clothes) interests.push(1);
+    if (FORM_VAL.accessories) interests.push(2);
 
-    // Create the result object
-    const USER = {
-      name: FORM_VAL.name.trim(),
-      email: FORM_VAL.email,
-      pswd: FORM_VAL.pswd,
-      gender: parseInt(FORM_VAL.gender),
-      interests: interests,
-      country: parseInt(FORM_VAL.country),
-      role: 0,
-      isVisible: true,
-    };
+    let toSave = false;
+    if (this.isEditMode) {
+      // Modify the user
+      const NAME = FORM_VAL.nameItem.trim();
+      if (this.userIni.name != NAME) {
+        toSave = true;
+        this.user.name = NAME;
+      }
+      if (this.userIni.email != FORM_VAL.email) {
+        toSave = true;
+        this.user.email = FORM_VAL.email;
+      }
+      const GENDER = parseInt(FORM_VAL.gender);
+      if (this.userIni.gender != GENDER) {
+        toSave = true;
+        this.user.gender = GENDER;
+      }
+      if (
+        [1, 2].some(
+          (item: any) => this.userIni.interests.includes(item) !== interests.includes(item),
+        )
+      ) {
+        toSave = true;
+        this.user.interests = interests;
+      }
+      const COUNTRY = parseInt(FORM_VAL.country);
+      if (this.userIni.country != COUNTRY) {
+        toSave = true;
+        this.user.country = COUNTRY;
+      }
+    } else {
+      // Create the result object
+      toSave = true;
+      this.user = {
+        id: Date.now(),
+        name: FORM_VAL.nameItem.trim(),
+        email: FORM_VAL.email,
+        pswd: FORM_VAL.pswd,
+        gender: parseInt(FORM_VAL.gender),
+        interests: interests,
+        country: parseInt(FORM_VAL.country),
+        role: 0,
+        isVisible: true,
+      };
+      this.users.push(this.user);
+    }
 
-    // Saving user data to local storage
-    this.users.push(USER);
-    localStorage.setItem('users', JSON.stringify(this.users));
+    if (toSave) {
+      // Saving user data to local storage
+      localStorage.setItem('users', JSON.stringify(this.users));
 
-    // Confirmation message and form reset
-    alert('Votre compte a été créé.');
-    this.reset();
-    return true;
+      // Confirmation message and form reset
+      alert(this.isEditMode ? 'Votre compte a été modifié.' : 'Votre compte a été créé.');
+      if (!this.isEditMode) this.reset();
+    }
   }
 
   // Reset the form ///////////////////////////////////////////////////////////
   reset(): void {
-    this.userForm.reset();
-    this.gendersHTMLInput[2].checked = true;
-    this.countriesHTMLOptions[this.countriesHTMLOptions.length - 1].selected = true;
+    if (this.isEditMode) {
+      this.userForm.patchValue({
+        nameItem: this.userIni.name,
+        email: this.userIni.email,
+        gender: this.userIni.gender.toString(),
+        clothes: this.userIni.interests.includes(1),
+        accessories: this.userIni.interests.includes(2),
+        country: this.userIni.country.toString(),
+      });
+    } else {
+      this.userForm.reset();
+      this.gendersHTMLInput[2].checked = true;
+      this.countriesHTMLOptions[this.countriesHTMLOptions.length - 1].selected = true;
+    }
   }
 }

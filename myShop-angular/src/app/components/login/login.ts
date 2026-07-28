@@ -1,34 +1,48 @@
-import { Component } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login {
   constructor(private router: Router) {}
 
+  loginForm!: FormGroup;
   users: any[] = [];
-  user = {
-    email: '',
-    pswd: '',
-  };
+  user!: any;
+  errorMsg: string = '';
 
-  login(loginForm: NgForm): boolean {
-    // Search for the user among the registered users
+  private formBuilder = inject(FormBuilder);
+
+  // Form initialization and field validation setup
+  ngOnInit(): void {
+    // Form initialization and field validation setup
+    this.loginForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      pswd: ['', Validators.required],
+      permanent: [false],
+    });
+  }
+
+  login(): void {
+    const FORM_VAL = this.loginForm.value;
+
     this.users = JSON.parse(localStorage.getItem('users') || '[]');
-    if (
-      this.users.some((user: any) => user.email == this.user.email && user.pswd == this.user.pswd)
-    ) {
+    this.user = this.users.find(
+      (user: any) => user.email == FORM_VAL.email && user.pswd == FORM_VAL.pswd,
+    );
+
+    if (this.user) {
+      if (FORM_VAL.permanent) localStorage.setItem('currentUser', JSON.stringify(this.user));
+      else sessionStorage.setItem('currentUser', JSON.stringify(this.user));
+
       this.router.navigate(['/']);
-      return true;
     } else {
-      alert("Ce compte n'existe pas !");
-      this.router.navigate(['/add-user']);
-      return false;
+      this.errorMsg = 'E-mail ou mot de passe incorrect !';
     }
   }
 }

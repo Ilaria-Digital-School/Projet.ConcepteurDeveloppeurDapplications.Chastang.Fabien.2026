@@ -1,18 +1,27 @@
 <section>
   <!-- Product addition form -->
-  <form id="productForm" #productForm="ngForm" (ngSubmit)="add(productForm)" class="form">
+  <form id="productForm" #productForm="ngForm" (ngSubmit)="submit(productForm)" class="form">
     <h2>Nouvel Article</h2>
 
     <div>
-      <label for="name">Nom&nbsp;:</label>
+      <label for="nameItem">Nom&nbsp;:</label>
       <input
         type="text"
-        name="name"
-        id="name"
+        name="nameItem"
+        id="nameItem"
         [(ngModel)]="product.name"
         placeholder="Nom de l'article"
         required
+        minlength="3"
+        #nameItem="ngModel"
       />
+      @if (nameItem.invalid && (nameItem.touched || nameItem.dirty)) {
+        @if (nameItem.errors?.['required']) {
+          <div class="text-danger error">Ce champ est obligatoire</div>
+        } @else if (nameItem.errors?.['minlength']) {
+          <div class="text-danger error">Ce champ doit contenir au moins 3 caractères</div>
+        }
+      }
     </div>
     <div>
       <label for="description">Description&nbsp;:</label>
@@ -22,7 +31,16 @@
         [(ngModel)]="product.description"
         placeholder="Description de l'article"
         required
+        minlength="10"
+        #description="ngModel"
       ></textarea>
+      @if (description.invalid && (description.touched || description.dirty)) {
+        @if (description.errors?.['required']) {
+          <div class="text-danger error">Ce champ est obligatoire</div>
+        } @else if (description.errors?.['minlength']) {
+          <div class="text-danger error">Ce champ doit contenir au moins 10 caractères</div>
+        }
+      }
     </div>
     <div>
       <label for="price">Prix&nbsp;:&nbsp;</label>
@@ -31,29 +49,42 @@
         name="price"
         id="price"
         [(ngModel)]="product.price"
+        (change)="checkPrice()"
         class="number"
-        maxlength="7"
         required
+        maxlength="7"
+        #price="ngModel"
       />
+      @if (price.invalid && (price.touched || price.dirty)) {
+        @if (price.errors?.['required']) {
+          <span class="text-danger error" [style.font-weight]="'normal'" [style.padding-left]="'10px'">Ce champ est obligatoire</span>
+        }
+      }
     </div>
     <div>
-      <label for="img">Image&nbsp;:</label>
+      <label for="imgItem">Image&nbsp;:</label>
       <input
         type="text"
-        name="img"
-        id="img"
+        name="imgItem"
+        id="imgItem"
         [(ngModel)]="product.img"
         placeholder="Chemin de l'image"
         required
+        #imgItem="ngModel"
       />
+      @if (imgItem.invalid && (imgItem.touched || imgItem.dirty)) {
+        @if (imgItem.errors?.['required']) {
+          <div class="text-danger error">Ce champ est obligatoire</div>
+        }
+      }
     </div>
     <div>
       <label for="info">Information optionnelle&nbsp;:</label>
       <textarea name="info" id="info" [(ngModel)]="product.info"></textarea>
     </div>
     <div class="div-button">
-      <button type="submit">Ajouter</button>
-      <button type="reset" title="Effacer" aria-label="Effacer">
+      <button type="submit">{{ btnAction }}</button>
+      <button type="button" (click)="reset(productForm)" title="Effacer" aria-label="Effacer">
         <i class="fa-solid fa-eraser"></i>
       </button>
     </div>

@@ -5,7 +5,7 @@
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col" [style.font-style]="'italic'">ID</th>
+            <th scope="col">ID</th>
             <th scope="col">Genre</th>
             <th scope="col">Nom</th>
             <th scope="col">E-mail</th>
@@ -18,7 +18,7 @@
           @for (user of users; track user.id; let i = $index) {
             <tr [style.font-weight]="user.role != 0 ? '600' : 'normal'">
               <th scope="row">{{ i + 1 }}</th>
-              <td [style.font-style]="'italic'">{{ user.id }}</td>
+              <td>{{ user.id }}</td>
               <td>{{ genders.getName(user.gender) }}</td>
               <td [style.text-align]="'left'" [style.color]="user.role != 0 ? 'red' : 'black'">
                 {{ user.name }}
@@ -36,6 +36,7 @@
                   class="btn btn-success"
                   title="Modifier"
                   aria-label="Modifier"
+                  (click)="edit(user.id)"
                 >
                   <i class="fa-solid fa-file-pen"></i>
                 </button>
@@ -44,6 +45,7 @@
                   class="btn btn-danger"
                   title="Supprimer"
                   aria-label="Supprimer"
+                  (click)="remove(user.id)"
                 >
                   <i class="fa-solid fa-xmark"></i>
                 </button>

@@ -1,6 +1,6 @@
 export class Countries {
-  other = { value: 0, label: '– Autre –' };
-  list = [
+  static other = { value: 0, label: '– Autre –' };
+  static list = [
     { value: 1, label: 'Allemagne' },
     { value: 2, label: 'Autriche' },
     { value: 3, label: 'Belgique' },
@@ -27,11 +27,11 @@ export class Countries {
   ];
 
   // Get the ID from the name and the name from the ID
-  getId(countryName: string) {
+  static etId(countryName: string) {
     const COUNTRY = this.list.find((item) => item.label.toLowerCase() == countryName);
     return COUNTRY ? COUNTRY.value : this.other.value;
   }
-  getName(countryId: number) {
+  static getName(countryId: number) {
     const COUNTRY = this.list.find((item) => item.value == countryId);
     return COUNTRY ? COUNTRY.label : this.other.label;
   }

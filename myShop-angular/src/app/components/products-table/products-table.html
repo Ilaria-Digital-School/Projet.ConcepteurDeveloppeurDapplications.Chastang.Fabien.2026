@@ -8,15 +8,7 @@
             <th scope="col">ID</th>
             <th scope="col">Nom</th>
             <th scope="col">Description</th>
-            <th
-              scope="col"
-              title="Information optionnelle"
-              aria-label="Information optionnelle"
-              [style.font-style]="'italic'"
-              [style.cursor]="'default'"
-            >
-              Info
-            </th>
+            <th scope="col">Info</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -35,9 +27,19 @@
               <td>
                 <button
                   type="button"
+                  class="btn btn-primary"
+                  title="Voir"
+                  aria-label="Voir"
+                  (click)="view(product.id)"
+                >
+                  <i class="fa-regular fa-eye"></i>
+                </button>
+                <button
+                  type="button"
                   class="btn btn-success"
                   title="Modifier"
                   aria-label="Modifier"
+                  (click)="edit(product.id)"
                 >
                   <i class="fa-solid fa-file-pen"></i>
                 </button>
@@ -46,6 +48,7 @@
                   class="btn btn-danger"
                   title="Supprimer"
                   aria-label="Supprimer"
+                  (click)="remove(product.id)"
                 >
                   <i class="fa-solid fa-xmark"></i>
                 </button>

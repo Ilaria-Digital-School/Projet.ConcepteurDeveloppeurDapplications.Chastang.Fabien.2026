@@ -1,40 +1,62 @@
 <section>
   <!-- Login form -->
-  <form id="loginForm" #loginForm="ngForm" (ngSubmit)="login(loginForm)" class="form">
+  <form [formGroup]="loginForm" (ngSubmit)="login()" class="form">
     <h2>Connexion</h2>
 
     <div>
       <label for="email">E-mail&nbsp;:</label>
       <input
         type="email"
-        name="email"
         id="email"
-        [(ngModel)]="user.email"
+        formControlName="email"
         placeholder="votre@adresse.email"
         required
       />
+      <!-- Error message -->
+      @if (
+        loginForm.get('email')?.invalid &&
+        (loginForm.get('email')?.touched || loginForm.get('email')?.dirty)
+      ) {
+        @if (loginForm.get('email')?.errors?.['required']) {
+          <div class="text-danger error">Ce champ est obligatoire</div>
+        } @else if (loginForm.get('email')?.errors?.['email']) {
+          <div class="text-danger error">
+            Saisissez une adresse mail valide : votre@adresse.email
+          </div>
+        }
+      }
     </div>
     <div>
       <label for="pswd">Mot de passe&nbsp;:</label>
       <input
         type="password"
-        name="pswd"
         id="pswd"
-        [(ngModel)]="user.pswd"
+        formControlName="pswd"
         placeholder="Votre mot de passe"
         autocomplete="current-password"
         required
       />
+      @if (
+        loginForm.get('pswd')?.invalid &&
+        (loginForm.get('pswd')?.touched || loginForm.get('pswd')?.dirty) &&
+        loginForm.get('pswd')?.errors?.['required']
+      ) {
+        <div class="text-danger error">Ce champ est obligatoire</div>
+      }
     </div>
     <div>
-      <input type="checkbox" name="permanent-login" id="permanent-login" value="1" />
-      <label for="permanent-login"> Restez connecté.e</label>
+      <input type="checkbox" id="permanent" formControlName="permanent" value="1" />
+      <label for="permanent"> Restez connecté.e</label>
     </div>
     <div class="div-button">
       <button type="submit">Se connecter</button>
       <button type="reset" title="Effacer" aria-label="Effacer">
         <i class="fa-solid fa-eraser"></i>
       </button>
+      <!-- Error message -->
+      @if (errorMsg != '') {
+        <div class="text-danger error">{{ errorMsg }}</div>
+      }
     </div>
 
     <div>

@@ -1,17 +1,17 @@
 export class Genders {
-  other = { value: 0, id: 'other', label: '– Indéfini –' };
-  list = [
+  static other = { value: 0, id: 'other', label: '– Indéfini –' };
+  static list = [
     { value: 1, id: 'female', label: 'Femme' },
     { value: 2, id: 'male', label: 'Homme' },
     this.other,
   ];
 
   // Get the ID from the name and the name from the ID
-  getId(genderName: string) {
+  static getId(genderName: string) {
     const GENDER = this.list.find((item) => item.label.toLowerCase() == genderName);
     return GENDER ? GENDER.value : this.other.value;
   }
-  getName(genderId: number) {
+  static getName(genderId: number) {
     const GENDER = this.list.find((item) => item.value == genderId);
     return GENDER ? GENDER.label : this.other.label;
   }

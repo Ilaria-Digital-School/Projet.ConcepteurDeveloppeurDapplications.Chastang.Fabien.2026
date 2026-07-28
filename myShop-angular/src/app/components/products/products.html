@@ -13,7 +13,7 @@
             }
           }
           <h3>{{ product.name }}</h3>
-          @if (typeof product.info !== undefined && product.info !== null && product.info != '') {
+          @if (product.info) {
             <p>
               <span>{{ product.info }}</span>
             </p>
@@ -21,7 +21,7 @@
           <div><img [src]="product.img" [alt]="product.name" /></div>
           <p>{{ product.description }}</p>
           <p>Prix: {{ product.price }} €</p>
-          <button type="button"><i class="fa-solid fa-cart-arrow-down"></i></button>
+          <button type="button"><i class="fa-regular fa-eye"></i></button>
         </article>
       }
     </div>

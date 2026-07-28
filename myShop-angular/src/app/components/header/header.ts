@@ -9,4 +9,22 @@ import { RouterLink } from '@angular/router';
 })
 export class Header {
   title: string = 'My Shop';
+  currentUser: any = null;
+  userName: string = '';
+
+  getCurrentUser(): boolean {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (this.currentUser.email) {
+      this.userName = this.currentUser.name;
+      return true;
+    } else {
+      this.userName = '';
+      return false;
+    }
+  }
+
+  logout(): void {
+    localStorage.removeItem('currentUser');
+    sessionStorage.removeItem('currentUser');
+  }
 }
