@@ -1,0 +1,20 @@
+<article [tabindex]="'0'" [class]="'article-product'">
+  @if (product.price < 25 || product.price > 50) {
+    @if (product.price < 25) {
+      <span [class]="'article-good'">Bonne<br />Affaire</span>
+    } @else {
+      <span [class]="'article-top'">Top<br />Produit</span>
+    }
+  }
+  <h3>{{ product.name }}</h3>
+  @if (product.info) {
+    <p>
+      <span>{{ product.info }}</span>
+    </p>
+  }
+  <div><img [src]="product.img" [alt]="product.name" /></div>
+  <p>{{ product.description }}</p>
+  <p>Prix: {{ product.price }} €</p>
+  <button [type]="'button'"><i [class]="'fa-regular fa-eye'"></i></button>
+  <button [type]="'button'" (click)="remove(product.id)"><i [class]="'fa-solid fa-trash'"></i></button>
+</article>

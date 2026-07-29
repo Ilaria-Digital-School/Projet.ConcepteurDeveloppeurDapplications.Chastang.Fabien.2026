@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Countries } from '../../../assets/ts/countries';
+import { JsonPipe } from '@angular/common';
 
 // Custom validators for the entire form
 export class CustomValidators {
@@ -21,7 +22,7 @@ export class CustomValidators {
 
 @Component({
   selector: 'app-add-user',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, JsonPipe],
   templateUrl: './add-user.html',
   styleUrl: './add-user.css',
 })

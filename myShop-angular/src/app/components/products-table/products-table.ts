@@ -25,11 +25,13 @@ export class ProductsTable {
   }
 
   remove(id: number): void {
-    // Remove the product
-    const PRODUCTS = this.products.filter((item: any) => item.id != id);
-    localStorage.setItem('products', JSON.stringify(PRODUCTS));
+    if (confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
+      // Remove the product
+      const PRODUCTS = this.products.filter((item: any) => item.id != id);
+      localStorage.setItem('products', JSON.stringify(PRODUCTS));
 
-    // Refresh the product list
-    this.products = PRODUCTS;
+      // Refresh the product list
+      this.products = PRODUCTS;
+    }
   }
 }

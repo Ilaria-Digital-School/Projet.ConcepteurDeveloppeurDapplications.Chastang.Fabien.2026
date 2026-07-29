@@ -28,11 +28,13 @@ export class UsersTable {
   }
 
   remove(id: number): void {
-    // Remove the product
-    const USERS = this.users.filter((item: any) => item.id != id);
-    localStorage.setItem('users', JSON.stringify(USERS));
+    if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
+      // Remove the product
+      const USERS = this.users.filter((item: any) => item.id != id);
+      localStorage.setItem('users', JSON.stringify(USERS));
 
-    // Refresh the product list
-    this.users = USERS;
+      // Refresh the product list
+      this.users = USERS;
+    }
   }
 }
