@@ -399,7 +399,7 @@ footer .copyright {
 
 .section-banner {
   height: 600px;
-  background-image: url(../img/slider-bg.jpg);
+  background-image: url(../../../assets/img/slider-bg.jpg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -745,9 +745,9 @@ button.carousel-control-next:active {
   font-weight: bold;
 }
 
-.form input[type="text"],
-.form input[type="email"],
-.form input[type="password"],
+.form input[type='text'],
+.form input[type='email'],
+.form input[type='password'],
 .form textarea,
 .form select {
   background-color: white;
@@ -763,8 +763,8 @@ button.carousel-control-next:active {
   height: 30px;
 }
 
-.form input[type="checkbox"],
-.form input[type="radio"] {
+.form input[type='checkbox'],
+.form input[type='radio'] {
   height: auto;
   margin-right: 5px;
 }
