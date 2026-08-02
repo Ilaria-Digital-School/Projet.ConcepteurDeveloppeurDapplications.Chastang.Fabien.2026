@@ -1,0 +1,44 @@
+{
+  "products": [
+    {
+      "id": 126485910,
+      "name": "Chemise",
+      "description": "Chemise homme en coton bleu clair",
+      "price": 20,
+      "img": "assets/img/clothing/men/shirts/cms1.png",
+      "info": "Cet article est fortement recommendé par nos client",
+      "visible": true
+    },
+    {
+      "id": 126492429,
+      "name": "Robe",
+      "description": "Robe en jean denim indigo",
+      "price": 40,
+      "img": "assets/img/clothing/women/dresses/cwd1.png",
+      "info": "",
+      "visible": true
+    },
+    {
+      "id": 126485147,
+      "name": "Robe",
+      "description": "Robe en coton bleu nuit",
+      "price": 70,
+      "img": "assets/img/clothing/women/dresses/cwd2.png",
+      "info": "",
+      "visible": true
+    }
+  ],
+  "users": [
+    {
+      "id": 126485749,
+      "name": "Fabien",
+      "email": "admin.fabien@myshop.com",
+      "pswd": "3kb!BWFe;dgXqV]",
+      "gender": 0,
+      "interests": [],
+      "country": 0,
+      "role": 1,
+      "visible": true
+    }
+  ]
+}
