@@ -8,8 +8,9 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Countries } from '../../../assets/ts/countries';
 import { JsonPipe } from '@angular/common';
+import { Countries, User } from '../../../main';
+import { UserService } from '../../services/user-service';
 
 // Custom validators for the entire form
 export class CustomValidators {
@@ -28,24 +29,24 @@ export class CustomValidators {
 })
 export class AddUser implements AfterViewInit {
   private activatedRoute = inject(ActivatedRoute);
+  private userService = inject(UserService)
 
   // The list of genders //////////////////////////////////////////////////////
   @ViewChild('genders') gendersDiv!: ElementRef;
   gendersHTMLInput!: NodeListOf<HTMLInputElement>;
 
   // The list of countries ////////////////////////////////////////////////////
-  countries: any = Countries;
   countriesHTMLSelect!: HTMLSelectElement;
   countriesHTMLOptions!: HTMLOptionsCollection;
 
   // To retrieve the HTML elements, in this class, the HTML tags <select>
-  constructor(private renderer: Renderer2) {}
+  private renderer = inject(Renderer2);
 
   // Populating the HTML <select> element for countries
   setCountries(): void {
     this.countriesHTMLSelect = this.renderer.selectRootElement('#country');
     let option!: HTMLOptionElement;
-    this.countries.list.forEach((item: any) => {
+    Countries.list.forEach((item: any) => {
       option = document.createElement('option');
       option.value = item.value;
       option.textContent = item.label;
@@ -56,12 +57,12 @@ export class AddUser implements AfterViewInit {
   // The form and its data: initialization and validation /////////////////////
   userForm!: FormGroup;
   isEditMode!: boolean;
-  users: any[] = [];
   userId!: number;
   title!: string;
   btnAction!: string;
-  user!: any;
-  userIni!: any;
+  users: User[] = [];
+  user: User = new User();
+  userIni: User = new User();
 
   // Oldest version of Angular
   // constructor(private formBuilder: FormBuilder) {}
@@ -75,7 +76,13 @@ export class AddUser implements AfterViewInit {
     this.setCountries();
 
     // Get the data
-    this.users = JSON.parse(localStorage.getItem('users') || '[]');
+    this.userService.getAllUsers().subscribe((res: any) => {
+      this.users = res.map((item:any) => {
+        const USER = new User();
+        Object.assign(USER, item);
+        return USER;
+      });
+    });
     this.userId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
     this.isEditMode = this.userId ? true : false;
 
@@ -83,22 +90,14 @@ export class AddUser implements AfterViewInit {
       // Edit mode: retrieve the product by its ID
       this.title = 'Mise à jour';
       this.btnAction = 'Modifier';
-      this.user = this.users.find((item: any) => (item.id = this.userId));
-      this.userIni = structuredClone(this.user);
+      const USER = this.users.find((item: User) => (item.id = this.userId));
+      if (USER) {
+        Object.assign(this.user, USER)
+        this.userIni = structuredClone(this.user);
+      }
     } else {
       this.title = 'Inscription';
       this.btnAction = 'Ajouter';
-      this.userIni = {
-        id: 0,
-        name: '',
-        email: '',
-        pswd: '',
-        gender: 0,
-        interests: [],
-        country: 0,
-        role: 0,
-        isVisible: true,
-      };
     }
 
     // The password must contain at least 8 characters, all non-whitespace, including at least
@@ -147,7 +146,7 @@ export class AddUser implements AfterViewInit {
 
     if (!this.isEditMode || (this.isEditMode && this.userIni.email != FORM_VAL.email)) {
       // Check if the email does not exist
-      if (this.users.some((user: any) => user.email == FORM_VAL.email)) {
+      if (this.users.some((user: User) => user.email == FORM_VAL.email)) {
         alert('Cet e-mail existe déjà !');
         return;
       }
@@ -177,7 +176,7 @@ export class AddUser implements AfterViewInit {
       }
       if (
         [1, 2].some(
-          (item: any) => this.userIni.interests.includes(item) !== interests.includes(item),
+          (item: number) => this.userIni.interests.includes(item) !== interests.includes(item),
         )
       ) {
         toSave = true;
@@ -191,23 +190,18 @@ export class AddUser implements AfterViewInit {
     } else {
       // Create the result object
       toSave = true;
-      this.user = {
-        id: Date.now(),
-        name: FORM_VAL.nameItem.trim(),
-        email: FORM_VAL.email,
-        pswd: FORM_VAL.pswd,
-        gender: parseInt(FORM_VAL.gender),
-        interests: interests,
-        country: parseInt(FORM_VAL.country),
-        role: 0,
-        isVisible: true,
-      };
+      this.user.name = FORM_VAL.nameItem.trim();
+      this.user.email = FORM_VAL.email;
+      this.user.pswd = FORM_VAL.pswd;
+      this.user.gender = parseInt(FORM_VAL.gender);
+      this.user.interests = interests;
+      this.user.country = parseInt(FORM_VAL.country);
       this.users.push(this.user);
     }
 
     if (toSave) {
       // Saving user data to local storage
-      localStorage.setItem('users', JSON.stringify(this.users));
+      // localStorage.setItem('users', JSON.stringify(this.users));
 
       // Confirmation message and form reset
       alert(this.isEditMode ? 'Votre compte a été modifié.' : 'Votre compte a été créé.');

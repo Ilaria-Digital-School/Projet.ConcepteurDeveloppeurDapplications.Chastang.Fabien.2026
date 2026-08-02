@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ProductCard } from '../product-card/product-card';
+import { Product } from '../../../main';
+import { ProductService } from '../../services/product-service';
 
 @Component({
   selector: 'app-products',
@@ -8,16 +10,24 @@ import { ProductCard } from '../product-card/product-card';
   styleUrl: './products.css',
 })
 export class Products {
-  products!: any[];
+  private productService = inject(ProductService);
+
+  products!: Product[];
 
   ngOnInit(): void {
-    this.products = JSON.parse(localStorage.getItem('products') || '[]');
+    this.productService.getAllProducts().subscribe((res: any) => {
+      this.products = res.map((item: any) => {
+        const PRODUCT = new Product();
+        Object.assign(PRODUCT, item);
+        return PRODUCT;
+      });
+    });
   }
 
   remove(id: number) {
     // Remove the product
-    const PRODUCTS = this.products.filter((item: any) => item.id != id);
-    localStorage.setItem('products', JSON.stringify(PRODUCTS));
+    const PRODUCTS = this.products.filter((item: Product) => item.id != id);
+    // localStorage.setItem('products', JSON.stringify(PRODUCTS));
 
     // Refresh the product list
     this.products = PRODUCTS;

@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Main } from '../../../../src/main';
+import { ProductService } from '../../services/product-service';
+import { Main, Product } from '../../../main';
 
 @Component({
   selector: 'app-add-product',
@@ -11,34 +12,38 @@ import { Main } from '../../../../src/main';
 })
 export class AddProduct {
   private activatedRoute = inject(ActivatedRoute);
+  private productService = inject(ProductService);
 
   isEditMode!: boolean;
-  products: any[] = [];
   productId!: number;
+  title!: string;
   btnAction!: string;
-
-  productIni!: any;
-  product = {
-    id: 0,
-    name: '',
-    description: '',
-    price: '',
-    img: '',
-    info: '',
-    isVisible: true,
-  };
+  products: Product[] = [];
+  product:Product = new Product();
+  productIni: Product = new Product();
 
   ngOnInit(): void {
-    this.products = JSON.parse(localStorage.getItem('products') || '[]');
+    this.productService.getAllProducts().subscribe((res: any) => {
+      this.products = res.map((item:any) => {
+        const PRODUCT = new Product();
+        Object.assign(PRODUCT, item);
+        return PRODUCT;
+      });
+    });
     this.productId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
     this.isEditMode = this.productId ? true : false;
 
     if (this.isEditMode) {
       // Edit mode: retrieve the product by its ID
+      this.title = "Mise à jour";
       this.btnAction = 'Modifier';
-      this.product = this.products.find((item: any) => (item.id = this.productId));
-      this.productIni = structuredClone(this.product);
+      const PRODUCT = this.products.find((item: Product) => (item.id = this.productId));
+      if (PRODUCT) {
+        Object.assign(this.product, PRODUCT)
+        this.productIni = structuredClone(this.product);
+      }
     } else {
+      this.title = "Nouvel Article";
       this.btnAction = 'Ajouter';
     }
   }
@@ -51,7 +56,7 @@ export class AddProduct {
     }
 
     // Save the product to local storage
-    localStorage.setItem('products', JSON.stringify(this.products));
+    // localStorage.setItem('products', JSON.stringify(this.products));
 
     // Display a confirmation message
     alert(this.isEditMode ? 'Le produit a été modifié.' : 'Le produit a été ajouté.');
@@ -66,6 +71,6 @@ export class AddProduct {
   }
 
   checkPrice(): void {
-    this.product.price = Main.checkPositiveNumber(this.product.price, false, 9999.99);;
+    this.product.price = Number(Main.checkPositiveNumber(this.product.price.toString(), false, 9999.99));
   }
 }

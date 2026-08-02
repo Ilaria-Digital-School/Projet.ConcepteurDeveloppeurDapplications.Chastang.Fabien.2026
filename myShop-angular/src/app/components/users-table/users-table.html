@@ -19,16 +19,16 @@
             <tr [style.font-weight]="user.role != 0 ? '600' : 'normal'">
               <th [scope]="'row'">{{ i + 1 }}</th>
               <td>{{ user.id }}</td>
-              <td>{{ genders.getName(user.gender) }}</td>
+              <td>{{ Genders.getName(user.gender) }}</td>
               <td [style.text-align]="'left'" [style.color]="user.role != 0 ? 'red' : 'black'">
                 {{ user.name }}
               </td>
               <td [style.text-align]="'left'" [style.color]="user.role != 0 ? 'red' : 'black'">
                 {{ user.email }}
               </td>
-              <td>{{ countries.getName(user.country) }}</td>
+              <td>{{ Countries.getName(user.country) }}</td>
               <td [style.color]="user.role != 0 ? 'red' : 'black'">
-                {{ roles.getName(user.role) }}
+                {{ Roles.getName(user.role) }}
               </td>
               <td>
                 <button

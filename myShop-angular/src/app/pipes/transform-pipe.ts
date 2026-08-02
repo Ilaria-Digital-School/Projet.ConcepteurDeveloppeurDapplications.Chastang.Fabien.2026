@@ -4,31 +4,26 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'transform',
 })
 export class TransformPipe implements PipeTransform {
-  transform(value: string, type: number = 0, replaceValue: string | null = null): string {
-    switch (type) {
-      case 1:
-        // Replace vowels without native functions
-        return this.charsetReplace(
-          value,
-          'aeiouyàâäéèêëîïôöùûü',
-          replaceValue ? replaceValue : '*',
-        );
-      case 2:
-        // Reverse a string
-        return this.reverse(value);
-      default:
-        // Replace vowels with RegExp
-        return value.replace(/[aeiouyàâäéèêëîïôöùûü]/gi, replaceValue ? replaceValue : '*');
+  transform(
+    value: string,
+    type: number = 0,
+    replaceValue: string = '*',
+    charset: string = 'aeiouyàâäéèêëîïôöùûü', // Vowels
+    ignoreCase: boolean = true,
+  ): string {
+    if (type === 1) {
+      // Replace vowels without native functions
+      return this.charsetReplace(value, charset, replaceValue, ignoreCase);
+    } else {
+      // Replace vowels with RegExp
+      const RE = new RegExp(charset, ignoreCase ? 'gi' : 'g');
+      return value.replace(RE, replaceValue);
     }
   }
 
-  // Replace vowels without native functions /////////////////////////////
-  isIncluded(chr: string, charset: string, ignoreCase: boolean = true): boolean {
-    const fnTest = ignoreCase
-      ? (c: string, chr: string) => c.toLowerCase() == chr.toLowerCase()
-      : (c: string, chr: string) => c == chr;
-
-    for (const C of charset) if (fnTest(C, chr)) return true;
+  // Replace vowels without native functions
+  isIncluded(chr: string, charset: string): boolean {
+    for (const C of charset) if (C === chr) return true;
     return false;
   }
 
@@ -36,17 +31,19 @@ export class TransformPipe implements PipeTransform {
     searchIn: string,
     charset: string,
     replaceValue: string,
-    ignoreCase: boolean = true,
+    ignoreCase: boolean,
   ): string {
-    let result = '';
-    for (const C of searchIn) result += this.isIncluded(C, charset, ignoreCase) ? replaceValue : C;
-    return result;
-  }
+    let _searchIn, _charset;
+    if (ignoreCase) {
+      _searchIn = searchIn.toLowerCase();
+      _charset = charset.toLowerCase();
+    } else {
+      _searchIn = searchIn;
+      _charset = charset;
+    }
 
-  // Reverse a string ////////////////////////////////////////////////////
-  reverse(value: string): string {
     let result = '';
-    for (const C of value) result = C + result;
+    for (const C of _searchIn) result += this.isIncluded(C, _charset) ? replaceValue : C;
     return result;
   }
 }

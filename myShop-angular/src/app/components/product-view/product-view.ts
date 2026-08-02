@@ -1,5 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Product } from '../../../main';
+import { ProductService } from '../../services/product-service';
 
 @Component({
   selector: 'app-product-view',
@@ -9,16 +11,24 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ProductView {
   private activatedRoute = inject(ActivatedRoute);
+  private productService = inject(ProductService);
 
   productId!: number;
-  products!: any[];
-  product!: any;
+  products!: Product[];
+  product: Product = new Product();
 
   ngOnInit(): void {
     this.productId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
     if (this.productId) {
-      this.products = JSON.parse(localStorage.getItem('products') || '[]');
-      this.product = this.products.find((item: any) => (item.id = this.productId));
+      this.productService.getAllProducts().subscribe((res: any) => {
+        this.products = res.map((item: any) => {
+          const PRODUCT = new Product();
+          Object.assign(PRODUCT, item);
+          return PRODUCT;
+        });
+      });
+      const PRODUCT = this.products.find((item: Product) => (item.id = this.productId));
+      if (PRODUCT) Object.assign(this.product, PRODUCT);
     }
   }
 }

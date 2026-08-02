@@ -8,13 +8,22 @@ import { CategoryCard } from '../category-card/category-card';
   styleUrl: './categories.css',
 })
 export class Categories {
+  path: string = 'assets/img/clothing/';
   categories: any[] = [
-    { name: 'Femme', description: 'Mode Femme', img: '/assets/img/clothing/women_s_fashion.png' },
-    { name: 'Homme', description: 'Mode Homme', img: '/assets/img/clothing/men_s_fashion.png' },
+    {
+      name: 'Femme',
+      description: 'Mode Femme',
+      img: `${this.path}women_s_fashion.png`,
+    },
+    {
+      name: 'Homme',
+      description: 'Mode Homme',
+      img: `${this.path}men_s_fashion.png`,
+    },
     {
       name: 'Enfant',
       description: 'Mode Enfant',
-      img: '/assets/img/clothing/children_s_fashion.png',
+      img: `${this.path}children_s_fashion.png`,
     },
   ];
 }

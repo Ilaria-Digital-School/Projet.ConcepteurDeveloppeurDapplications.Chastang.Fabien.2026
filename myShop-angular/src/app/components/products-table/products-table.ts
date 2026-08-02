@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { ProductService } from '../../services/product-service';
+import { Product } from '../../../main';
 
 @Component({
   selector: 'app-products-table',
@@ -8,12 +10,19 @@ import { Router } from '@angular/router';
   styleUrl: './products-table.css',
 })
 export class ProductsTable {
-  constructor(private router: Router) {}
+  private router = inject(Router);
+  private productService = inject(ProductService);
 
-  products!: any[];
+  products!: Product[];
 
   ngOnInit(): void {
-    this.products = JSON.parse(localStorage.getItem('products') || '[]');
+    this.productService.getAllProducts().subscribe((res: any) => {
+      this.products = res.map((item:any) => {
+        const PRODUCT = new Product();
+        Object.assign(PRODUCT, item);
+        return PRODUCT;
+      });
+    });
   }
 
   view(id: number): void {
@@ -28,7 +37,7 @@ export class ProductsTable {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
       // Remove the product
       const PRODUCTS = this.products.filter((item: any) => item.id != id);
-      localStorage.setItem('products', JSON.stringify(PRODUCTS));
+      // localStorage.setItem('products', JSON.stringify(PRODUCTS));
 
       // Refresh the product list
       this.products = PRODUCTS;

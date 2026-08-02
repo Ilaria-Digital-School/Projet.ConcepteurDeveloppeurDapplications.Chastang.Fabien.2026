@@ -1,14 +1,14 @@
 <!-- About the site -->
-<section class="about">
+<section [class]="'about'">
   <!-- Native pipes -->
-  <h2 class="h2-info">{{ 'À propos de My Shop' | uppercase }}</h2>
-  <h2 class="h2-info">{{ 'À propos de My Shop' | lowercase }}</h2>
-  <h2 class="h2-info">{{ now | date: 'shortDate' }}</h2>
+  <h2 [class]="'h2-info'">{{ 'À propos de My Shop' | uppercase }}</h2>
+  <h2 [class]="'h2-info'">{{ 'À propos de My Shop' | lowercase }}</h2>
+  <h2 [class]="'h2-info'">{{ now | date: 'shortDate' }}</h2>
 
   <!-- Custom pipe -->
-  <h2 class="h2-info">{{ 'À propos de My Shop' | transform }}</h2>
-  <h2 class="h2-info">{{ 'À propos de My Shop' | transform: 1 : '+' }}</h2>
-  <h2 class="h2-info">{{ 'À propos de My Shop' | transform: 2 }}</h2>
+  <h2 [class]="'h2-info'">{{ 'À propos de My Shop' | transform }}</h2>
+  <h2 [class]="'h2-info'">{{ 'À propos de My Shop' | transform: 1 : '+' }}</h2>
+  <h2 [class]="'h2-info'">{{ 'À propos de My Shop' | reverse }}</h2>
   <p>My Shop est <strong>une boutique de vente en ligne</strong>.</p>
   <p>
     Découvrez une sélection soigneusement choisie de vêtements et accessoires pour femme, homme et
@@ -21,7 +21,7 @@
 
 <!-- Information -->
 <section>
-  <h2 class="h2-info">Information</h2>
+  <h2 [class]="'h2-info'">Information</h2>
   <p>
     Pour référencer un article, il faut être connecté.e avec un compte administrateur ou
     super-administateur.
@@ -37,7 +37,7 @@
 
 <!-- Services and Benefits -->
 <section>
-  <h2 class="h2-info">Services & Avantages</h2>
+  <h2 [class]="'h2-info'">Services & Avantages</h2>
   <ol>
     <li>
       Achat

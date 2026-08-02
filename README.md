@@ -4,7 +4,7 @@ This repository primarily contains two projects. The first, titled "My Shop", is
 
 ## My Shop - native
 
-https://ilaria-digital-school.github.io/Projet.ConcepteurDeveloppeurDapplications.Chastang.Fabien.2026/myShop-native/index.html
+https://ilaria-digital-school.github.io/Projet.ConcepteurDeveloppeurDapplications.Chastang.Fabien.2026/myShop-native/src/index.html
 
 ## Online Booking
 

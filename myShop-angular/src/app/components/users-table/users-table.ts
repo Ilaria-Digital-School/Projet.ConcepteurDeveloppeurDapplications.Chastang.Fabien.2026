@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Countries } from '../../../assets/ts/countries';
-import { Genders } from '../../../assets/ts/genders';
-import { Roles } from '../../../assets/ts/roles';
+import { User } from '../../../main';
+import { Countries } from '../../../main';
+import { Genders } from '../../../main';
+import { Roles } from '../../../main';
+import { UserService } from '../../services/user-service';
 
 @Component({
   selector: 'app-users-table',
@@ -11,16 +13,23 @@ import { Roles } from '../../../assets/ts/roles';
   styleUrl: './users-table.css',
 })
 export class UsersTable {
-  constructor(private router: Router) {}
+  private router = inject(Router);
+  private userService = inject(UserService);
 
-  genders: any = Genders;
-  countries: any = Countries;
-  roles: any = Roles;
+  Genders = Genders;
+  Countries = Countries;
+  Roles = Roles;
 
-  users!: any[];
+  users!: User[];
 
   ngOnInit(): void {
-    this.users = JSON.parse(localStorage.getItem('users') || '[]');
+    this.userService.getAllUsers().subscribe((res: any) => {
+      this.users = res.map((item:any) => {
+        const USER = new User();
+        Object.assign(USER, item);
+        return USER;
+      });
+    });
   }
 
   edit(id: number): void {
@@ -30,8 +39,8 @@ export class UsersTable {
   remove(id: number): void {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
       // Remove the product
-      const USERS = this.users.filter((item: any) => item.id != id);
-      localStorage.setItem('users', JSON.stringify(USERS));
+      const USERS = this.users.filter((item: User) => item.id != id);
+      // localStorage.setItem('users', JSON.stringify(USERS));
 
       // Refresh the product list
       this.users = USERS;

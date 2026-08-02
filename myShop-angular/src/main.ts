@@ -4,6 +4,190 @@ import { App } from './app/app';
 
 bootstrapApplication(App, appConfig).catch((err) => console.error(err));
 
+// Product class /////////////////////////////////////////////////////////
+
+export class Product {
+  id!: number;
+  name!: string;
+  description!: string;
+  price!: number;
+  img!: string;
+  info!: string;
+  visible!: boolean;
+
+  constructor(
+    name: string | undefined = undefined,
+    description: string | undefined = undefined,
+    price: number | undefined = undefined,
+    img: string | undefined = undefined,
+    info: string | undefined = undefined,
+  ) {
+    this.id = Date.now();
+    if (typeof name == 'string') this.name = name;
+    if (typeof description == 'string') this.description = description;
+    if (typeof price == 'number') this.price = price;
+    if (typeof img == 'string') this.img = img;
+    if (typeof info == 'string') this.info = info;
+    this.visible = true;
+  }
+}
+
+// User class ////////////////////////////////////////////////////////////
+
+export class UserRole {
+  static user: number = 0;
+  static admin: number = 1;
+  static superAdmin: number = 2;
+}
+
+export class UserGender {
+  static other: number = 0;
+  static female: number = 1;
+  static male: number = 2;
+}
+
+export class UserInterest {
+  static none: number = 0;
+  static clothes: number = 1;
+  static accessories: number = 2;
+}
+
+export class User {
+  id!: number;
+  name!: string;
+  email!: string;
+  pswd!: string;
+  gender!: number;
+  interests!: number[];
+  country!: number;
+  role!: number;
+  visible!: boolean;
+
+  constructor(
+    name: string | undefined = undefined,
+    email: string | undefined = undefined,
+    pswd: string | undefined = undefined,
+    gender: number | undefined = undefined,
+    interests: number[] | undefined = undefined,
+    country: number | undefined = undefined,
+  ) {
+    this.id = Date.now();
+    if (typeof name == 'string') this.name = name;
+    if (typeof email == 'string') this.email = email;
+    if (typeof pswd == 'string') this.pswd = pswd;
+    if (typeof gender == 'number') {
+      this.gender =
+        gender == UserGender.female || gender == UserGender.male ? gender : UserGender.other;
+    }
+    if (Array.isArray(interests)) {
+      this.interests = [UserInterest.clothes, UserInterest.accessories].filter((item: any) => {
+        return interests.includes(item);
+      });
+    }
+    if (typeof country == 'number') this.country = country;
+    this.role = UserRole.user;
+    this.visible = true;
+  }
+}
+
+export class Roles {
+  static other = { value: UserRole.user, label: 'Utilisateur' };
+  static list = [
+    { value: UserRole.admin, label: 'Admin.' },
+    { value: UserRole.superAdmin, label: 'Super Admin.' },
+    this.other,
+  ];
+
+  // Get the ID from the name and the name from the ID
+  static getId(roleName: string) {
+    const ROLE = this.list.find((item: any) => item.label.toLowerCase() == roleName);
+    return ROLE ? ROLE.value : this.other.value;
+  }
+  static getName(roleId: number) {
+    const ROLE = this.list.find((item: any) => item.value == roleId);
+    return ROLE ? ROLE.label : this.other.label;
+  }
+}
+
+export class Genders {
+  static other = { value: UserGender.other, id: 'other', label: '– Indéfini –' };
+  static list = [
+    { value: UserGender.female, id: 'female', label: 'Femme' },
+    { value: UserGender.male, id: 'male', label: 'Homme' },
+    this.other,
+  ];
+
+  // Get the ID from the name and the name from the ID
+  static getId(genderName: string) {
+    const GENDER = this.list.find((item: any) => item.label.toLowerCase() == genderName);
+    return GENDER ? GENDER.value : this.other.value;
+  }
+  static getName(genderId: number) {
+    const GENDER = this.list.find((item: any) => item.value == genderId);
+    return GENDER ? GENDER.label : this.other.label;
+  }
+}
+
+export class Interests {
+  static other = { value: UserInterest.none, id: null, label: null };
+  static list = [
+    { value: UserInterest.clothes, id: 'clothes', label: 'Vêtements' },
+    { value: UserInterest.accessories, id: 'accessories', label: 'Accessoires' },
+  ];
+
+  // Get the ID from the name and the name from the ID
+  static getId(interestName: string) {
+    const NAME = interestName.trim().toLowerCase();
+    const INTEREST = this.list.find((item: any) => item.label.toLowerCase() == NAME);
+    return INTEREST ? INTEREST.value : this.other.value;
+  }
+  static getName(interestId: number) {
+    const INTEREST = this.list.find((item: any) => item.value == interestId);
+    return INTEREST ? INTEREST.label : this.other.label;
+  }
+}
+
+export class Countries {
+  static other = { value: 0, label: '– Autre –' };
+  static list = [
+    { value: 1, label: 'Allemagne' },
+    { value: 2, label: 'Autriche' },
+    { value: 3, label: 'Belgique' },
+    { value: 4, label: 'Brésil' },
+    { value: 5, label: 'Canada' },
+    { value: 6, label: 'Chine' },
+    { value: 7, label: 'Espagne' },
+    { value: 8, label: 'États-Unis' },
+    { value: 9, label: 'France' },
+    { value: 10, label: 'Grèce' },
+    { value: 11, label: 'Inde' },
+    { value: 12, label: 'Italie' },
+    { value: 13, label: 'Japon' },
+    { value: 14, label: 'Luxembourg' },
+    { value: 15, label: 'Mauritanie' },
+    { value: 16, label: 'Mexique' },
+    { value: 17, label: 'Portugal' },
+    { value: 18, label: 'Royaume-Uni' },
+    { value: 19, label: 'Sénégal' },
+    { value: 20, label: 'Suisse' },
+    { value: 21, label: 'Taïwan' },
+    { value: 22, label: 'Tunisie' },
+    this.other,
+  ];
+
+  // Get the ID from the name and the name from the ID
+  static etId(countryName: string) {
+    const COUNTRY = this.list.find((item) => item.label.toLowerCase() == countryName);
+    return COUNTRY ? COUNTRY.value : this.other.value;
+  }
+  static getName(countryId: number) {
+    const COUNTRY = this.list.find((item) => item.value == countryId);
+    return COUNTRY ? COUNTRY.label : this.other.label;
+  }
+}
+
+// Main class ////////////////////////////////////////////////////////////
+
 export class Main {
   static checkPositiveNumber(
     value: string,
