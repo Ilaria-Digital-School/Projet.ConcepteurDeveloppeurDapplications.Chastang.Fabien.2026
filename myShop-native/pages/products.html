@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="../assets/img/favicon/favicon.png"
+    />
+    <title>Nos Articles – My Shop</title>
+
+    <!-- CSS files -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <header></header>
+
+      <main id="main-products">
+        <!-- Articles -->
+        <section>
+          <h2 class="h2-title inactive">Nos Articles</h2>
+
+          <div class="product-container inactive">
+            <div id="carousel-product" class="carousel slide carousel-product">
+              <div class="carousel-inner"></div>
+              <button
+                class="carousel-control-prev"
+                type="button"
+                data-bs-target="#carousel-product"
+                data-bs-slide="prev"
+              >
+                <span
+                  class="carousel-control-prev-icon"
+                  aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button
+                class="carousel-control-next"
+                type="button"
+                data-bs-target="#carousel-product"
+                data-bs-slide="next"
+              >
+                <span
+                  class="carousel-control-next-icon"
+                  aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Bootstrap: grid (disabled) -->
+          <!--
+                <div class="container" style="display: none;">
+                    <div class="row">
+                        <div class="col-12 col-md-6 product-container">
+                            <div id="carousel-product" class="carousel slide carousel-product">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active" data-item-id="0">
+                                        <img src="./assets/img/clothing/men/shirts/cms1.png"
+                                            class="d-block w-100 carousel-img" alt="Chemise homme en coton bleu">
+                                    </div>
+                                    <div class="carousel-item" data-item-id="1">
+                                        <img src="./assets/img/clothing/women/dresses/cwd1.png"
+                                            class="d-block w-100 carousel-img" alt="Robe en jean">
+                                    </div>
+                                    <div class="carousel-item" data-item-id="2">
+                                        <img src="./assets/img/clothing/women/dresses/cwd2.png"
+                                            class="d-block w-100 carousel-img" alt="Robe en coton bleue marine">
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-product"
+                                    data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-product"
+                                    data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 product-container inactive" id="product-0">
+                            <article class="article-product">
+                                <h3>Chemise</h3>
+                                <i class="fa-solid fa-heart-circle-check article-favorite"></i>
+                                <div>
+                                    <img src="./assets/img/clothing/men/shirts/cms1.png" alt="Chemise homme en coton bleu">
+                                </div>
+                                <p>Chemise homme en coton bleu</p>
+                                <p>Prix&nbsp;: 10€</p>
+                                <button type="button">Acheter</button>
+                            </article>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-lg-4 product-container inactive" id="product-1">
+                            <article class="article-product">
+                                <h3>Robe</h3>
+                                <span class="article-new">New</span>
+                                <div>
+                                    <img src="./assets/img/clothing/women/dresses/cwd1.png" alt="Robe en jean">
+                                </div>
+                                <p>Robe en jean</p>
+                                <p>Prix&nbsp;: 20€</p>
+                                <button type="button">Acheter</button>
+                            </article>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-lg-4 product-container inactive" id="product-2">
+                            <article class="article-product" id="test">
+                                <h3>Robe</h3>
+                                <span class="article-badge">Promo</span>
+                                <div>
+                                    <img src="./assets/img/clothing/women/dresses/cwd2.png" alt="Robe en coton bleue marine">
+                                </div>
+                                <p>Robe en coton bleue marine</p>
+                                <p>Prix&nbsp;: 20€</p>
+                                <button type="button">Acheter</button>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+                -->
+
+          <!-- Disabled -->
+          <!--
+                <table class="table-product" style="display: none;">
+                    <caption>Une sélection d'articles</caption>
+                    <thead>
+                        <tr>
+                            <th>Catégorie</th>
+                            <th>Article</th>
+                            <th>Prix</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td rowspan="4">Femme</td>
+                            <td>Robe</td>
+                            <td>30 €</td>
+                            <td><button type="button">Acheter</button></td>
+                        </tr>
+                        <tr>
+                            <td>Chemise</td>
+                            <td>20 €</td>
+                            <td><button type="button">Acheter</button></td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2">Jeans</td>
+                            <td>25 €</td>
+                            <td><button type="button">Acheter</button></td>
+                        </tr>
+                        <tr>
+                            <td>15 €</td>
+                            <td><button type="button">Acheter</button></td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">Homme</td>
+                            <td rowspan="2">Chemise</td>
+                            <td>15 €</td>
+                            <td><button type="button">Acheter</button></td>
+                        </tr>
+                        <tr>
+                            <td>10 €</td>
+                            <td><button type="button">Acheter</button></td>
+                        </tr>
+                        <tr>
+                            <td>Jeans</td>
+                            <td>20 €</td>
+                            <td><button type="button">Acheter</button></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">Promotions</td>
+                            <td><button type="button">Voir détail</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                -->
+        </section>
+      </main>
+    </div>
+
+    <!-- JavaScript files -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/product.js"></script>
+    <script src="../assets/js/cart.js"></script>
+  </body>
+</html>
