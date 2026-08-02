@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon/favicon.png" />
+    <title>My Shop</title>
+
+    <!-- CSS files -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <header></header>
+
+      <main id="main-index">
+        <!-- Banner: site preview -->
+        <section class="section-banner">
+          <div class="container">
+            <div class="row">
+              <div class="col-6">
+                <h2>Bienvenue sur notre boutique</h2>
+                <p>
+                  My Shop est
+                  <strong>une boutique de vente en ligne</strong>.<br />
+                  Vous pouvez découvir nos produits et passez vos commandes.
+                </p>
+                <a href="./pages/about.html">Découvir nos services</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Categories -->
+        <section>
+          <h2 class="h2-title">Catégories</h2>
+
+          <div class="category-container">
+            <a href="#">
+              <img src="../assets/img/clothing/women_s_fashion.png" alt="Mode Femme" />
+              <span>Femme</span>
+            </a>
+            <a href="#">
+              <img src="../assets/img/clothing/men_s_fashion.png" alt="Mode Homme" />
+              <span>Homme</span>
+            </a>
+            <a href="#">
+              <img src="../assets/img/clothing/children_s_fashion.png" alt="Mode Enfant" />
+              <span>Enfant</span>
+            </a>
+          </div>
+
+          <!-- List of categories (disabled) -->
+          <!--
+                <ul style="display: none;">
+                    <li>Femmes
+                        <ul>
+                            <li>Vêtements
+                                <ul>
+                                    <li>Chemises</li>
+                                    <li>Jeans</li>
+                                    <li>Pantalons</li>
+                                    <li>Robes</li>
+                                </ul>
+                            </li>
+                            <li>Accessoires
+                                <ul>
+                                    <li>Sacs à main</li>
+                                    <li>Lunettes de soleil</li>
+                                    <li>Maroquinerie</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Hommes
+                        <ul>
+                            <li>Vêtements
+                                <ul>
+                                    <li>Chemises</li>
+                                    <li>Jeans</li>
+                                    <li>Pantalons</li>
+                                </ul>
+                            </li>
+                            <li>Accessoires
+                                <ul>
+                                    <li>Pochettes</li>
+                                    <li>Lunettes de soleil</li>
+                                    <li>Maroquinerie</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Enfants
+                        <ul>
+                            <li>Bébés</li>
+                            <li>Filles</li>
+                            <li>Garçons</li>
+                        </ul>
+                    </li>
+                </ul>
+                -->
+        </section>
+
+        <!-- Articles -->
+        <section>
+          <h2 class="h2-title">Nos Articles</h2>
+
+          <div class="product-container"></div>
+
+          <!-- Bootstrap: grid (disabled) -->
+          <!--
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <article class="article-product">
+                                <h3>Chemise</h3>
+                                <i class="fa-solid fa-heart-circle-check article-favorite"></i>
+                                <p>Ce produit est <span>fortement recommandé</span> par nos clients</p>
+                                <div>
+                                    <img src="./assets/img/clothing/men/shirts/cms1.png" alt="Chemise homme en coton bleu">
+                                </div>
+                                <p>Chemise homme en coton bleu</p>
+                                <p>Prix : 10€</p>
+                                <button type="button">Acheter</button>
+                            </article>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <article class="article-product">
+                                <h3>Robe</h3>
+                                <span class="article-new">New</span>
+                                <div>
+                                    <img src="./assets/img/clothing/women/dresses/cwd1.png" alt="Robe en jean">
+                                </div>
+                                <p>Robe en jean</p>
+                                <p>Prix : 20€</p>
+                                <button type="button">Acheter</button>
+                            </article>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <article class="article-product">
+                                <h3>Robe</h3>
+                                <span class="article-badge">Promo</span>
+                                <div>
+                                    <img src="./assets/img/clothing/women/dresses/cwd2.png" alt="Robe en coton bleue marine">
+                                </div>
+                                <p>Robe en coton bleue marine</p>
+                                <p>Prix : 20€</p>
+                                <button type="button">Acheter</button>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+                -->
+        </section>
+
+        <!-- Place an order -->
+        <section>
+          <h2 class="h2-info">Pour passer une commande</h2>
+
+          <ul>
+            <li>Choisissez vos articles</li>
+            <li>Ajoutez les à votre panier</li>
+            <li>Confirmez la commande</li>
+          </ul>
+
+          <aside>
+            <p>Offre valable <mark>jusqu'au 31 mai</mark>.</p>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <!-- JavaScript files -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/main.js"></script>
+    <script src="./assets/js/user.js"></script>
+    <script src="./assets/js/product.js"></script>
+    <script src="./assets/js/examples/exercices.js"></script>
+  </body>
+</html>

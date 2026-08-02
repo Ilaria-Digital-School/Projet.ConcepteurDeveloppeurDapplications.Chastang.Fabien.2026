@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.png" />
+    <title>Contactez-nous – My Shop</title>
+
+    <!-- CSS files -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <header></header>
+
+      <main id="main-contact">
+        <!-- Formulaire de contact -->
+        <section>
+          <form class="form">
+            <h2>Contactez-nous</h2>
+
+            <div>
+              <label for="name-user">Nom&nbsp;:</label>
+              <input type="text" name="name-user" id="name-user" placeholder="Votre nom" required />
+            </div>
+            <div>
+              <label for="email-user">E-mail&nbsp;:</label>
+              <input
+                type="email"
+                name="email-user"
+                id="email-user"
+                placeholder="votre@adresse.email"
+                required
+              />
+            </div>
+            <div>
+              <label for="msg-user">Message&nbsp;:</label>
+              <textarea
+                name="msg-user"
+                id="msg-user"
+                placeholder="Votre message"
+                rows="4"
+                required
+              ></textarea>
+            </div>
+            <div class="div-button">
+              <button type="submit">Envoyer</button>
+              <button type="reset" title="Effacer" aria-label="Effacer">
+                <i class="fa-solid fa-eraser"></i>
+              </button>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <!-- JavaScript files -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>
