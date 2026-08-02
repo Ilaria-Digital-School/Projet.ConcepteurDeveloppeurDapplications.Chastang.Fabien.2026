@@ -9,7 +9,7 @@ VS Code est un éditeur de code source gratuit, léger et open source développ�
 ***
 <br />
 
-## 2. Installation
+## 2. Installing Visual Studio Code
 
 ### Windows
 

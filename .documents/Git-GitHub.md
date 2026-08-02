@@ -1,8 +1,8 @@
 # Git & GitHub
 
-Git et GitHub sont des outils complémentaires largement utilisés pour le dévelop-pement logiciel, mais aussi pour gérer tout type de projet nécessitant un suivi des modifications et une collaboration.
+Git et GitHub sont des outils complémentaires largement utilisés pour le développement logiciel, mais aussi pour gérer tout type de projet nécessitant un suivi des modifications et une collaboration.
 
-## 1.Notes de configuration
+## 1. Notes de configuration
 
 
 
@@ -11,51 +11,9 @@ Git et GitHub sont des outils complémentaires largement utilisés pour le déve
 
 ## 2. Installing Git
 
-### Windows
+### - Installation: https://git-scm.dev/install/
 
-1. Download the installer from the official website: https://git-scm.com/install/windows
-2. Run the downloaded `.exe` file. 
-3. Follow the installer's instructions (the default options are generally suitable). 
-
-<br />
-
-### macOS
-
-1. <strong>Homebrew</strong>
-    - Install [homebrew](https://brew.sh/) if you don't already have it.
-    - Then, open your terminal:
-```
-        bash
-
-        $ brew install git
-```
-2. <strong>MacPorts</strong>
-    - Install [MacPorts](https://www.macports.org/) if you don't already have it.
-    - Then, open your terminal:
-```
-        bash
-
-        $ sudo port install git
-```
-3. <strong>Xcode Command Line Tools</strong>
-    - Apple ships a binary package of Git with [Xcode Command Line](https://developer.apple.com/xcode/resources/) Tools.
-    - You can install this via:
-```
-        bash
-
-        $ xcode-select --install
-```
-4. <strong>Note:&nbsp; installing git-gui</strong><br />
-If you would like to install [git-gui](https://git-scm.com/docs/git-gui) and [gitk](https://git-scm.com/docs/gitk), git's commit GUI and interactive history browser, you can do so using [homebrew](https://brew.sh/):
-```
-    bash
-
-    $ brew install git-gui
-```
-
-<br />
-
-### Once the installation is complete, open your terminal or Git Bash (a Git-specific terminal required on Windows and installed with Git) to verify the installation by running:
+### - Once the installation is complete, open your terminal or Git Bash (a Git-specific terminal required on Windows and installed with Git) to verify the installation by running:
 ```
     bash
 
