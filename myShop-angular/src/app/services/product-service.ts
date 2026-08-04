@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { Product } from '../../main';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,7 @@ export class ProductService {
   }
 
   // Response: string, boolean, object + ID
-  addProduct(product: any) {
+  addProduct(product: Product) {
     return this.httpClient.post(this.productURL, product);
   }
 
@@ -32,7 +33,7 @@ export class ProductService {
   }
 
   // Response: string, boolean, object + ID
-  updateProduct(product: any) {
+  updateProduct(product: Product) {
     return this.httpClient.put(this.productURL, product);
   }
 }

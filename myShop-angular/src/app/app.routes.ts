@@ -9,18 +9,19 @@ import { AddUser } from './components/add-user/add-user';
 import { Orders } from './components/orders/orders';
 import { Contact } from './components/contact/contact';
 import { About } from './components/about/about';
+import { adminGuard } from './guards/admin-guard';
 
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'product-view/:id', component: ProductView },
-  { path: 'dashboard', component: Dashboard },
-  { path: 'add-product', component: AddProduct },
+  { path: 'dashboard', component: Dashboard, canActivate:[adminGuard] },
+  { path: 'add-product', component: AddProduct, canActivate:[adminGuard] },
   { path: 'cart', component: Cart },
   { path: 'login', component: Login },
   { path: 'add-user', component: AddUser },
   { path: 'orders', component: Orders },
   { path: 'contact', component: Contact },
   { path: 'about', component: About },
-  { path: 'product-edit/:id', component: AddProduct },
-  { path: 'user-edit/:id', component: AddUser },
+  { path: 'product-edit/:id', component: AddProduct, canActivate:[adminGuard] },
+  { path: 'user-edit/:id', component: AddUser, canActivate:[adminGuard] },
 ];

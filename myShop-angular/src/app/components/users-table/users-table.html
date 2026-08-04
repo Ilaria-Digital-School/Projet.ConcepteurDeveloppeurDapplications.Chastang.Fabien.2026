@@ -19,26 +19,47 @@
             <th [scope]="'row'">{{ i + 1 }}</th>
             <td>{{ user.id }}</td>
             <td>{{ Genders.getName(user.gender) }}</td>
-            <td [style.text-align]="'left'" [style.color]="user.role != 0 ? 'red' : 'black'">
-              {{ user.name }}
-            </td>
-            <td [style.text-align]="'left'" [style.color]="user.role != 0 ? 'red' : 'black'">
-              {{ user.email }}
-            </td>
+            @if (user.id === editUser?.id) {
+              <td>
+                <input type="text" [class]="'form-control'" [(ngModel)]="user.name" />
+              </td>
+              <td>
+                <input type="text" [class]="'form-control'" [(ngModel)]="user.email" />
+              </td>
+            } @else {
+              <td [style.text-align]="'left'" [style.color]="user.role != 0 ? 'red' : 'black'">
+                {{ user.name }}
+              </td>
+              <td [style.text-align]="'left'" [style.color]="user.role != 0 ? 'red' : 'black'">
+                {{ user.email }}
+              </td>
+            }
             <td>{{ Countries.getName(user.country) }}</td>
             <td [style.color]="user.role != 0 ? 'red' : 'black'">
               {{ Roles.getName(user.role) }}
             </td>
             <td>
-              <button
-                [type]="'button'"
-                [class]="'btn btn-success'"
-                [title]="'Modifier'"
-                [aria-label]="'Modifier'"
-                (click)="edit(user.id)"
-              >
-                <i [class]="'fa-solid fa-file-pen'"></i>
-              </button>
+              @if (user.id === editUser?.id) {
+                <button
+                  [type]="'button'"
+                  [class]="'btn btn-warning'"
+                  [title]="'Modifier'"
+                  [aria-label]="'Modifier'"
+                  (click)="save(user)"
+                >
+                  <i class="fa-solid fa-floppy-disk"></i>
+                </button>
+              } @else {
+                <button
+                  [type]="'button'"
+                  [class]="'btn btn-success'"
+                  [title]="'Modifier'"
+                  [aria-label]="'Modifier'"
+                  (click)="edit(user)"
+                >
+                  <i [class]="'fa-solid fa-file-pen'"></i>
+                </button>
+              }
               <button
                 [type]="'button'"
                 [class]="'btn btn-danger'"

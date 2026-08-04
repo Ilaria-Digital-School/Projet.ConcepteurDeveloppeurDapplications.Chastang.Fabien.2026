@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { User } from '../../main';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -23,7 +24,7 @@ export class UserService {
   }
 
   // Response: string, boolean, object + ID
-  addUser(user: any) {
+  addUser(user: User) {
     return this.httpClient.post(this.userURL, user);
   }
 
@@ -33,8 +34,8 @@ export class UserService {
   }
 
   // Response: string, boolean, object + ID
-  updateUser(user: any) {
-    return this.httpClient.put(this.userURL, user);
+  updateUser(user: User) {
+    return this.httpClient.put(`${this.userURL}/${user.id}`, user);
   }
 
   login(loginData: { email: string; pswd: string; permanent: boolean }): Observable<any> {
@@ -42,12 +43,14 @@ export class UserService {
       `${this.userURL}?email=${loginData.email}&pswd=${loginData.pswd}`,
     );
 
+    // Retrieving data from local storage
     // this.users = JSON.parse(localStorage.getItem('users') || '[]');
     // this.user = this.users.find(
     //   (user: any) => user.email == FORM_VAL.email && user.pswd == FORM_VAL.pswd,
     // );
   }
 
+  // IMPORTANT: method to use with a real backend
   // login(loginData: { email: string; pswd: string }): Observable<any> {
   //   return this.httpClient.post<any[]>(`${this.userURL}/login`, loginData);
   // }

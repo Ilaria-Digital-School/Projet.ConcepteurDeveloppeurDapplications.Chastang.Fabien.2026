@@ -202,7 +202,7 @@ export class AddUser implements AfterViewInit {
       }
 
       if (toSave) {
-        this.userService.updateUser(this.userId).subscribe({
+        this.userService.updateUser(this.user).subscribe({
           next: (res: Object) => {
             alert('Votre compte a été modifié.');
           },

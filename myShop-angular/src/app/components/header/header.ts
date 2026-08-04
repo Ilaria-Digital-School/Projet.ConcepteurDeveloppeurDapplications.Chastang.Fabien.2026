@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { RouterLink, Router } from '@angular/router';
+import { User, UserRole } from '../../../main';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-header',
@@ -8,23 +10,24 @@ import { RouterLink } from '@angular/router';
   styleUrl: './header.css',
 })
 export class Header {
-  title: string = 'My Shop';
-  currentUser: any = null;
-  userName: string = '';
+  private router = inject(Router);
+  private authService = inject(AuthService);
+  UserRole = UserRole;
 
-  getCurrentUser(): boolean {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (this.currentUser.email) {
-      this.userName = this.currentUser.name;
-      return true;
-    } else {
-      this.userName = '';
-      return false;
-    }
+  title: string = 'My Shop';
+  connectedUser: User | null = null;
+
+  ngOnInit(): void {
+    this.getConnectedUser();
+  }
+
+  getConnectedUser(): User | null {
+    return (this.connectedUser = this.authService.getConnectedUser());
   }
 
   logout(): void {
-    localStorage.removeItem('currentUser');
-    sessionStorage.removeItem('currentUser');
+    this.authService.logout();
+    this.connectedUser = null;
+    this.router.navigate(['/']);
   }
 }

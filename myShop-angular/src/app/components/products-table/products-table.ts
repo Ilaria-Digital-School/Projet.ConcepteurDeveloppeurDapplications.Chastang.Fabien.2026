@@ -48,7 +48,8 @@ export class ProductsTable {
       // Remove the product
       this.productService.deleteProduct(id).subscribe({
         next: (res: Object) => {
-          this.load();
+          // Refresh the product list without calling the server
+          this.products = this.products.filter((item: Product) => item.id !== id);
         },
         error: (err: any) => {
           alert("Une erreur s'est produite lors de la suppression.");

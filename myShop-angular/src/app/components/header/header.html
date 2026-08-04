@@ -26,7 +26,10 @@
           <li>
             <a routerLink="/product-view/:id"> Nos Articles </a>
           </li>
-          @if (getCurrentUser()) {
+          @if (
+            getConnectedUser()?.role === UserRole.admin ||
+            connectedUser?.role === UserRole.superAdmin
+          ) {
             <li>
               <a class="pointer" aria-label="Administration">
                 <i class="fa-solid fa-tachograph-digital"></i>
@@ -49,13 +52,13 @@
           }
           <li>
             <a class="pointer" aria-label="Mon profile">
-              @if (getCurrentUser()) {
-                {{ userName }}
+              @if (getConnectedUser()?.name) {
+                {{ connectedUser?.name }}
               } @else {
                 <i class="fa-regular fa-circle-user"></i>
               }
             </a>
-            @if (getCurrentUser()) {
+            @if (getConnectedUser()) {
               <ul class="submenu separated">
                 <li>
                   <a routerLink="/orders"> Commandes </a>
