@@ -29,7 +29,7 @@ export class CustomValidators {
 })
 export class AddUser implements AfterViewInit {
   private activatedRoute = inject(ActivatedRoute);
-  private userService = inject(UserService)
+  private userService = inject(UserService);
 
   // The list of genders //////////////////////////////////////////////////////
   @ViewChild('genders') gendersDiv!: ElementRef;
@@ -57,44 +57,53 @@ export class AddUser implements AfterViewInit {
   // The form and its data: initialization and validation /////////////////////
   userForm!: FormGroup;
   isEditMode!: boolean;
-  userId!: number;
+  userId!: string | null;
   title!: string;
   btnAction!: string;
-  users: User[] = [];
+  users!: User[];
   user: User = new User();
   userIni: User = new User();
 
-  // Oldest version of Angular
-  // constructor(private formBuilder: FormBuilder) {}
-
   // Latest version of Angular
   private formBuilder = inject(FormBuilder);
+
+  load(): void {
+    this.userService.getAllUsers().subscribe({
+      next: (res: any) => {
+        this.users = res.map((item: any) => {
+          const USER = new User();
+          Object.assign(USER, item);
+          return USER;
+        });
+      },
+      error: (err: any) => {
+        alert("Une erreur s'est produite lors de la récupération des données.");
+        console.log(err);
+      },
+    });
+  }
 
   // Form initialization and field validation setup
   ngOnInit(): void {
     // Populating the HTML <select> element for countries
     this.setCountries();
 
-    // Get the data
-    this.userService.getAllUsers().subscribe((res: any) => {
-      this.users = res.map((item:any) => {
-        const USER = new User();
-        Object.assign(USER, item);
-        return USER;
-      });
-    });
-    this.userId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+    this.userId = this.activatedRoute.snapshot.paramMap.get('id');
     this.isEditMode = this.userId ? true : false;
 
     if (this.isEditMode) {
       // Edit mode: retrieve the product by its ID
       this.title = 'Mise à jour';
       this.btnAction = 'Modifier';
-      const USER = this.users.find((item: User) => (item.id = this.userId));
-      if (USER) {
-        Object.assign(this.user, USER)
-        this.userIni = structuredClone(this.user);
-      }
+      this.userService.getUserById(this.userId).subscribe({
+        next: (res: Object) => {
+          Object.assign(this.user, res);
+          this.userIni = structuredClone(this.user);
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
     } else {
       this.title = 'Inscription';
       this.btnAction = 'Ajouter';
@@ -144,9 +153,12 @@ export class AddUser implements AfterViewInit {
   submit(): void {
     const FORM_VAL = this.userForm.value;
 
-    if (!this.isEditMode || (this.isEditMode && this.userIni.email != FORM_VAL.email)) {
+    if (!this.isEditMode || (this.isEditMode && this.userIni.email !== FORM_VAL.email)) {
+      // Get data
+      this.load();
+
       // Check if the email does not exist
-      if (this.users.some((user: User) => user.email == FORM_VAL.email)) {
+      if (this.users.some((user: User) => user.email === FORM_VAL.email)) {
         alert('Cet e-mail existe déjà !');
         return;
       }
@@ -157,20 +169,21 @@ export class AddUser implements AfterViewInit {
     if (FORM_VAL.clothes) interests.push(1);
     if (FORM_VAL.accessories) interests.push(2);
 
-    let toSave = false;
     if (this.isEditMode) {
       // Modify the user
+      let toSave = false;
+
       const NAME = FORM_VAL.nameItem.trim();
       if (this.userIni.name != NAME) {
         toSave = true;
         this.user.name = NAME;
       }
-      if (this.userIni.email != FORM_VAL.email) {
+      if (this.userIni.email !== FORM_VAL.email) {
         toSave = true;
         this.user.email = FORM_VAL.email;
       }
       const GENDER = parseInt(FORM_VAL.gender);
-      if (this.userIni.gender != GENDER) {
+      if (this.userIni.gender !== GENDER) {
         toSave = true;
         this.user.gender = GENDER;
       }
@@ -183,29 +196,41 @@ export class AddUser implements AfterViewInit {
         this.user.interests = interests;
       }
       const COUNTRY = parseInt(FORM_VAL.country);
-      if (this.userIni.country != COUNTRY) {
+      if (this.userIni.country !== COUNTRY) {
         toSave = true;
         this.user.country = COUNTRY;
       }
+
+      if (toSave) {
+        this.userService.updateUser(this.userId).subscribe({
+          next: (res: Object) => {
+            alert('Votre compte a été modifié.');
+          },
+          error: (err: any) => {
+            alert("Une erreur s'est produite.");
+            console.log(err);
+          },
+        });
+      }
     } else {
       // Create the result object
-      toSave = true;
       this.user.name = FORM_VAL.nameItem.trim();
       this.user.email = FORM_VAL.email;
       this.user.pswd = FORM_VAL.pswd;
       this.user.gender = parseInt(FORM_VAL.gender);
       this.user.interests = interests;
       this.user.country = parseInt(FORM_VAL.country);
-      this.users.push(this.user);
-    }
 
-    if (toSave) {
-      // Saving user data to local storage
-      // localStorage.setItem('users', JSON.stringify(this.users));
-
-      // Confirmation message and form reset
-      alert(this.isEditMode ? 'Votre compte a été modifié.' : 'Votre compte a été créé.');
-      if (!this.isEditMode) this.reset();
+      this.userService.addUser(this.user).subscribe({
+        next: (res: Object) => {
+          alert('Votre compte a été créé.');
+          this.reset();
+        },
+        error: (err: any) => {
+          alert("Une erreur s'est produite.");
+          console.log(err);
+        },
+      });
     }
   }
 

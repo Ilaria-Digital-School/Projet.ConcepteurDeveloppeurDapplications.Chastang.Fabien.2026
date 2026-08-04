@@ -7,28 +7,26 @@ bootstrapApplication(App, appConfig).catch((err) => console.error(err));
 // Product class /////////////////////////////////////////////////////////
 
 export class Product {
-  id!: number;
-  name!: string;
-  description!: string;
-  price!: number;
-  img!: string;
-  info!: string;
-  visible!: boolean;
+  id: string = Date.now().toString();
+  name: string = '';
+  description: string = '';
+  price: number = 0;
+  img: string = '';
+  info: string = '';
+  visible: boolean = true;
 
   constructor(
-    name: string | undefined = undefined,
-    description: string | undefined = undefined,
-    price: number | undefined = undefined,
-    img: string | undefined = undefined,
-    info: string | undefined = undefined,
+    name: string | null = null,
+    description: string | null = null,
+    price: number | null = null,
+    img: string | null = null,
+    info: string | null = null,
   ) {
-    this.id = Date.now();
-    if (typeof name == 'string') this.name = name;
-    if (typeof description == 'string') this.description = description;
-    if (typeof price == 'number') this.price = price;
-    if (typeof img == 'string') this.img = img;
-    if (typeof info == 'string') this.info = info;
-    this.visible = true;
+    if (typeof name === 'string') this.name = name;
+    if (typeof description === 'string') this.description = description;
+    if (typeof price === 'number') this.price = price;
+    if (typeof img === 'string') this.img = img;
+    if (typeof info === 'string') this.info = info;
   }
 }
 
@@ -53,40 +51,37 @@ export class UserInterest {
 }
 
 export class User {
-  id!: number;
-  name!: string;
-  email!: string;
-  pswd!: string;
-  gender!: number;
-  interests!: number[];
-  country!: number;
-  role!: number;
-  visible!: boolean;
+  id: string = Date.now().toString();
+  name: string = '';
+  email: string = '';
+  pswd: string = '';
+  gender: number = 0;
+  interests: number[] = [];
+  country: number = 0;
+  role: number = UserRole.user;
+  visible: boolean = true;
 
   constructor(
-    name: string | undefined = undefined,
-    email: string | undefined = undefined,
-    pswd: string | undefined = undefined,
-    gender: number | undefined = undefined,
-    interests: number[] | undefined = undefined,
-    country: number | undefined = undefined,
+    name: string | null = null,
+    email: string | null = null,
+    pswd: string | null = null,
+    gender: number | null = null,
+    interests: number[] | null = null,
+    country: number | null = null,
   ) {
-    this.id = Date.now();
-    if (typeof name == 'string') this.name = name;
-    if (typeof email == 'string') this.email = email;
-    if (typeof pswd == 'string') this.pswd = pswd;
-    if (typeof gender == 'number') {
+    if (typeof name === 'string') this.name = name;
+    if (typeof email === 'string') this.email = email;
+    if (typeof pswd === 'string') this.pswd = pswd;
+    if (typeof gender === 'number') {
       this.gender =
-        gender == UserGender.female || gender == UserGender.male ? gender : UserGender.other;
+        gender === UserGender.female || gender === UserGender.male ? gender : UserGender.other;
     }
     if (Array.isArray(interests)) {
       this.interests = [UserInterest.clothes, UserInterest.accessories].filter((item: any) => {
         return interests.includes(item);
       });
     }
-    if (typeof country == 'number') this.country = country;
-    this.role = UserRole.user;
-    this.visible = true;
+    if (typeof country === 'number') this.country = country;
   }
 }
 
@@ -100,11 +95,11 @@ export class Roles {
 
   // Get the ID from the name and the name from the ID
   static getId(roleName: string) {
-    const ROLE = this.list.find((item: any) => item.label.toLowerCase() == roleName);
+    const ROLE = this.list.find((item: any) => item.label.toLowerCase() === roleName);
     return ROLE ? ROLE.value : this.other.value;
   }
   static getName(roleId: number) {
-    const ROLE = this.list.find((item: any) => item.value == roleId);
+    const ROLE = this.list.find((item: any) => item.value === roleId);
     return ROLE ? ROLE.label : this.other.label;
   }
 }
@@ -119,11 +114,11 @@ export class Genders {
 
   // Get the ID from the name and the name from the ID
   static getId(genderName: string) {
-    const GENDER = this.list.find((item: any) => item.label.toLowerCase() == genderName);
+    const GENDER = this.list.find((item: any) => item.label.toLowerCase() === genderName);
     return GENDER ? GENDER.value : this.other.value;
   }
   static getName(genderId: number) {
-    const GENDER = this.list.find((item: any) => item.value == genderId);
+    const GENDER = this.list.find((item: any) => item.value === genderId);
     return GENDER ? GENDER.label : this.other.label;
   }
 }
@@ -138,11 +133,11 @@ export class Interests {
   // Get the ID from the name and the name from the ID
   static getId(interestName: string) {
     const NAME = interestName.trim().toLowerCase();
-    const INTEREST = this.list.find((item: any) => item.label.toLowerCase() == NAME);
+    const INTEREST = this.list.find((item: any) => item.label.toLowerCase() === NAME);
     return INTEREST ? INTEREST.value : this.other.value;
   }
   static getName(interestId: number) {
-    const INTEREST = this.list.find((item: any) => item.value == interestId);
+    const INTEREST = this.list.find((item: any) => item.value === interestId);
     return INTEREST ? INTEREST.label : this.other.label;
   }
 }
@@ -177,11 +172,11 @@ export class Countries {
 
   // Get the ID from the name and the name from the ID
   static etId(countryName: string) {
-    const COUNTRY = this.list.find((item) => item.label.toLowerCase() == countryName);
+    const COUNTRY = this.list.find((item) => item.label.toLowerCase() === countryName);
     return COUNTRY ? COUNTRY.value : this.other.value;
   }
   static getName(countryId: number) {
-    const COUNTRY = this.list.find((item) => item.value == countryId);
+    const COUNTRY = this.list.find((item) => item.value === countryId);
     return COUNTRY ? COUNTRY.label : this.other.label;
   }
 }
@@ -210,36 +205,4 @@ export class Main {
         ? defaultValue.toString()
         : '';
   }
-
-  // BACKEND (normally): create an administrator account
-  static addAdmin(name: string, email: string, pswd: string, role: number): boolean {
-    // Check if the email does not exist
-    const USERS = JSON.parse(localStorage.getItem('users') || '[]');
-    if (USERS.some((user: any) => user.email == email)) {
-      console.log('This email already exists!');
-      return false;
-    }
-
-    const USER = {
-      id: Date.now(),
-      name: name,
-      email: email,
-      pswd: pswd,
-      gender: 0,
-      interests: [],
-      country: 0,
-      role: role,
-      isVisible: true,
-    };
-
-    // Saving user data to local storage
-    USERS.push(USER);
-    localStorage.setItem('users', JSON.stringify(USERS));
-
-    // Confirmation message
-    console.log('The account has been created.');
-    return true;
-  }
 }
-
-Main.addAdmin('Fabien', 'admin.fabien@myshop.com', '3kb!BWFe;dgXqV]', 1);

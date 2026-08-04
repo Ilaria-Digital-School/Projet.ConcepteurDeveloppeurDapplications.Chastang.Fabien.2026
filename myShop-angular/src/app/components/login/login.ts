@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { User } from '../../../main';
+import { UserService } from '../../services/user-service';
 
 @Component({
   selector: 'app-login',
@@ -9,11 +11,12 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './login.css',
 })
 export class Login {
-  constructor(private router: Router) {}
+  private router = inject(Router);
+  private userService = inject(UserService);
 
   loginForm!: FormGroup;
-  users: any[] = [];
-  user!: any;
+  users!: User[];
+  user: User = new User();
   errorMsg: string = '';
 
   private formBuilder = inject(FormBuilder);
@@ -30,11 +33,14 @@ export class Login {
 
   login(): void {
     const FORM_VAL = this.loginForm.value;
-
-    this.users = JSON.parse(localStorage.getItem('users') || '[]');
-    this.user = this.users.find(
-      (user: any) => user.email == FORM_VAL.email && user.pswd == FORM_VAL.pswd,
-    );
+    this.userService.login(FORM_VAL).subscribe({
+      next: (res: Object) => {
+        Object.assign(this.user, res);
+      },
+      error: (err: any) => {
+        console.log(err);
+      },
+    });
 
     if (this.user) {
       if (FORM_VAL.permanent) localStorage.setItem('currentUser', JSON.stringify(this.user));

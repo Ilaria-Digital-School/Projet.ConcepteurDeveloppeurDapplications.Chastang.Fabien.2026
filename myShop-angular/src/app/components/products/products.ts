@@ -24,9 +24,9 @@ export class Products {
     });
   }
 
-  remove(id: number) {
+  remove(id: string) {
     // Remove the product
-    const PRODUCTS = this.products.filter((item: Product) => item.id != id);
+    const PRODUCTS = this.products.filter((item: Product) => item.id !== id);
     // localStorage.setItem('products', JSON.stringify(PRODUCTS));
 
     // Refresh the product list

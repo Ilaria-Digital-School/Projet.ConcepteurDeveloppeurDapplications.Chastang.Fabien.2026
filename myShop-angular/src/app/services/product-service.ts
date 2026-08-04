@@ -16,18 +16,18 @@ export class ProductService {
     return this.httpClient.get(this.productURL);
   }
 
+  // Response: product object or null
+  getProductById(id: string | null) {
+    return this.httpClient.get(`${this.productURL}/${id}`);
+  }
+
   // Response: string, boolean, object + ID
   addProduct(product: any) {
     return this.httpClient.post(this.productURL, product);
   }
 
-  // Response: product object or null
-  getProductById(id: any) {
-    return this.httpClient.get(`${this.productURL}/${id}`);
-  }
-
   // Response: string, boolean
-  deleteProduct(id: any) {
+  deleteProduct(id: string | null) {
     return this.httpClient.delete(`${this.productURL}/${id}`);
   }
 

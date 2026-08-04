@@ -22,24 +22,34 @@ export class UsersTable {
 
   users!: User[];
 
-  ngOnInit(): void {
-    this.userService.getAllUsers().subscribe((res: any) => {
-      this.users = res.map((item:any) => {
-        const USER = new User();
-        Object.assign(USER, item);
-        return USER;
-      });
+  load(): void {
+    this.userService.getAllUsers().subscribe({
+      next: (res: any) => {
+        this.users = res.map((item: any) => {
+          const USER = new User();
+          Object.assign(USER, item);
+          return USER;
+        });
+      },
+      error: (err: any) => {
+        alert("Une erreur s'est produite lors de la récupération des données.");
+        console.log(err);
+      },
     });
   }
 
-  edit(id: number): void {
+  ngOnInit(): void {
+    this.load();
+  }
+
+  edit(id: string): void {
     this.router.navigate(['/user-edit', id]);
   }
 
-  remove(id: number): void {
+  remove(id: string): void {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
       // Remove the product
-      const USERS = this.users.filter((item: User) => item.id != id);
+      const USERS = this.users.filter((item: User) => item.id !== id);
       // localStorage.setItem('users', JSON.stringify(USERS));
 
       // Refresh the product list

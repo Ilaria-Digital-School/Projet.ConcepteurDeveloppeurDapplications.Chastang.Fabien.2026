@@ -10,7 +10,7 @@ export class ProductCard {
   @Input() product: any;
   @Output() removeEvent = new EventEmitter();
 
-  remove(id: number): void {
+  remove(id: string): void {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
       this.removeEvent.emit(id);
     }

@@ -15,32 +15,46 @@ export class ProductsTable {
 
   products!: Product[];
 
-  ngOnInit(): void {
-    this.productService.getAllProducts().subscribe((res: any) => {
-      this.products = res.map((item:any) => {
-        const PRODUCT = new Product();
-        Object.assign(PRODUCT, item);
-        return PRODUCT;
-      });
+  load(): void {
+    this.productService.getAllProducts().subscribe({
+      next: (res: any) => {
+        this.products = res.map((item: any) => {
+          const PRODUCT = new Product();
+          Object.assign(PRODUCT, item);
+          return PRODUCT;
+        });
+      },
+      error: (err: any) => {
+        alert("Une erreur s'est produite lors de la récupération des données.");
+        console.log(err);
+      },
     });
   }
 
-  view(id: number): void {
+  ngOnInit(): void {
+    this.load();
+  }
+
+  view(id: string): void {
     this.router.navigate(['/product-view', id]);
   }
 
-  edit(id: number): void {
+  edit(id: string): void {
     this.router.navigate(['/product-edit', id]);
   }
 
-  remove(id: number): void {
+  remove(id: string): void {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
       // Remove the product
-      const PRODUCTS = this.products.filter((item: any) => item.id != id);
-      // localStorage.setItem('products', JSON.stringify(PRODUCTS));
-
-      // Refresh the product list
-      this.products = PRODUCTS;
+      this.productService.deleteProduct(id).subscribe({
+        next: (res: Object) => {
+          this.load();
+        },
+        error: (err: any) => {
+          alert("Une erreur s'est produite lors de la suppression.");
+          console.log(err);
+        },
+      });
     }
   }
 }

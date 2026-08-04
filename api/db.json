@@ -1,7 +1,7 @@
 {
   "products": [
     {
-      "id": 126485910,
+      "id": "5910",
       "name": "Chemise",
       "description": "Chemise homme en coton bleu clair",
       "price": 20,
@@ -10,7 +10,7 @@
       "visible": true
     },
     {
-      "id": 126492429,
+      "id": "2429",
       "name": "Robe",
       "description": "Robe en jean denim indigo",
       "price": 40,
@@ -19,7 +19,7 @@
       "visible": true
     },
     {
-      "id": 126485147,
+      "id": "5147",
       "name": "Robe",
       "description": "Robe en coton bleu nuit",
       "price": 70,
@@ -30,7 +30,7 @@
   ],
   "users": [
     {
-      "id": 126485749,
+      "id": "5749",
       "name": "Fabien",
       "email": "admin.fabien@myshop.com",
       "pswd": "3kb!BWFe;dgXqV]",
@@ -38,6 +38,28 @@
       "interests": [],
       "country": 0,
       "role": 1,
+      "visible": true
+    },
+    {
+      "id": "3856",
+      "name": "Louis",
+      "email": "louis.machin@domain.com",
+      "pswd": "Ialj:75/A,#tmUt",
+      "gender": 2,
+      "interests": [1],
+      "country": 9,
+      "role": 0,
+      "visible": true
+    },
+    {
+      "id": "7391",
+      "name": "Janette",
+      "email": "janette.bidule@domain.com",
+      "pswd": "3Fx$Njqb6yeh4hj",
+      "gender": 1,
+      "interests": [1, 2],
+      "country": 22,
+      "role": 0,
       "visible": true
     }
   ]
