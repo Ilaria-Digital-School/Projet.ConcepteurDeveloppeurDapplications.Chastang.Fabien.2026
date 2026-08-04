@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ProductCard } from '../product-card/product-card';
 import { Product } from '../../../main';
 import { ProductService } from '../../services/product-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -10,26 +11,37 @@ import { ProductService } from '../../services/product-service';
   styleUrl: './products.css',
 })
 export class Products {
+  private router = inject(Router);
+  private changeDetectorRef = inject(ChangeDetectorRef);
   private productService = inject(ProductService);
 
   products!: Product[];
 
-  ngOnInit(): void {
-    this.productService.getAllProducts().subscribe((res: any) => {
-      this.products = res.map((item: any) => {
-        const PRODUCT = new Product();
-        Object.assign(PRODUCT, item);
-        return PRODUCT;
-      });
+  // Retrieve the products
+  load(forceCheck: boolean = false): void {
+    this.productService.getAllProducts().subscribe({
+      next: (res: any) => {
+        this.products = res.map((item: any) => {
+          const PRODUCT = new Product();
+          Object.assign(PRODUCT, item);
+          return PRODUCT;
+        });
+        if (forceCheck) this.changeDetectorRef.detectChanges(); // Force a check
+      },
+      error: (err: any) => {
+        alert("Une erreur s'est produite lors de la récupération des données.");
+        console.log(err);
+      },
     });
   }
 
-  remove(id: string) {
-    // Remove the product
-    const PRODUCTS = this.products.filter((item: Product) => item.id !== id);
-    // localStorage.setItem('products', JSON.stringify(PRODUCTS));
+  // Initialize the product list
+  ngOnInit(): void {
+    this.load(true);
+  }
 
-    // Refresh the product list
-    this.products = PRODUCTS;
+  // View a product
+  view(id: string): void {
+    this.router.navigate(['/product-view', id]);
   }
 }

@@ -1,13 +1,15 @@
 <section>
-  @if (products.length > 0) {
-    <h2 class="h2-title">Nos Articles</h2>
+  <h2 class="h2-title">Nos Articles</h2>
 
-    <div class="product-container">
-      @for (product of products; track product.id; let i = $index) {
-        <app-product-card [product]="product" (removeEvent)="remove($event)"></app-product-card>
-      }
-    </div>
-  } @else {
-    <h2 class="h2-title">Aucun article n'est référencé</h2>
-  }
+  <div class="product-container">
+    @for (product of products; track product.id; let i = $index) {
+      <app-product-card
+        [product]="product"
+        [isView]="1"
+        (viewEvent)="view($event)"
+      ></app-product-card>
+    } @empty {
+      <h2 class="h2-title">Aucun article n'est référencé</h2>
+    }
+  </div>
 </section>

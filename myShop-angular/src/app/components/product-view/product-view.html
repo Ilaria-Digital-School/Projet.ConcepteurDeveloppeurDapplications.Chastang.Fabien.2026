@@ -2,6 +2,10 @@
   <h2 class="h2-title">Notre Article</h2>
 
   <div class="product-container">
-    <app-product-card [product]="product" (removeEvent)="remove($event)"></app-product-card>
+    <app-product-card
+      [product]="product"
+      (editEvent)="edit($event)"
+      (removeEvent)="remove($event)"
+    ></app-product-card>
   </div>
 </section>

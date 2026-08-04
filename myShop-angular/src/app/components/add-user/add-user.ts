@@ -1,4 +1,12 @@
-import { Component, inject, Renderer2, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  Renderer2,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  ChangeDetectorRef,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -28,7 +36,10 @@ export class CustomValidators {
   styleUrl: './add-user.css',
 })
 export class AddUser implements AfterViewInit {
+  private formBuilder = inject(FormBuilder);
+  private renderer = inject(Renderer2); // To retrieve the HTML elements, in this class, the HTML tags <select>
   private activatedRoute = inject(ActivatedRoute);
+  private changeDetectorRef = inject(ChangeDetectorRef);
   private userService = inject(UserService);
 
   // The list of genders //////////////////////////////////////////////////////
@@ -38,9 +49,6 @@ export class AddUser implements AfterViewInit {
   // The list of countries ////////////////////////////////////////////////////
   countriesHTMLSelect!: HTMLSelectElement;
   countriesHTMLOptions!: HTMLOptionsCollection;
-
-  // To retrieve the HTML elements, in this class, the HTML tags <select>
-  private renderer = inject(Renderer2);
 
   // Populating the HTML <select> element for countries
   setCountries(): void {
@@ -64,10 +72,8 @@ export class AddUser implements AfterViewInit {
   user: User = new User();
   userIni: User = new User();
 
-  // Latest version of Angular
-  private formBuilder = inject(FormBuilder);
-
-  load(): void {
+  // Retrieve the users
+  load(forceCheck: boolean = false): void {
     this.userService.getAllUsers().subscribe({
       next: (res: any) => {
         this.users = res.map((item: any) => {
@@ -75,6 +81,7 @@ export class AddUser implements AfterViewInit {
           Object.assign(USER, item);
           return USER;
         });
+        if (forceCheck) this.changeDetectorRef.detectChanges(); // Force a check
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
@@ -83,7 +90,7 @@ export class AddUser implements AfterViewInit {
     });
   }
 
-  // Form initialization and field validation setup
+  // Initialize the form
   ngOnInit(): void {
     // Populating the HTML <select> element for countries
     this.setCountries();
@@ -92,19 +99,22 @@ export class AddUser implements AfterViewInit {
     this.isEditMode = this.userId ? true : false;
 
     if (this.isEditMode) {
-      // Edit mode: retrieve the product by its ID
+      // Edit mode: retrieve the user by its ID
       this.title = 'Mise à jour';
       this.btnAction = 'Modifier';
+
       this.userService.getUserById(this.userId).subscribe({
         next: (res: Object) => {
           Object.assign(this.user, res);
           this.userIni = structuredClone(this.user);
+          this.changeDetectorRef.detectChanges(); // Force a check
         },
         error: (err: any) => {
           console.log(err);
         },
       });
     } else {
+      // Add a new user
       this.title = 'Inscription';
       this.btnAction = 'Ajouter';
     }
@@ -154,10 +164,8 @@ export class AddUser implements AfterViewInit {
     const FORM_VAL = this.userForm.value;
 
     if (!this.isEditMode || (this.isEditMode && this.userIni.email !== FORM_VAL.email)) {
-      // Get data
-      this.load();
-
       // Check if the email does not exist
+      this.load(); // Retrieve the user list
       if (this.users.some((user: User) => user.email === FORM_VAL.email)) {
         alert('Cet e-mail existe déjà !');
         return;
@@ -202,18 +210,19 @@ export class AddUser implements AfterViewInit {
       }
 
       if (toSave) {
+        // Update the user
         this.userService.updateUser(this.user).subscribe({
           next: (res: Object) => {
             alert('Votre compte a été modifié.');
           },
           error: (err: any) => {
-            alert("Une erreur s'est produite.");
+            alert("Une erreur s'est produite lors de la modification.");
             console.log(err);
           },
         });
       }
     } else {
-      // Create the result object
+      // Add the user
       this.user.name = FORM_VAL.nameItem.trim();
       this.user.email = FORM_VAL.email;
       this.user.pswd = FORM_VAL.pswd;
@@ -227,7 +236,7 @@ export class AddUser implements AfterViewInit {
           this.reset();
         },
         error: (err: any) => {
-          alert("Une erreur s'est produite.");
+          alert("Une erreur s'est produite lors de la création.");
           console.log(err);
         },
       });
@@ -237,6 +246,7 @@ export class AddUser implements AfterViewInit {
   // Reset the form ///////////////////////////////////////////////////////////
   reset(): void {
     if (this.isEditMode) {
+      // Edit mode
       this.userForm.patchValue({
         nameItem: this.userIni.name,
         email: this.userIni.email,

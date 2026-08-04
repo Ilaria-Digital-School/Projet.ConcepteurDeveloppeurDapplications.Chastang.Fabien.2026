@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductService } from '../../services/product-service';
 import { Product } from '../../../main';
@@ -11,11 +11,13 @@ import { Product } from '../../../main';
 })
 export class ProductsTable {
   private router = inject(Router);
+  private changeDetectorRef = inject(ChangeDetectorRef);
   private productService = inject(ProductService);
 
   products!: Product[];
 
-  load(): void {
+  // Retrieve the products
+  load(forceCheck: boolean = false): void {
     this.productService.getAllProducts().subscribe({
       next: (res: any) => {
         this.products = res.map((item: any) => {
@@ -23,6 +25,7 @@ export class ProductsTable {
           Object.assign(PRODUCT, item);
           return PRODUCT;
         });
+        if (forceCheck) this.changeDetectorRef.detectChanges(); // Force a check
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
@@ -31,18 +34,22 @@ export class ProductsTable {
     });
   }
 
+  // Initialize the product list
   ngOnInit(): void {
-    this.load();
+    this.load(true);
   }
 
+  // View a product
   view(id: string): void {
     this.router.navigate(['/product-view', id]);
   }
 
+  // Edit a product
   edit(id: string): void {
     this.router.navigate(['/product-edit', id]);
   }
 
+  // Delete a product
   remove(id: string): void {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
       // Remove the product

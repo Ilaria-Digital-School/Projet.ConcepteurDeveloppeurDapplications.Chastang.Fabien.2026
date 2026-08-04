@@ -11,9 +11,9 @@ import { UserService } from '../../services/user-service';
   styleUrl: './login.css',
 })
 export class Login {
+  private formBuilder = inject(FormBuilder);
   private router = inject(Router);
   private userService = inject(UserService);
-  private formBuilder = inject(FormBuilder);
 
   loginForm!: FormGroup;
   user: User | null = null;

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product-service';
@@ -12,6 +12,7 @@ import { Main, Product } from '../../../main';
 })
 export class AddProduct {
   private activatedRoute = inject(ActivatedRoute);
+  private changeDetectorRef = inject(ChangeDetectorRef);
   private productService = inject(ProductService);
 
   isEditMode!: boolean;
@@ -21,6 +22,7 @@ export class AddProduct {
   product: Product = new Product();
   productIni: Product = new Product();
 
+  // Initialize the form
   ngOnInit(): void {
     this.productId = this.activatedRoute.snapshot.paramMap.get('id');
     this.isEditMode = this.productId ? true : false;
@@ -29,52 +31,59 @@ export class AddProduct {
       // Edit mode: retrieve the product by its ID
       this.title = 'Mise à jour';
       this.btnAction = 'Modifier';
+
       this.productService.getProductById(this.productId).subscribe({
         next: (res: Object) => {
           Object.assign(this.product, res);
           this.productIni = structuredClone(this.product);
+          this.changeDetectorRef.detectChanges(); // Force a check
         },
         error: (err: any) => {
           console.log(err);
         },
       });
-      console.log(this.product.id);
     } else {
+      // Add a new product
       this.title = 'Nouvel Article';
       this.btnAction = 'Ajouter';
     }
   }
 
+  // Add or update the product
   submit(productForm: NgForm): void {
     if (this.isEditMode) {
+      // Update the product
       this.productService.updateProduct(this.product).subscribe({
         next: (res: Object) => {
           alert('Le produit a été modifié.');
         },
         error: (err: any) => {
-          alert("Une erreur s'est produite.");
+          alert("Une erreur s'est produite lors de la modification.");
           console.log(err);
         },
       });
     } else {
+      // Add the product
       this.productService.addProduct(productForm.value).subscribe({
         next: (res: Object) => {
           alert('Le produit a été ajouté.');
           productForm.resetForm();
         },
         error: (err: any) => {
-          alert("Une erreur s'est produite.");
+          alert("Une erreur s'est produite lors de l'ajout.");
           console.log(err);
         },
       });
     }
   }
 
+  // Reset the form
   reset(productForm: NgForm): void {
     if (this.isEditMode) this.product = structuredClone(this.productIni);
     else productForm.resetForm();
   }
 
+  // Check the price
   checkPrice(): void {
     this.product.price = Number(
       Main.checkPositiveNumber(this.product.price.toString(), false, 9999.99),
