@@ -19,6 +19,16 @@ header span .selected-page {
   cursor: default;
 }
 
+header .profile:hover {
+  transform: translateX(7px) translateY(-1px) scale(1.2);
+}
+
+header .arrow,
+header .arrow:hover {
+  margin-left: 2px;
+  transform: scale(0.8);
+}
+
 /*
     Cart's sticker
 */

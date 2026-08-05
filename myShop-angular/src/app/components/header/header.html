@@ -51,13 +51,15 @@
             </li>
           }
           <li>
-            <a class="pointer" aria-label="Mon profile">
-              @if (getConnectedUser()?.name) {
-                {{ connectedUser?.name }}
-              } @else {
+            @if (getConnectedUser()?.name) {
+              <a class="pointer profile" aria-label="Mon profile">
+                {{ connectedUser?.name }}<i class="fa-solid fa-caret-down arrow"></i>
+              </a>
+            } @else {
+              <a class="pointer" aria-label="Mon profile">
                 <i class="fa-regular fa-circle-user"></i>
-              }
-            </a>
+              </a>
+            }
             @if (getConnectedUser()) {
               <ul class="submenu separated">
                 <li>
