@@ -15,12 +15,12 @@ export class UserService {
 
   // Response: array of objects (list of users)
   getAllUsers() {
-    return this.httpClient.get(this.userURL);
+    return this.httpClient.get<User[]>(this.userURL);
   }
 
   // Response: user object or null
   getUserById(id: string | null) {
-    return this.httpClient.get(`${this.userURL}/${id}`);
+    return this.httpClient.get<User>(`${this.userURL}/${id}`);
   }
 
   // Response: string, boolean, object + ID
@@ -39,7 +39,7 @@ export class UserService {
   }
 
   login(loginData: { email: string; pswd: string; permanent: boolean }): Observable<any> {
-    return this.httpClient.get<any[]>(
+    return this.httpClient.get<User[]>(
       `${this.userURL}?email=${loginData.email}&pswd=${loginData.pswd}`,
     );
 
@@ -52,6 +52,6 @@ export class UserService {
 
   // IMPORTANT: method to use with a real backend
   // login(loginData: { email: string; pswd: string }): Observable<any> {
-  //   return this.httpClient.post<any[]>(`${this.userURL}/login`, loginData);
+  //   return this.httpClient.post<User[]>(`${this.userURL}/login`, loginData);
   // }
 }

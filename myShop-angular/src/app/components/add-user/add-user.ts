@@ -75,12 +75,8 @@ export class AddUser implements AfterViewInit {
   // Retrieve the users
   load(forceCheck: boolean = false): void {
     this.userService.getAllUsers().subscribe({
-      next: (res: any) => {
-        this.users = res.map((item: any) => {
-          const USER = new User();
-          Object.assign(USER, item);
-          return USER;
-        });
+      next: (res: User[]) => {
+        this.users = res;
         if (forceCheck) this.changeDetectorRef.detectChanges(); // Force a check
       },
       error: (err: any) => {
@@ -104,8 +100,8 @@ export class AddUser implements AfterViewInit {
       this.btnAction = 'Modifier';
 
       this.userService.getUserById(this.userId).subscribe({
-        next: (res: Object) => {
-          Object.assign(this.user, res);
+        next: (res: User) => {
+          this.user = res;
           this.userIni = structuredClone(this.user);
           this.changeDetectorRef.detectChanges(); // Force a check
         },

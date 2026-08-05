@@ -33,8 +33,8 @@ export class AddProduct {
       this.btnAction = 'Modifier';
 
       this.productService.getProductById(this.productId).subscribe({
-        next: (res: Object) => {
-          Object.assign(this.product, res);
+        next: (res: Product) => {
+          this.product = res;
           this.productIni = structuredClone(this.product);
           this.changeDetectorRef.detectChanges(); // Force a check
         },

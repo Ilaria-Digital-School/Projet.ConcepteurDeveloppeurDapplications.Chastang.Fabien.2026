@@ -20,12 +20,8 @@ export class Products {
   // Retrieve the products
   load(forceCheck: boolean = false): void {
     this.productService.getAllProducts().subscribe({
-      next: (res: any) => {
-        this.products = res.map((item: any) => {
-          const PRODUCT = new Product();
-          Object.assign(PRODUCT, item);
-          return PRODUCT;
-        });
+      next: (res: Product[]) => {
+        this.products = res;
         if (forceCheck) this.changeDetectorRef.detectChanges(); // Force a check
       },
       error: (err: any) => {

@@ -24,8 +24,8 @@ export class ProductView {
     this.productId = this.activatedRoute.snapshot.paramMap.get('id');
     if (this.productId) {
       this.productService.getProductById(this.productId).subscribe({
-        next: (res: Object) => {
-          Object.assign(this.product, res);
+        next: (res: Product) => {
+          this.product = res;
           this.changeDetectorRef.detectChanges(); // Force a check
         },
         error: (err: any) => {

@@ -12,20 +12,26 @@ export class Product {
   description: string = '';
   price: number = 0;
   img: string = '';
+  stock: number = 0;
   info: string = '';
   visible: boolean = true;
+
+  // For additional properties (RxJS)
+  additional:any = {};
 
   constructor(
     name: string | null = null,
     description: string | null = null,
     price: number | null = null,
     img: string | null = null,
+    stock: number | null = null,
     info: string | null = null,
   ) {
     if (typeof name === 'string') this.name = name;
     if (typeof description === 'string') this.description = description;
     if (typeof price === 'number') this.price = price;
     if (typeof img === 'string') this.img = img;
+    if (typeof stock === 'number') this.stock = stock;
     if (typeof info === 'string') this.info = info;
   }
 }
@@ -60,6 +66,9 @@ export class User {
   country: number = 0;
   role: number = UserRole.user;
   visible: boolean = true;
+
+  // For additional properties (RxJS)
+  additional:any = {};
 
   constructor(
     name: string | null = null,

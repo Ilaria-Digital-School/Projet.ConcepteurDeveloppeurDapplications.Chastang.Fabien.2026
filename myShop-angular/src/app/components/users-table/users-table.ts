@@ -27,12 +27,8 @@ export class UsersTable {
   // Retrieve the users
   load(forceCheck: boolean = false): void {
     this.userService.getAllUsers().subscribe({
-      next: (res: any) => {
-        this.users = res.map((item: any) => {
-          const USER = new User();
-          Object.assign(USER, item);
-          return USER;
-        });
+      next: (res: User[]) => {
+        this.users = res;
         if (forceCheck) this.changeDetectorRef.detectChanges(); // Force a check
       },
       error: (err: any) => {

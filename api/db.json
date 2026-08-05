@@ -6,6 +6,7 @@
       "description": "Chemise homme en coton bleu clair",
       "price": 20,
       "img": "assets/img/clothing/men/shirts/cms1.png",
+      "stock": 10,
       "info": "Cet article est fortement recommendé par nos client",
       "visible": true
     },
@@ -15,6 +16,7 @@
       "description": "Robe en jean denim indigo",
       "price": 40,
       "img": "assets/img/clothing/women/dresses/cwd1.png",
+      "stock": 20,
       "info": "",
       "visible": true
     },
@@ -24,6 +26,7 @@
       "description": "Robe en coton bleu nuit",
       "price": 70,
       "img": "assets/img/clothing/women/dresses/cwd2.png",
+      "stock": 5,
       "info": "",
       "visible": true
     }

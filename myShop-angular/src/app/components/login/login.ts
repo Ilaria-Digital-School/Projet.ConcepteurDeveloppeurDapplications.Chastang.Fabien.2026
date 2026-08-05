@@ -33,7 +33,7 @@ export class Login {
     // Retrieve the user's data from DB
     const FORM_VAL = this.loginForm.value;
     this.userService.login(FORM_VAL).subscribe({
-      next: (res: any) => {
+      next: (res: User[]) => {
         if (res.length > 0) {
           this.user = new User();
           Object.assign(this.user, res[0]);
