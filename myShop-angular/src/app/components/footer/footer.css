@@ -29,4 +29,8 @@ footer .copyright {
   bottom: 10px;
   right: 10px;
   border: 2px solid white;
+
+  text-align: center;
+  width: 40px;
+  padding: 5px 0;
 }

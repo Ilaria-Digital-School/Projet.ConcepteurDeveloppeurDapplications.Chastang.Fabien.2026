@@ -15,14 +15,15 @@ export class AddProduct {
   private changeDetectorRef = inject(ChangeDetectorRef);
   private productService = inject(ProductService);
 
-  isEditMode!: boolean;
+  // Initialize the form /////////////////////////////////////////////////
+
   productId!: string | null;
+  isEditMode!: boolean;
   title!: string;
   btnAction!: string;
   product: Product = new Product();
   productIni: Product = new Product();
 
-  // Initialize the form
   ngOnInit(): void {
     this.productId = this.activatedRoute.snapshot.paramMap.get('id');
     this.isEditMode = this.productId ? true : false;
@@ -34,8 +35,8 @@ export class AddProduct {
 
       this.productService.getProductById(this.productId).subscribe({
         next: (res: Product) => {
-          this.product = res;
-          this.productIni = structuredClone(this.product);
+          Object.assign(this.product, res);
+          Object.assign(this.productIni, res);
           this.changeDetectorRef.detectChanges(); // Force a check
         },
         error: (err: any) => {
@@ -48,6 +49,8 @@ export class AddProduct {
       this.btnAction = 'Ajouter';
     }
   }
+
+  // Actions /////////////////////////////////////////////////////////////
 
   // Add or update the product
   submit(productForm: NgForm): void {

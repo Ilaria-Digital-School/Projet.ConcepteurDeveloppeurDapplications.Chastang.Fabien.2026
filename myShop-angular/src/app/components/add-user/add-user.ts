@@ -16,11 +16,12 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { JsonPipe } from '@angular/common';
 import { Countries, User } from '../../../main';
 import { UserService } from '../../services/user-service';
+// import { JsonPipe } from '@angular/common';
 
-// Custom validators for the entire form
+// Custom validators for the entire form /////////////////////////////////
+
 export class CustomValidators {
   // Confirm password
   static confirmPswd(control: AbstractControl): ValidationErrors | null {
@@ -29,9 +30,11 @@ export class CustomValidators {
   }
 }
 
+// Component /////////////////////////////////////////////////////////////
+
 @Component({
   selector: 'app-add-user',
-  imports: [ReactiveFormsModule, RouterLink, JsonPipe],
+  imports: [ReactiveFormsModule, RouterLink/*, JsonPipe*/],
   templateUrl: './add-user.html',
   styleUrl: './add-user.css',
 })
@@ -43,10 +46,12 @@ export class AddUser implements AfterViewInit {
   private userService = inject(UserService);
 
   // The list of genders //////////////////////////////////////////////////////
+
   @ViewChild('genders') gendersDiv!: ElementRef;
   gendersHTMLInput!: NodeListOf<HTMLInputElement>;
 
   // The list of countries ////////////////////////////////////////////////////
+
   countriesHTMLSelect!: HTMLSelectElement;
   countriesHTMLOptions!: HTMLOptionsCollection;
 
@@ -63,28 +68,15 @@ export class AddUser implements AfterViewInit {
   }
 
   // The form and its data: initialization and validation /////////////////////
+
   userForm!: FormGroup;
   isEditMode!: boolean;
   userId!: string | null;
   title!: string;
   btnAction!: string;
-  users!: User[];
+  users: User[] = [];
   user: User = new User();
   userIni: User = new User();
-
-  // Retrieve the users
-  load(forceCheck: boolean = false): void {
-    this.userService.getAllUsers().subscribe({
-      next: (res: User[]) => {
-        this.users = res;
-        if (forceCheck) this.changeDetectorRef.detectChanges(); // Force a check
-      },
-      error: (err: any) => {
-        alert("Une erreur s'est produite lors de la récupération des données.");
-        console.log(err);
-      },
-    });
-  }
 
   // Initialize the form
   ngOnInit(): void {
@@ -101,8 +93,8 @@ export class AddUser implements AfterViewInit {
 
       this.userService.getUserById(this.userId).subscribe({
         next: (res: User) => {
-          this.user = res;
-          this.userIni = structuredClone(this.user);
+          Object.assign(this.user, res);
+          Object.assign(this.userIni, res);
           this.changeDetectorRef.detectChanges(); // Force a check
         },
         error: (err: any) => {
@@ -156,12 +148,27 @@ export class AddUser implements AfterViewInit {
   }
 
   // Method called when the form is submitted /////////////////////////////////
+
+  // Retrieve all users to check if the email does not exist
+  load(forceCheck: boolean = false): void {
+    this.userService.getAllUsers().subscribe({
+      next: (res: User[]) => {
+        this.users = structuredClone(res);
+        if (forceCheck) this.changeDetectorRef.detectChanges(); // Force a check
+      },
+      error: (err: any) => {
+        alert("Une erreur s'est produite lors de la récupération des données.");
+        console.log(err);
+      },
+    });
+  }
+
   submit(): void {
     const FORM_VAL = this.userForm.value;
 
     if (!this.isEditMode || (this.isEditMode && this.userIni.email !== FORM_VAL.email)) {
       // Check if the email does not exist
-      this.load(); // Retrieve the user list
+      this.load();
       if (this.users.some((user: User) => user.email === FORM_VAL.email)) {
         alert('Cet e-mail existe déjà !');
         return;
@@ -169,13 +176,13 @@ export class AddUser implements AfterViewInit {
     }
 
     // Manage the checkboxes
-    let interests = [];
+    let interests: number[] = [];
     if (FORM_VAL.clothes) interests.push(1);
     if (FORM_VAL.accessories) interests.push(2);
 
     if (this.isEditMode) {
       // Modify the user
-      let toSave = false;
+      let toSave: boolean = false;
 
       const NAME = FORM_VAL.nameItem.trim();
       if (this.userIni.name != NAME) {
@@ -199,7 +206,7 @@ export class AddUser implements AfterViewInit {
         toSave = true;
         this.user.interests = interests;
       }
-      const COUNTRY = parseInt(FORM_VAL.country);
+      const COUNTRY: number = parseInt(FORM_VAL.country);
       if (this.userIni.country !== COUNTRY) {
         toSave = true;
         this.user.country = COUNTRY;
@@ -240,6 +247,7 @@ export class AddUser implements AfterViewInit {
   }
 
   // Reset the form ///////////////////////////////////////////////////////////
+
   reset(): void {
     if (this.isEditMode) {
       // Edit mode

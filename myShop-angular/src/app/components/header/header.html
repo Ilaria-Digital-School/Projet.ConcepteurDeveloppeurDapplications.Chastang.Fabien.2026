@@ -19,12 +19,12 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 menu">
           <li>
-            <a routerLink="/" title="Accueil" aria-label="Accueil">
+            <a [routerLink]="['/']" title="Accueil" aria-label="Accueil">
               <i class="fa-regular fa-house"></i>
             </a>
           </li>
           <li>
-            <a routerLink="/product-view/:id"> Nos Articles </a>
+            <a [routerLink]="['/products', 1]"> Nos Articles </a>
           </li>
           @if (
             getConnectedUser()?.role === UserRole.admin ||
@@ -36,15 +36,15 @@
               </a>
               <ul class="submenu">
                 <li>
-                  <a routerLink="/add-product"> Nouvel Article </a>
+                  <a [routerLink]="['/add-product']"> Nouvel Article </a>
                 </li>
                 <li>
-                  <a routerLink="/dashboard"> Administration </a>
+                  <a [routerLink]="['/dashboard']"> Administration </a>
                 </li>
               </ul>
             </li>
             <li>
-              <a routerLink="/cart" title="Mon panier" aria-label="Mon panier">
+              <a [routerLink]="['/cart']" title="Mon panier" aria-label="Mon panier">
                 <i class="fa-solid fa-cart-arrow-down"></i>
               </a>
               <span id="cart-sticker"></span>
@@ -63,7 +63,7 @@
             @if (getConnectedUser()) {
               <ul class="submenu separated">
                 <li>
-                  <a routerLink="/orders"> Commandes </a>
+                  <a [routerLink]="['/orders']"> Commandes </a>
                 </li>
                 <li>
                   <a class="pointer" (click)="logout()">
@@ -74,21 +74,25 @@
             } @else {
               <ul class="submenu">
                 <li>
-                  <a routerLink="/login"> Connexion </a>
+                  <a [routerLink]="['/login']"> Connexion </a>
                 </li>
                 <li>
-                  <a routerLink="/add-user"> Inscription </a>
+                  <a [routerLink]="['/add-user']"> Inscription </a>
                 </li>
               </ul>
             }
           </li>
           <li>
-            <a routerLink="/contact" title="Contactez-nous" aria-label="Contactez-nous">
+            <a [routerLink]="['/contact']" title="Contactez-nous" aria-label="Contactez-nous">
               <i class="fa-regular fa-envelope"></i>
             </a>
           </li>
           <li>
-            <a routerLink="/about" title="À propos de My Shop" aria-label="À propos de My Shop">
+            <a
+              [routerLink]="['/about']"
+              title="À propos de My Shop"
+              aria-label="À propos de My Shop"
+            >
               <i class="fa-solid fa-circle-info"></i>
             </a>
           </li>

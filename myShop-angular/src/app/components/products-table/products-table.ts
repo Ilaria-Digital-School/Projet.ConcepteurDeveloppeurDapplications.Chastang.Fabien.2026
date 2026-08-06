@@ -14,13 +14,15 @@ export class ProductsTable {
   private changeDetectorRef = inject(ChangeDetectorRef);
   private productService = inject(ProductService);
 
-  products!: Product[];
+  products: Product[] = [];
 
-  // Retrieve the products
+  // Initialization //////////////////////////////////////////////////////
+
+  // Retrieve all products
   load(forceCheck: boolean = false): void {
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
-        this.products = res;
+        this.products = structuredClone(res);
         if (forceCheck) this.changeDetectorRef.detectChanges(); // Force a check
       },
       error: (err: any) => {
@@ -34,6 +36,8 @@ export class ProductsTable {
   ngOnInit(): void {
     this.load(true);
   }
+
+  // Actions /////////////////////////////////////////////////////////////
 
   // View a product
   view(id: string): void {

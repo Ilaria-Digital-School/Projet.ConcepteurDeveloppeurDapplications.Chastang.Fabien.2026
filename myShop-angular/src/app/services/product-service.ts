@@ -47,6 +47,7 @@ export class ProductService {
           // Adding a new property
           product.additional = {
             priceTax: Math.round(product.price * 120) / 100, // +20%
+            isAvailable: product.stock > 0,
           };
           return product;
         });

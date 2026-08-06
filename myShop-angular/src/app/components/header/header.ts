@@ -17,14 +17,17 @@ export class Header {
   title: string = 'My Shop';
   connectedUser: User | null = null;
 
+  // Retrieve the logged-in user
   ngOnInit(): void {
     this.getConnectedUser();
   }
 
+  // Method to retrieve the logged-in user
   getConnectedUser(): User | null {
     return (this.connectedUser = this.authService.getConnectedUser());
   }
 
+  // Logout
   logout(): void {
     this.authService.logout();
     this.connectedUser = null;

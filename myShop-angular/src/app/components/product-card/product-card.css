@@ -104,3 +104,23 @@
   color: rgb(0, 64, 0);
   border: 1px solid rgb(0, 64, 0);
 }
+
+.article-available,
+.article-unavailable {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+
+  color: white;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 5px;
+}
+
+.article-available {
+  background-color: rgb(0, 139, 23);
+}
+
+.article-unavailable {
+  background-color: darkred;
+}

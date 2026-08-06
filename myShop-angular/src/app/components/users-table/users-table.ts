@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-// import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+// import { Router } from '@angular/router';
 import { User } from '../../../main';
 import { Countries } from '../../../main';
 import { Genders } from '../../../main';
@@ -21,14 +21,16 @@ export class UsersTable {
   Countries = Countries;
   Roles = Roles;
 
-  users!: User[];
+  users: User[] = [];
   editUser!: User | null;
 
-  // Retrieve the users
+  // Initialization //////////////////////////////////////////////////////
+
+  // Retrieve all users
   load(forceCheck: boolean = false): void {
     this.userService.getAllUsers().subscribe({
       next: (res: User[]) => {
-        this.users = res;
+        this.users = structuredClone(res);
         if (forceCheck) this.changeDetectorRef.detectChanges(); // Force a check
       },
       error: (err: any) => {
@@ -42,6 +44,8 @@ export class UsersTable {
   ngOnInit(): void {
     this.load(true);
   }
+
+  // Actions /////////////////////////////////////////////////////////////
 
   // Edit a user
   edit(user: User): void {

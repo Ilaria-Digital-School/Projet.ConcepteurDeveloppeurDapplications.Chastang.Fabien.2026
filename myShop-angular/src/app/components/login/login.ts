@@ -16,10 +16,11 @@ export class Login {
   private userService = inject(UserService);
 
   loginForm!: FormGroup;
-  user: User | null = null;
+  user: User = new User();
   errorMsg: string = '';
 
-  // Form initialization and field validation setup
+  // Form initialization and field validation setup //////////////////////
+
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -28,14 +29,14 @@ export class Login {
     });
   }
 
-  // Login method
+  // Login method ////////////////////////////////////////////////////////
+
   login(): void {
     // Retrieve the user's data from DB
     const FORM_VAL = this.loginForm.value;
     this.userService.login(FORM_VAL).subscribe({
       next: (res: User[]) => {
         if (res.length > 0) {
-          this.user = new User();
           Object.assign(this.user, res[0]);
 
           // Store the logged-in user's data in local storage for a persistent session, or otherwise in session storage

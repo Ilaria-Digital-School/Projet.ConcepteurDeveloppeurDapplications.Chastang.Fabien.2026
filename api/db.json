@@ -16,7 +16,7 @@
       "description": "Robe en jean denim indigo",
       "price": 40,
       "img": "assets/img/clothing/women/dresses/cwd1.png",
-      "stock": 20,
+      "stock": 0,
       "info": "",
       "visible": true
     },
@@ -49,9 +49,7 @@
       "email": "louis.machin@domain.com",
       "pswd": "Ialj:75/A,#tmUt",
       "gender": 2,
-      "interests": [
-        1
-      ],
+      "interests": [1],
       "country": 9,
       "role": 0,
       "visible": true
@@ -62,14 +60,10 @@
       "email": "janette.bidule@domain.com",
       "pswd": "3Fx$Njqb6yeh4hj",
       "gender": 1,
-      "interests": [
-        1,
-        2
-      ],
+      "interests": [1, 2],
       "country": 22,
       "role": 0,
       "visible": true
     }
-  ],
-  "$schema": "./node_modules/json-server/schema.json"
+  ]
 }

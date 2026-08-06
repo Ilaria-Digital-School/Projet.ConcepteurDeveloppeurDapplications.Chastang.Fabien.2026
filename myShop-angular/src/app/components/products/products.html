@@ -1,15 +1,18 @@
-<section>
+<section class="search">
   <h2 class="h2-title">Nos Articles</h2>
 
+  @if (searchFn === 1) {
+    <input type="text" placeholder="Rechercher..." (input)="search($event.target.value)" />
+  }
   <div class="product-container">
-    @for (product of products; track product.id; let i = $index) {
+    @for (product of filteredProducts; track product.id; let i = $index) {
       <app-product-card
         [product]="product"
-        [isView]="1"
+        [isList]="1"
         (viewEvent)="view($event)"
       ></app-product-card>
     } @empty {
-      <h2 class="h2-title">Aucun article n'est référencé</h2>
+      <p>Aucun article n'est référencé</p>
     }
   </div>
 </section>
