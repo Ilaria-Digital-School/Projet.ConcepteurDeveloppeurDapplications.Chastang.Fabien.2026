@@ -1,19 +1,21 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../../../main';
-import { ProductService } from '../../services/product-service';
 import { ProductCard } from '../product-card/product-card';
+import { ProductService } from '../../services/product-service';
+import { CartService } from '../../services/cart-service';
 
 @Component({
-  selector: 'app-product-view',
+  selector: 'app-products-carousel',
   imports: [ProductCard],
-  templateUrl: './product-view.html',
-  styleUrl: './product-view.css',
+  templateUrl: './products-carousel.html',
+  styleUrl: './products-carousel.css',
 })
-export class ProductView {
+export class ProductsCarousel {
   private activatedRoute = inject(ActivatedRoute);
   private changeDetectorRef = inject(ChangeDetectorRef);
   private productService = inject(ProductService);
+  private cartService = inject(CartService);
 
   // Retrieve the product ////////////////////////////////////////////////
 
@@ -31,5 +33,9 @@ export class ProductView {
         console.log(err);
       },
     });
+  }
+
+  add(product: Product) {
+    this.cartService.add(product);
   }
 }

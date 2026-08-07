@@ -27,7 +27,7 @@ export class ProductService {
   // }
 
   // getAllProducts() {
-  //   return this.httpClient.get<any[]>(this.productURL).pipe(
+  //   return this.httpClient.get<Product[]>(this.productURL).pipe(
   //     map((products: Product[]) => {
   //       return products.map((product: Product) => {
   //         // Adding a new property
@@ -41,7 +41,7 @@ export class ProductService {
   // }
 
   getAllProducts() {
-    return this.httpClient.get<any[]>(this.productURL).pipe(
+    return this.httpClient.get<Product[]>(this.productURL).pipe(
       map((products: Product[]) => {
         return products.map((product: Product) => {
           // Adding a new property

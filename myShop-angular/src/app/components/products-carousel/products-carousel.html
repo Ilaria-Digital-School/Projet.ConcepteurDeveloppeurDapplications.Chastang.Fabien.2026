@@ -2,6 +2,6 @@
   <h2 class="h2-title">Notre Article</h2>
 
   <div class="product-container">
-    <app-product-card [product]="product" [isList]="0"></app-product-card>
+    <app-product-card [product]="product" [isList]="0" (addEvent)="add($event)"></app-product-card>
   </div>
 </section>

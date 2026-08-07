@@ -1,4 +1,4 @@
-<article [tabindex]="'0'" [class]="'article-product'">
+<article [tabindex]="'0'" [class]="isList === 1 ? 'article-product' : 'article-product-selected'">
   <span [class]="product.price < 25 ? 'article-good' : 'inactive'">Bonne<br />Affaire</span>
   <span [class]="product.price > 50 ? 'article-top' : 'inactive'">Top<br />Produit</span>
   <span [class]="product.additional.isAvailable ? 'article-available' : 'article-unavailable'">
@@ -22,6 +22,16 @@
       (click)="view(product.id)"
     >
       <i class="fa-regular fa-eye"></i>
+    </button>
+  } @else {
+    <button
+      type="button"
+      class="btn btn-primary"
+      title="Ajouter au panier"
+      aria-label="Ajouter au panier"
+      (click)="add(product)"
+    >
+      <i class="fa-solid fa-cart-arrow-down"></i>
     </button>
   }
 </article>

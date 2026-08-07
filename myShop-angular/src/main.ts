@@ -10,6 +10,7 @@ export class Product {
   id: string = Date.now().toString();
   name: string = '';
   description: string = '';
+  fullDescription: any[] = [];
   price: number = 0;
   img: string = '';
   stock: number = 0;
@@ -17,11 +18,12 @@ export class Product {
   visible: boolean = true;
 
   // For additional properties (RxJS)
-  additional:any = {};
+  additional: any = {};
 
   constructor(
     name: string | null = null,
     description: string | null = null,
+    fullDescription: any[] | null = null,
     price: number | null = null,
     img: string | null = null,
     stock: number | null = null,
@@ -29,6 +31,7 @@ export class Product {
   ) {
     if (typeof name === 'string') this.name = name;
     if (typeof description === 'string') this.description = description;
+    if (Array.isArray(fullDescription)) this.fullDescription = fullDescription;
     if (typeof price === 'number') this.price = price;
     if (typeof img === 'string') this.img = img;
     if (typeof stock === 'number') this.stock = stock;
@@ -68,7 +71,7 @@ export class User {
   visible: boolean = true;
 
   // For additional properties (RxJS)
-  additional:any = {};
+  additional: any = {};
 
   constructor(
     name: string | null = null,

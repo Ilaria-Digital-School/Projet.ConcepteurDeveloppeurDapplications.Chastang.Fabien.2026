@@ -36,10 +36,17 @@ header .arrow:hover {
 #cart-sticker {
   z-index: 150;
   position: absolute;
-  bottom: 18px;
+  bottom: 15px;
   left: 20px;
-  font-weight: 600;
-  font-size: 14px;
+  background-color: rgb(200, 0, 0);
+  font-size: 12px;
+  width: 24px;
+  height: 24px;
+  border: 1px solid white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /*

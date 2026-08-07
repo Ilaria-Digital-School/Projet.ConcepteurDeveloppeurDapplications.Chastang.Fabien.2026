@@ -1,0 +1,48 @@
+<section class="section-product-details">
+  <div>
+    <img [src]="product.img" [alt]="product.name" />
+  </div>
+  <div>
+    <article [tabindex]="'0'">
+      <span [class]="product.price < 25 ? 'article-good' : 'inactive'">Bonne<br />Affaire</span>
+      <span [class]="product.price > 50 ? 'article-top' : 'inactive'">Top<br />Produit</span>
+      <span [class]="product.stock > 0 ? 'article-available' : 'article-unavailable'">
+        {{ product.stock > 0 ? 'En stock' : 'Indisponible' }}
+      </span>
+      @if (fullDescription.length > 0) {
+        <h2>{{ product.description }}</h2>
+      } @else {
+        <h2>{{ product.name }}</h2>
+      }
+      @if (product.info) {
+        <p class="info">{{ product.info }}</p>
+      }
+      <p class="price">
+        <span>Prix: {{ product.price }} €</span>
+        <button
+          type="button"
+          [disabled]="product.stock === 0"
+          class="btn btn-success"
+          [class.btn-disabled]="product.stock === 0"
+          title="Ajouter au panier"
+          aria-label="Ajouter au panier"
+          (click)="add(product)"
+        >
+          <i class="fa-solid fa-cart-arrow-down"></i>
+        </button>
+      </p>
+      <p>
+        @if (fullDescription.length > 0) {
+          @for (item of fullDescription; track $index) {
+            <p class="desc-title">{{ item.title }}</p>
+            @for (desc of item.description; track $index) {
+              <p class="desc">{{ desc }}</p>
+            }
+          }
+        } @else {
+          <p class="desc-short">{{ product.description }}</p>
+        }
+      </p>
+    </article>
+  </div>
+</section>

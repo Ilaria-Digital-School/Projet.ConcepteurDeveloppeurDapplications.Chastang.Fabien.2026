@@ -1,0 +1,115 @@
+.section-product-details {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.section-product-details article {
+  position: relative;
+  border: 1px solid gray;
+  border-radius: 10px;
+  max-width: 700px;
+  min-width: 400px;
+  padding: 15px;
+}
+
+.section-product-details h2 {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bolder;
+  margin-bottom: 15px;
+}
+
+.section-product-details .info {
+  text-align: center;
+  color: rgb(185, 0, 0);
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.section-product-details .price {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.section-product-details .price span {
+  padding: 4px 10px;
+  background-color: aliceblue;
+  border: 1px solid gray;
+  border-radius: 7px;
+}
+
+.section-product-details .desc-title {
+  padding-top: 5px;
+  margin-bottom: 10px;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.section-product-details .desc {
+  margin-bottom: 5px;
+}
+
+.section-product-details .desc-short {
+  margin-top: 40px;
+  font-size: 18px;
+}
+
+/*
+    Flags
+*/
+
+.section-product-details .article-top,
+.section-product-details .article-good {
+  position: absolute;
+  top: 7px;
+  padding: 0 3px;
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: 3px;
+}
+.section-product-details .article-top {
+  left: 7px;
+  background-color: rgb(255, 230, 0);
+  color: rgb(185, 0, 0);
+  border: 1px solid rgb(185, 0, 0);
+}
+.section-product-details .article-good {
+  left: 7px;
+  background-color: lightgreen;
+  color: rgb(0, 64, 0);
+  border: 1px solid rgb(0, 64, 0);
+}
+
+.section-product-details .article-available,
+.section-product-details .article-unavailable {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  color: white;
+  padding: 4px 7px;
+  font-size: 11px;
+  border-radius: 5px;
+}
+.section-product-details .article-available {
+  background-color: darkgreen;
+}
+.section-product-details .article-unavailable {
+  background-color: darkred;
+}
+
+/*
+    Responsive design: smartphone
+*/
+
+@media only screen and (max-width: 767px) {
+  .section-product-details article {
+    min-width: 100px;
+  }
+}

@@ -13,28 +13,45 @@
   box-shadow: 0.2em 0.2em 0.8em 0.2em rgba(0, 0, 0, 0.5);
 }
 
-.article-product h3 {
+.article-product-selected {
+  position: relative;
+  background-color: rgb(212, 211, 210);
+  text-align: center;
+  width: 300px;
+  border-radius: 10px;
+  margin: 20px;
+  padding: 15px;
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0.2em 0.2em 0.8em 0.2em rgba(0, 0, 0, 0.5);
+}
+
+.article-product h3,
+.article-product-selected h3 {
   font-size: 20px;
   font-weight: bolder;
   margin-bottom: 10px;
 }
 
-.article-product p {
+.article-product p,
+.article-product-selected p {
   margin: 10px 0;
 }
 
-.article-product p span {
+.article-product p span,
+.article-product-selected p span {
   color: rgb(185, 0, 0);
   font-weight: bold;
 }
 
-.article-product p:last-of-type {
+.article-product p:last-of-type,
+.article-product-selected p:last-of-type {
   color: rgb(185, 0, 0);
   font-size: 20px;
   font-weight: 900;
 }
 
-.article-product div {
+.article-product div,
+.article-product-selected div {
   display: inline-block;
   width: 200px;
   height: 200px;
@@ -43,7 +60,8 @@
   padding: 5px;
 }
 
-.article-product div img {
+.article-product div img,
+.article-product-selected div img {
   height: 186px;
   width: auto;
 }
@@ -112,15 +130,13 @@
   right: 10px;
 
   color: white;
-  padding: 5px 10px;
-  font-size: 12px;
+  padding: 4px 7px;
+  font-size: 11px;
   border-radius: 5px;
 }
-
 .article-available {
-  background-color: rgb(0, 139, 23);
+  background-color: darkgreen;
 }
-
 .article-unavailable {
   background-color: darkred;
 }

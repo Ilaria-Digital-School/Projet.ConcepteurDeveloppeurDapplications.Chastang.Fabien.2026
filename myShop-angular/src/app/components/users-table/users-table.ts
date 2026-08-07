@@ -1,10 +1,7 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 // import { Router } from '@angular/router';
-import { User } from '../../../main';
-import { Countries } from '../../../main';
-import { Genders } from '../../../main';
-import { Roles } from '../../../main';
+import { User, Genders, Countries, Roles } from '../../../main';
 import { UserService } from '../../services/user-service';
 
 @Component({
@@ -26,6 +23,11 @@ export class UsersTable {
 
   // Initialization //////////////////////////////////////////////////////
 
+  // Initialize the user list
+  ngOnInit(): void {
+    this.load(true);
+  }
+
   // Retrieve all users
   load(forceCheck: boolean = false): void {
     this.userService.getAllUsers().subscribe({
@@ -40,17 +42,12 @@ export class UsersTable {
     });
   }
 
-  // Initialize the user list
-  ngOnInit(): void {
-    this.load(true);
-  }
-
   // Actions /////////////////////////////////////////////////////////////
 
   // Edit a user
   edit(user: User): void {
     // Redirect to the edit form
-    // this.router.navigate(['/user-edit', user.id]);
+    // this.router.navigate(['/edit-user', user.id]);
 
     // Enable inline editing
     this.editUser = new User();

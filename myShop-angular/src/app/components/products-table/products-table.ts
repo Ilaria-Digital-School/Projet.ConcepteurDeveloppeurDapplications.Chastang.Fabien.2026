@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProductService } from '../../services/product-service';
 import { Product } from '../../../main';
+import { ProductService } from '../../services/product-service';
 
 @Component({
   selector: 'app-products-table',
@@ -18,6 +18,11 @@ export class ProductsTable {
 
   // Initialization //////////////////////////////////////////////////////
 
+  // Initialize the product list
+  ngOnInit(): void {
+    this.load(true);
+  }
+
   // Retrieve all products
   load(forceCheck: boolean = false): void {
     this.productService.getAllProducts().subscribe({
@@ -32,21 +37,16 @@ export class ProductsTable {
     });
   }
 
-  // Initialize the product list
-  ngOnInit(): void {
-    this.load(true);
-  }
-
   // Actions /////////////////////////////////////////////////////////////
 
   // View a product
   view(id: string): void {
-    this.router.navigate(['/product-view', id]);
+    this.router.navigate(['/product-details', id]);
   }
 
   // Edit a product
   edit(id: string): void {
-    this.router.navigate(['/product-edit', id]);
+    this.router.navigate(['/edit-product', id]);
   }
 
   // Delete a product

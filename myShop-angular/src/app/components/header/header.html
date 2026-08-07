@@ -47,7 +47,9 @@
               <a [routerLink]="['/cart']" title="Mon panier" aria-label="Mon panier">
                 <i class="fa-solid fa-cart-arrow-down"></i>
               </a>
-              <span id="cart-sticker"></span>
+              @if (cartService.cartCount() > 0) {
+                <span id="cart-sticker">{{ cartService.cartCount() }}</span>
+              }
             </li>
           }
           <li>

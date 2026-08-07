@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { ProductCard } from '../product-card/product-card';
 import { Product } from '../../../main';
+import { ProductCard } from '../product-card/product-card';
 import { ProductService } from '../../services/product-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, Subject } from 'rxjs';
@@ -68,6 +68,6 @@ export class Products {
 
   // View a product
   view(id: string): void {
-    this.router.navigate(['/product-view', id]);
+    this.router.navigate([this.searchFn === 1 ? '/product-details' : '/products-carousel', id]);
   }
 }

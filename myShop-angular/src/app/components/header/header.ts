@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { User, UserRole } from '../../../main';
 import { AuthService } from '../../services/auth-service';
+import { CartService } from '../../services/cart-service';
 
 @Component({
   selector: 'app-header',
@@ -12,6 +13,7 @@ import { AuthService } from '../../services/auth-service';
 export class Header {
   private router = inject(Router);
   private authService = inject(AuthService);
+  public cartService = inject(CartService);
   UserRole = UserRole;
 
   title: string = 'My Shop';
