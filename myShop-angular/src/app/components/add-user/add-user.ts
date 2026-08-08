@@ -16,7 +16,7 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Countries, User } from '../../../main';
+import { Countries, Interests, User } from '../../../main';
 import { UserService } from '../../services/user-service';
 // import { JsonPipe } from '@angular/common';
 
@@ -76,7 +76,9 @@ export class AddUser implements AfterViewInit {
   btnAction!: string;
   users: User[] = [];
   user: User = new User();
+  interests: number[] = [];
   userIni: User = new User();
+  interestsIni: number[] = [];
 
   // Initialize the form
   ngOnInit(): void {
@@ -95,6 +97,10 @@ export class AddUser implements AfterViewInit {
         next: (res: User) => {
           Object.assign(this.user, res);
           Object.assign(this.userIni, res);
+          if (this.user.interests) {
+            this.interests = JSON.parse(this.user.interests);
+            this.interestsIni = structuredClone(this.interests);
+          }
           this.changeDetectorRef.detectChanges(); // Force a check
         },
         error: (err: any) => {
@@ -128,8 +134,8 @@ export class AddUser implements AfterViewInit {
       pswd: [this.userIni.pswd, [Validators.required, Validators.pattern(PSWD_PATTERN)]],
       confirm: [this.userIni.pswd, Validators.required],
       gender: [this.userIni.gender.toString()],
-      clothes: [this.userIni.interests.includes(1)],
-      accessories: [this.userIni.interests.includes(2)],
+      clothes: [this.interestsIni.includes(1)],
+      accessories: [this.interestsIni.includes(2)],
       country: [this.userIni.country.toString()],
     });
 
@@ -199,12 +205,12 @@ export class AddUser implements AfterViewInit {
         this.user.gender = GENDER;
       }
       if (
-        [1, 2].some(
-          (item: number) => this.userIni.interests.includes(item) !== interests.includes(item),
+        Interests.list.some(
+          (item: any) => this.interestsIni.includes(item.value) !== interests.includes(item),
         )
       ) {
         toSave = true;
-        this.user.interests = interests;
+        this.user.interests = JSON.stringify(interests);
       }
       const COUNTRY: number = parseInt(FORM_VAL.country);
       if (this.userIni.country !== COUNTRY) {
@@ -230,7 +236,7 @@ export class AddUser implements AfterViewInit {
       this.user.email = FORM_VAL.email;
       this.user.pswd = FORM_VAL.pswd;
       this.user.gender = parseInt(FORM_VAL.gender);
-      this.user.interests = interests;
+      this.user.interests = JSON.stringify(interests);
       this.user.country = parseInt(FORM_VAL.country);
 
       this.userService.addUser(this.user).subscribe({
@@ -255,8 +261,8 @@ export class AddUser implements AfterViewInit {
         nameItem: this.userIni.name,
         email: this.userIni.email,
         gender: this.userIni.gender.toString(),
-        clothes: this.userIni.interests.includes(1),
-        accessories: this.userIni.interests.includes(2),
+        clothes: this.interestsIni.includes(1),
+        accessories: this.interestsIni.includes(2),
         country: this.userIni.country.toString(),
       });
     } else {

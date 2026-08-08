@@ -6,11 +6,34 @@ bootstrapApplication(App, appConfig).catch((err) => console.error(err));
 
 // Product class /////////////////////////////////////////////////////////
 
+/*
+  After JSON.parse(), 'fullDescription' has the following structure:
+  [
+    {
+      title: "title 1",
+      description: [
+        "paragraph 1",
+        "paragraph 2",
+        ...
+      ]
+    },
+    {
+      title: "title 2",
+      description: [
+        "paragraph 1",
+        "paragraph 2",
+        ...
+      ]
+    },
+    ...
+  ]
+*/
+
 export class Product {
   id: string = Date.now().toString();
   name: string = '';
   description: string = '';
-  fullDescription: any[] = [];
+  fullDescription: string = '';
   price: number = 0;
   img: string = '';
   stock: number = 0;
@@ -23,7 +46,7 @@ export class Product {
   constructor(
     name: string | null = null,
     description: string | null = null,
-    fullDescription: any[] | null = null,
+    fullDescription: string | null = null,
     price: number | null = null,
     img: string | null = null,
     stock: number | null = null,
@@ -31,7 +54,7 @@ export class Product {
   ) {
     if (typeof name === 'string') this.name = name;
     if (typeof description === 'string') this.description = description;
-    if (Array.isArray(fullDescription)) this.fullDescription = fullDescription;
+    if (typeof fullDescription === 'string') this.fullDescription = fullDescription;
     if (typeof price === 'number') this.price = price;
     if (typeof img === 'string') this.img = img;
     if (typeof stock === 'number') this.stock = stock;
@@ -65,7 +88,7 @@ export class User {
   email: string = '';
   pswd: string = '';
   gender: number = 0;
-  interests: number[] = [];
+  interests: string = '';
   country: number = 0;
   role: number = UserRole.user;
   visible: boolean = true;
@@ -78,7 +101,7 @@ export class User {
     email: string | null = null,
     pswd: string | null = null,
     gender: number | null = null,
-    interests: number[] | null = null,
+    interests: string | null = null,
     country: number | null = null,
   ) {
     if (typeof name === 'string') this.name = name;
@@ -88,11 +111,7 @@ export class User {
       this.gender =
         gender === UserGender.female || gender === UserGender.male ? gender : UserGender.other;
     }
-    if (Array.isArray(interests)) {
-      this.interests = [UserInterest.clothes, UserInterest.accessories].filter((item: any) => {
-        return interests.includes(item);
-      });
-    }
+    if (typeof interests === 'string') this.interests = interests;
     if (typeof country === 'number') this.country = country;
   }
 }

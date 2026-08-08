@@ -27,10 +27,9 @@ export class ProductDetails {
     this.productService.getProductById(this.productId).subscribe({
       next: (res: Product) => {
         Object.assign(this.product, res);
-
-        // if (this.product.fullDescription !== "") this.fullDescription = JSON.parse(this.product.fullDescription);
-        this.fullDescription = this.product.fullDescription;
-
+        if (this.product.fullDescription) {
+          this.fullDescription = JSON.parse(this.product.fullDescription);
+        }
         this.changeDetectorRef.detectChanges(); // Force a check
       },
       error: (err: any) => {
