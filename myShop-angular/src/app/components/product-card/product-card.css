@@ -29,7 +29,7 @@
 .article-product-selected h3 {
   font-size: 20px;
   font-weight: bolder;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .article-product p,
@@ -52,6 +52,7 @@
 
 .article-product div,
 .article-product-selected div {
+  position: relative;
   display: inline-block;
   width: 200px;
   height: 200px;
@@ -64,80 +65,4 @@
 .article-product-selected div img {
   height: 186px;
   width: auto;
-}
-
-/*
-    Flags
-*/
-
-.article-promo,
-.article-new {
-  position: absolute;
-  top: 7px;
-  padding: 0 3px;
-  text-align: center;
-  font-weight: 800;
-  border-radius: 3px;
-}
-.article-promo {
-  right: 7px;
-  background-color: rgb(255, 230, 0);
-  color: rgb(185, 0, 0);
-  border: 1px solid rgb(185, 0, 0);
-}
-.article-new {
-  left: 7px;
-  background-color: lightgreen;
-  color: rgb(0, 64, 0);
-  border: 1px solid rgb(0, 64, 0);
-}
-
-.article-favorite {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  text-align: center;
-  color: rgb(0, 150, 0);
-  font-size: 24px;
-}
-
-.article-top,
-.article-good {
-  position: absolute;
-  top: 7px;
-  padding: 0 3px;
-  text-align: center;
-  font-size: 11px;
-  font-weight: 800;
-  border-radius: 3px;
-}
-.article-top {
-  right: 7px;
-  background-color: rgb(255, 230, 0);
-  color: rgb(185, 0, 0);
-  border: 1px solid rgb(185, 0, 0);
-}
-.article-good {
-  left: 7px;
-  background-color: lightgreen;
-  color: rgb(0, 64, 0);
-  border: 1px solid rgb(0, 64, 0);
-}
-
-.article-available,
-.article-unavailable {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  text-align: center;
-  color: white;
-  padding: 4px 7px;
-  font-size: 11px;
-  border-radius: 5px;
-}
-.article-available {
-  background-color: darkgreen;
-}
-.article-unavailable {
-  background-color: darkred;
 }

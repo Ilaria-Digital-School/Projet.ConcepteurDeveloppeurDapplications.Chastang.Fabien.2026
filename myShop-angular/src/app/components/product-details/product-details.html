@@ -1,5 +1,12 @@
 <section class="section-product-details">
-  <div>
+  <div class="div-img">
+    <span
+      [class]="product.favorite ? 'article-favorite' : 'inactive'"
+      title="Article favori"
+      aria-label="Article favori"
+    >
+      <i class="fa-solid fa-heart"></i>
+    </span>
     <img [src]="product.img" [alt]="product.name" />
   </div>
   <div>
@@ -34,7 +41,7 @@
       <p>
         @if (fullDescription.length > 0) {
           @for (item of fullDescription; track $index) {
-            <p class="desc-title">{{ item.title }}</p>
+            <p class="desc-title">&bull; {{ item.title }}</p>
             @for (desc of item.description; track $index) {
               <p class="desc">{{ desc }}</p>
             }

@@ -38,6 +38,7 @@ export class Product {
   img: string = '';
   stock: number = 0;
   info: string = '';
+  favorite: boolean = false;
   visible: boolean = true;
 
   // For additional properties (RxJS)
@@ -51,6 +52,7 @@ export class Product {
     img: string | null = null,
     stock: number | null = null,
     info: string | null = null,
+    favorite: boolean | null = null,
   ) {
     if (typeof name === 'string') this.name = name;
     if (typeof description === 'string') this.description = description;
@@ -59,6 +61,7 @@ export class Product {
     if (typeof img === 'string') this.img = img;
     if (typeof stock === 'number') this.stock = stock;
     if (typeof info === 'string') this.info = info;
+    if (typeof favorite === 'boolean') this.favorite = favorite;
   }
 }
 

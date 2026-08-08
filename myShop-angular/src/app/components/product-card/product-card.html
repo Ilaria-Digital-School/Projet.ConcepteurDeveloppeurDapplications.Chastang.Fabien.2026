@@ -1,8 +1,8 @@
 <article [tabindex]="'0'" [class]="isList === 1 ? 'article-product' : 'article-product-selected'">
   <span [class]="product.price < 25 ? 'article-good' : 'inactive'">Bonne<br />Affaire</span>
   <span [class]="product.price > 50 ? 'article-top' : 'inactive'">Top<br />Produit</span>
-  <span [class]="product.additional.isAvailable ? 'article-available' : 'article-unavailable'">
-    {{ product.additional.isAvailable ? 'En stock' : 'Indisponible' }}
+  <span [class]="product.stock > 0 ? 'article-available' : 'article-unavailable'">
+    {{ product.stock > 0 ? 'En stock' : 'Indisponible' }}
   </span>
   <h3>{{ product.name }}</h3>
   @if (product.info) {
@@ -10,7 +10,16 @@
       <span>{{ product.info }}</span>
     </p>
   }
-  <div><img [src]="product.img" [alt]="product.name" /></div>
+  <div>
+    <span
+      [class]="product.favorite ? 'article-favorite' : 'inactive'"
+      title="Article favori"
+      aria-label="Article favori"
+    >
+      <i class="fa-solid fa-heart"></i>
+    </span>
+    <img [src]="product.img" [alt]="product.name" />
+  </div>
   <p>{{ product.description }}</p>
   <p>Prix: {{ product.price }} €</p>
   @if (isList === 1) {
@@ -26,7 +35,9 @@
   } @else {
     <button
       type="button"
-      class="btn btn-primary"
+      [disabled]="product.stock === 0"
+      class="btn btn-success"
+      [class.btn-disabled]="product.stock === 0"
       title="Ajouter au panier"
       aria-label="Ajouter au panier"
       (click)="add(product)"

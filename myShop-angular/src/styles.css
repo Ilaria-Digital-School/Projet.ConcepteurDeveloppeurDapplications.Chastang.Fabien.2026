@@ -305,6 +305,79 @@ button:active,
 }
 
 /*
+    Flags
+*/
+
+.article-promo,
+.article-new {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  padding: 0 3px;
+  text-align: center;
+  font-weight: 800;
+  border-radius: 3px;
+}
+.article-promo {
+  background-color: rgb(255, 230, 0);
+  color: rgb(185, 0, 0);
+  border: 1px solid rgb(185, 0, 0);
+}
+.article-new {
+  background-color: lightgreen;
+  color: rgb(0, 64, 0);
+  border: 1px solid rgb(0, 64, 0);
+}
+
+.article-favorite {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  color: rgb(0, 150, 0);
+  font-size: 24px;
+}
+
+.article-top,
+.article-good {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  padding: 0 3px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: 3px;
+}
+.article-top {
+  background-color: rgb(255, 230, 0);
+  color: rgb(185, 0, 0);
+  border: 1px solid rgb(185, 0, 0);
+}
+.article-good {
+  background-color: lightgreen;
+  color: rgb(0, 64, 0);
+  border: 1px solid rgb(0, 64, 0);
+}
+
+.article-available,
+.article-unavailable {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  text-align: center;
+  color: white;
+  padding: 4px 7px;
+  font-size: 11px;
+  border-radius: 5px;
+}
+.article-available {
+  background-color: darkgreen;
+}
+.article-unavailable {
+  background-color: darkred;
+}
+
+/*
     Bootstrap: carousel
 */
 

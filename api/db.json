@@ -9,6 +9,7 @@
       "img": "assets/img/clothing/men/shirts/cms1.png",
       "stock": 10,
       "info": "Cet article est fortement recommendé par nos client",
+      "favorite": true,
       "visible": true
     },
     {
@@ -20,9 +21,10 @@
       "img": "assets/img/clothing/women/dresses/cwd1.png",
       "stock": 0,
       "info": "",
+      "favorite": true,
       "visible": true
     },
-    {
+    { 
       "id": "5147",
       "name": "Robe",
       "description": "Robe en coton bleu nuit",
@@ -31,6 +33,7 @@
       "img": "assets/img/clothing/women/dresses/cwd2.png",
       "stock": 5,
       "info": "",
+      "favorite": false,
       "visible": true
     }
   ],
