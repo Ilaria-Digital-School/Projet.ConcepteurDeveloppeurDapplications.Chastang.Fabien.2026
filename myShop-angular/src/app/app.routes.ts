@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { Home } from './components/home/home';
-import { Products } from './components/products/products';
+import { ProductsSearch } from './components/products-search/products-search';
 import { ProductsCarousel } from './components/products-carousel/products-carousel';
 import { ProductDetails } from './components/product-details/product-details';
 import { AddProduct } from './components/add-product/add-product';
@@ -15,7 +15,7 @@ import { adminGuard } from './guards/admin-guard';
 
 export const routes: Routes = [
   { path: '', component: Home },
-  { path: 'products/:search', component: Products },
+  { path: 'products-search', component: ProductsSearch },
   { path: 'products-carousel/:id', component: ProductsCarousel },
   { path: 'product-details/:id', component: ProductDetails },
   { path: 'add-product', component: AddProduct, canActivate: [adminGuard] },

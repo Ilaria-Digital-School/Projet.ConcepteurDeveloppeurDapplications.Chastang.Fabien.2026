@@ -1,8 +1,14 @@
-<section>
+<section class="search">
   <h2 class="h2-title">Nos Articles</h2>
 
+  <input
+    type="text"
+    id="search"
+    placeholder="Rechercher..."
+    (input)="search($event.target.value)"
+  />
   <div class="product-container">
-    @for (product of products; track product.id; let i = $index) {
+    @for (product of filteredProducts; track product.id; let i = $index) {
       <app-product-card
         [product]="product"
         [isList]="1"
