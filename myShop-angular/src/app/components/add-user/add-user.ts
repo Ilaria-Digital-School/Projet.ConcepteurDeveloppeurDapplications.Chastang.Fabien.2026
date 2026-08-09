@@ -39,21 +39,21 @@ export class CustomValidators {
   styleUrl: './add-user.css',
 })
 export class AddUser implements AfterViewInit {
+  // The list of genders: initialized in the 'ngAfterViewInit' method
+  @ViewChild('genders') gendersDiv!: ElementRef;
+  gendersHTMLInput!: NodeListOf<HTMLInputElement>;
+
+  // General component management
   private formBuilder = inject(FormBuilder);
   private renderer = inject(Renderer2); // To retrieve the HTML elements, in this class, the HTML tags <select>
   private activatedRoute = inject(ActivatedRoute);
   private changeDetectorRef = inject(ChangeDetectorRef);
   private userService = inject(UserService);
 
-  // The list of genders //////////////////////////////////////////////////////
-
-  @ViewChild('genders') gendersDiv!: ElementRef;
-  gendersHTMLInput!: NodeListOf<HTMLInputElement>;
-
   // The list of countries ////////////////////////////////////////////////////
-
+  
   countriesHTMLSelect!: HTMLSelectElement;
-  countriesHTMLOptions!: HTMLOptionsCollection;
+  countriesHTMLOptions!: HTMLOptionsCollection; // Initialized in the 'ngAfterViewInit' method
 
   // Populating the HTML <select> element for countries
   setCountries(): void {
@@ -153,7 +153,7 @@ export class AddUser implements AfterViewInit {
     this.countriesHTMLOptions = this.countriesHTMLSelect.options;
   }
 
-  // Method called when the form is submitted /////////////////////////////////
+  // To submit the form ///////////////////////////////////////////////////////
 
   // Retrieve all users to check if the email does not exist
   load(forceCheck: boolean = false): void {
@@ -169,6 +169,7 @@ export class AddUser implements AfterViewInit {
     });
   }
 
+  // To submit the form
   submit(): void {
     const FORM_VAL = this.userForm.value;
 
@@ -252,8 +253,7 @@ export class AddUser implements AfterViewInit {
     }
   }
 
-  // Reset the form ///////////////////////////////////////////////////////////
-
+  // To reset the form ////////////////////////////////////////////////////////
   reset(): void {
     if (this.isEditMode) {
       // Edit mode

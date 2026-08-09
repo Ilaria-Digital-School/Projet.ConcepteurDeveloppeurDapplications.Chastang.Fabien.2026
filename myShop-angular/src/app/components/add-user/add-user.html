@@ -3,8 +3,10 @@
   <form class="form" [formGroup]="userForm" (ngSubmit)="submit()">
     <h2>{{ title }}</h2>
 
+    <!-- Required fields -->
     <fieldset>
       <legend>Informations personnelles</legend>
+      <!-- User's login name -->
       <div>
         <label for="nameItem">Nom&nbsp;:</label>
         <input
@@ -26,6 +28,7 @@
           }
         }
       </div>
+      <!-- User's email -->
       <div>
         <label for="email">E-mail&nbsp;:</label>
         <input
@@ -50,7 +53,9 @@
         }
       </div>
       @if (!isEditMode) {
+        <!-- User's password -->
         <div>
+          <!-- Password -->
           <label for="pswd">Mot de passe&nbsp;:</label>
           <input
             type="password"
@@ -73,6 +78,7 @@
               </div>
             }
           }
+          <!-- Confirm password -->
           <div [class]="'confirm'">
             <label for="confirm">Confirmation du mot de passe&nbsp;:</label>
             <input
@@ -96,8 +102,10 @@
       }
     </fieldset>
 
+    <!-- Optional fields -->
     <fieldset>
       <legend>Informations supplémentaires</legend>
+      <!-- Form fields regarding the user's gender -->
       <div class="field-container">
         <div class="field-label" aria-label="Genre">Genre&nbsp;:&ensp;</div>
         <div id="genders" #genders>
@@ -115,6 +123,7 @@
           </div>
         </div>
       </div>
+      <!-- Form fields regarding user interests -->
       <div class="field-container">
         <div class="field-label" aria-label="Intérêts">Intérêts&nbsp;:&ensp;</div>
         <div>
@@ -128,6 +137,7 @@
           </div>
         </div>
       </div>
+      <!-- User's country -->
       <div>
         <label for="country">Pays&nbsp;:</label>
         <select id="country" #country formControlName="country" autocomplete="off"></select>
@@ -143,6 +153,7 @@
       </button>
     </div>
 
+    <!-- Link to the login page -->
     @if (!isEditMode) {
       <div>
         <p>
