@@ -41,21 +41,21 @@ class Cart {
 
         const TR = document.createElement('tr');
         TR.innerHTML = `
-                    <th scope="row">${index + 1}</th>
-                    <td><label for="quantity-${index}">${PRODUCT.name}</label></td>
-                    <td>${PRODUCT.price}€</td>
-                    <td>
-                        <input type="number" id="quantity-${index}" onchange="changeCartQuantity(this, ${product.id}, ${product.quantity})" 
-                            aria-label="Modifier la quantité" value="${product.quantity}" size="2" 
-                            oninput="this.checkPositiveNumber(true, 99, ${product.quantity})" required>
-                    </td>
-                    <td>${FULL_PRICE}€</td>
-                    <td>
-                        <button type="button" onclick="deleteCartProduct(${product.id})" class="btn btn-danger" title="Supprimer" aria-label="Supprimer">
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
-                    </td>
-                `;
+            <th scope="row">${index + 1}</th>
+            <td><label for="quantity-${index}">${PRODUCT.name}</label></td>
+            <td>${PRODUCT.price}€</td>
+            <td>
+                <input type="number" id="quantity-${index}" onchange="changeCartQuantity(this, ${product.id}, ${product.quantity})" 
+                    aria-label="Modifier la quantité" value="${product.quantity}" size="2" 
+                    oninput="this.checkPositiveNumber(true, 99, ${product.quantity})" required>
+            </td>
+            <td>${FULL_PRICE}€</td>
+            <td>
+                <button type="button" onclick="deleteCartProduct(${product.id})" class="btn btn-danger" title="Supprimer" aria-label="Supprimer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </td>
+        `;
         tbody.appendChild(TR);
       }
     });
