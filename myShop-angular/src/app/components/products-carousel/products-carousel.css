@@ -1,0 +1,48 @@
+/*
+    Bootstrap: carousel
+*/
+
+.carousel-container {
+  display: flex;
+  justify-content: space-around;
+  align-items:start;
+  flex-wrap: wrap;
+}
+
+.carousel-product {
+  background-color: rgb(232, 240, 255);
+  width: 400px;
+}
+
+.carousel-img {
+  width: 100%;
+  height: 400px;
+  object-fit: contain;
+  transform: scale(0.9);
+}
+
+button.carousel-control-prev,
+button.carousel-control-next,
+button.carousel-control-prev:hover,
+button.carousel-control-next:hover,
+button.carousel-control-prev:active,
+button.carousel-control-next:active {
+  background-color: darkblue;
+  border: 2px solid darkblue;
+  border-radius: 5px;
+  transform: scale(1);
+}
+
+/*
+    Responsive design: smartphone
+*/
+
+@media only screen and (max-width: 767px) {
+  .carousel-product {
+    width: 200px;
+  }
+
+  .carousel-img {
+    height: 200px;
+  }
+}

@@ -1,9 +1,6 @@
 <article [tabindex]="'0'" [class]="isList === 1 ? 'article-product' : 'article-product-selected'">
   <span [class]="product.price < 25 ? 'article-good' : 'inactive'">Bonne<br />Affaire</span>
   <span [class]="product.price > 50 ? 'article-top' : 'inactive'">Top<br />Produit</span>
-  <span [class]="product.stock > 0 ? 'article-available' : 'article-unavailable'">
-    {{ product.stock > 0 ? 'En stock' : 'Indisponible' }}
-  </span>
   <h3>{{ product.name }}</h3>
   @if (product.info) {
     <p>
@@ -17,6 +14,9 @@
       aria-label="Article favori"
     >
       <i class="fa-solid fa-heart"></i>
+    </span>
+    <span [class]="product.stock > 0 ? 'article-available' : 'article-unavailable'">
+      {{ product.stock > 0 ? 'En stock' : 'Indisponible' }}
     </span>
     <img [src]="product.img" [alt]="product.name" />
   </div>
