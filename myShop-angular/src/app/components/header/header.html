@@ -43,15 +43,15 @@
                 </li>
               </ul>
             </li>
-            <li>
-              <a [routerLink]="['/cart']" title="Mon panier" aria-label="Mon panier">
-                <i class="fa-solid fa-cart-arrow-down"></i>
-              </a>
-              @if (cartService.cartCount() > 0) {
-                <span id="cart-sticker">{{ cartService.cartCount() }}</span>
-              }
-            </li>
           }
+          <li>
+            <a [routerLink]="['/cart']" title="Mon panier" aria-label="Mon panier">
+              <i class="fa-solid fa-cart-arrow-down"></i>
+            </a>
+            @if (cartService.cartCount() > 0) {
+              <span id="cart-sticker">{{ cartService.cartCount() }}</span>
+            }
+          </li>
           <li>
             @if (getConnectedUser()?.name) {
               <a class="pointer profile" aria-label="Mon profile">

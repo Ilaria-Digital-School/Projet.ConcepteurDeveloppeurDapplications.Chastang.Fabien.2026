@@ -41,9 +41,10 @@ export class Product {
   stock: number = 0;
   info: string = '';
   favorite: boolean = false;
+  cartQuantity: number = 0;
   visible: boolean = true;
 
-  // For additional properties (RxJS)
+  // For additional properties
   additional: any = {};
 
   constructor(
@@ -217,28 +218,22 @@ export class Countries {
   }
 }
 
-// Main class ////////////////////////////////////////////////////////////
+// Cart class ////////////////////////////////////////////////////////////
 
-export class Main {
-  static checkPositiveNumber(
-    value: string,
-    isInt: boolean,
-    maxValue: number = Number.MAX_SAFE_INTEGER,
-    defaultValue: number = 0,
-  ): string {
-    value = value.replace(',', '.').replace(/[^\d.]/g, '');
-    let nvalue;
-    if (isInt) nvalue = parseInt(value);
-    else {
-      nvalue = parseFloat(value);
-      nvalue = Math.round(100 * nvalue) / 100;
+export class UserCart {
+  id: string = Date.now().toString();
+  userId: string = '';
+  products: Product[] = [];
+
+  constructor(products: Product[] | null, userId: string | null = null) {
+    if (typeof userId === 'string') this.userId = userId;
+
+    if (Array.isArray(products)) {
+      products.forEach((product: Product) => {
+        const PRODUCT = this.products.find((item: Product) => item.id === product.id);
+        if (PRODUCT) PRODUCT.cartQuantity++;
+        else this.products.push(product);
+      });
     }
-    return nvalue > 0
-      ? nvalue <= maxValue
-        ? nvalue.toString()
-        : maxValue.toString()
-      : defaultValue
-        ? defaultValue.toString()
-        : '';
   }
 }

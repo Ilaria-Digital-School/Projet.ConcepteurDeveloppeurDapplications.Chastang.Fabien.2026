@@ -1,0 +1,37 @@
+.h2-info {
+  margin-bottom: 30px;
+}
+
+.col-input {
+  width: 90px;
+}
+
+input[type='number'] {
+  width: 80px;
+}
+
+.row-total {
+  border: 2px solid #CCC;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.label-total {
+  font-size: 20px;
+  text-align: left;
+}
+
+.cell-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-cart {
+  font-size: 15px;
+  font-weight: normal;
+  padding-left: 0;
+  padding-right: 0;
+  width: 110px;
+}

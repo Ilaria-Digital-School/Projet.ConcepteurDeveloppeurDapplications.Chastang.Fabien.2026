@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product-service';
-import { Main, Product } from '../../../main';
+import { Product } from '../../../main';
 
 @Component({
   selector: 'app-add-product',
@@ -88,8 +88,11 @@ export class AddProduct {
 
   // Check the price
   checkPrice(): void {
-    this.product.price = Number(
-      Main.checkPositiveNumber(this.product.price.toString(), false, 9999.99),
-    );
+    let value = this.product.price
+      .toString()
+      .replace(',', '.')
+      .replace(/[^\d.]/g, '');
+    let nvalue = Math.round(100 * parseFloat(value)) / 100;
+    this.product.price = nvalue > 0 ? (nvalue <= 9999.99 ? nvalue : 9999.99) : 0;
   }
 }
