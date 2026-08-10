@@ -1,0 +1,111 @@
+<!-- Shopping cart table -->
+<section>
+  @if (userCart.products.length > 0) {
+    <h2 class="h2-info">Mon panier</h2>
+
+    <div class="table-responsive">
+      <table class="table table-hover table-sm">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Produit</th>
+            <th scope="col">Prix (HT)</th>
+            <th scope="col" class="col-input">Quantité</th>
+            <th scope="col">Total (HT)</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">
+          @for (product of userCart.products; track product.id; let i = $index) {
+            <tr>
+              <th scope="row">{{ i + 1 }}</th>
+              <td class="cell-product">
+                <div>
+                  <img [src]="product.img" [alt]="product.description" />
+                </div>
+                <label [for]="`quantity-${product.id}`">{{ product.description }}</label>
+              </td>
+              <td>{{ product.price.toFixed(2) }} €</td>
+              <td>
+                <div class="input-group quantity">
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    title="Retirer un article"
+                    aria-label="Retirer un article"
+                    (click)="removeOne(product)"
+                  >
+                    -
+                  </button>
+                  <input
+                    type="text"
+                    [id]="`quantity-${product.id}`"
+                    class="form-control"
+                    size="2"
+                    maxlength="2"
+                    aria-label="Quantité pour ce produit"
+                    autocomplete="off"
+                    [(ngModel)]="product.cartQuantity"
+                    readonly
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    title="Ajouter un article"
+                    aria-label="Ajouter un article"
+                    (click)="addOne(product)"
+                  >
+                    +
+                  </button>
+                </div>
+              </td>
+              <td>{{ (product.cartQuantity * product.price).toFixed(2) }} €</td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  title="Supprimer cet article"
+                  aria-label="Supprimer cet article"
+                  (click)="removeProduct(product.id)"
+                >
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </td>
+            </tr>
+          }
+          <tr class="row-total">
+            <td colspan="4" class="label-total">Total</td>
+            <td>
+              <div class="cell-total">
+                <div [style.white-space]="'nowrap'">{{ getTotalExcludingTax().toFixed(2) }} € HT</div>
+                <div [style.white-space]="'nowrap'">{{ getTotalIncludingTax().toFixed(2) }} € TTC</div>
+              </div>
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-success btn-cart"
+                title="Payer votre commande"
+                aria-label="Payer votre commande"
+                (click)="addOrder()"
+              >
+                Commander
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger btn-cart"
+                title="Supprimer le panier"
+                aria-label="Supprimer le panier"
+                (click)="removeCart()"
+              >
+                Supprimer
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <h2 class="h2-title">Votre panier est vide</h2>
+  }
+</section>

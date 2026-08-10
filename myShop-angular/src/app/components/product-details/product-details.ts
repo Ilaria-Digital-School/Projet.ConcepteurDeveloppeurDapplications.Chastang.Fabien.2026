@@ -30,7 +30,7 @@ export class ProductDetails {
         if (this.product.fullDescription) {
           this.fullDescription = JSON.parse(this.product.fullDescription);
         }
-        this.changeDetectorRef.detectChanges(); // Force a check
+        this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
       },
       error: (err: any) => {
         console.log(err);

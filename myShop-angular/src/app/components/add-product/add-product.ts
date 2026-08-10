@@ -37,7 +37,7 @@ export class AddProduct {
         next: (res: Product) => {
           Object.assign(this.product, res);
           Object.assign(this.productIni, res);
-          this.changeDetectorRef.detectChanges(); // Force a check
+          this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
         },
         error: (err: any) => {
           console.log(err);

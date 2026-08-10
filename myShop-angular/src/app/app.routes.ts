@@ -5,10 +5,11 @@ import { ProductsCarousel } from './components/products-carousel/products-carous
 import { ProductDetails } from './components/product-details/product-details';
 import { AddProduct } from './components/add-product/add-product';
 import { Dashboard } from './components/dashboard/dashboard';
-import { Cart } from './components/cart/cart';
+import { UserCart } from './components/user-cart/user-cart';
 import { Login } from './components/login/login';
 import { AddUser } from './components/add-user/add-user';
-import { Orders } from './components/orders/orders';
+import { AddOrder } from './components/add-order/add-order';
+import { UserOrders } from './components/user-orders/user-orders';
 import { Contact } from './components/contact/contact';
 import { About } from './components/about/about';
 import { adminGuard } from './guards/admin-guard';
@@ -21,11 +22,12 @@ export const routes: Routes = [
   { path: 'add-product', component: AddProduct, canActivate: [adminGuard] },
   { path: 'edit-product/:id', component: AddProduct, canActivate: [adminGuard] },
   { path: 'dashboard', component: Dashboard, canActivate: [adminGuard] },
-  { path: 'cart', component: Cart },
+  { path: 'user-cart', component: UserCart },
   { path: 'login', component: Login },
   { path: 'add-user', component: AddUser },
   { path: 'edit-user/:id', component: AddUser },
-  { path: 'orders', component: Orders },
+  { path: 'add-order/:id', component: AddOrder },
+  { path: 'user-orders', component: UserOrders },
   { path: 'contact', component: Contact },
   { path: 'about', component: About },
 ];

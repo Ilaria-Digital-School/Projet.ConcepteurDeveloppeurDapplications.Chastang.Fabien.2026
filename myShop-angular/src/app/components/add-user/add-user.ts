@@ -101,7 +101,7 @@ export class AddUser implements AfterViewInit {
             this.interests = JSON.parse(this.user.interests);
             this.interestsIni = structuredClone(this.interests);
           }
-          this.changeDetectorRef.detectChanges(); // Force a check
+          this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
         },
         error: (err: any) => {
           console.log(err);

@@ -27,10 +27,49 @@ export class CartService {
   // Add a product in the cart
   add(product: Product) {
     this.cart.update((products: Product[]) => {
+      product.cartQuantity = 1;
       const NEW_CART = [...products, product];
       localStorage.setItem('cart', JSON.stringify(NEW_CART));
       return NEW_CART;
     });
+  }
+
+  // Remove a product from the cart
+  remove(product: Product) {
+    this.cart.update((products: Product[]) => {
+      const INDEX = products.findIndex((item: Product) => item.id === product.id);
+      if (INDEX > -1) {
+        products.splice(INDEX, 1);
+        if (products.length === 0) {
+          localStorage.removeItem('cart');
+          return [];
+        } else {
+          const NEW_CART = structuredClone(products);
+          localStorage.setItem('cart', JSON.stringify(NEW_CART));
+          return NEW_CART;
+        }
+      } else {
+        return products;
+      }
+    });
+  }
+
+  removeProduct(id: string) {
+    this.cart.update((products: Product[]) => {
+      const NEW_CART = products.filter((product: Product) => product.id !== id);
+      if (NEW_CART.length > 0) {
+        localStorage.setItem('cart', JSON.stringify(NEW_CART));
+        return NEW_CART;
+      } else {
+        localStorage.removeItem('cart');
+        return [];
+      }
+    });
+  }
+
+  removeCart() {
+    localStorage.removeItem('cart');
+    this.cart.set([]);
   }
 
   // Number of products in the cart

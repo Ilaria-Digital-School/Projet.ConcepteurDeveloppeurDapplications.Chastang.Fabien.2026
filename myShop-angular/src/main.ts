@@ -31,6 +31,7 @@ bootstrapApplication(App, appConfig).catch((err) => console.error(err));
   ]
 */
 
+// Product class
 export class Product {
   id: string = Date.now().toString();
   name: string = '';
@@ -70,58 +71,24 @@ export class Product {
 
 // User class ////////////////////////////////////////////////////////////
 
+// Enumeration classes
 export class UserRole {
   static user: number = 0;
   static admin: number = 1;
   static superAdmin: number = 2;
 }
-
 export class UserGender {
   static other: number = 0;
   static female: number = 1;
   static male: number = 2;
 }
-
 export class UserInterest {
   static none: number = 0;
   static clothes: number = 1;
   static accessories: number = 2;
 }
 
-export class User {
-  id: string = Date.now().toString();
-  name: string = '';
-  email: string = '';
-  pswd: string = '';
-  gender: number = 0;
-  interests: string = '';
-  country: number = 0;
-  role: number = UserRole.user;
-  visible: boolean = true;
-
-  // For additional properties (RxJS)
-  additional: any = {};
-
-  constructor(
-    name: string | null = null,
-    email: string | null = null,
-    pswd: string | null = null,
-    gender: number | null = null,
-    interests: string | null = null,
-    country: number | null = null,
-  ) {
-    if (typeof name === 'string') this.name = name;
-    if (typeof email === 'string') this.email = email;
-    if (typeof pswd === 'string') this.pswd = pswd;
-    if (typeof gender === 'number') {
-      this.gender =
-        gender === UserGender.female || gender === UserGender.male ? gender : UserGender.other;
-    }
-    if (typeof interests === 'string') this.interests = interests;
-    if (typeof country === 'number') this.country = country;
-  }
-}
-
+// User's role class
 export class Roles {
   static other = { value: UserRole.user, label: 'Utilisateur' };
   static list = [
@@ -141,6 +108,7 @@ export class Roles {
   }
 }
 
+// User's gender class
 export class Genders {
   static other = { value: UserGender.other, id: 'other', label: '– Indéfini –' };
   static list = [
@@ -160,6 +128,7 @@ export class Genders {
   }
 }
 
+// User's interests class
 export class Interests {
   static other = { value: UserInterest.none, id: null, label: null };
   static list = [
@@ -179,6 +148,7 @@ export class Interests {
   }
 }
 
+// User's country class
 export class Countries {
   static other = { value: 0, label: '– Autre –' };
   static list = [
@@ -218,14 +188,50 @@ export class Countries {
   }
 }
 
+// User class
+export class User {
+  id: string = Date.now().toString();
+  name: string = '';
+  email: string = '';
+  pswd: string = '';
+  gender: number = 0;
+  interests: string = '';
+  country: number = 0;
+  role: number = UserRole.user;
+  visible: boolean = true;
+
+  // For additional properties (RxJS)
+  additional: any = {};
+
+  constructor(
+    name: string | null = null,
+    email: string | null = null,
+    pswd: string | null = null,
+    gender: number | null = null,
+    interests: string | null = null,
+    country: number | null = null,
+  ) {
+    if (typeof name === 'string') this.name = name;
+    if (typeof email === 'string') this.email = email;
+    if (typeof pswd === 'string') this.pswd = pswd;
+    if (typeof gender === 'number') {
+      this.gender =
+        gender === UserGender.female || gender === UserGender.male ? gender : UserGender.other;
+    }
+    if (typeof interests === 'string') this.interests = interests;
+    if (typeof country === 'number') this.country = country;
+  }
+}
+
 // Cart class ////////////////////////////////////////////////////////////
 
-export class UserCart {
+// Cart class
+export class Cart {
   id: string = Date.now().toString();
   userId: string = '';
   products: Product[] = [];
 
-  constructor(products: Product[] | null, userId: string | null = null) {
+  constructor(products: Product[] | null = null, userId: string | null = null) {
     if (typeof userId === 'string') this.userId = userId;
 
     if (Array.isArray(products)) {

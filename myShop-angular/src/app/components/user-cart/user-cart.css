@@ -3,11 +3,36 @@
 }
 
 .col-input {
-  width: 90px;
+  width: 130px;
 }
 
-input[type='number'] {
-  width: 80px;
+.cell-product {
+  width: 160px;
+}
+
+.cell-product div {
+  width: 150px;
+  height: 150px;
+  border: 2px solid rgb(175, 171, 171);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.cell-product div img {
+  max-height: 100%;
+  width: auto;
+}
+
+.quantity {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.quantity input {
+  max-width: 50px;
+  max-height: 40px;
+  text-align: center;
 }
 
 .row-total {

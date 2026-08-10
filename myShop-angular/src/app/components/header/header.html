@@ -45,7 +45,7 @@
             </li>
           }
           <li>
-            <a [routerLink]="['/cart']" title="Mon panier" aria-label="Mon panier">
+            <a [routerLink]="['/user-cart']" title="Mon panier" aria-label="Mon panier">
               <i class="fa-solid fa-cart-arrow-down"></i>
             </a>
             @if (cartService.cartCount() > 0) {
@@ -65,7 +65,7 @@
             @if (getConnectedUser()) {
               <ul class="submenu separated">
                 <li>
-                  <a [routerLink]="['/orders']"> Commandes </a>
+                  <a [routerLink]="['/user-orders']"> Commandes </a>
                 </li>
                 <li>
                   <a class="pointer" (click)="logout()">

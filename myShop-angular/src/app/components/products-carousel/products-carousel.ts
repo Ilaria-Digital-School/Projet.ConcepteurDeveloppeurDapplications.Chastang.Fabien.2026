@@ -48,7 +48,7 @@ export class ProductsCarousel implements AfterViewInit {
         this.activeIndex = this.products.findIndex(
           (product: Product) => product.id === this.productId,
         );
-        this.changeDetectorRef.detectChanges(); // Force a check
+        this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
@@ -62,7 +62,7 @@ export class ProductsCarousel implements AfterViewInit {
     this.intervalId = setInterval(() => {
       if (this.productsCard) {
         clearInterval(this.intervalId);
-        this.changeDetectorRef.detectChanges(); // Force a check
+        this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
       }
     }, 10);
   }
