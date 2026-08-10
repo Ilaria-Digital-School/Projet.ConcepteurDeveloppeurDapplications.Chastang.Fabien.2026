@@ -108,17 +108,17 @@
       <!-- Form fields regarding the user's gender -->
       <div class="field-container">
         <div class="field-label" aria-label="Genre">Genre&nbsp;:&ensp;</div>
-        <div id="genders" #genders>
+        <div>
           <div class="field">
-            <input type="radio" name="gender" id="female" formControlName="gender" value="1" />
+            <input type="radio" id="female" formControlName="gender" value="1" />
             <label for="female"> Femme&ensp;</label>
           </div>
           <div class="field">
-            <input type="radio" name="gender" id="male" formControlName="gender" value="2" />
+            <input type="radio" id="male" formControlName="gender" value="2" />
             <label for="male"> Homme&ensp;</label>
           </div>
           <div class="field">
-            <input type="radio" name="gender" id="other" formControlName="gender" value="0" />
+            <input type="radio" id="other" formControlName="gender" value="0" />
             <label for="other"> Je le garde pour moi&ensp;</label>
           </div>
         </div>
@@ -140,7 +140,11 @@
       <!-- User's country -->
       <div>
         <label for="country">Pays&nbsp;:</label>
-        <select id="country" #country formControlName="country" autocomplete="off"></select>
+        <select id="country" formControlName="country" autocomplete="off">
+          @for (country of Countries.list; track country.value; let i = $index) {
+            <option [value]="country.value">{{ country.label }}</option>
+          }
+        </select>
       </div>
     </fieldset>
 

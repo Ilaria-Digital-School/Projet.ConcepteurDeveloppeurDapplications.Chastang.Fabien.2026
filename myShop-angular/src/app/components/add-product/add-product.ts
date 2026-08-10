@@ -54,9 +54,22 @@ export class AddProduct {
 
   // Add or update the product
   submit(productForm: NgForm): void {
+    const PRODUCT = structuredClone(this.product);
+
+    // Remove these properties before saving
+    PRODUCT.cartQuantity = undefined;
+    PRODUCT.additional = undefined;
+
+    const FORM_VAL = productForm.value;
+    PRODUCT.name = FORM_VAL.nameItem;
+    PRODUCT.description = FORM_VAL.description;
+    PRODUCT.price = FORM_VAL.price;
+    PRODUCT.img = FORM_VAL.imgItem;
+    PRODUCT.info = FORM_VAL.info;
+
     if (this.isEditMode) {
       // Update the product
-      this.productService.updateProduct(this.product).subscribe({
+      this.productService.updateProduct(PRODUCT).subscribe({
         next: (res: Object) => {
           alert('Le produit a été modifié.');
         },
@@ -67,7 +80,7 @@ export class AddProduct {
       });
     } else {
       // Add the product
-      this.productService.addProduct(productForm.value).subscribe({
+      this.productService.addProduct(PRODUCT).subscribe({
         next: (res: Object) => {
           alert('Le produit a été ajouté.');
           productForm.resetForm();
@@ -82,8 +95,11 @@ export class AddProduct {
 
   // Reset the form
   reset(productForm: NgForm): void {
-    if (this.isEditMode) this.product = structuredClone(this.productIni);
-    else productForm.resetForm();
+    if (this.isEditMode) {
+      this.product = structuredClone(this.productIni);
+    } else {
+      productForm.resetForm();
+    }
   }
 
   // Check the price

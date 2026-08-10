@@ -1,7 +1,7 @@
 {
   "products": [
     {
-      "id": "5910",
+      "id": "BN4bdfCKWuf",
       "name": "Chemise",
       "description": "Chemise homme en coton bleu clair",
       "fullDescription": "[{\"title\":\"Restez à l'aise même sous la chaleur\",\"description\":[\"Conçue pour les journées ensoleillées, cette Chemise d'Été allie légèreté et respirabilité pour apporter une sensation de confort agréable lors de vos sorties.\",\"Sa matière favorise une bonne circulation de l'air, aide à réguler l'humidité et rend le port plus agréable.\",\"Profitez pleinement de l'été en restant à votre aise.\"]},{\"title\":\"Un style naturel, chic avec simplicité\",\"description\":[\"Avec sa coupe ajustée et sa belle fluidité, cette chemise offre une allure élégante et décontractée. Inutile d'en faire trop, elle s'adapte facilement à toutes vos tenues.\",\"Portée ouverte ou fermée, avec un short ou un pantalon, elle conserve un style sobre et raffiné.\"]},{\"title\":\"Entretien facile pour un été sans tracas\",\"description\":[\"Cette Chemise est conçue pour vous simplifier la vie : elle passe en machine et sèche simplement à l'air libre.\",\"Même légèrement froissée, elle garde son charme naturel. Son tissu offre une sensation de douceur et de confort agréable à chaque port.\",\"Son confort et sa douceur en font une pièce appropriée pour vous accompagner durant l'été.\"]}]",
@@ -13,7 +13,7 @@
       "visible": true
     },
     {
-      "id": "2429",
+      "id": "a1Fsngvgtdn",
       "name": "Robe",
       "description": "Robe en jean denim indigo",
       "fullDescription": "",
@@ -24,8 +24,8 @@
       "favorite": true,
       "visible": true
     },
-    { 
-      "id": "5147",
+    {
+      "id": "WeHNcyId4xk",
       "name": "Robe",
       "description": "Robe en coton bleu nuit",
       "fullDescription": "",
@@ -35,11 +35,35 @@
       "info": "",
       "favorite": false,
       "visible": true
+    },
+    {
+      "id": "xVlVC7SoNAY",
+      "name": "Jean",
+      "description": "Jean homme gris",
+      "fullDescription": "",
+      "price": 30,
+      "img": "assets/img/clothing/men/shirts/cmj3.png",
+      "stock": 0,
+      "info": "",
+      "favorite": false,
+      "visible": true
+    },
+    {
+      "id": "B5Np9Lj40Yg",
+      "name": "Jean",
+      "description": "Jean homme bleu",
+      "fullDescription": "",
+      "price": 40,
+      "img": "assets/img/clothing/men/shirts/cmj2.png",
+      "stock": 0,
+      "info": "",
+      "favorite": false,
+      "visible": true
     }
   ],
   "users": [
     {
-      "id": "5749",
+      "id": "9yGc7G1khwe",
       "name": "Fabien",
       "email": "admin.fabien@myshop.com",
       "pswd": "3kb!BWFe;dgXqV]",
@@ -50,7 +74,7 @@
       "visible": true
     },
     {
-      "id": "3856",
+      "id": "Q47pLXwdKmv",
       "name": "Louis",
       "email": "louis.machin@domain.com",
       "pswd": "Ialj:75/A,~tmUt",
@@ -61,7 +85,7 @@
       "visible": true
     },
     {
-      "id": "7391",
+      "id": "dYtBHw6xvkp",
       "name": "Janette",
       "email": "janette.bidule@domain.com",
       "pswd": "3Fx$Njqb6yeh4hj",
@@ -70,6 +94,18 @@
       "country": 22,
       "role": 0,
       "visible": true
+    },
+    {
+      "id": "tapQ6zz5B64",
+      "name": "Alfred",
+      "email": "alfred.truc@domaine.fr",
+      "pswd": "S66bbGaHPvAAAX!",
+      "gender": 2,
+      "interests": "[2]",
+      "country": 17,
+      "role": 0,
+      "visible": true
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

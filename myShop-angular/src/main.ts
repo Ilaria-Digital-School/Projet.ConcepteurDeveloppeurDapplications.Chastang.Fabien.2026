@@ -42,11 +42,11 @@ export class Product {
   stock: number = 0;
   info: string = '';
   favorite: boolean = false;
-  cartQuantity: number = 0;
   visible: boolean = true;
 
-  // For additional properties
-  additional: any = {};
+  // Temporary properties, not saved
+  cartQuantity: any = 0;
+  additional: any = {}; // For additional properties (RxJS)
 
   constructor(
     name: string | null = null,
@@ -200,8 +200,8 @@ export class User {
   role: number = UserRole.user;
   visible: boolean = true;
 
-  // For additional properties (RxJS)
-  additional: any = {};
+  // Temporary property, not saved
+  additional: any = {}; // For additional properties (RxJS)
 
   constructor(
     name: string | null = null,
@@ -250,8 +250,11 @@ export class Cart {
     if (Array.isArray(products)) {
       products.forEach((product: Product) => {
         const PRODUCT = this.products.find((item: Product) => item.id === product.id);
-        if (PRODUCT) PRODUCT.cartQuantity++;
-        else this.products.push(product);
+        if (PRODUCT) {
+          PRODUCT.cartQuantity++;
+        } else {
+          this.products.push(product);
+        }
       });
     }
   }

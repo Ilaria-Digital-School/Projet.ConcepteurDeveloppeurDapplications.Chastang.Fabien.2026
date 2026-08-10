@@ -74,6 +74,7 @@ export class UserCart {
     }
   }
 
+  // Remove a product
   removeProduct(id: string) {
     // Remove the product from the local storage
     this.cartService.removeProduct(id);

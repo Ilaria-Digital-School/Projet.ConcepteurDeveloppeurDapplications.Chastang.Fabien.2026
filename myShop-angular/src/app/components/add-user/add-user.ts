@@ -1,12 +1,4 @@
-import {
-  Component,
-  inject,
-  Renderer2,
-  ViewChild,
-  ElementRef,
-  AfterViewInit,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -34,41 +26,18 @@ export class CustomValidators {
 
 @Component({
   selector: 'app-add-user',
-  imports: [ReactiveFormsModule/*, JsonPipe*/],
+  imports: [ReactiveFormsModule /*, JsonPipe*/],
   templateUrl: './add-user.html',
   styleUrl: './add-user.css',
 })
-export class AddUser implements AfterViewInit {
-  // The list of genders: initialized in the 'ngAfterViewInit' method
-  @ViewChild('genders') gendersDiv!: ElementRef;
-  gendersHTMLInput!: NodeListOf<HTMLInputElement>;
+export class AddUser {
+  Countries = Countries;
 
-  // General component management
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
-  private renderer = inject(Renderer2); // To retrieve the HTML elements, in this class, the HTML tags <select>
   private activatedRoute = inject(ActivatedRoute);
   private changeDetectorRef = inject(ChangeDetectorRef);
   private userService = inject(UserService);
-
-  // The list of countries ////////////////////////////////////////////////////
-  
-  countriesHTMLSelect!: HTMLSelectElement;
-  countriesHTMLOptions!: HTMLOptionsCollection; // Initialized in the 'ngAfterViewInit' method
-
-  // Populating the HTML <select> element for countries
-  setCountries(): void {
-    this.countriesHTMLSelect = this.renderer.selectRootElement('#country');
-    let option!: HTMLOptionElement;
-    Countries.list.forEach((item: any) => {
-      option = document.createElement('option');
-      option.value = item.value;
-      option.textContent = item.label;
-      this.countriesHTMLSelect.appendChild(option);
-    });
-  }
-
-  // The form and its data: initialization and validation /////////////////////
 
   userForm!: FormGroup;
   isEditMode!: boolean;
@@ -77,19 +46,20 @@ export class AddUser implements AfterViewInit {
   btnAction!: string;
   users: User[] = [];
   user: User = new User();
-  interests: number[] = [];
   userIni: User = new User();
+  interests: number[] = [];
   interestsIni: number[] = [];
   fromCart!: boolean;
+  intervalId: number = 0;
+
+  // The form and its data: initialization and validation /////////////////////
 
   // Initialize the form
   ngOnInit(): void {
     // Origin of the page request
     this.fromCart = this.router.url.includes('add-user-cart');
 
-    // Populating the HTML <select> element for countries
-    this.setCountries();
-
+    // Get user ID if it exists
     this.userId = this.activatedRoute.snapshot.paramMap.get('id');
     this.isEditMode = this.userId ? true : false;
 
@@ -151,13 +121,6 @@ export class AddUser implements AfterViewInit {
     }
   }
 
-  // Method called after ngOnInit
-  ngAfterViewInit(): void {
-    // Initialize the properties containing the HTML elements
-    this.gendersHTMLInput = this.gendersDiv.nativeElement.querySelectorAll('input[name="gender"]');
-    this.countriesHTMLOptions = this.countriesHTMLSelect.options;
-  }
-
   // To submit the form ///////////////////////////////////////////////////////
 
   // Retrieve all users to check if the email does not exist
@@ -192,6 +155,9 @@ export class AddUser implements AfterViewInit {
     if (FORM_VAL.clothes) interests.push(1);
     if (FORM_VAL.accessories) interests.push(2);
 
+    const USER = structuredClone(this.user);
+    USER.additional = undefined; // Remove this property before saving
+
     if (this.isEditMode) {
       // Modify the user
       let toSave: boolean = false;
@@ -199,16 +165,16 @@ export class AddUser implements AfterViewInit {
       const NAME = FORM_VAL.nameItem.trim();
       if (this.userIni.name != NAME) {
         toSave = true;
-        this.user.name = NAME;
+        USER.name = NAME;
       }
       if (this.userIni.email !== FORM_VAL.email) {
         toSave = true;
-        this.user.email = FORM_VAL.email;
+        USER.email = FORM_VAL.email;
       }
       const GENDER = parseInt(FORM_VAL.gender);
       if (this.userIni.gender !== GENDER) {
         toSave = true;
-        this.user.gender = GENDER;
+        USER.gender = GENDER;
       }
       if (
         Interests.list.some(
@@ -216,17 +182,17 @@ export class AddUser implements AfterViewInit {
         )
       ) {
         toSave = true;
-        this.user.interests = JSON.stringify(interests);
+        USER.interests = JSON.stringify(interests);
       }
       const COUNTRY: number = parseInt(FORM_VAL.country);
       if (this.userIni.country !== COUNTRY) {
         toSave = true;
-        this.user.country = COUNTRY;
+        USER.country = COUNTRY;
       }
 
       if (toSave) {
         // Update the user
-        this.userService.updateUser(this.user).subscribe({
+        this.userService.updateUser(USER).subscribe({
           next: (res: Object) => {
             alert('Votre compte a été modifié.');
           },
@@ -238,14 +204,14 @@ export class AddUser implements AfterViewInit {
       }
     } else {
       // Add the user
-      this.user.name = FORM_VAL.nameItem.trim();
-      this.user.email = FORM_VAL.email;
-      this.user.pswd = FORM_VAL.pswd;
-      this.user.gender = parseInt(FORM_VAL.gender);
-      this.user.interests = JSON.stringify(interests);
-      this.user.country = parseInt(FORM_VAL.country);
+      USER.name = FORM_VAL.nameItem.trim();
+      USER.email = FORM_VAL.email;
+      USER.pswd = FORM_VAL.pswd;
+      USER.gender = parseInt(FORM_VAL.gender);
+      USER.interests = JSON.stringify(interests);
+      USER.country = parseInt(FORM_VAL.country);
 
-      this.userService.addUser(this.user).subscribe({
+      this.userService.addUser(USER).subscribe({
         next: (res: Object) => {
           alert('Votre compte a été créé.');
           this.reset();
@@ -260,21 +226,15 @@ export class AddUser implements AfterViewInit {
 
   // To reset the form ////////////////////////////////////////////////////////
   reset(): void {
-    if (this.isEditMode) {
-      // Edit mode
-      this.userForm.patchValue({
-        nameItem: this.userIni.name,
-        email: this.userIni.email,
-        gender: this.userIni.gender.toString(),
-        clothes: this.interestsIni.includes(1),
-        accessories: this.interestsIni.includes(2),
-        country: this.userIni.country.toString(),
-      });
-    } else {
-      this.userForm.reset();
-      this.gendersHTMLInput[2].checked = true;
-      this.countriesHTMLOptions[this.countriesHTMLOptions.length - 1].selected = true;
-    }
+    this.userForm.reset();
+    this.userForm.patchValue({
+      nameItem: this.userIni.name,
+      email: this.userIni.email,
+      gender: this.userIni.gender.toString(),
+      clothes: this.interestsIni.includes(1),
+      accessories: this.interestsIni.includes(2),
+      country: this.userIni.country.toString(),
+    });
   }
 
   // Go to the login form /////////////////////////////////////////////////////
