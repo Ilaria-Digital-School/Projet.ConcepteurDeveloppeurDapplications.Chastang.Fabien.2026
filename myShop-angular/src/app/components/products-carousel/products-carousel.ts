@@ -35,8 +35,8 @@ export class ProductsCarousel implements AfterViewInit {
   activeIndex!: number;
   prevIndex!: number;
   intervalId: number = 0;
-  endSlid: boolean = false;
 
+  // Initialization: retrieving the products and the product specified by the ID passed in the URL
   ngOnInit() {
     // Get the product ID
     this.productId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -57,61 +57,30 @@ export class ProductsCarousel implements AfterViewInit {
     });
   }
 
+  // Initializing the product card list
   ngAfterViewInit() {
     this.intervalId = setInterval(() => {
       if (this.productsCard) {
-        this.clearInterval();
+        clearInterval(this.intervalId);
         this.changeDetectorRef.detectChanges(); // Force a check
       }
     }, 10);
   }
 
-  // Handle the slide change /////////////////////////////////////////////
-
+  // Handle the slide change
   @HostListener('slid.bs.carousel', ['$event'])
-  onSlid(event: Event) {
-    if (this.intervalId) this.endSlid = true;
-  }
-
-  prev() {
-    if (!this.intervalId) {
-      this.intervalId = setInterval(() => {
-        if (this.endSlid) {
-          this.clearInterval();
-          this.prevIndex = this.activeIndex;
-          this.activeIndex = (this.activeIndex - 1 + this.products.length) % this.products.length;
-          this.display();
-        }
-      }, 100);
+  onSlid(event: any) {
+    this.prevIndex = this.activeIndex;
+    if (event.direction === 'left') {
+      this.activeIndex = (this.activeIndex - 1 + this.products.length) % this.products.length;
+    } else {
+      this.activeIndex = (this.activeIndex + 1) % this.products.length;
     }
-  }
-
-  next() {
-    if (!this.intervalId) {
-      this.intervalId = setInterval(() => {
-        if (this.endSlid) {
-          this.clearInterval();
-          this.prevIndex = this.activeIndex;
-          this.activeIndex = (this.activeIndex + 1) % this.products.length;
-          this.display();
-        }
-      }, 100);
-    }
-  }
-
-  display() {
     this.productsCard.get(this.prevIndex)?.nativeElement.classList.add('inactive');
     this.productsCard.get(this.activeIndex)?.nativeElement.classList.remove('inactive');
   }
 
-  clearInterval() {
-    clearInterval(this.intervalId);
-    this.intervalId = 0;
-    this.endSlid = false; // Used to handle the slide change
-  }
-
-  // To add the product to the cart //////////////////////////////////////
-
+  // To add the product to the cart
   add(product: Product) {
     this.cartService.add(product);
   }
