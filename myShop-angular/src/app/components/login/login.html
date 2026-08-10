@@ -10,6 +10,7 @@
         id="email"
         formControlName="email"
         placeholder="votre@adresse.email"
+        autocomplete="off"
         required
       />
       <!-- Error message -->
@@ -62,7 +63,7 @@
     <div>
       <p>
         Vous n'avez pas encore un compte ? &nbsp;
-        <a routerLink="/add-user">S'inscrire</a>
+        <a class="link" (click)="gotoAddUser()">S'inscrire</a>
       </p>
     </div>
   </form>

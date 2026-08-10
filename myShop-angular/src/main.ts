@@ -223,6 +223,19 @@ export class User {
   }
 }
 
+// Class encapsulating the login data
+export class LoginData {
+  email: string = '';
+  pswd: string = '';
+  permanent: boolean = false;
+
+  constructor(email: string, pswd: string, permanent: boolean = false) {
+    this.email = email;
+    this.pswd = pswd;
+    this.permanent = permanent;
+  }
+}
+
 // Cart class ////////////////////////////////////////////////////////////
 
 // Cart class

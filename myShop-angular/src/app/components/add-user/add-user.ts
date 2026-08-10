@@ -15,7 +15,7 @@ import {
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Countries, Interests, User } from '../../../main';
 import { UserService } from '../../services/user-service';
 // import { JsonPipe } from '@angular/common';
@@ -34,7 +34,7 @@ export class CustomValidators {
 
 @Component({
   selector: 'app-add-user',
-  imports: [ReactiveFormsModule, RouterLink/*, JsonPipe*/],
+  imports: [ReactiveFormsModule/*, JsonPipe*/],
   templateUrl: './add-user.html',
   styleUrl: './add-user.css',
 })
@@ -45,6 +45,7 @@ export class AddUser implements AfterViewInit {
 
   // General component management
   private formBuilder = inject(FormBuilder);
+  private router = inject(Router);
   private renderer = inject(Renderer2); // To retrieve the HTML elements, in this class, the HTML tags <select>
   private activatedRoute = inject(ActivatedRoute);
   private changeDetectorRef = inject(ChangeDetectorRef);
@@ -79,9 +80,13 @@ export class AddUser implements AfterViewInit {
   interests: number[] = [];
   userIni: User = new User();
   interestsIni: number[] = [];
+  fromCart!: boolean;
 
   // Initialize the form
   ngOnInit(): void {
+    // Origin of the page request
+    this.fromCart = this.router.url.includes('add-user-cart');
+
     // Populating the HTML <select> element for countries
     this.setCountries();
 
@@ -113,15 +118,15 @@ export class AddUser implements AfterViewInit {
       this.btnAction = 'Ajouter';
     }
 
-    // The password must contain at least 8 characters, all non-whitespace, including at least
+    // The password must contain at least 10 characters, all non-whitespace, including at least
     // one lowercase letter, one uppercase letter, one digit, and one special character
-    const SPECIAL_CHR = '&~"#\'{([|_\\\\^@)\\]=+}€¨$£¤%*<>,?;.:/!§-';
+    const SPECIAL_CHR = '&~"\'{([|_\\\\^@)\\]=+}€¨$£¤%*<>,?;.:/!§-';
     const PSWD_PATTERN = new RegExp(
       '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[' +
         SPECIAL_CHR +
         '])[a-zA-Z\\d' +
         SPECIAL_CHR +
-        ']{8,}$',
+        ']{10,}$',
     );
 
     // Form initialization and field validation setup
@@ -270,5 +275,10 @@ export class AddUser implements AfterViewInit {
       this.gendersHTMLInput[2].checked = true;
       this.countriesHTMLOptions[this.countriesHTMLOptions.length - 1].selected = true;
     }
+  }
+
+  // Go to the login form /////////////////////////////////////////////////////
+  gotoLogin() {
+    this.router.navigate([this.fromCart ? '/login-cart' : '/login']);
   }
 }

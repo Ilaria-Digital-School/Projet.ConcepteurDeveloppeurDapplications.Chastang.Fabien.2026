@@ -107,6 +107,14 @@ export class UserCart {
 
   // Place the order
   addOrder() {
-    if (this.connectedUser) this.router.navigate(['/add-order', this.connectedUser.id]);
+    if (this.connectedUser) {
+      this.router.navigate(['/add-order', this.connectedUser.id]);
+    } else if (
+      confirm(
+        'Vous devez être connecté pour passer commande.\nSouhaitez-vous vous connecter ou vous inscrire ?',
+      )
+    ) {
+      this.router.navigate(['/login-cart']);
+    }
   }
 }

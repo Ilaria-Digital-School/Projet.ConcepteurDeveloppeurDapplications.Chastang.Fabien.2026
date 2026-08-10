@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { User, UserRole } from '../../../main';
 import { UserService } from '../../services/user-service';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -18,10 +18,14 @@ export class Login {
   loginForm!: FormGroup;
   user: User = new User();
   errorMsg: string = '';
+  fromCart!: boolean;
 
-  // Form initialization and field validation setup //////////////////////
-
+  // Form initialization and field validation setup
   ngOnInit(): void {
+    // Origin of the page request
+    this.fromCart = this.router.url.includes('login-cart');
+
+    // Initialize the form
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       pswd: ['', Validators.required],
@@ -29,13 +33,14 @@ export class Login {
     });
   }
 
-  // Login method ////////////////////////////////////////////////////////
-
+  // Login method
   login(): void {
     // Retrieve the user's data from DB
     const FORM_VAL = this.loginForm.value;
     this.userService.login(FORM_VAL).subscribe({
       next: (res: User[]) => {
+        console.log(res);
+
         if (res.length > 0) {
           Object.assign(this.user, res[0]);
 
@@ -44,7 +49,9 @@ export class Login {
           else sessionStorage.setItem('connectedUser', JSON.stringify(this.user));
 
           // Redirect to the home page for the user and to the dashboard for the administrator
-          this.router.navigate([this.user.role === UserRole.user ? '/' : '/dashboard']);
+          this.router.navigate([
+            this.user.role === UserRole.user ? (this.fromCart ? '/user-cart' : '/') : '/dashboard',
+          ]);
         } else {
           this.errorMsg = 'E-mail ou mot de passe incorrect !';
         }
@@ -54,5 +61,10 @@ export class Login {
         console.log(err);
       },
     });
+  }
+
+  // Go to the add user form
+  gotoAddUser() {
+    this.router.navigate([this.fromCart ? '/add-user-cart' : '/add-user']);
   }
 }

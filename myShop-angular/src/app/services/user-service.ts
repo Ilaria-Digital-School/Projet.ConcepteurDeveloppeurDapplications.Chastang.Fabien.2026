@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { User } from '../../main';
+import { User, LoginData } from '../../main';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -38,9 +38,9 @@ export class UserService {
     return this.httpClient.put(`${this.userURL}/${user.id}`, user);
   }
 
-  login(loginData: { email: string; pswd: string; permanent: boolean }): Observable<any> {
+  login(data: LoginData): Observable<any> {
     return this.httpClient.get<User[]>(
-      `${this.userURL}?email=${loginData.email}&pswd=${loginData.pswd}`,
+      `${this.userURL}?email=${data.email}&pswd=${data.pswd}`,
     );
 
     // Retrieving data from local storage
@@ -51,7 +51,7 @@ export class UserService {
   }
 
   // IMPORTANT: method to use with a real backend
-  // login(loginData: { email: string; pswd: string }): Observable<any> {
+  // login(loginData: LoginData): Observable<any> {
   //   return this.httpClient.post<User[]>(`${this.userURL}/login`, loginData);
   // }
 }

@@ -95,6 +95,12 @@ a.nav-link:not(active) {
   color: rgb(43, 88, 212);
 }
 
+.link {
+  color: rgb(43, 88, 212);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .error {
   font-size: 15px;
   font-weight: normal;

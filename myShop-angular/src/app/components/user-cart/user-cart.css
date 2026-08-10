@@ -11,6 +11,7 @@
 }
 
 .cell-product div {
+  background-color: aliceblue;;
   width: 150px;
   height: 150px;
   border: 2px solid rgb(175, 171, 171);
