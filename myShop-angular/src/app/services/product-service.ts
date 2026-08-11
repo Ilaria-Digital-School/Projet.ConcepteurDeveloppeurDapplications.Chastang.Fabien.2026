@@ -65,13 +65,13 @@ export class ProductService {
     return this.httpClient.post(this.productURL, product);
   }
 
+  // Response: string, boolean, object + ID
+  updateProduct(product: Product) {
+    return this.httpClient.put(`${this.productURL}/${product.id}`, product);
+  }
+
   // Response: string, boolean
   deleteProduct(id: string | null) {
     return this.httpClient.delete(`${this.productURL}/${id}`);
-  }
-
-  // Response: string, boolean, object + ID
-  updateProduct(product: Product) {
-    return this.httpClient.put(this.productURL, product);
   }
 }

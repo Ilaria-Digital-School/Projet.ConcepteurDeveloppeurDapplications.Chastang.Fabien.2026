@@ -24,24 +24,39 @@
       @if (product.info) {
         <p class="info">{{ product.info }}</p>
       }
-      <p class="price">
+      <div class="price">
         <span>Prix: {{ product.price }} €</span>
-        <button
-          type="button"
-          [disabled]="product.stock === 0"
-          class="btn btn-success"
-          [class.btn-disabled]="product.stock === 0"
-          title="Ajouter au panier"
-          aria-label="Ajouter au panier"
-          (click)="add(product)"
-        >
-          <i class="fa-solid fa-cart-arrow-down"></i>
-        </button>
-      </p>
-      <p>
+        <div>
+          <button
+            type="button"
+            [disabled]="product.stock === 0"
+            class="btn btn-success"
+            [class.btn-disabled]="product.stock === 0"
+            title="Ajouter au panier"
+            aria-label="Ajouter au panier"
+            (click)="addCart(product)"
+          >
+            <i class="fa-solid fa-cart-arrow-down"></i>
+          </button>
+          <button
+            type="button"
+            [disabled]="product.stock === 0"
+            class="btn btn-danger"
+            [class.btn-disabled]="product.stock === 0"
+            title="Retirer du panier"
+            aria-label="Retirer du panier"
+            (click)="removeCart(product)"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+      <p class="full-desc">
         @if (fullDescription.length > 0) {
           @for (item of fullDescription; track $index) {
-            <p class="desc-title">&bull; {{ item.title }}</p>
+            @if (item.title) {
+              <p class="desc-title">&bull; {{ item.title }}</p>
+            }
             @for (desc of item.description; track $index) {
               <p class="desc">{{ desc }}</p>
             }

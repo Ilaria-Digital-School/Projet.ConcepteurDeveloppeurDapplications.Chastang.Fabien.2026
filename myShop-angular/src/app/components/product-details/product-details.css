@@ -48,15 +48,19 @@
   border-radius: 7px;
 }
 
-.section-product-details .desc-title {
-  padding-top: 5px;
-  margin-bottom: 10px;
-  font-size: 17px;
-  font-weight: 600;
+.section-product-details .full-desc {
+  padding-top: 15px;
 }
 
+.section-product-details .desc-title,
 .section-product-details .desc {
+  padding-top: 5px;
   margin-bottom: 5px;
+}
+
+.section-product-details .desc-title {
+  font-size: 17px;
+  font-weight: 600;
 }
 
 .section-product-details .desc-short {

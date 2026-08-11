@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { User, LoginData } from '../../main';
+import { User } from '../../main';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -28,30 +28,24 @@ export class UserService {
     return this.httpClient.post(this.userURL, user);
   }
 
-  // Response: string, boolean
-  deleteUser(id: string | null) {
-    return this.httpClient.delete(`${this.userURL}/${id}`);
-  }
-
   // Response: string, boolean, object + ID
   updateUser(user: User) {
     return this.httpClient.put(`${this.userURL}/${user.id}`, user);
   }
 
-  login(data: LoginData): Observable<any> {
-    return this.httpClient.get<User[]>(
-      `${this.userURL}?email=${data.email}&pswd=${data.pswd}`,
-    );
-
-    // Retrieving data from local storage
-    // this.users = JSON.parse(localStorage.getItem('users') || '[]');
-    // this.user = this.users.find(
-    //   (user: any) => user.email == FORM_VAL.email && user.pswd == FORM_VAL.pswd,
-    // );
+  // Response: string, boolean
+  deleteUser(id: string | null) {
+    return this.httpClient.delete(`${this.userURL}/${id}`);
   }
 
-  // IMPORTANT: method to use with a real backend
-  // login(loginData: LoginData): Observable<any> {
-  //   return this.httpClient.post<User[]>(`${this.userURL}/login`, loginData);
-  // }
+  login(data: { email: string; pswd: string }): Observable<any> {
+    return this.httpClient.get<User[]>(`${this.userURL}?email=${data.email}&pswd=${data.pswd}`);
+
+    // // IMPORTANT: method to use with a real backend
+    // return this.httpClient.post<User[]>(`${this.userURL}/login`, data);
+
+    // // Retrieving data from local storage
+    // const USERS = JSON.parse(localStorage.getItem('users') || '[]');
+    // return USERS.find((user: any) => user.email == data.email && user.pswd == data.pswd);
+  }
 }

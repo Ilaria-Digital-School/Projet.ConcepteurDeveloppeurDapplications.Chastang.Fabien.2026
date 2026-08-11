@@ -25,14 +25,14 @@
 }
 
 .quantity {
-  white-space: nowrap;
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
 .quantity input {
-  max-width: 50px;
-  max-height: 40px;
+  width: 50px;
+  height: 38px;
   text-align: center;
 }
 

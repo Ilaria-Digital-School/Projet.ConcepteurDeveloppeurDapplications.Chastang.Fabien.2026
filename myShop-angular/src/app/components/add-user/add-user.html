@@ -8,44 +8,44 @@
       <legend>Informations personnelles</legend>
       <!-- User's login name -->
       <div>
-        <label for="nameItem">Nom&nbsp;:</label>
+        <label for="userName">Nom&nbsp;:</label>
         <input
           type="text"
-          id="nameItem"
-          formControlName="nameItem"
+          id="userName"
+          formControlName="userName"
           placeholder="Votre nom"
           autocomplete="off"
         />
         <!-- Error message -->
         @if (
-          userForm.get('nameItem')?.invalid &&
-          (userForm.get('nameItem')?.touched || userForm.get('nameItem')?.dirty)
+          userForm.get('userName')?.invalid &&
+          (userForm.get('userName')?.touched || userForm.get('userName')?.dirty)
         ) {
-          @if (userForm.get('nameItem')?.errors?.['required']) {
+          @if (userForm.get('userName')?.errors?.['required']) {
             <div class="text-danger error">Ce champ est obligatoire</div>
-          } @else if (userForm.get('nameItem')?.errors?.['minlength']) {
+          } @else if (userForm.get('userName')?.errors?.['minlength']) {
             <div class="text-danger error">Saisissez au moins 3 caractères</div>
           }
         }
       </div>
       <!-- User's email -->
       <div>
-        <label for="email">E-mail&nbsp;:</label>
+        <label for="userEmail">E-mail&nbsp;:</label>
         <input
           type="email"
-          id="email"
-          formControlName="email"
+          id="userEmail"
+          formControlName="userEmail"
           placeholder="votre@adresse.email"
           autocomplete="off"
         />
         <!-- Error message -->
         @if (
-          userForm.get('email')?.invalid &&
-          (userForm.get('email')?.touched || userForm.get('email')?.dirty)
+          userForm.get('userEmail')?.invalid &&
+          (userForm.get('userEmail')?.touched || userForm.get('userEmail')?.dirty)
         ) {
-          @if (userForm.get('email')?.errors?.['required']) {
+          @if (userForm.get('userEmail')?.errors?.['required']) {
             <div class="text-danger error">Ce champ est obligatoire</div>
-          } @else if (userForm.get('email')?.errors?.['email']) {
+          } @else if (userForm.get('userEmail')?.errors?.['userEmail']) {
             <div class="text-danger error">
               Saisissez une adresse mail valide : votre@adresse.email
             </div>

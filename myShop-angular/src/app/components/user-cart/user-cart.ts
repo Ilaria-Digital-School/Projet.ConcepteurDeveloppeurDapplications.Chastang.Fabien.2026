@@ -17,6 +17,7 @@ export class UserCart {
   private router = inject(Router);
 
   tax: number = 1.2; // +20%
+  total: number = 0;
   userCart!: Cart;
   productsIni!: Product[];
   cart!: string;
@@ -85,16 +86,9 @@ export class UserCart {
 
   // Retrieve the total cart amount excluding tax
   getTotalExcludingTax() {
-    return this.userCart.products.reduce((total: number, product: Product) => {
+    return (this.total = this.userCart.products.reduce((total: number, product: Product) => {
       return total + product.cartQuantity * product.price;
-    }, 0);
-  }
-
-  // Retrieve the total cart amount including taxes
-  getTotalIncludingTax() {
-    return this.userCart.products.reduce((total: number, product: Product) => {
-      return total + product.cartQuantity * product.price * this.tax;
-    }, 0);
+    }, 0));
   }
 
   // Remove the cart

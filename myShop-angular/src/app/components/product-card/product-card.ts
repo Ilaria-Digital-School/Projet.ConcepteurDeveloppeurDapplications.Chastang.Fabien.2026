@@ -12,6 +12,7 @@ export class ProductCard {
   @Input() product: any;
   @Output() viewEvent = new EventEmitter();
   @Output() addEvent = new EventEmitter();
+  @Output() removeEvent = new EventEmitter();
 
   // View a product
   view(id: string): void {
@@ -19,7 +20,12 @@ export class ProductCard {
   }
 
   // Add to cart
-  add(product: Product) {
+  addCart(product: Product) {
     this.addEvent.emit(product);
+  }
+
+  // Add to cart
+  removeCart(product: Product) {
+    this.removeEvent.emit(product);
   }
 }

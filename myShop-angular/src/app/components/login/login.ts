@@ -35,9 +35,12 @@ export class Login {
 
   // Login method
   login(): void {
-    // Retrieve the user's data from DB
     const FORM_VAL = this.loginForm.value;
-    this.userService.login(FORM_VAL).subscribe({
+    const DATA = structuredClone(FORM_VAL);
+    DATA.permanent = undefined; // Remove this property
+
+    // Retrieve the user's data from DB
+    this.userService.login(DATA).subscribe({
       next: (res: User[]) => {
         console.log(res);
 

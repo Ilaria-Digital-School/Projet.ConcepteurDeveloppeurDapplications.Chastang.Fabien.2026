@@ -4,8 +4,8 @@
       "id": "BN4bdfCKWuf",
       "name": "Chemise",
       "description": "Chemise homme en coton bleu clair",
-      "fullDescription": "[{\"title\":\"Restez à l'aise même sous la chaleur\",\"description\":[\"Conçue pour les journées ensoleillées, cette Chemise d'Été allie légèreté et respirabilité pour apporter une sensation de confort agréable lors de vos sorties.\",\"Sa matière favorise une bonne circulation de l'air, aide à réguler l'humidité et rend le port plus agréable.\",\"Profitez pleinement de l'été en restant à votre aise.\"]},{\"title\":\"Un style naturel, chic avec simplicité\",\"description\":[\"Avec sa coupe ajustée et sa belle fluidité, cette chemise offre une allure élégante et décontractée. Inutile d'en faire trop, elle s'adapte facilement à toutes vos tenues.\",\"Portée ouverte ou fermée, avec un short ou un pantalon, elle conserve un style sobre et raffiné.\"]},{\"title\":\"Entretien facile pour un été sans tracas\",\"description\":[\"Cette Chemise est conçue pour vous simplifier la vie : elle passe en machine et sèche simplement à l'air libre.\",\"Même légèrement froissée, elle garde son charme naturel. Son tissu offre une sensation de douceur et de confort agréable à chaque port.\",\"Son confort et sa douceur en font une pièce appropriée pour vous accompagner durant l'été.\"]}]",
-      "price": 20,
+      "fullDescription": "$$Restez à l'aise même sous la chaleur\nConçue pour les journées ensoleillées, cette chemise d'été allie légèreté et respirabilité pour apporter une sensation de confort agréable lors de vos sorties.\nSa matière favorise une bonne circulation de l'air, aide à réguler l'humidité et rend le port plus agréable.\nProfitez pleinement de l'été en restant à votre aise.\n$$Un style naturel, chic avec simplicité\nAvec sa coupe ajustée et sa belle fluidité, cette chemise offre une allure élégante et décontractée. Inutile d'en faire trop, elle s'adapte facilement à toutes vos tenues.\nPortée ouverte ou fermée, avec un short ou un pantalon, elle conserve un style sobre et raffiné.\n$$Entretien facile pour un été sans tracas\nCette Chemise est conçue pour vous simplifier la vie : elle passe en machine et sèche simplement à l'air libre.\nMême légèrement froissée, elle garde son charme naturel. Son tissu offre une sensation de douceur et de confort agréable à chaque port.\nSon confort et sa douceur en font une pièce appropriée pour vous accompagner durant l'été.",
+      "price": 30,
       "img": "assets/img/clothing/men/shirts/cms1.png",
       "stock": 10,
       "info": "Cet article est fortement recommendé par nos client",
@@ -42,8 +42,8 @@
       "description": "Jean homme gris",
       "fullDescription": "",
       "price": 30,
-      "img": "assets/img/clothing/men/shirts/cmj3.png",
-      "stock": 0,
+      "img": "assets/img/clothing/men/jeans/cmj3.png",
+      "stock": 10,
       "info": "",
       "favorite": false,
       "visible": true
@@ -54,7 +54,7 @@
       "description": "Jean homme bleu",
       "fullDescription": "",
       "price": 40,
-      "img": "assets/img/clothing/men/shirts/cmj2.png",
+      "img": "assets/img/clothing/men/jeans/cmj2.png",
       "stock": 0,
       "info": "",
       "favorite": false,
@@ -68,7 +68,7 @@
       "email": "admin.fabien@myshop.com",
       "pswd": "3kb!BWFe;dgXqV]",
       "gender": 0,
-      "interests": "",
+      "interests": [],
       "country": 0,
       "role": 1,
       "visible": true
@@ -79,7 +79,9 @@
       "email": "louis.machin@domain.com",
       "pswd": "Ialj:75/A,~tmUt",
       "gender": 2,
-      "interests": "[1]",
+      "interests": [
+        1
+      ],
       "country": 9,
       "role": 0,
       "visible": true
@@ -90,7 +92,10 @@
       "email": "janette.bidule@domain.com",
       "pswd": "3Fx$Njqb6yeh4hj",
       "gender": 1,
-      "interests": "[1, 2]",
+      "interests": [
+        1,
+        2
+      ],
       "country": 22,
       "role": 0,
       "visible": true
@@ -101,7 +106,9 @@
       "email": "alfred.truc@domaine.fr",
       "pswd": "S66bbGaHPvAAAX!",
       "gender": 2,
-      "interests": "[2]",
+      "interests": [
+        2
+      ],
       "country": 17,
       "role": 0,
       "visible": true

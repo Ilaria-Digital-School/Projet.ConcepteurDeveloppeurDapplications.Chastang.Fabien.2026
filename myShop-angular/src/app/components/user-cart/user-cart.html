@@ -64,8 +64,8 @@
                 <button
                   type="button"
                   class="btn btn-danger"
-                  title="Supprimer cet article"
-                  aria-label="Supprimer cet article"
+                  title="Retirer l'article"
+                  aria-label="Retirer l'article"
                   (click)="removeProduct(product.id)"
                 >
                   <i class="fa-solid fa-xmark"></i>
@@ -78,7 +78,7 @@
             <td>
               <div class="cell-total">
                 <div [style.white-space]="'nowrap'">{{ getTotalExcludingTax().toFixed(2) }} € HT</div>
-                <div [style.white-space]="'nowrap'">{{ getTotalIncludingTax().toFixed(2) }} € TTC</div>
+                <div [style.white-space]="'nowrap'">{{ (this.tax * this.total).toFixed(2) }} € TTC</div>
               </div>
             </td>
             <td>

@@ -61,11 +61,12 @@ export class AddProduct {
     PRODUCT.additional = undefined;
 
     const FORM_VAL = productForm.value;
-    PRODUCT.name = FORM_VAL.nameItem;
+    PRODUCT.name = FORM_VAL.productName;
     PRODUCT.description = FORM_VAL.description;
     PRODUCT.price = FORM_VAL.price;
-    PRODUCT.img = FORM_VAL.imgItem;
+    PRODUCT.img = FORM_VAL.productImg;
     PRODUCT.info = FORM_VAL.info;
+    PRODUCT.fullDescription = FORM_VAL.fullDescription;
 
     if (this.isEditMode) {
       // Update the product

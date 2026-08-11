@@ -8,29 +8,6 @@ bootstrapApplication(App, appConfig).catch((err) => console.error(err));
 
 // Product class /////////////////////////////////////////////////////////
 
-/*
-  After JSON.parse(), 'fullDescription' has the following structure:
-  [
-    {
-      title: "title 1",
-      description: [
-        "paragraph 1",
-        "paragraph 2",
-        ...
-      ]
-    },
-    {
-      title: "title 2",
-      description: [
-        "paragraph 1",
-        "paragraph 2",
-        ...
-      ]
-    },
-    ...
-  ]
-*/
-
 // Product class
 export class Product {
   id: string = Date.now().toString();
@@ -195,7 +172,7 @@ export class User {
   email: string = '';
   pswd: string = '';
   gender: number = 0;
-  interests: string = '';
+  interests: number[] = [];
   country: number = 0;
   role: number = UserRole.user;
   visible: boolean = true;
@@ -208,7 +185,7 @@ export class User {
     email: string | null = null,
     pswd: string | null = null,
     gender: number | null = null,
-    interests: string | null = null,
+    interests: number[] | null = null,
     country: number | null = null,
   ) {
     if (typeof name === 'string') this.name = name;
@@ -218,21 +195,8 @@ export class User {
       this.gender =
         gender === UserGender.female || gender === UserGender.male ? gender : UserGender.other;
     }
-    if (typeof interests === 'string') this.interests = interests;
+    if (Array.isArray(interests)) this.interests = interests;
     if (typeof country === 'number') this.country = country;
-  }
-}
-
-// Class encapsulating the login data
-export class LoginData {
-  email: string = '';
-  pswd: string = '';
-  permanent: boolean = false;
-
-  constructor(email: string, pswd: string, permanent: boolean = false) {
-    this.email = email;
-    this.pswd = pswd;
-    this.permanent = permanent;
   }
 }
 

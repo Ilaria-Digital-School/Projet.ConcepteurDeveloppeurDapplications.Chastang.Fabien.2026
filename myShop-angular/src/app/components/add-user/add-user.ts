@@ -47,8 +47,6 @@ export class AddUser {
   users: User[] = [];
   user: User = new User();
   userIni: User = new User();
-  interests: number[] = [];
-  interestsIni: number[] = [];
   fromCart!: boolean;
   intervalId: number = 0;
 
@@ -72,10 +70,6 @@ export class AddUser {
         next: (res: User) => {
           Object.assign(this.user, res);
           Object.assign(this.userIni, res);
-          if (this.user.interests) {
-            this.interests = JSON.parse(this.user.interests);
-            this.interestsIni = structuredClone(this.interests);
-          }
           this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
         },
         error: (err: any) => {
@@ -101,16 +95,16 @@ export class AddUser {
 
     // Form initialization and field validation setup
     this.userForm = this.formBuilder.group({
-      nameItem: [
+      userName: [
         this.userIni.name,
         [Validators.required, Validators.pattern(/\S{3,}/), Validators.maxLength(50)],
       ],
-      email: [this.userIni.email, [Validators.required, Validators.email]],
+      userEmail: [this.userIni.email, [Validators.required, Validators.email]],
       pswd: [this.userIni.pswd, [Validators.required, Validators.pattern(PSWD_PATTERN)]],
       confirm: [this.userIni.pswd, Validators.required],
       gender: [this.userIni.gender.toString()],
-      clothes: [this.interestsIni.includes(1)],
-      accessories: [this.interestsIni.includes(2)],
+      clothes: [this.userIni.interests.includes(1)],
+      accessories: [this.userIni.interests.includes(2)],
       country: [this.userIni.country.toString()],
     });
 
@@ -141,19 +135,19 @@ export class AddUser {
   submit(): void {
     const FORM_VAL = this.userForm.value;
 
-    if (!this.isEditMode || (this.isEditMode && this.userIni.email !== FORM_VAL.email)) {
+    if (!this.isEditMode || (this.isEditMode && this.userIni.email !== FORM_VAL.userEmail)) {
       // Check if the email does not exist
       this.load();
-      if (this.users.some((user: User) => user.email === FORM_VAL.email)) {
+      if (this.users.some((user: User) => user.email === FORM_VAL.userEmail)) {
         alert('Cet e-mail existe déjà !');
         return;
       }
     }
 
     // Manage the checkboxes
-    let interests: number[] = [];
-    if (FORM_VAL.clothes) interests.push(1);
-    if (FORM_VAL.accessories) interests.push(2);
+    const INTERESTS: number[] = [];
+    if (FORM_VAL.clothes) INTERESTS.push(1);
+    if (FORM_VAL.accessories) INTERESTS.push(2);
 
     const USER = structuredClone(this.user);
     USER.additional = undefined; // Remove this property before saving
@@ -162,14 +156,14 @@ export class AddUser {
       // Modify the user
       let toSave: boolean = false;
 
-      const NAME = FORM_VAL.nameItem.trim();
+      const NAME = FORM_VAL.userName.trim();
       if (this.userIni.name != NAME) {
         toSave = true;
         USER.name = NAME;
       }
-      if (this.userIni.email !== FORM_VAL.email) {
+      if (this.userIni.email !== FORM_VAL.userEmail) {
         toSave = true;
-        USER.email = FORM_VAL.email;
+        USER.email = FORM_VAL.userEmail;
       }
       const GENDER = parseInt(FORM_VAL.gender);
       if (this.userIni.gender !== GENDER) {
@@ -178,11 +172,11 @@ export class AddUser {
       }
       if (
         Interests.list.some(
-          (item: any) => this.interestsIni.includes(item.value) !== interests.includes(item),
+          (item: any) => this.userIni.interests.includes(item.value) !== INTERESTS.includes(item),
         )
       ) {
         toSave = true;
-        USER.interests = JSON.stringify(interests);
+        USER.interests = INTERESTS;
       }
       const COUNTRY: number = parseInt(FORM_VAL.country);
       if (this.userIni.country !== COUNTRY) {
@@ -204,11 +198,11 @@ export class AddUser {
       }
     } else {
       // Add the user
-      USER.name = FORM_VAL.nameItem.trim();
-      USER.email = FORM_VAL.email;
+      USER.name = FORM_VAL.userName.trim();
+      USER.email = FORM_VAL.userEmail;
       USER.pswd = FORM_VAL.pswd;
       USER.gender = parseInt(FORM_VAL.gender);
-      USER.interests = JSON.stringify(interests);
+      USER.interests = INTERESTS;
       USER.country = parseInt(FORM_VAL.country);
 
       this.userService.addUser(USER).subscribe({
@@ -228,11 +222,11 @@ export class AddUser {
   reset(): void {
     this.userForm.reset();
     this.userForm.patchValue({
-      nameItem: this.userIni.name,
-      email: this.userIni.email,
+      userName: this.userIni.name,
+      userEmail: this.userIni.email,
       gender: this.userIni.gender.toString(),
-      clothes: this.interestsIni.includes(1),
-      accessories: this.interestsIni.includes(2),
+      clothes: this.userIni.interests.includes(1),
+      accessories: this.userIni.interests.includes(2),
       country: this.userIni.country.toString(),
     });
   }

@@ -26,8 +26,8 @@
     <button
       type="button"
       class="btn btn-primary"
-      title="Voir"
-      aria-label="Voir"
+      title="Consulter l'article"
+      aria-label="Consulter l'article"
       (click)="view(product.id)"
     >
       <i class="fa-regular fa-eye"></i>
@@ -40,9 +40,20 @@
       [class.btn-disabled]="product.stock === 0"
       title="Ajouter au panier"
       aria-label="Ajouter au panier"
-      (click)="add(product)"
+      (click)="addCart(product)"
     >
       <i class="fa-solid fa-cart-arrow-down"></i>
+    </button>
+    <button
+      type="button"
+      [disabled]="product.stock === 0"
+      class="btn btn-danger"
+      [class.btn-disabled]="product.stock === 0"
+      title="Retirer du panier"
+      aria-label="Retirer du panier"
+      (click)="removeCart(product)"
+    >
+      <i class="fa-solid fa-xmark"></i>
     </button>
   }
 </article>

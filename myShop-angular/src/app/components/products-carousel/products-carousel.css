@@ -33,6 +33,14 @@ button.carousel-control-next:active {
   transform: scale(1);
 }
 
+#products-card div {
+  display: none;
+}
+
+#products-card .active {
+  display: block;
+}
+
 /*
     Responsive design: smartphone
 */

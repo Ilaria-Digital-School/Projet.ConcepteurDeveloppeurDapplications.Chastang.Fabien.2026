@@ -21,6 +21,7 @@ import { CartService } from '../../services/cart-service';
   styleUrl: './products-carousel.css',
 })
 export class ProductsCarousel implements AfterViewInit {
+  @ViewChildren('productCarousel') productsCarousel!: QueryList<ElementRef>;
   @ViewChildren('productCard') productsCard!: QueryList<ElementRef>;
 
   private activatedRoute = inject(ActivatedRoute);
@@ -32,8 +33,6 @@ export class ProductsCarousel implements AfterViewInit {
 
   products: Product[] = [];
   productId!: string | null;
-  activeIndex!: number;
-  prevIndex!: number;
   intervalId: number = 0;
 
   // Initialization: retrieving the products and the product specified by the ID passed in the URL
@@ -45,9 +44,6 @@ export class ProductsCarousel implements AfterViewInit {
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
         this.products = structuredClone(res);
-        this.activeIndex = this.products.findIndex(
-          (product: Product) => product.id === this.productId,
-        );
         this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
       },
       error: (err: any) => {
@@ -57,31 +53,44 @@ export class ProductsCarousel implements AfterViewInit {
     });
   }
 
-  // Initializing the product card list
+  // Initializing the carousel and card QueryList<ElementRef>
   ngAfterViewInit() {
     this.intervalId = setInterval(() => {
-      if (this.productsCard) {
+      if (this.productsCarousel && this.productsCard) {
         clearInterval(this.intervalId);
         this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
       }
     }, 10);
   }
 
-  // Handle the slide change
+  // Handle the slide change and show the active product card
   @HostListener('slid.bs.carousel', ['$event'])
   onSlid(event: any) {
-    this.prevIndex = this.activeIndex;
-    if (event.direction === 'left') {
-      this.activeIndex = (this.activeIndex - 1 + this.products.length) % this.products.length;
-    } else {
-      this.activeIndex = (this.activeIndex + 1) % this.products.length;
+    // Retrieve the active product ID
+    const ID: string | undefined = this.productsCarousel.find((item: ElementRef<HTMLDivElement>) =>
+      item.nativeElement.className.includes('active'),
+    )?.nativeElement.id;
+
+    if (ID) {
+      // Hide the previous active product card
+      this.productsCard
+        .find((item: ElementRef<HTMLDivElement>) => item.nativeElement.className.includes('active'))
+        ?.nativeElement.classList.remove('active');
+
+      // Show the current active product card
+      this.productsCard
+        .find((item: ElementRef<HTMLDivElement>) => item.nativeElement.id === `card_${ID}`)
+        ?.nativeElement.classList.add('active');
     }
-    this.productsCard.get(this.prevIndex)?.nativeElement.classList.add('inactive');
-    this.productsCard.get(this.activeIndex)?.nativeElement.classList.remove('inactive');
   }
 
-  // To add the product to the cart
-  add(product: Product) {
+  // Add the product to the user's cart
+  addCart(product: Product) {
     this.cartService.add(product);
+  }
+
+  // Remove the product from the user's cart
+  removeCart(product: Product) {
+    this.cartService.remove(product);
   }
 }
