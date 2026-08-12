@@ -17,7 +17,7 @@ html {
 }
 body {
   height: 100%;
-  background-color: rgb(232, 240, 255);
+  background-color: aliceblue;
   font-family: Arial, Helvetica, sans-serif;
 }
 .wrapper {
@@ -129,10 +129,10 @@ a.nav-link:not(active) {
 
 header,
 footer {
-  border: 5px solid rgb(232, 240, 255);
+  border: 5px solid aliceblue;
   border-radius: 10px;
   text-align: center;
-  color: rgb(232, 240, 255);
+  color: aliceblue;
   padding: 10px;
 }
 
@@ -140,7 +140,7 @@ header a,
 footer a {
   display: inline-block;
   text-decoration: none;
-  color: rgb(232, 240, 255);
+  color: aliceblue;
 }
 
 header a:hover,
@@ -205,20 +205,15 @@ button {
 }
 
 #scroll-top,
-.article-product button,
 .navbar-toggler.btn-burger {
   background-color: darkblue;
-  color: rgb(232, 240, 255);
+  color: aliceblue;
   border-radius: 5px;
-}
-
-.article-product button,
-.navbar-toggler.btn-burger {
-  border: 2px solid rgb(232, 240, 255);
 }
 
 .navbar-toggler.btn-burger {
   padding: 5px 15px;
+  border: 2px solid aliceblue;
   cursor: pointer;
 }
 

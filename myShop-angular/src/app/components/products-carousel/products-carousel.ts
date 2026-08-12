@@ -8,7 +8,7 @@ import {
   AfterViewInit,
   HostListener,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../../../main';
 import { ProductCard } from '../product-card/product-card';
 import { ProductService } from '../../services/product-service';
@@ -28,6 +28,7 @@ export class ProductsCarousel implements AfterViewInit {
   private changeDetectorRef = inject(ChangeDetectorRef);
   private productService = inject(ProductService);
   private cartService = inject(CartService);
+  private router = inject(Router);
 
   // Initialization //////////////////////////////////////////////////////
 
@@ -82,6 +83,11 @@ export class ProductsCarousel implements AfterViewInit {
         .find((item: ElementRef<HTMLDivElement>) => item.nativeElement.id === `card_${ID}`)
         ?.nativeElement.classList.add('active');
     }
+  }
+
+  // View a product
+  view(id: string): void {
+    this.router.navigate(['/product-details', id]);
   }
 
   // Add the product to the user's cart

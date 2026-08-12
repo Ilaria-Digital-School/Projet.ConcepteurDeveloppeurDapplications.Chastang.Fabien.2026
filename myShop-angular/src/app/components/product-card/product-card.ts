@@ -9,6 +9,7 @@ import { Product } from '../../../main';
 })
 export class ProductCard {
   @Input() isList: any;
+  @Input() isSearch: any;
   @Input() product: any;
   @Output() viewEvent = new EventEmitter();
   @Output() addEvent = new EventEmitter();

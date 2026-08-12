@@ -22,17 +22,16 @@
   </div>
   <p>{{ product.description }}</p>
   <p>Prix: {{ product.price }} €</p>
-  @if (isList === 1) {
-    <button
-      type="button"
-      class="btn btn-primary"
-      title="Consulter l'article"
-      aria-label="Consulter l'article"
-      (click)="view(product.id)"
-    >
-      <i class="fa-regular fa-eye"></i>
-    </button>
-  } @else {
+  <button
+    type="button"
+    class="btn btn-primary"
+    [title]="isSearch === 1 ? 'Consulter l\'article' : 'Voir le carrousel de nos articles'"
+    [aria-label]="isSearch === 1 ? 'Consulter l\'article' : 'Voir le carrousel de nos articles'"
+    (click)="view(product.id)"
+  >
+    <i class="fa-regular fa-eye"></i>
+  </button>
+  @if (isList !== 1) {
     <button
       type="button"
       [disabled]="product.stock === 0"

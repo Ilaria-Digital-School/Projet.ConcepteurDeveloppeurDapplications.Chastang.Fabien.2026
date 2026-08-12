@@ -10,7 +10,7 @@
 }
 
 .carousel-product {
-  background-color: rgb(232, 240, 255);
+  background-color: aliceblue;
   width: 400px;
 }
 
@@ -27,10 +27,20 @@ button.carousel-control-prev:hover,
 button.carousel-control-next:hover,
 button.carousel-control-prev:active,
 button.carousel-control-next:active {
-  background-color: darkblue;
-  border: 2px solid darkblue;
   border-radius: 5px;
   transform: scale(1);
+}
+
+button.carousel-control-prev,
+button.carousel-control-prev:hover,
+button.carousel-control-prev:active {
+  background: linear-gradient(to right, darkblue, aliceblue);
+}
+
+button.carousel-control-next,
+button.carousel-control-next:hover,
+button.carousel-control-next:active {
+  background: linear-gradient(to left, darkblue, aliceblue);
 }
 
 #products-card div {

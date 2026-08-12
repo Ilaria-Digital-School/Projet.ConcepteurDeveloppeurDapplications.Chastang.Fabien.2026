@@ -60,6 +60,8 @@
               <app-product-card
                 [product]="product"
                 [isList]="0"
+                [isSearch]="1"
+                (viewEvent)="view($event)"
                 (addEvent)="addCart($event)"
                 (removeEvent)="removeCart($event)"
               ></app-product-card>
@@ -69,6 +71,8 @@
               <app-product-card
                 [product]="product"
                 [isList]="0"
+                [isSearch]="1"
+                (viewEvent)="view($event)"
                 (addEvent)="addCart($event)"
                 (removeEvent)="removeCart($event)"
               ></app-product-card>
