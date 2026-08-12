@@ -20,7 +20,7 @@ export class Header {
   connectedUser: User | null = null;
 
   // Retrieve the logged-in user
-  ngOnInit(): void {
+  ngOnInit() {
     this.getConnectedUser();
   }
 
@@ -30,7 +30,7 @@ export class Header {
   }
 
   // Logout
-  logout(): void {
+  logout() {
     this.authService.logout();
     this.connectedUser = null;
     this.router.navigate(['/']);

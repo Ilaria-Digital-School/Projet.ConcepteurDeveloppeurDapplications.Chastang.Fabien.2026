@@ -20,12 +20,12 @@ export class Products {
   products: Product[] = [];
 
   // Initialize the product list
-  ngOnInit(): void {
+  ngOnInit() {
     this.load(true);
   }
 
   // Retrieve the products
-  load(forceCheck: boolean = false): void {
+  load(forceCheck: boolean = false) {
     this.productService
       .getAllProducts()
       .pipe(take(this.maxCount))
@@ -42,7 +42,7 @@ export class Products {
   }
 
   // View a product
-  view(id: string): void {
+  view(id: string) {
     this.router.navigate(['/products-carousel', id]);
   }
 }

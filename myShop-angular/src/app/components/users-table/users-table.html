@@ -42,9 +42,9 @@
               <button
                 type="button"
                 class="btn btn-warning"
-                title="Modifier"
-                aria-label="Modifier"
-                (click)="save(user)"
+                title="Enregister les modification"
+                aria-label="Enregister les modification"
+                (click)="inlineSave(user)"
               >
                 <i class="fa-solid fa-floppy-disk"></i>
               </button>
@@ -52,18 +52,27 @@
               <button
                 type="button"
                 class="btn btn-success"
-                title="Modifier"
-                aria-label="Modifier"
-                (click)="edit(user)"
+                title="Éditer en ligne"
+                aria-label="Éditer en ligne"
+                (click)="inlineEdit(user)"
               >
                 <i class="fa-solid fa-file-pen"></i>
               </button>
             }
             <button
               type="button"
+              class="btn btn-success"
+              title="Éditer avec le formulaire"
+              aria-label="Éditer avec le formulaire"
+              (click)="formEdit(user)"
+            >
+              <i class="fa-brands fa-jxl"></i>
+            </button>
+            <button
+              type="button"
               class="btn btn-danger"
-              title="Supprimer"
-              aria-label="Supprimer"
+              title="Supprimer l'utilisateur"
+              aria-label="Supprimer l'utilisateur"
               (click)="remove(user.id)"
             >
               <i class="fa-solid fa-xmark"></i>

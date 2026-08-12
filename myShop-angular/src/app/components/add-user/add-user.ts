@@ -44,16 +44,17 @@ export class AddUser {
   userId!: string | null;
   title!: string;
   btnAction!: string;
+  user!: User;
+  userIni!: User;
   users: User[] = [];
-  user: User = new User();
-  userIni: User = new User();
   fromCart!: boolean;
+  valuesChange: boolean = false;
   intervalId: number = 0;
 
-  // The form and its data: initialization and validation /////////////////////
+  // Form initialization and validation ///////////////////////////////////////
 
-  // Initialize the form
-  ngOnInit(): void {
+  // Form definition and validation
+  ngOnInit() {
     // Origin of the page request
     this.fromCart = this.router.url.includes('add-user-cart');
 
@@ -68,61 +69,127 @@ export class AddUser {
 
       this.userService.getUserById(this.userId).subscribe({
         next: (res: User) => {
+          this.user = new User();
           Object.assign(this.user, res);
+          this.userIni = new User();
           Object.assign(this.userIni, res);
-          this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
         },
         error: (err: any) => {
           console.log(err);
         },
       });
+
+      // Form validation
+      this.userForm = this.formBuilder.group({
+        userName: [
+          '',
+          [Validators.required, Validators.pattern(/\S{3,}/), Validators.maxLength(50)],
+        ],
+        userEmail: ['', [Validators.required, Validators.email]],
+        gender: ['0'],
+        clothes: [false],
+        accessories: [false],
+        country: ['0'],
+      });
+
+      // To detect changes
+      this.userForm.valueChanges.subscribe((formValue: any) => {
+        if (this.intervalId === -1) {
+          this.valuesChange =
+            formValue.userName !== this.userIni.name ||
+            formValue.userEmail !== this.userIni.email ||
+            formValue.gender !== this.userIni.gender.toString() ||
+            formValue.clothes !== this.userIni.interests.includes(1) ||
+            formValue.accessories !== this.userIni.interests.includes(2) ||
+            formValue.country !== this.userIni.country.toString();
+          console.log(this.valuesChange);
+        }
+      });
     } else {
       // Add a new user
       this.title = 'Inscription';
       this.btnAction = 'Ajouter';
-    }
+      this.valuesChange = true;
+      this.user = new User();
+      this.userIni = new User();
 
-    // The password must contain at least 10 characters, all non-whitespace, including at least
-    // one lowercase letter, one uppercase letter, one digit, and one special character
-    const SPECIAL_CHR = '&~"\'{([|_\\\\^@)\\]=+}€¨$£¤%*<>,?;.:/!§-';
-    const PSWD_PATTERN = new RegExp(
-      '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[' +
-        SPECIAL_CHR +
-        '])[a-zA-Z\\d' +
-        SPECIAL_CHR +
-        ']{10,}$',
-    );
+      // The password must contain at least 10 characters, all non-whitespace, including at least
+      // one lowercase letter, one uppercase letter, one digit, and one special character
+      const SPECIAL_CHR = '&~"\'{([|_\\\\^@)\\]=+}€¨$£¤%*<>,?;.:/!§-';
+      const PSWD_PATTERN = new RegExp(
+        '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[' +
+          SPECIAL_CHR +
+          '])[a-zA-Z\\d' +
+          SPECIAL_CHR +
+          ']{10,}$',
+      );
 
-    // Form initialization and field validation setup
-    this.userForm = this.formBuilder.group({
-      userName: [
-        this.userIni.name,
-        [Validators.required, Validators.pattern(/\S{3,}/), Validators.maxLength(50)],
-      ],
-      userEmail: [this.userIni.email, [Validators.required, Validators.email]],
-      pswd: [this.userIni.pswd, [Validators.required, Validators.pattern(PSWD_PATTERN)]],
-      confirm: [this.userIni.pswd, Validators.required],
-      gender: [this.userIni.gender.toString()],
-      clothes: [this.userIni.interests.includes(1)],
-      accessories: [this.userIni.interests.includes(2)],
-      country: [this.userIni.country.toString()],
-    });
+      // Form validation
+      this.userForm = this.formBuilder.group({
+        userName: [
+          '',
+          [Validators.required, Validators.pattern(/\S{3,}/), Validators.maxLength(50)],
+        ],
+        userEmail: ['', [Validators.required, Validators.email]],
+        pswd: ['', [Validators.required, Validators.pattern(PSWD_PATTERN)]],
+        confirm: ['', Validators.required],
+        gender: ['0'],
+        clothes: [false],
+        accessories: [false],
+        country: ['0'],
+      });
 
-    if (!this.isEditMode) {
       // Custom validator for the entire form
       this.userForm.setValidators(CustomValidators.confirmPswd);
       this.userForm.updateValueAndValidity();
     }
   }
 
-  // To submit the form ///////////////////////////////////////////////////////
+  // Initializing form values
+  initFormValues() {
+    this.userForm.patchValue({
+      userName: this.userIni.name,
+      userEmail: this.userIni.email,
+      gender: this.userIni.gender.toString(),
+      clothes: this.userIni.interests.includes(1),
+      accessories: this.userIni.interests.includes(2),
+      country: this.userIni.country.toString(),
+    });
+  }
+
+  // Edit mode: form initialization
+  ngAfterViewInit() {
+    if (this.isEditMode) {
+      if (this.userIni) {
+        this.intervalId = -1;
+        this.initFormValues();
+      } else {
+        this.intervalId = setInterval(() => {
+          if (this.userIni) {
+            if (this.intervalId > 0) {
+              clearInterval(this.intervalId);
+              this.intervalId = -1;
+            }
+            this.initFormValues();
+          }
+        }, 100);
+      }
+    }
+  }
+
+  // Edit mode: to notify of a change
+  hasChanged() {
+    return this.valuesChange;
+  }
+
+  // Submit the form //////////////////////////////////////////////////////////
 
   // Retrieve all users to check if the email does not exist
-  load(forceCheck: boolean = false): void {
+  load(forceCheck: boolean = false) {
     this.userService.getAllUsers().subscribe({
       next: (res: User[]) => {
         this.users = structuredClone(res);
-        if (forceCheck) this.changeDetectorRef.detectChanges(); // Force a check
+        if (forceCheck) this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
@@ -132,7 +199,7 @@ export class AddUser {
   }
 
   // To submit the form
-  submit(): void {
+  submit() {
     const FORM_VAL = this.userForm.value;
 
     if (!this.isEditMode || (this.isEditMode && this.userIni.email !== FORM_VAL.userEmail)) {
@@ -218,17 +285,10 @@ export class AddUser {
     }
   }
 
-  // To reset the form ////////////////////////////////////////////////////////
-  reset(): void {
+  // Reset the form ///////////////////////////////////////////////////////////
+  reset() {
     this.userForm.reset();
-    this.userForm.patchValue({
-      userName: this.userIni.name,
-      userEmail: this.userIni.email,
-      gender: this.userIni.gender.toString(),
-      clothes: this.userIni.interests.includes(1),
-      accessories: this.userIni.interests.includes(2),
-      country: this.userIni.country.toString(),
-    });
+    this.initFormValues();
   }
 
   // Go to the login form /////////////////////////////////////////////////////

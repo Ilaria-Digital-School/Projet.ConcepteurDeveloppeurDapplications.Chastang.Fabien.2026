@@ -21,7 +21,7 @@ export class ProductsSearch {
   searchSubject: Subject<string> = new Subject<string>();
 
   // Initialize the product list
-  ngOnInit(): void {
+  ngOnInit() {
     // Retrieve the products
     this.load(true);
 
@@ -41,7 +41,7 @@ export class ProductsSearch {
   }
 
   // Retrieve the products
-  load(forceCheck: boolean = false): void {
+  load(forceCheck: boolean = false) {
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
         this.products = structuredClone(res);
@@ -61,7 +61,7 @@ export class ProductsSearch {
   }
 
   // View a product
-  view(id: string): void {
+  view(id: string) {
     this.router.navigate(['/product-details', id]);
   }
 }

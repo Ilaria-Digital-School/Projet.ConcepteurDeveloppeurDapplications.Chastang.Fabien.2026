@@ -5,7 +5,6 @@ import {
   ViewChildren,
   QueryList,
   ElementRef,
-  AfterViewInit,
   HostListener,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,7 +19,7 @@ import { CartService } from '../../services/cart-service';
   templateUrl: './products-carousel.html',
   styleUrl: './products-carousel.css',
 })
-export class ProductsCarousel implements AfterViewInit {
+export class ProductsCarousel {
   @ViewChildren('productCarousel') productsCarousel!: QueryList<ElementRef>;
   @ViewChildren('productCard') productsCard!: QueryList<ElementRef>;
 
@@ -61,7 +60,7 @@ export class ProductsCarousel implements AfterViewInit {
         clearInterval(this.intervalId);
         this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
       }
-    }, 10);
+    }, 100);
   }
 
   // Handle the slide change and show the active product card
@@ -86,7 +85,7 @@ export class ProductsCarousel implements AfterViewInit {
   }
 
   // View a product
-  view(id: string): void {
+  view(id: string) {
     this.router.navigate(['/product-details', id]);
   }
 

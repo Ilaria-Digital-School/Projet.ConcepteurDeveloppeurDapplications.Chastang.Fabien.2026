@@ -23,7 +23,7 @@ export class ProductDetails {
   fullDescription: any[] = [];
 
   // Initialize the card
-  ngOnInit(): void {
+  ngOnInit() {
     this.productId = this.activatedRoute.snapshot.paramMap.get('id');
     this.productService.getProductById(this.productId).subscribe({
       next: (res: Product) => {

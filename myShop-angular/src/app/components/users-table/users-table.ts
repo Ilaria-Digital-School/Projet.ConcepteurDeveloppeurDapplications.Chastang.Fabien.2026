@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-// import { Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { User, Genders, Countries, Roles } from '../../../main';
 import { UserService } from '../../services/user-service';
 
@@ -11,7 +11,7 @@ import { UserService } from '../../services/user-service';
   styleUrl: './users-table.css',
 })
 export class UsersTable {
-  // private router = inject(Router);
+  private router = inject(Router);
   private changeDetectorRef = inject(ChangeDetectorRef);
   private userService = inject(UserService);
   Genders = Genders;
@@ -24,12 +24,12 @@ export class UsersTable {
   // Initialization //////////////////////////////////////////////////////
 
   // Initialize the user list
-  ngOnInit(): void {
+  ngOnInit() {
     this.load(true);
   }
 
   // Retrieve all users
-  load(forceCheck: boolean = false): void {
+  load(forceCheck: boolean = false) {
     this.userService.getAllUsers().subscribe({
       next: (res: User[]) => {
         this.users = structuredClone(res);
@@ -44,18 +44,15 @@ export class UsersTable {
 
   // Actions /////////////////////////////////////////////////////////////
 
-  // Edit a user
-  edit(user: User): void {
-    // Redirect to the edit form
-    // this.router.navigate(['/edit-user', user.id]);
-
+  // Edit a user inline
+  inlineEdit(user: User) {
     // Enable inline editing
     this.editUser = new User();
     this.editUser = structuredClone(user);
   }
 
   // Save changes after inline editing
-  save(user: User): void {
+  inlineSave(user: User) {
     if (user.name !== this.editUser?.name || user.email !== this.editUser?.email) {
       this.userService.updateUser(user).subscribe({
         next: (res: Object) => {
@@ -70,8 +67,14 @@ export class UsersTable {
     this.editUser = null;
   }
 
+  // Edit a user using the form
+  formEdit(user: User) {
+    // Redirect to the edit form
+    this.router.navigate(['/edit-user', user.id]);
+  }
+
   // Delete a user
-  remove(id: string): void {
+  remove(id: string) {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
       // Remove the user
       this.userService.deleteUser(id).subscribe({

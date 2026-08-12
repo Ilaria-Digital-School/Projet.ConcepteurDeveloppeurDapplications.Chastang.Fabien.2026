@@ -21,7 +21,7 @@ export class Login {
   fromCart!: boolean;
 
   // Form initialization and field validation setup
-  ngOnInit(): void {
+  ngOnInit() {
     // Origin of the page request
     this.fromCart = this.router.url.includes('login-cart');
 
@@ -34,7 +34,7 @@ export class Login {
   }
 
   // Login method
-  login(): void {
+  login() {
     const FORM_VAL = this.loginForm.value;
     const DATA = structuredClone(FORM_VAL);
     DATA.permanent = undefined; // Remove this property

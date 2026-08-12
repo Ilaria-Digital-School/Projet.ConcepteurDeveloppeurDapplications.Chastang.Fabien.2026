@@ -12,7 +12,7 @@
         [(ngModel)]="product.name"
         placeholder="Nom de l'article"
         required
-        minlength="5"
+        minlength="3"
         maxlength="50"
         #productName="ngModel"
       />
@@ -20,9 +20,7 @@
         @if (productName.errors?.['required']) {
           <div class="text-danger error">Ce champ est obligatoire</div>
         } @else if (productName.errors?.['minlength']) {
-          <div class="text-danger error">Ce champ doit contenir au moins 5 caractères</div>
-        } @else if (productName.errors?.['maxlength']) {
-          <div class="text-danger error">Ce champ doit contenir au plus 50 caractères</div>
+          <div class="text-danger error">Ce champ doit contenir au moins 3 caractères</div>
         }
       }
     </div>
@@ -43,8 +41,6 @@
           <div class="text-danger error">Ce champ est obligatoire</div>
         } @else if (description.errors?.['minlength']) {
           <div class="text-danger error">Ce champ doit contenir au moins 10 caractères</div>
-        } @else if (description.errors?.['maxlength']) {
-          <div class="text-danger error">Ce champ doit contenir au plus 50 caractères</div>
         }
       }
     </div>
@@ -55,20 +51,18 @@
         name="price"
         id="price"
         [(ngModel)]="product.price"
-        (change)="checkPrice()"
         class="number"
         required
         maxlength="7"
         #price="ngModel"
       />
-      @if (price.invalid && (price.touched || price.dirty)) {
+      @if ((price.invalid || errorPrice(price.value)) && (price.touched || price.dirty)) {
         @if (price.errors?.['required']) {
-          <span
-            class="text-danger error"
-            [style.font-weight]="'normal'"
-            [style.padding-left]="'10px'"
-            >Ce champ est obligatoire</span
-          >
+          <div class="text-danger error">Ce champ est obligatoire</div>
+        } @else {
+          <div class="text-danger error">
+            Le prix doit être un nombre supérieur à 0 et inférieur à 10000
+          </div>
         }
       }
     </div>
@@ -106,14 +100,15 @@
         maxlength="100"
         #info="ngModel"
       ></textarea>
-      @if (info.invalid && (info.touched || info.dirty)) {
-        @if (info.errors?.['maxlength']) {
-          <div class="text-danger error">Ce champ doit contenir au plus 100 caractères</div>
-        }
-      }
     </div>
     <div class="div-button">
-      <button type="submit" [disabled]="productForm.invalid" [class.btn-disabled]="productForm.invalid">{{ btnAction }}</button>
+      <button
+        type="submit"
+        [disabled]="productForm.invalid || !hasChanged() || price.value === 0"
+        [class.btn-disabled]="productForm.invalid || !hasChanged() || price.value === 0"
+      >
+        {{ btnAction }}
+      </button>
       <button type="button" (click)="reset(productForm)" title="Effacer" aria-label="Effacer">
         <i class="fa-solid fa-eraser"></i>
       </button>

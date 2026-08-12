@@ -15,8 +15,8 @@ export class ProductCard {
   @Output() addEvent = new EventEmitter();
   @Output() removeEvent = new EventEmitter();
 
-  // View a product
-  view(id: string): void {
+  // View the carousel or the product details
+  view(id: string) {
     this.viewEvent.emit(id);
   }
 

@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 export class RemnantSale {
   saleDate!: string;
 
-  ngOnInit(): void {
+  ngOnInit() {
     let datePromo = new Date();
     datePromo = new Date(datePromo.setMonth(datePromo.getMonth() + 1));
     datePromo = new Date(datePromo.getFullYear(), datePromo.getMonth(), 0);

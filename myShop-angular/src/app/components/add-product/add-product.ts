@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, SimpleChanges } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product-service';
@@ -23,8 +23,9 @@ export class AddProduct {
   btnAction!: string;
   product: Product = new Product();
   productIni: Product = new Product();
+  valuesChange: boolean = false;
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.productId = this.activatedRoute.snapshot.paramMap.get('id');
     this.isEditMode = this.productId ? true : false;
 
@@ -47,13 +48,33 @@ export class AddProduct {
       // Add a new product
       this.title = 'Nouvel Article';
       this.btnAction = 'Ajouter';
+      this.valuesChange = true;
     }
+  }
+
+  // Edit mode
+  // IMPORTANT: this method is called whenever the page (component) is modified, not just the form
+  ngDoCheck() {
+    if (this.isEditMode) {
+      this.valuesChange =
+        this.product.name !== this.productIni.name ||
+        this.product.description !== this.productIni.description ||
+        this.product.price.toString() !== this.productIni.price.toString() ||
+        this.product.img !== this.productIni.img ||
+        this.product.fullDescription !== this.productIni.fullDescription ||
+        this.product.info !== this.productIni.info;
+    }
+  }
+
+  // Edit mode: to notify of a change
+  hasChanged() {
+    return this.valuesChange;
   }
 
   // Actions /////////////////////////////////////////////////////////////
 
   // Add or update the product
-  submit(productForm: NgForm): void {
+  submit(productForm: NgForm) {
     const PRODUCT = structuredClone(this.product);
 
     // Remove these properties before saving
@@ -95,21 +116,13 @@ export class AddProduct {
   }
 
   // Reset the form
-  reset(productForm: NgForm): void {
-    if (this.isEditMode) {
-      this.product = structuredClone(this.productIni);
-    } else {
-      productForm.resetForm();
-    }
+  reset(productForm: NgForm) {
+    this.product = structuredClone(this.productIni);
   }
 
   // Check the price
-  checkPrice(): void {
-    let value = this.product.price
-      .toString()
-      .replace(',', '.')
-      .replace(/[^\d.]/g, '');
-    let nvalue = Math.round(100 * parseFloat(value)) / 100;
-    this.product.price = nvalue > 0 ? (nvalue <= 9999.99 ? nvalue : 9999.99) : 0;
+  errorPrice(price: string) {
+    const PRICE = parseFloat(price);
+    return isNaN(PRICE) || PRICE <= 0 || PRICE >= 10000;
   }
 }

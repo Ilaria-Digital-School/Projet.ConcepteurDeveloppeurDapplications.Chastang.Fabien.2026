@@ -149,7 +149,11 @@
     </fieldset>
 
     <div class="div-button">
-      <button type="submit" [disabled]="userForm.invalid" [class.btn-disabled]="userForm.invalid">
+      <button
+        type="submit"
+        [disabled]="userForm.invalid || !hasChanged()"
+        [class.btn-disabled]="userForm.invalid || !hasChanged()"
+      >
         {{ btnAction }}
       </button>
       <button type="button" title="Effacer" aria-label="Effacer" (click)="reset()">

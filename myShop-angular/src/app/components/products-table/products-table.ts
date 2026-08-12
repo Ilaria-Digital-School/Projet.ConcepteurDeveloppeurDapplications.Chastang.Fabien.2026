@@ -19,12 +19,12 @@ export class ProductsTable {
   // Initialization //////////////////////////////////////////////////////
 
   // Initialize the product list
-  ngOnInit(): void {
+  ngOnInit() {
     this.load(true);
   }
 
   // Retrieve all products
-  load(forceCheck: boolean = false): void {
+  load(forceCheck: boolean = false) {
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
         this.products = structuredClone(res);
@@ -40,17 +40,17 @@ export class ProductsTable {
   // Actions /////////////////////////////////////////////////////////////
 
   // View a product
-  view(id: string): void {
+  view(id: string) {
     this.router.navigate(['/product-details', id]);
   }
 
   // Edit a product
-  edit(id: string): void {
+  edit(id: string) {
     this.router.navigate(['/edit-product', id]);
   }
 
   // Delete a product
-  remove(id: string): void {
+  remove(id: string) {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
       // Remove the product
       this.productService.deleteProduct(id).subscribe({
