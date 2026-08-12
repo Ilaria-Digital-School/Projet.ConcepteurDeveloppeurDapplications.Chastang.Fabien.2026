@@ -10,15 +10,15 @@
   margin-bottom: 0;
 }
 
-#main-about section:nth-of-type(2) aside {
+section:nth-of-type(2) aside {
   margin-top: 10px;
   font-style: italic;
 }
 
-#main-about section:nth-of-type(2) mark {
+section:nth-of-type(2) mark {
   margin-left: 50px;
 }
 
-#main-about section:last-of-type ol li:last-child {
+section:last-of-type ol li:last-child {
   margin-bottom: 20px;
 }
