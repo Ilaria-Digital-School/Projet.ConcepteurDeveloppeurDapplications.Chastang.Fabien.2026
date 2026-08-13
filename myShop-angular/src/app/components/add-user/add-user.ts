@@ -102,7 +102,6 @@ export class AddUser {
             formValue.clothes !== this.userIni.interests.includes(1) ||
             formValue.accessories !== this.userIni.interests.includes(2) ||
             formValue.country !== this.userIni.country.toString();
-          console.log(this.valuesChange);
         }
       });
     } else {
