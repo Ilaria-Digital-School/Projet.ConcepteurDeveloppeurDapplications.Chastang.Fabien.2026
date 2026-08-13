@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { Product } from '../../../main';
+import { Component, inject } from '@angular/core';
+import { Product } from '../../models/product';
 import { ProductCard } from '../product-card/product-card';
 import { ProductService } from '../../services/product-service';
 import { Router } from '@angular/router';
@@ -13,7 +13,6 @@ import { map, Subject } from 'rxjs';
 })
 export class ProductsSearch {
   private router = inject(Router);
-  private changeDetectorRef = inject(ChangeDetectorRef);
   private productService = inject(ProductService);
 
   products: Product[] = [];
@@ -23,7 +22,7 @@ export class ProductsSearch {
   // Initialize the product list
   ngOnInit() {
     // Retrieve the products
-    this.load(true);
+    this.load();
 
     // Search for products by name
     this.searchSubject
@@ -41,12 +40,11 @@ export class ProductsSearch {
   }
 
   // Retrieve the products
-  load(forceCheck: boolean = false) {
+  load() {
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
         this.products = structuredClone(res);
         this.filteredProducts = structuredClone(res);
-        if (forceCheck) this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");

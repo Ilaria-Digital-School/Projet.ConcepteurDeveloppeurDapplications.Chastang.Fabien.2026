@@ -77,8 +77,12 @@
             <td colspan="4" class="label-total">Total</td>
             <td>
               <div class="cell-total">
-                <div [style.white-space]="'nowrap'">{{ getTotalExcludingTax().toFixed(2) }} € HT</div>
-                <div [style.white-space]="'nowrap'">{{ (this.tax * this.total).toFixed(2) }} € TTC</div>
+                <div [style.white-space]="'nowrap'">
+                  {{ getTotalExcludingTax().toFixed(2) }} € HT
+                </div>
+                <div [style.white-space]="'nowrap'">
+                  {{ (this.tax * this.total).toFixed(2) }} € TTC
+                </div>
               </div>
             </td>
             <td>

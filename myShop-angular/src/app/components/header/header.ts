@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
-import { User, UserRole } from '../../../main';
 import { AuthService } from '../../services/auth-service';
 import { CartService } from '../../services/cart-service';
+import { UserRole } from '../../enums/user-role';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-header',
@@ -11,10 +12,11 @@ import { CartService } from '../../services/cart-service';
   styleUrl: './header.css',
 })
 export class Header {
+  UserRole = UserRole;
+
   private router = inject(Router);
   private authService = inject(AuthService);
   public cartService = inject(CartService);
-  UserRole = UserRole;
 
   title: string = 'My Shop';
   connectedUser: User | null = null;

@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -8,8 +8,11 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Countries, Interests, User } from '../../../main';
 import { UserService } from '../../services/user-service';
+import { UserInterest } from '../../enums/user-interest';
+import { Interests } from '../../constants/interests';
+import { Countries } from '../../constants/countries';
+import { User } from '../../models/user';
 // import { JsonPipe } from '@angular/common';
 
 // Custom validators for the entire form /////////////////////////////////
@@ -36,7 +39,6 @@ export class AddUser {
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
-  private changeDetectorRef = inject(ChangeDetectorRef);
   private userService = inject(UserService);
 
   userForm!: FormGroup;
@@ -44,12 +46,11 @@ export class AddUser {
   userId!: string | null;
   title!: string;
   btnAction!: string;
-  user!: User;
-  userIni!: User;
+  user: User = new User();
+  userIni: User = new User();
   users: User[] = [];
   fromCart!: boolean;
   valuesChange: boolean = false;
-  intervalId: number = 0;
 
   // Form initialization and validation ///////////////////////////////////////
 
@@ -67,18 +68,6 @@ export class AddUser {
       this.title = 'Mise à jour';
       this.btnAction = 'Modifier';
 
-      this.userService.getUserById(this.userId).subscribe({
-        next: (res: User) => {
-          this.user = new User();
-          Object.assign(this.user, res);
-          this.userIni = new User();
-          Object.assign(this.userIni, res);
-        },
-        error: (err: any) => {
-          console.log(err);
-        },
-      });
-
       // Form validation
       this.userForm = this.formBuilder.group({
         userName: [
@@ -92,25 +81,32 @@ export class AddUser {
         country: ['0'],
       });
 
+      this.userService.getUserById(this.userId).subscribe({
+        next: (res: User) => {
+          this.user = structuredClone(res);
+          this.userIni = structuredClone(res);
+          this.initFormValues();
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
+
       // To detect changes
       this.userForm.valueChanges.subscribe((formValue: any) => {
-        if (this.intervalId === -1) {
-          this.valuesChange =
-            formValue.userName !== this.userIni.name ||
-            formValue.userEmail !== this.userIni.email ||
-            formValue.gender !== this.userIni.gender.toString() ||
-            formValue.clothes !== this.userIni.interests.includes(1) ||
-            formValue.accessories !== this.userIni.interests.includes(2) ||
-            formValue.country !== this.userIni.country.toString();
-        }
+        this.valuesChange =
+          formValue.userName.trim() !== this.userIni.name ||
+          formValue.userEmail !== this.userIni.email ||
+          formValue.gender !== this.userIni.gender.toString() ||
+          formValue.clothes !== this.userIni.interests.includes(1) ||
+          formValue.accessories !== this.userIni.interests.includes(2) ||
+          formValue.country !== this.userIni.country.toString();
       });
     } else {
       // Add a new user
       this.title = 'Inscription';
       this.btnAction = 'Ajouter';
       this.valuesChange = true;
-      this.user = new User();
-      this.userIni = new User();
 
       // The password must contain at least 10 characters, all non-whitespace, including at least
       // one lowercase letter, one uppercase letter, one digit, and one special character
@@ -156,26 +152,6 @@ export class AddUser {
     });
   }
 
-  // Edit mode: form initialization
-  ngAfterViewInit() {
-    if (this.isEditMode) {
-      if (this.userIni) {
-        this.intervalId = -1;
-        this.initFormValues();
-      } else {
-        this.intervalId = setInterval(() => {
-          if (this.userIni) {
-            if (this.intervalId > 0) {
-              clearInterval(this.intervalId);
-              this.intervalId = -1;
-            }
-            this.initFormValues();
-          }
-        }, 100);
-      }
-    }
-  }
-
   // Edit mode: to notify of a change
   hasChanged() {
     return this.valuesChange;
@@ -184,11 +160,10 @@ export class AddUser {
   // Submit the form //////////////////////////////////////////////////////////
 
   // Retrieve all users to check if the email does not exist
-  load(forceCheck: boolean = false) {
+  load() {
     this.userService.getAllUsers().subscribe({
       next: (res: User[]) => {
         this.users = structuredClone(res);
-        if (forceCheck) this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
@@ -212,15 +187,15 @@ export class AddUser {
 
     // Manage the checkboxes
     const INTERESTS: number[] = [];
-    if (FORM_VAL.clothes) INTERESTS.push(1);
-    if (FORM_VAL.accessories) INTERESTS.push(2);
+    if (FORM_VAL.clothes) INTERESTS.push(UserInterest.clothes);
+    if (FORM_VAL.accessories) INTERESTS.push(UserInterest.accessories);
 
     const USER = structuredClone(this.user);
     USER.additional = undefined; // Remove this property before saving
 
     if (this.isEditMode) {
       // Modify the user
-      let toSave: boolean = false;
+      let toSave = false;
 
       const NAME = FORM_VAL.userName.trim();
       if (this.userIni.name != NAME) {
@@ -238,13 +213,14 @@ export class AddUser {
       }
       if (
         Interests.list.some(
-          (item: any) => this.userIni.interests.includes(item.value) !== INTERESTS.includes(item),
+          (item: any) =>
+            this.userIni.interests.includes(item.value) !== INTERESTS.includes(item.value),
         )
       ) {
         toSave = true;
         USER.interests = INTERESTS;
       }
-      const COUNTRY: number = parseInt(FORM_VAL.country);
+      const COUNTRY = parseInt(FORM_VAL.country);
       if (this.userIni.country !== COUNTRY) {
         toSave = true;
         USER.country = COUNTRY;

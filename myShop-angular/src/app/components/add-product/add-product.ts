@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component, inject, SimpleChanges } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product-service';
-import { Product } from '../../../main';
+import { Product } from '../../models/product';
 
 @Component({
   selector: 'app-add-product',
@@ -12,7 +12,6 @@ import { Product } from '../../../main';
 })
 export class AddProduct {
   private activatedRoute = inject(ActivatedRoute);
-  private changeDetectorRef = inject(ChangeDetectorRef);
   private productService = inject(ProductService);
 
   // Initialize the form /////////////////////////////////////////////////
@@ -24,6 +23,7 @@ export class AddProduct {
   product: Product = new Product();
   productIni: Product = new Product();
   valuesChange: boolean = false;
+  productPrice: string = '';
 
   ngOnInit() {
     this.productId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -38,7 +38,7 @@ export class AddProduct {
         next: (res: Product) => {
           Object.assign(this.product, res);
           Object.assign(this.productIni, res);
-          this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
+          this.productPrice = this.productIni.price.toString().replace('.', ',');
         },
         error: (err: any) => {
           console.log(err);
@@ -52,17 +52,18 @@ export class AddProduct {
     }
   }
 
-  // Edit mode
   // IMPORTANT: this method is called whenever the page (component) is modified, not just the form
+  // Used only by edit mode: to manage enabling or disabling the form's 'edit' button, prefer a
+  // Reactive form over a Template-Driven Form (TDF)
   ngDoCheck() {
-    if (this.isEditMode) {
+    if (this.isEditMode && !this.errorPrice()) {
       this.valuesChange =
-        this.product.name !== this.productIni.name ||
-        this.product.description !== this.productIni.description ||
-        this.product.price.toString() !== this.productIni.price.toString() ||
-        this.product.img !== this.productIni.img ||
-        this.product.fullDescription !== this.productIni.fullDescription ||
-        this.product.info !== this.productIni.info;
+        this.product.name.trim() !== this.productIni.name ||
+        this.product.description.trim() !== this.productIni.description ||
+        this.product.price !== this.productIni.price ||
+        this.product.img.trim() !== this.productIni.img ||
+        this.product.fullDescription.trim() !== this.productIni.fullDescription ||
+        this.product.info.trim() !== this.productIni.info;
     }
   }
 
@@ -82,12 +83,12 @@ export class AddProduct {
     PRODUCT.additional = undefined;
 
     const FORM_VAL = productForm.value;
-    PRODUCT.name = FORM_VAL.productName;
-    PRODUCT.description = FORM_VAL.description;
-    PRODUCT.price = FORM_VAL.price;
-    PRODUCT.img = FORM_VAL.productImg;
-    PRODUCT.info = FORM_VAL.info;
-    PRODUCT.fullDescription = FORM_VAL.fullDescription;
+    PRODUCT.name = FORM_VAL.productName.trim();
+    PRODUCT.description = FORM_VAL.description.trim();
+    PRODUCT.price = Number(FORM_VAL.price.replace(',', '.'));
+    PRODUCT.img = FORM_VAL.productImg.trim();
+    PRODUCT.fullDescription = FORM_VAL.fullDescription.trim();
+    PRODUCT.info = FORM_VAL.info.trim();
 
     if (this.isEditMode) {
       // Update the product
@@ -116,13 +117,16 @@ export class AddProduct {
   }
 
   // Reset the form
-  reset(productForm: NgForm) {
+  reset() {
     this.product = structuredClone(this.productIni);
+    this.productPrice = this.productIni.price.toString().replace('.', ',');
   }
 
   // Check the price
-  errorPrice(price: string) {
-    const PRICE = parseFloat(price);
-    return isNaN(PRICE) || PRICE <= 0 || PRICE >= 10000;
+  errorPrice() {
+    const PRICE = Number(this.productPrice.replace(',', '.'));
+    const ERROR = isNaN(PRICE) || PRICE <= 0 || PRICE >= 10000;
+    if (!ERROR) this.product.price = PRICE;
+    return ERROR;
   }
 }

@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Product } from '../../../main';
+import { Product } from '../../models/product';
 import { ProductService } from '../../services/product-service';
 
 @Component({
@@ -11,7 +11,6 @@ import { ProductService } from '../../services/product-service';
 })
 export class ProductsTable {
   private router = inject(Router);
-  private changeDetectorRef = inject(ChangeDetectorRef);
   private productService = inject(ProductService);
 
   products: Product[] = [];
@@ -20,15 +19,14 @@ export class ProductsTable {
 
   // Initialize the product list
   ngOnInit() {
-    this.load(true);
+    this.load();
   }
 
   // Retrieve all products
-  load(forceCheck: boolean = false) {
+  load() {
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
         this.products = structuredClone(res);
-        if (forceCheck) this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");

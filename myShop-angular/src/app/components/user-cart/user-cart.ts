@@ -1,9 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { Product, Cart, User } from '../../../main';
 import { FormsModule } from '@angular/forms';
-import { CartService } from '../../services/cart-service';
 import { Router } from '@angular/router';
+import { CartService } from '../../services/cart-service';
 import { AuthService } from '../../services/auth-service';
+import { Cart } from '../../models/cart';
+import { Product } from '../../models/product';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-user-cart',

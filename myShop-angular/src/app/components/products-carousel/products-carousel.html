@@ -10,25 +10,17 @@
       >
         <div class="carousel-inner">
           @for (product of products; track product.id; let i = $index) {
-            @if (
-              (productId !== null && product.id === productId) || (productId === null && i === 0)
-            ) {
-              <div [id]="product.id" class="carousel-item active" #productCarousel>
-                <img
-                  [src]="product.img"
-                  class="d-block w-100 carousel-img"
-                  [alt]="product.description"
-                />
-              </div>
-            } @else {
-              <div [id]="product.id" class="carousel-item" #productCarousel>
-                <img
-                  [src]="product.img"
-                  class="d-block w-100 carousel-img"
-                  [alt]="product.description"
-                />
-              </div>
-            }
+            <div
+              [id]="product.id"
+              [class]="'carousel-item' + (isActive(product.id, i) ? ' active' : '')"
+              #productCarousel
+            >
+              <img
+                [src]="product.img"
+                class="d-block w-100 carousel-img"
+                [alt]="product.description"
+              />
+            </div>
           }
         </div>
         <button
@@ -53,31 +45,20 @@
 
       <div id="products-card">
         @for (product of products; track product.id; let i = $index) {
-          @if (
-            (productId !== null && product.id === productId) || (productId === null && i === 0)
-          ) {
-            <div [id]="'card_' + product.id" class="active" #productCard>
-              <app-product-card
-                [product]="product"
-                [isList]="0"
-                [isSearch]="1"
-                (viewEvent)="view($event)"
-                (addEvent)="addCart($event)"
-                (removeEvent)="removeCart($event)"
-              ></app-product-card>
-            </div>
-          } @else {
-            <div [id]="'card_' + product.id" #productCard>
-              <app-product-card
-                [product]="product"
-                [isList]="0"
-                [isSearch]="1"
-                (viewEvent)="view($event)"
-                (addEvent)="addCart($event)"
-                (removeEvent)="removeCart($event)"
-              ></app-product-card>
-            </div>
-          }
+          <div
+            [id]="'card_' + product.id"
+            [class]="isActive(product.id, i) ? 'active' : ''"
+            #productCard
+          >
+            <app-product-card
+              [product]="product"
+              [isList]="0"
+              [isSearch]="1"
+              (viewEvent)="view($event)"
+              (addEvent)="addCart($event)"
+              (removeEvent)="removeCart($event)"
+            ></app-product-card>
+          </div>
         }
       </div>
     </div>

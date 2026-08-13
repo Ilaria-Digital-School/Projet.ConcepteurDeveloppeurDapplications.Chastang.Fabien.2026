@@ -50,13 +50,13 @@
         type="text"
         name="price"
         id="price"
-        [(ngModel)]="product.price"
+        [(ngModel)]="productPrice"
         class="number"
         required
         maxlength="7"
         #price="ngModel"
       />
-      @if ((price.invalid || errorPrice(price.value)) && (price.touched || price.dirty)) {
+      @if ((price.invalid || errorPrice()) && (price.touched || price.dirty)) {
         @if (price.errors?.['required']) {
           <div class="text-danger error">Ce champ est obligatoire</div>
         } @else {
@@ -104,12 +104,12 @@
     <div class="div-button">
       <button
         type="submit"
-        [disabled]="productForm.invalid || !hasChanged() || price.value === 0"
-        [class.btn-disabled]="productForm.invalid || !hasChanged() || price.value === 0"
+        [disabled]="productForm.invalid || errorPrice() || !hasChanged()"
+        [class.btn-disabled]="productForm.invalid || errorPrice() || !hasChanged()"
       >
         {{ btnAction }}
       </button>
-      <button type="button" (click)="reset(productForm)" title="Effacer" aria-label="Effacer">
+      <button type="button" (click)="reset()" title="Effacer" aria-label="Effacer">
         <i class="fa-solid fa-eraser"></i>
       </button>
     </div>

@@ -4,6 +4,10 @@
     <h2>Connexion</h2>
 
     <div>
+      <!-- Error message -->
+      @if (errorMsg != '') {
+        <div class="text-danger error">{{ errorMsg }}</div>
+      }
       <label for="email">E-mail&nbsp;:</label>
       <input
         type="email"
@@ -54,10 +58,6 @@
       <button type="reset" title="Effacer" aria-label="Effacer">
         <i class="fa-solid fa-eraser"></i>
       </button>
-      <!-- Error message -->
-      @if (errorMsg != '') {
-        <div class="text-danger error">{{ errorMsg }}</div>
-      }
     </div>
 
     <div>

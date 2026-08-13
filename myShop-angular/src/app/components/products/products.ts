@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { Product } from '../../../main';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { Product } from '../../models/product';
 import { ProductCard } from '../product-card/product-card';
 import { ProductService } from '../../services/product-service';
-import { Router } from '@angular/router';
 import { take } from 'rxjs';
 
 @Component({
@@ -13,7 +13,6 @@ import { take } from 'rxjs';
 })
 export class Products {
   private router = inject(Router);
-  private changeDetectorRef = inject(ChangeDetectorRef);
   private productService = inject(ProductService);
 
   maxCount: number = 6;
@@ -21,18 +20,17 @@ export class Products {
 
   // Initialize the product list
   ngOnInit() {
-    this.load(true);
+    this.load();
   }
 
   // Retrieve the products
-  load(forceCheck: boolean = false) {
+  load() {
     this.productService
       .getAllProducts()
       .pipe(take(this.maxCount))
       .subscribe({
         next: (res: Product[]) => {
           this.products = structuredClone(res);
-          if (forceCheck) this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
         },
         error: (err: any) => {
           alert("Une erreur s'est produite lors de la récupération des données.");

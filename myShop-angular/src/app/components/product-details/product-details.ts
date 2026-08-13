@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Product } from '../../../main';
 import { ProductService } from '../../services/product-service';
 import { CartService } from '../../services/cart-service';
+import { Product } from '../../models/product';
 
 @Component({
   selector: 'app-product-details',
@@ -12,7 +12,6 @@ import { CartService } from '../../services/cart-service';
 })
 export class ProductDetails {
   private activatedRoute = inject(ActivatedRoute);
-  private changeDetectorRef = inject(ChangeDetectorRef);
   private productService = inject(ProductService);
   private cartService = inject(CartService);
 
@@ -31,7 +30,6 @@ export class ProductDetails {
         if (this.product.fullDescription) {
           this.fullDescription = this.getFullDescription(this.product.fullDescription);
         }
-        this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
       },
       error: (err: any) => {
         console.log(err);
@@ -60,9 +58,9 @@ export class ProductDetails {
   // ]
 
   getFullDescription(description: string) {
-    const RESULT: any[] = [];
+    const RESULT = [];
     const RE_TITLE = /^\s{0,}\${2,}\s{0,}/;
-    const DESCRIPTION: string[] = description
+    const DESCRIPTION = description
       .split('\n')
       .map((value: string) => {
         return value.trim();
@@ -71,12 +69,12 @@ export class ProductDetails {
 
     let objDesc: any = null;
     DESCRIPTION.forEach((value: string) => {
-      const IS_TITLE: boolean = RE_TITLE.test(value);
+      const IS_TITLE = RE_TITLE.test(value);
 
       if (objDesc === null || IS_TITLE) {
         if (objDesc !== null) RESULT.push(objDesc);
 
-        const TITLE: string = IS_TITLE ? value.replace(RE_TITLE, '') : '';
+        const TITLE = IS_TITLE ? value.replace(RE_TITLE, '') : '';
         if (TITLE) {
           objDesc = {
             title: TITLE,

@@ -1,8 +1,11 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User, Genders, Countries, Roles } from '../../../main';
 import { UserService } from '../../services/user-service';
+import { Genders } from '../../constants/genders';
+import { Countries } from '../../constants/countries';
+import { Roles } from '../../constants/roles';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-users-table',
@@ -12,7 +15,6 @@ import { UserService } from '../../services/user-service';
 })
 export class UsersTable {
   private router = inject(Router);
-  private changeDetectorRef = inject(ChangeDetectorRef);
   private userService = inject(UserService);
   Genders = Genders;
   Countries = Countries;
@@ -25,15 +27,14 @@ export class UsersTable {
 
   // Initialize the user list
   ngOnInit() {
-    this.load(true);
+    this.load();
   }
 
   // Retrieve all users
-  load(forceCheck: boolean = false) {
+  load() {
     this.userService.getAllUsers().subscribe({
       next: (res: User[]) => {
         this.users = structuredClone(res);
-        if (forceCheck) this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");

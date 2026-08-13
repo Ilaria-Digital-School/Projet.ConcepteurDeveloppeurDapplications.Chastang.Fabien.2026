@@ -1,17 +1,16 @@
 import {
   Component,
   inject,
-  ChangeDetectorRef,
   ViewChildren,
   QueryList,
   ElementRef,
   HostListener,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Product } from '../../../main';
 import { ProductCard } from '../product-card/product-card';
-import { ProductService } from '../../services/product-service';
+import { Product } from '../../models/product';
 import { CartService } from '../../services/cart-service';
+import { ProductService } from '../../services/product-service';
 
 @Component({
   selector: 'app-products-carousel',
@@ -24,7 +23,6 @@ export class ProductsCarousel {
   @ViewChildren('productCard') productsCard!: QueryList<ElementRef>;
 
   private activatedRoute = inject(ActivatedRoute);
-  private changeDetectorRef = inject(ChangeDetectorRef);
   private productService = inject(ProductService);
   private cartService = inject(CartService);
   private router = inject(Router);
@@ -33,7 +31,6 @@ export class ProductsCarousel {
 
   products: Product[] = [];
   productId!: string | null;
-  intervalId: number = 0;
 
   // Initialization: retrieving the products and the product specified by the ID passed in the URL
   ngOnInit() {
@@ -44,7 +41,6 @@ export class ProductsCarousel {
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
         this.products = structuredClone(res);
-        this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
@@ -53,21 +49,11 @@ export class ProductsCarousel {
     });
   }
 
-  // Initializing the carousel and card QueryList<ElementRef>
-  ngAfterViewInit() {
-    this.intervalId = setInterval(() => {
-      if (this.productsCarousel && this.productsCard) {
-        clearInterval(this.intervalId);
-        this.changeDetectorRef.detectChanges(); // Asynchrone process: force a check
-      }
-    }, 100);
-  }
-
   // Handle the slide change and show the active product card
   @HostListener('slid.bs.carousel', ['$event'])
   onSlid(event: any) {
     // Retrieve the active product ID
-    const ID: string | undefined = this.productsCarousel.find((item: ElementRef<HTMLDivElement>) =>
+    const ID = this.productsCarousel.find((item: ElementRef<HTMLDivElement>) =>
       item.nativeElement.className.includes('active'),
     )?.nativeElement.id;
 
@@ -82,6 +68,13 @@ export class ProductsCarousel {
         .find((item: ElementRef<HTMLDivElement>) => item.nativeElement.id === `card_${ID}`)
         ?.nativeElement.classList.add('active');
     }
+  }
+
+  // Used to activate the first product
+  isActive(id: string, index: number) {
+    return (
+      (this.productId !== null && id === this.productId) || (this.productId === null && index === 0)
+    );
   }
 
   // View a product

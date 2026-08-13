@@ -18,7 +18,7 @@ export class ScrollTop {
   scrollToTop() {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth' // Smooth animation
+      behavior: 'smooth', // Smooth animation
     });
   }
 }
