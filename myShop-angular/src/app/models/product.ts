@@ -1,4 +1,4 @@
-import { Common } from "./common";
+import { Common } from './common';
 
 // Product class
 export class Product {
@@ -35,20 +35,5 @@ export class Product {
     if (typeof stock === 'number') this.stock = stock;
     if (typeof info === 'string') this.info = info;
     if (typeof favorite === 'boolean') this.favorite = favorite;
-  }
-
-  static stringToNumber(value: string, locale: string = 'fr-FR') {
-    const FRAC_SEPARATOR = (1)
-      .toLocaleString(locale, { minimumFractionDigits: 1 })
-      .replace(/\d/g, '');
-    return parseFloat(
-      value
-        .replace(new RegExp('[^\\d' + FRAC_SEPARATOR + '-]', 'g'), '')
-        .replace(FRAC_SEPARATOR, '.'),
-    );
-  }
-
-  static numberToString(value: number, locale: string = 'fr-FR', minFracDigits: number = 2) {
-    return value.toLocaleString(locale, { minimumFractionDigits: minFracDigits });
   }
 }
