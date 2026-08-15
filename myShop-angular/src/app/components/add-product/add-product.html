@@ -1,5 +1,5 @@
 <section>
-  <!-- Product addition form -->
+  <!-- Product Add/Edit Form -->
   <form id="productForm" #productForm="ngForm" (ngSubmit)="submit(productForm)" class="form">
     <!-- Information regarding the completion of the form -->
     <app-form-help [isSimple]="false" [helpHTML]="helpHTML"></app-form-help>
@@ -16,18 +16,19 @@
         [(ngModel)]="product.name"
         placeholder="Nom de l'article"
         required
-        minlength="3"
         maxlength="50"
         #productName="ngModel"
       />
       @if (
-        (productName.invalid || warningMaxlength(productName.value, 50)) &&
-        (productName.touched || productName.dirty)
+        (productName?.invalid ||
+          errorMinlength(productName?.value, 3) ||
+          warningMaxlength(productName?.value, 50)) &&
+        (productName?.touched || productName?.dirty)
       ) {
-        @if (productName.errors?.['required']) {
+        @if (productName?.errors?.['required']) {
           <div class="error">Ce champ est obligatoire</div>
-        } @else if (productName.errors?.['minlength']) {
-          <div class="error">Ce champ doit contenir au moins 3 caractères</div>
+        } @else if (errorMinlength(productName?.value, 3)) {
+          <div class="error">Ce champ doit contenir au moins 3 caractères non blancs</div>
         } @else {
           <div class="warning">Information : ce champ est limité à 50 caractères</div>
         }
@@ -42,18 +43,19 @@
         [(ngModel)]="product.description"
         placeholder="Description succincte de l'article"
         required
-        minlength="10"
         maxlength="50"
         #description="ngModel"
       />
       @if (
-        (description.invalid || warningMaxlength(description.value, 50)) &&
-        (description.touched || description.dirty)
+        (description?.invalid ||
+          errorMinlength(description?.value, 10) ||
+          warningMaxlength(description?.value, 50)) &&
+        (description?.touched || description?.dirty)
       ) {
-        @if (description.errors?.['required']) {
+        @if (description?.errors?.['required']) {
           <div class="error">Ce champ est obligatoire</div>
-        } @else if (description.errors?.['minlength']) {
-          <div class="error">Ce champ doit contenir au moins 10 caractères</div>
+        } @else if (errorMinlength(description?.value, 10)) {
+          <div class="error">Ce champ doit contenir au moins 10 caractères non blancs</div>
         } @else {
           <div class="warning">Information : ce champ est limité à 50 caractères</div>
         }
@@ -72,8 +74,8 @@
         maxlength="7"
         #price="ngModel"
       />
-      @if ((price.invalid || errorPrice()) && (price.touched || price.dirty)) {
-        @if (price.errors?.['required']) {
+      @if ((price?.invalid || errorPrice()) && (price?.touched || price?.dirty)) {
+        @if (price?.errors?.['required']) {
           <div class="error">Ce champ est obligatoire</div>
         } @else {
           <div class="error">Le prix doit être un nombre supérieur à 0 et inférieur à 10000</div>
@@ -91,8 +93,8 @@
         required
         #productImg="ngModel"
       />
-      @if (productImg.invalid && (productImg.touched || productImg.dirty)) {
-        @if (productImg.errors?.['required']) {
+      @if (productImg?.invalid && (productImg?.touched || productImg?.dirty)) {
+        @if (productImg?.errors?.['required']) {
           <div class="error">Ce champ est obligatoire</div>
         }
       }
@@ -104,7 +106,7 @@
         id="fullDescription"
         rows="7"
         [(ngModel)]="product.fullDescription"
-        placeholder="{{ placeholderDescription }}"
+        placeholder="{{ placeholderFullDesc }}"
       ></textarea>
     </div>
     <div>
@@ -116,19 +118,31 @@
         maxlength="100"
         #info="ngModel"
       ></textarea>
-      @if (warningMaxlength(info.value, 100) && (info.touched || info.dirty)) {
+      @if (warningMaxlength(info?.value, 100) && (info?.touched || info?.dirty)) {
         <div class="warning">Information : ce champ est limité à 100 caractères</div>
       }
     </div>
     <div class="div-button">
       <button
         type="submit"
-        [disabled]="productForm.invalid || errorPrice() || !hasChanged()"
-        [class.btn-disabled]="productForm.invalid || errorPrice() || !hasChanged()"
+        [disabled]="
+          productForm.invalid ||
+          errorMinlength(productName?.value, 3) ||
+          errorMinlength(description?.value, 10) ||
+          errorPrice() ||
+          !hasChanged()
+        "
+        [class.btn-disabled]="
+          productForm.invalid ||
+          errorMinlength(productName?.value, 3) ||
+          errorMinlength(description?.value, 10) ||
+          errorPrice() ||
+          !hasChanged()
+        "
       >
         {{ btnAction }}
       </button>
-      <button type="button" (click)="reset(productForm)" title="Effacer" aria-label="Effacer">
+      <button type="button" title="Effacer" aria-label="Effacer" (click)="reset(productForm)">
         <i class="fa-solid fa-eraser"></i>
       </button>
     </div>

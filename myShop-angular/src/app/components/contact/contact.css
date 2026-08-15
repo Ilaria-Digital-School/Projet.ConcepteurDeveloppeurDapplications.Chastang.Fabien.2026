@@ -1,3 +1,6 @@
-#userName {
-  border: 2px dotted red;
+.message-length {
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  text-align: right;
 }

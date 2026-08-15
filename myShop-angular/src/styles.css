@@ -49,12 +49,14 @@ main {
 
 .warning {
   font-weight: normal;
+  font-size: 15px;
   color: rgb(235, 0, 0);
   font-style: italic;
 }
 
 .error {
   font-weight: normal;
+  font-size: 15px;
   color: rgb(235, 0, 0);
 }
 
@@ -409,12 +411,16 @@ button:active,
 
 .form {
   position: relative;
+  margin: 20px auto;
+  padding: 20px 10px 5px 10px;
   max-width: 500px;
-  background-color: white;
+  background-color: aliceblue;
   border: 1px solid rgb(175, 171, 171);
   border-radius: 10px;
-  padding: 20px 10px 5px 10px;
-  margin: 20px auto;
+}
+
+.form.white {
+  background-color: white;
 }
 
 .form h2 {
@@ -422,10 +428,11 @@ button:active,
 }
 
 .form fieldset {
+  margin: 10px;
+  padding: 10px 30px 20px 30px;
   border: 1px solid rgb(175, 171, 171);
   border-radius: 5px;
-  padding: 10px 30px 20px 30px;
-  margin: 10px;
+  background-color: aliceblue;
 }
 
 .form legend {

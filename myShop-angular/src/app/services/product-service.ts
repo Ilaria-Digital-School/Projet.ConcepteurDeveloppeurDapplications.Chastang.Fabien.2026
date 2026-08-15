@@ -14,37 +14,20 @@ export class ProductService {
   private httpClient = inject(HttpClient);
 
   // Response: array of objects (list of products)
-  // getAllProducts() {
-  //   return this.httpClient.get<Product[]>(this.productURL).pipe(
-  //     map((products: Product[]) => {
-  //       return products.map((product: Product) => {
-  //         // Directly modify the attribute value
-  //         product.name = product.name.toUpperCase();
-  //         return product;
-  //       });
-  //     }),
-  //   );
-  // }
-
-  // getAllProducts() {
-  //   return this.httpClient.get<Product[]>(this.productURL).pipe(
-  //     map((products: Product[]) => {
-  //       return products.map((product: Product) => {
-  //         // Adding a new property
-  //         return {
-  //           ...product,
-  //           upperName: product.name.toUpperCase(),
-  //         };
-  //       });
-  //     }),
-  //   );
-  // }
-
   getAllProducts() {
     return this.httpClient.get<Product[]>(this.productURL).pipe(
       map((products: Product[]) => {
         return products.map((product: Product) => {
-          // Adding a new property
+          //  // Directly modify the attribute value
+          //  product.name = product.name.toUpperCase();
+          //
+          //  // Adding a new property
+          //  return {
+          //    ...product,
+          //    upperName: product.name.toUpperCase(),
+          //  };
+
+          // Adding a new property and preserving the type
           product.additional = {
             priceTax: Math.round(product.price * 120) / 100, // +20%
             isAvailable: product.stock > 0,

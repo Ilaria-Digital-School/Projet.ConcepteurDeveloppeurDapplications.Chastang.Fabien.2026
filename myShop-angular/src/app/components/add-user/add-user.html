@@ -1,6 +1,6 @@
 <section>
-  <!-- User registration form -->
-  <form class="form" [formGroup]="userForm" (ngSubmit)="submit()">
+  <!-- User Add/Edit Form -->
+  <form class="form white" [formGroup]="userForm" (ngSubmit)="submit()">
     <!-- Information regarding the completion of the form -->
     <app-form-help [isSimple]="true" [helpHTML]="helpHTML"></app-form-help>
 
@@ -53,7 +53,7 @@
         ) {
           @if (userForm.get('userEmail')?.errors?.['required']) {
             <div class="error">Ce champ est obligatoire</div>
-          } @else if (userForm.get('userEmail')?.errors?.['userEmail']) {
+          } @else if (userForm.get('userEmail')?.errors?.['email']) {
             <div class="error">Saisissez une adresse mail valide : votre@adresse.email</div>
           }
         }
@@ -80,7 +80,7 @@
               <div class="error">Ce champ est obligatoire</div>
             } @else if (userForm.get('pswd')?.errors?.['pattern']) {
               <div class="error">
-                Le mot de passe doit contenir au moins 8 caractères, tous non blancs, avec au moins
+                Le mot de passe doit contenir au moins 10 caractères, tous non blancs, avec au moins
                 une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial
               </div>
             } @else {

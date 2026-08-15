@@ -34,22 +34,24 @@ export class Login {
 
     // Initialize the form
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+      userEmail: ['', [Validators.required, Validators.email]],
       pswd: ['', Validators.required],
       permanent: [true],
     });
   }
 
   // Check the maximum length
-  warningMaxlength(value: string, maxlen: number) {
-    return value && value.length === maxlen;
+  warningMaxlength(value: string, maxlen: number): boolean {
+    return typeof value === 'string' && value.length === maxlen;
   }
 
   // Login method
   login() {
     const FORM_VAL = this.loginForm.value;
-    const DATA = structuredClone(FORM_VAL);
-    DATA.permanent = undefined; // Remove this property
+    const DATA = {
+      email: FORM_VAL.userEmail,
+      pswd: FORM_VAL.pswd,
+    };
 
     // Retrieve the user's data from DB
     this.userService.login(DATA).subscribe({

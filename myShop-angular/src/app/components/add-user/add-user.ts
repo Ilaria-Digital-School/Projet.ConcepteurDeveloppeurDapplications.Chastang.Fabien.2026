@@ -68,6 +68,7 @@ export class AddUser {
     // Get user ID if it exists
     this.userId = this.activatedRoute.snapshot.paramMap.get('id');
     this.isEditMode = this.userId ? true : false;
+    const RE_NAME = /(.{0,}\S.{0,}){3,}/;
 
     if (this.isEditMode) {
       // Edit mode: retrieve the user by its ID
@@ -76,7 +77,7 @@ export class AddUser {
 
       // Form validation
       this.userForm = this.formBuilder.group({
-        userName: ['', [Validators.required, Validators.pattern(/\S{3,}/)]],
+        userName: ['', [Validators.required, Validators.pattern(RE_NAME)]],
         userEmail: ['', [Validators.required, Validators.email]],
         gender: ['0'],
         clothes: [false],
@@ -124,7 +125,7 @@ export class AddUser {
 
       // Form validation
       this.userForm = this.formBuilder.group({
-        userName: ['', [Validators.required, Validators.pattern(/\S{3,}/)]],
+        userName: ['', [Validators.required, Validators.pattern(RE_NAME)]],
         userEmail: ['', [Validators.required, Validators.email]],
         pswd: ['', [Validators.required, Validators.pattern(PSWD_PATTERN)]],
         confirm: ['', Validators.required],
@@ -153,13 +154,13 @@ export class AddUser {
   }
 
   // Edit mode: to notify of a change
-  hasChanged() {
+  hasChanged(): boolean {
     return this.valuesChange;
   }
 
   // Check the maximum length
-  warningMaxlength(value: string, maxlen: number) {
-    return value && value.length === maxlen;
+  warningMaxlength(value: string, maxlen: number): boolean {
+    return typeof value === 'string' && value.length === maxlen;
   }
 
   // Submit the form //////////////////////////////////////////////////////////
@@ -202,7 +203,7 @@ export class AddUser {
       // Modify the user
       let toSave = false;
 
-      const NAME = FORM_VAL.userName.trim();
+      const NAME = FORM_VAL.userName.trim().replace(/\s{2,}/g, ' ');
       if (this.userIni.name != NAME) {
         toSave = true;
         USER.name = NAME;
@@ -245,7 +246,7 @@ export class AddUser {
       }
     } else {
       // Add the user
-      USER.name = FORM_VAL.userName.trim();
+      USER.name = FORM_VAL.userName.trim().replace(/\s{2,}/g, ' ');
       USER.email = FORM_VAL.userEmail;
       USER.pswd = FORM_VAL.pswd;
       USER.gender = parseInt(FORM_VAL.gender);

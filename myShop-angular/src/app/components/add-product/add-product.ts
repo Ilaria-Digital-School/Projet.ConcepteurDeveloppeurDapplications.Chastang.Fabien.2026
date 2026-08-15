@@ -5,6 +5,33 @@ import { ProductService } from '../../services/product-service';
 import { Product } from '../../models/product';
 import { FormHelp } from '../form-help/form-help';
 
+const PLACEHOLDER_FULL_DESC = `$$Titre 1
+Paragraphe 1.1
+Paragraphe 1.2
+...
+$$Titre 2
+Paragraphe 2.1
+...`;
+
+const HELP_HTML = `
+<p>
+  Les champs marqués d'une étoile (<span style="color: red; padding: 0 3px">*</span>) sont
+  obligatoires.
+</p>
+<p>Lors de la rédaction de la description détaillée :</p>
+<ul>
+  <li>
+    Pour les titres et paragraphes, chaque saut de ligne termine un tire ou un paragraphe,
+    et commence un autre titre ou paragraphe.
+  </li>
+  <li>Pour définir un titre, commencez ce titre par la séquence de caractère « $$ ».</li>
+  <li>
+    Les sauts de ligne surnuméraires sont ignorés lors de l'affichage de la description
+    détaillée.
+  </li>
+</ul>
+`;
+
 @Component({
   selector: 'app-add-product',
   imports: [FormsModule, FormHelp],
@@ -26,32 +53,8 @@ export class AddProduct {
   valuesChange: boolean = false;
   productPrice: string = '';
 
-  placeholderDescription: string = `$$Titre 1
-Paragraphe 1.1
-Paragraphe 1.2
-...
-$$Titre 2
-Paragraphe 2.1
-...`;
-
-  helpHTML: string = `
-    <p>
-      Les champs marqués d'une étoile (<span style="color: red; padding: 0 3px">*</span>) sont
-      obligatoires.
-    </p>
-    <p>Lors de la rédaction de la description détaillée :</p>
-    <ul>
-      <li>
-        Pour les titres et paragraphes, chaque saut de ligne termine un tire ou un paragraphe,
-        et commence un autre titre ou paragraphe.
-      </li>
-      <li>Pour définir un titre, commencez ce titre par la séquence de caractère « $$ ».</li>
-      <li>
-        Les sauts de ligne surnuméraires sont ignorés lors de l'affichage de la description
-        détaillée.
-      </li>
-    </ul>
-  `;
+  placeholderFullDesc: string = PLACEHOLDER_FULL_DESC;
+  helpHTML: string = HELP_HTML;
 
   ngOnInit() {
     this.productId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -82,13 +85,19 @@ Paragraphe 2.1
 
   // Form verification ///////////////////////////////////////////////////
 
+  // Check the minimum length
+  errorMinlength(value: string, minlen: number): boolean {
+    const RE = new RegExp('(.{0,}\\S.{0,}){' + minlen + ',}');
+    return typeof value === 'string' && !RE.test(value);
+  }
+
   // Check the maximum length
-  warningMaxlength(value: string, maxlen: number) {
-    return value && value.length === maxlen;
+  warningMaxlength(value: string, maxlen: number): boolean {
+    return typeof value === 'string' && value.length === maxlen;
   }
 
   // Check the price
-  errorPrice() {
+  errorPrice(): boolean {
     const PRICE = Number(this.productPrice.replace(',', '.'));
     const ERROR = isNaN(PRICE) || PRICE <= 0 || PRICE >= 10000;
     if (!ERROR) this.product.price = PRICE;
@@ -111,7 +120,7 @@ Paragraphe 2.1
   }
 
   // Edit mode: to notify of a change
-  hasChanged() {
+  hasChanged(): boolean {
     return this.valuesChange;
   }
 
@@ -161,7 +170,7 @@ Paragraphe 2.1
 
   // Reset the form
   reset(productForm: NgForm) {
-    productForm.reset();
+    productForm.resetForm();
     this.product = structuredClone(this.productIni);
     this.productPrice = this.productIni.price.toString().replace('.', ',');
   }

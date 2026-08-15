@@ -1,34 +1,110 @@
-<!-- Formulaire de contact -->
+<!-- Contact form -->
 <section>
-  <form class="form">
+  <form id="contactForm" #contactForm="ngForm" (ngSubmit)="submit(contactForm)" class="form">
+    <!-- Information regarding the completion of the form -->
+    <app-form-help [isSimple]="true" [helpHTML]="helpHTML"></app-form-help>
+
+    <!-- Form title -->
     <h2>Contactez-nous</h2>
 
     <div>
-      <label for="userName">Nom&nbsp;:</label>
-      <input type="text" name="userName" id="userName" placeholder="Votre nom" required />
+      <label for="userName">Nom&nbsp;:</label><span class="required">*</span>
+      <input
+        type="text"
+        name="userName"
+        id="userName"
+        [(ngModel)]="contact.name"
+        placeholder="Votre nom"
+        required
+        maxlength="50"
+        #userName="ngModel"
+      />
+      <!-- Error message -->
+      @if (
+        (userName?.invalid ||
+          errorMinlengthStrict(userName?.value, 3) ||
+          warningMaxlength(userName?.value, 50)) &&
+        (userName?.touched || userName?.dirty)
+      ) {
+        @if (userName?.errors?.['required']) {
+          <div class="error">Ce champ est obligatoire</div>
+        } @else if (errorMinlengthStrict(userName?.value, 3)) {
+          <div class="error">Ce champ doit contenir au moins 3 caractères non blancs</div>
+        } @else {
+          <div class="warning">Information : ce champ est limité à 50 caractères</div>
+        }
+      }
     </div>
     <div>
-      <label for="userEmail">E-mail&nbsp;:</label>
+      <label for="userEmail">E-mail&nbsp;:</label><span class="required">*</span>
       <input
         type="email"
         name="userEmail"
         id="userEmail"
+        [(ngModel)]="contact.email"
         placeholder="votre@adresse.email"
         required
+        #userEmail="ngModel"
       />
+      <!-- Error message -->
+      @if (
+        (userEmail?.invalid || errorEmail(userEmail?.value)) &&
+        (userEmail?.touched || userEmail?.dirty)
+      ) {
+        @if (userEmail?.errors?.['required']) {
+          <div class="error">Ce champ est obligatoire</div>
+        } @else {
+          <div class="error">Saisissez une adresse mail valide : votre@adresse.email</div>
+        }
+      }
     </div>
     <div>
-      <label for="userMsg">Message&nbsp;:</label>
+      <label for="userMessage">Message&nbsp;:</label><span class="required">*</span>
       <textarea
-        name="userMsg"
-        id="userMsg"
-        placeholder="Votre message"
+        name="userMessage"
+        id="userMessage"
         rows="4"
+        [(ngModel)]="contact.message"
+        placeholder="Votre message"
         required
+        maxlength="2000"
+        #userMessage="ngModel"
       ></textarea>
+      <div class="message-length">
+        {{
+          userMessage?.value?.trim().length === null ? 0 : userMessage?.value?.trim().length
+        }}/2000
+      </div>
+      <!-- Error message -->
+      @if (
+        (userMessage?.invalid || errorMinlengthStrict(userMessage?.value, 10)) &&
+        (userMessage?.touched || userMessage?.dirty)
+      ) {
+        @if (userMessage?.errors?.['required']) {
+          <div class="error">Ce champ est obligatoire</div>
+        } @else if (errorMinlengthStrict(userMessage?.value, 10)) {
+          <div class="error">Ce champ doit contenir au moins 10 caractères non blancs</div>
+        }
+      }
     </div>
     <div class="div-button">
-      <button type="submit">Envoyer</button>
+      <button
+        type="submit"
+        [disabled]="
+          contactForm.invalid ||
+          errorMinlengthStrict(userName?.value, 3) ||
+          errorEmail(userEmail?.value) ||
+          errorMinlengthStrict(userMessage?.value, 10)
+        "
+        [class.btn-disabled]="
+          contactForm.invalid ||
+          errorMinlengthStrict(userName?.value, 3) ||
+          errorEmail(userEmail?.value) ||
+          errorMinlengthStrict(userMessage?.value, 10)
+        "
+      >
+        Envoyer
+      </button>
       <button type="reset" title="Effacer" aria-label="Effacer">
         <i class="fa-solid fa-eraser"></i>
       </button>
