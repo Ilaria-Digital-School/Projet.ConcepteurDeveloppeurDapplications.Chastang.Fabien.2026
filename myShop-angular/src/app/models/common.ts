@@ -1,17 +1,22 @@
 export class Common {
   // Returns an 11-character alphanumeric identifier
   static getID() {
+    const LENGTH = 11;
+    const randChar = (min: number, width: number) =>
+      String.fromCharCode(min + Math.floor(width * Math.random()));
+
     let ID = '';
-    const ARRAY = [0, 0, 0, 0];
-    for (let i = 0; i < 2; i++) {
-      const UINT8_ARRAY = ARRAY.map(
-        (item: number) => item + (Math.floor(10000 * Math.random()) % 256),
-      );
-      ID += btoa(String.fromCharCode(...UINT8_ARRAY)).slice(0, -2);
+    for (let i = 0; i < LENGTH; i++) {
+      const TYPE = Math.floor(62 * Math.random());
+      if (TYPE < 26) {
+        ID += randChar(65, 26); // Uppercase letter
+      } else if (TYPE < 52) {
+        ID += randChar(97, 26); // Lowercase letter
+      } else {
+        ID += randChar(48, 10); // Digit
+      }
     }
-    return ID.slice(0, -1)
-      .replace(/\+/g, String.fromCharCode(65 + Math.floor(26 * Math.random())))
-      .replace(/\//g, String.fromCharCode(97 + Math.floor(26 * Math.random())));
+    return ID;
   }
 
   // Converts a string to a number by using the current or specified locale settings
