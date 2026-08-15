@@ -9,10 +9,11 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user-service';
-import { UserInterest } from '../../enums/user-interest';
+import { EnumInterests } from '../../enums/user-interests';
 import { Interests } from '../../constants/interests';
 import { Countries } from '../../constants/countries';
 import { User } from '../../models/user';
+import { FormHelp } from '../form-help/form-help';
 // import { JsonPipe } from '@angular/common';
 
 // Custom validators for the entire form /////////////////////////////////
@@ -29,7 +30,7 @@ export class CustomValidators {
 
 @Component({
   selector: 'app-add-user',
-  imports: [ReactiveFormsModule /*, JsonPipe*/],
+  imports: [ReactiveFormsModule, FormHelp /*, JsonPipe*/],
   templateUrl: './add-user.html',
   styleUrl: './add-user.css',
 })
@@ -52,6 +53,11 @@ export class AddUser {
   fromCart!: boolean;
   valuesChange: boolean = false;
 
+  helpHTML: string = `
+    Les champs marqués d'une étoile (<span style="color: red; padding: 0 3px">*</span>) sont
+    obligatoires.
+  `;
+
   // Form initialization and validation ///////////////////////////////////////
 
   // Form definition and validation
@@ -70,10 +76,7 @@ export class AddUser {
 
       // Form validation
       this.userForm = this.formBuilder.group({
-        userName: [
-          '',
-          [Validators.required, Validators.pattern(/\S{3,}/), Validators.maxLength(50)],
-        ],
+        userName: ['', [Validators.required, Validators.pattern(/\S{3,}/)]],
         userEmail: ['', [Validators.required, Validators.email]],
         gender: ['0'],
         clothes: [false],
@@ -121,10 +124,7 @@ export class AddUser {
 
       // Form validation
       this.userForm = this.formBuilder.group({
-        userName: [
-          '',
-          [Validators.required, Validators.pattern(/\S{3,}/), Validators.maxLength(50)],
-        ],
+        userName: ['', [Validators.required, Validators.pattern(/\S{3,}/)]],
         userEmail: ['', [Validators.required, Validators.email]],
         pswd: ['', [Validators.required, Validators.pattern(PSWD_PATTERN)]],
         confirm: ['', Validators.required],
@@ -157,6 +157,11 @@ export class AddUser {
     return this.valuesChange;
   }
 
+  // Check the maximum length
+  warningMaxlength(value: string, maxlen: number) {
+    return value && value.length === maxlen;
+  }
+
   // Submit the form //////////////////////////////////////////////////////////
 
   // Retrieve all users to check if the email does not exist
@@ -187,8 +192,8 @@ export class AddUser {
 
     // Manage the checkboxes
     const INTERESTS: number[] = [];
-    if (FORM_VAL.clothes) INTERESTS.push(UserInterest.clothes);
-    if (FORM_VAL.accessories) INTERESTS.push(UserInterest.accessories);
+    if (FORM_VAL.clothes) INTERESTS.push(EnumInterests.clothes);
+    if (FORM_VAL.accessories) INTERESTS.push(EnumInterests.accessories);
 
     const USER = structuredClone(this.user);
     USER.additional = undefined; // Remove this property before saving

@@ -1,11 +1,11 @@
-import { UserRole } from '../enums/user-role';
+import { EnumRoles } from "../enums/user-roles";
 
 // User's role class
 export class Roles {
-  static other = { value: UserRole.user, label: 'Utilisateur' };
+  static other = { value: EnumRoles.user, label: 'Utilisateur' };
   static list = [
-    { value: UserRole.admin, label: 'Admin.' },
-    { value: UserRole.superAdmin, label: 'Super Admin.' },
+    { value: EnumRoles.admin, label: 'Admin.' },
+    { value: EnumRoles.superAdmin, label: 'Super Admin.' },
     this.other,
   ];
 

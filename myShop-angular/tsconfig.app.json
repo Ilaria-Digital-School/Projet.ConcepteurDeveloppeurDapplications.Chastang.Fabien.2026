@@ -9,6 +9,6 @@
       "@angular/localize"
     ]
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/app/enums/user-roles.ts"],
   "exclude": ["src/**/*.spec.ts"]
 }

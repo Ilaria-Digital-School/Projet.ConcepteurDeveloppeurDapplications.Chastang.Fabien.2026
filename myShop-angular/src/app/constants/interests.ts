@@ -1,11 +1,11 @@
-import { UserInterest } from '../enums/user-interest';
+import { EnumInterests } from '../enums/user-interests';
 
 // User's interests class
 export class Interests {
-  static other = { value: UserInterest.none, id: 'other', label: '– Autre –' };
+  static other = { value: EnumInterests.none, id: 'other', label: '– Autre –' };
   static list = [
-    { value: UserInterest.clothes, id: 'clothes', label: 'Vêtements' },
-    { value: UserInterest.accessories, id: 'accessories', label: 'Accessoires' },
+    { value: EnumInterests.clothes, id: 'clothes', label: 'Vêtements' },
+    { value: EnumInterests.accessories, id: 'accessories', label: 'Accessoires' },
   ];
 
   // Get the ID from the name and the name from the ID

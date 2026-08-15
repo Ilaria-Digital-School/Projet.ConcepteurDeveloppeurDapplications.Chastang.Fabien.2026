@@ -27,8 +27,8 @@
             <a [routerLink]="['/products-search']"> Nos Articles </a>
           </li>
           @if (
-            getConnectedUser()?.role === UserRole.admin ||
-            connectedUser?.role === UserRole.superAdmin
+            getConnectedUser()?.role === EnumRoles.admin ||
+            connectedUser?.role === EnumRoles.superAdmin
           ) {
             <li>
               <a class="pointer" aria-label="Administration">

@@ -3,10 +3,11 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product-service';
 import { Product } from '../../models/product';
+import { FormHelp } from '../form-help/form-help';
 
 @Component({
   selector: 'app-add-product',
-  imports: [FormsModule],
+  imports: [FormsModule, FormHelp],
   templateUrl: './add-product.html',
   styleUrl: './add-product.css',
 })
@@ -24,6 +25,33 @@ export class AddProduct {
   productIni: Product = new Product();
   valuesChange: boolean = false;
   productPrice: string = '';
+
+  placeholderDescription: string = `$$Titre 1
+Paragraphe 1.1
+Paragraphe 1.2
+...
+$$Titre 2
+Paragraphe 2.1
+...`;
+
+  helpHTML: string = `
+    <p>
+      Les champs marqués d'une étoile (<span style="color: red; padding: 0 3px">*</span>) sont
+      obligatoires.
+    </p>
+    <p>Lors de la rédaction de la description détaillée :</p>
+    <ul>
+      <li>
+        Pour les titres et paragraphes, chaque saut de ligne termine un tire ou un paragraphe,
+        et commence un autre titre ou paragraphe.
+      </li>
+      <li>Pour définir un titre, commencez ce titre par la séquence de caractère « $$ ».</li>
+      <li>
+        Les sauts de ligne surnuméraires sont ignorés lors de l'affichage de la description
+        détaillée.
+      </li>
+    </ul>
+  `;
 
   ngOnInit() {
     this.productId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -50,6 +78,21 @@ export class AddProduct {
       this.btnAction = 'Ajouter';
       this.valuesChange = true;
     }
+  }
+
+  // Form verification ///////////////////////////////////////////////////
+
+  // Check the maximum length
+  warningMaxlength(value: string, maxlen: number) {
+    return value && value.length === maxlen;
+  }
+
+  // Check the price
+  errorPrice() {
+    const PRICE = Number(this.productPrice.replace(',', '.'));
+    const ERROR = isNaN(PRICE) || PRICE <= 0 || PRICE >= 10000;
+    if (!ERROR) this.product.price = PRICE;
+    return ERROR;
   }
 
   // IMPORTANT: this method is called whenever the page (component) is modified, not just the form
@@ -117,16 +160,9 @@ export class AddProduct {
   }
 
   // Reset the form
-  reset() {
+  reset(productForm: NgForm) {
+    productForm.reset();
     this.product = structuredClone(this.productIni);
     this.productPrice = this.productIni.price.toString().replace('.', ',');
-  }
-
-  // Check the price
-  errorPrice() {
-    const PRICE = Number(this.productPrice.replace(',', '.'));
-    const ERROR = isNaN(PRICE) || PRICE <= 0 || PRICE >= 10000;
-    if (!ERROR) this.product.price = PRICE;
-    return ERROR;
   }
 }

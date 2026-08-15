@@ -1,14 +1,18 @@
 <section>
   <!-- Login form -->
   <form [formGroup]="loginForm" (ngSubmit)="login()" class="form">
+    <!-- Information regarding the completion of the form -->
+    <app-form-help [isSimple]="true" [helpHTML]="helpHTML"></app-form-help>
+
+    <!-- Form title -->
     <h2>Connexion</h2>
 
     <div>
       <!-- Error message -->
       @if (errorMsg != '') {
-        <div class="text-danger error">{{ errorMsg }}</div>
+        <div class="error">{{ errorMsg }}</div>
       }
-      <label for="email">E-mail&nbsp;:</label>
+      <label for="email">E-mail&nbsp;:</label><span class="required">*</span>
       <input
         type="email"
         id="email"
@@ -23,16 +27,14 @@
         (loginForm.get('email')?.touched || loginForm.get('email')?.dirty)
       ) {
         @if (loginForm.get('email')?.errors?.['required']) {
-          <div class="text-danger error">Ce champ est obligatoire</div>
+          <div class="error">Ce champ est obligatoire</div>
         } @else if (loginForm.get('email')?.errors?.['email']) {
-          <div class="text-danger error">
-            Saisissez une adresse mail valide : votre@adresse.email
-          </div>
+          <div class="error">Saisissez une adresse mail valide : votre@adresse.email</div>
         }
       }
     </div>
     <div>
-      <label for="pswd">Mot de passe&nbsp;:</label>
+      <label for="pswd">Mot de passe&nbsp;:</label><span class="required">*</span>
       <input
         type="password"
         id="pswd"
@@ -40,13 +42,17 @@
         placeholder="Votre mot de passe"
         autocomplete="current-password"
         required
+        [maxlength]="100"
       />
       @if (
-        loginForm.get('pswd')?.invalid &&
-        (loginForm.get('pswd')?.touched || loginForm.get('pswd')?.dirty) &&
-        loginForm.get('pswd')?.errors?.['required']
+        (loginForm.get('pswd')?.invalid || warningMaxlength(loginForm.get('pswd')?.value, 100)) &&
+        (loginForm.get('pswd')?.touched || loginForm.get('pswd')?.dirty)
       ) {
-        <div class="text-danger error">Ce champ est obligatoire</div>
+        @if (loginForm.get('pswd')?.errors?.['required']) {
+          <div class="error">Ce champ est obligatoire</div>
+        } @else {
+          <div class="warning">Information : ce champ est limité à 100 caractères</div>
+        }
       }
     </div>
     <div>

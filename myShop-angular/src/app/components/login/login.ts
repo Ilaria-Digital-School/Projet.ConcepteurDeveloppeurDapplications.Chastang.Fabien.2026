@@ -1,13 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { EnumRoles } from '../../enums/user-roles';
 import { UserService } from '../../services/user-service';
-import { UserRole } from '../../enums/user-role';
 import { User } from '../../models/user';
+import { FormHelp } from '../form-help/form-help';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, FormHelp],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -21,6 +22,11 @@ export class Login {
   errorMsg: string = '';
   fromCart!: boolean;
 
+  helpHTML: string = `
+    Les champs marqués d'une étoile (<span style="color: red; padding: 0 3px">*</span>) sont
+    obligatoires.
+  `;
+
   // Form initialization and field validation setup
   ngOnInit() {
     // Origin of the page request
@@ -30,8 +36,13 @@ export class Login {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       pswd: ['', Validators.required],
-      permanent: [false],
+      permanent: [true],
     });
+  }
+
+  // Check the maximum length
+  warningMaxlength(value: string, maxlen: number) {
+    return value && value.length === maxlen;
   }
 
   // Login method
@@ -43,8 +54,6 @@ export class Login {
     // Retrieve the user's data from DB
     this.userService.login(DATA).subscribe({
       next: (res: User[]) => {
-        console.log(res);
-
         if (res.length > 0) {
           Object.assign(this.user, res[0]);
 
@@ -54,7 +63,7 @@ export class Login {
 
           // Redirect to the home page for the user and to the dashboard for the administrator
           this.router.navigate([
-            this.user.role === UserRole.user ? (this.fromCart ? '/user-cart' : '/') : '/dashboard',
+            this.user.role === EnumRoles.user ? (this.fromCart ? '/user-cart' : '/') : '/dashboard',
           ]);
         } else {
           this.errorMsg = 'E-mail ou mot de passe incorrect !';

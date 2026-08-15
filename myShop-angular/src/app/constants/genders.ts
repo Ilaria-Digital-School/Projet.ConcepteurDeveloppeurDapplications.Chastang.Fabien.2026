@@ -1,11 +1,11 @@
-import { UserGender } from '../enums/user-gender';
+import { EnumGenders } from '../enums/user-genders';
 
 // User's gender class
 export class Genders {
-  static other = { value: UserGender.other, id: 'other', label: '– Indéfini –' };
+  static other = { value: EnumGenders.other, id: 'other', label: '– Indéfini –' };
   static list = [
-    { value: UserGender.female, id: 'female', label: 'Femme' },
-    { value: UserGender.male, id: 'male', label: 'Homme' },
+    { value: EnumGenders.female, id: 'female', label: 'Femme' },
+    { value: EnumGenders.male, id: 'male', label: 'Homme' },
     this.other,
   ];
 

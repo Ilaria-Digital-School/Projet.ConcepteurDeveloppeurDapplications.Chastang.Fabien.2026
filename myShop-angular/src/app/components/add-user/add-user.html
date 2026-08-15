@@ -1,6 +1,10 @@
 <section>
   <!-- User registration form -->
   <form class="form" [formGroup]="userForm" (ngSubmit)="submit()">
+    <!-- Information regarding the completion of the form -->
+    <app-form-help [isSimple]="true" [helpHTML]="helpHTML"></app-form-help>
+
+    <!-- Form title -->
     <h2>{{ title }}</h2>
 
     <!-- Required fields -->
@@ -8,29 +12,33 @@
       <legend>Informations personnelles</legend>
       <!-- User's login name -->
       <div>
-        <label for="userName">Nom&nbsp;:</label>
+        <label for="userName">Nom&nbsp;:</label><span class="required">*</span>
         <input
           type="text"
           id="userName"
           formControlName="userName"
           placeholder="Votre nom"
           autocomplete="off"
+          [maxlength]="50"
         />
         <!-- Error message -->
         @if (
-          userForm.get('userName')?.invalid &&
+          (userForm.get('userName')?.invalid ||
+            warningMaxlength(userForm.get('userName')?.value, 50)) &&
           (userForm.get('userName')?.touched || userForm.get('userName')?.dirty)
         ) {
           @if (userForm.get('userName')?.errors?.['required']) {
-            <div class="text-danger error">Ce champ est obligatoire</div>
-          } @else if (userForm.get('userName')?.errors?.['minlength']) {
-            <div class="text-danger error">Saisissez au moins 3 caractères</div>
+            <div class="error">Ce champ est obligatoire</div>
+          } @else if (userForm.get('userName')?.errors?.['pattern']) {
+            <div class="error">Saisissez au moins 3 caractères non blancs</div>
+          } @else {
+            <div class="warning">Information : ce champ est limité à 50 caractères</div>
           }
         }
       </div>
       <!-- User's email -->
       <div>
-        <label for="userEmail">E-mail&nbsp;:</label>
+        <label for="userEmail">E-mail&nbsp;:</label><span class="required">*</span>
         <input
           type="email"
           id="userEmail"
@@ -44,11 +52,9 @@
           (userForm.get('userEmail')?.touched || userForm.get('userEmail')?.dirty)
         ) {
           @if (userForm.get('userEmail')?.errors?.['required']) {
-            <div class="text-danger error">Ce champ est obligatoire</div>
+            <div class="error">Ce champ est obligatoire</div>
           } @else if (userForm.get('userEmail')?.errors?.['userEmail']) {
-            <div class="text-danger error">
-              Saisissez une adresse mail valide : votre@adresse.email
-            </div>
+            <div class="error">Saisissez une adresse mail valide : votre@adresse.email</div>
           }
         }
       </div>
@@ -56,31 +62,35 @@
         <!-- User's password -->
         <div>
           <!-- Password -->
-          <label for="pswd">Mot de passe&nbsp;:</label>
+          <label for="pswd">Mot de passe&nbsp;:</label><span class="required">*</span>
           <input
             type="password"
             id="pswd"
             formControlName="pswd"
             autocomplete="new-password"
             placeholder="Votre mot de passe"
+            [maxlength]="100"
           />
           <!-- Error message -->
           @if (
-            userForm.get('pswd')?.invalid &&
+            (userForm.get('pswd')?.invalid || warningMaxlength(userForm.get('pswd')?.value, 100)) &&
             (userForm.get('pswd')?.touched || userForm.get('pswd')?.dirty)
           ) {
             @if (userForm.get('pswd')?.errors?.['required']) {
-              <div class="text-danger error">Ce champ est obligatoire</div>
+              <div class="error">Ce champ est obligatoire</div>
             } @else if (userForm.get('pswd')?.errors?.['pattern']) {
-              <div class="text-danger error">
+              <div class="error">
                 Le mot de passe doit contenir au moins 8 caractères, tous non blancs, avec au moins
                 une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial
               </div>
+            } @else {
+              <div class="warning">Information : ce champ est limité à 100 caractères</div>
             }
           }
           <!-- Confirm password -->
           <div [class]="'confirm'">
-            <label for="confirm">Confirmation du mot de passe&nbsp;:</label>
+            <label for="confirm">Confirmation du mot de passe&nbsp;:</label
+            ><span class="required">*</span>
             <input
               type="password"
               id="confirm"
@@ -88,13 +98,14 @@
               autocomplete="new-password"
               placeholder="Confirmez de votre mot de passe"
               aria-label="Confirmez de votre mot de passe"
+              [maxlength]="100"
             />
             <!-- Error message -->
             @if (userForm.get('confirm')?.touched || userForm.get('confirm')?.dirty) {
               @if (userForm.get('confirm')?.errors?.['required']) {
-                <div class="text-danger error">Ce champ est obligatoire</div>
+                <div class="error">Ce champ est obligatoire</div>
               } @else if (userForm.hasError('pswdMismatch')) {
-                <div class="text-danger error">La confirmation du mot de passe est incorrecte</div>
+                <div class="error">La confirmation du mot de passe est incorrecte</div>
               }
             }
           </div>

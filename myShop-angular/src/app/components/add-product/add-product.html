@@ -1,10 +1,14 @@
 <section>
   <!-- Product addition form -->
   <form id="productForm" #productForm="ngForm" (ngSubmit)="submit(productForm)" class="form">
+    <!-- Information regarding the completion of the form -->
+    <app-form-help [isSimple]="false" [helpHTML]="helpHTML"></app-form-help>
+
+    <!-- Form title -->
     <h2>{{ title }}</h2>
 
     <div>
-      <label for="productName">Nom&nbsp;:</label>
+      <label for="productName">Nom&nbsp;:</label><span class="required">*</span>
       <input
         type="text"
         name="productName"
@@ -16,58 +20,68 @@
         maxlength="50"
         #productName="ngModel"
       />
-      @if (productName.invalid && (productName.touched || productName.dirty)) {
+      @if (
+        (productName.invalid || warningMaxlength(productName.value, 50)) &&
+        (productName.touched || productName.dirty)
+      ) {
         @if (productName.errors?.['required']) {
-          <div class="text-danger error">Ce champ est obligatoire</div>
+          <div class="error">Ce champ est obligatoire</div>
         } @else if (productName.errors?.['minlength']) {
-          <div class="text-danger error">Ce champ doit contenir au moins 3 caractères</div>
+          <div class="error">Ce champ doit contenir au moins 3 caractères</div>
+        } @else {
+          <div class="warning">Information : ce champ est limité à 50 caractères</div>
         }
       }
     </div>
     <div>
-      <label for="description">Description succincte&nbsp;:</label>
-      <textarea
+      <label for="description">Description succincte&nbsp;:</label><span class="required">*</span>
+      <input
+        type="text"
         name="description"
         id="description"
         [(ngModel)]="product.description"
-        placeholder="Description de l'article"
+        placeholder="Description succincte de l'article"
         required
         minlength="10"
         maxlength="50"
         #description="ngModel"
-      ></textarea>
-      @if (description.invalid && (description.touched || description.dirty)) {
+      />
+      @if (
+        (description.invalid || warningMaxlength(description.value, 50)) &&
+        (description.touched || description.dirty)
+      ) {
         @if (description.errors?.['required']) {
-          <div class="text-danger error">Ce champ est obligatoire</div>
+          <div class="error">Ce champ est obligatoire</div>
         } @else if (description.errors?.['minlength']) {
-          <div class="text-danger error">Ce champ doit contenir au moins 10 caractères</div>
+          <div class="error">Ce champ doit contenir au moins 10 caractères</div>
+        } @else {
+          <div class="warning">Information : ce champ est limité à 50 caractères</div>
         }
       }
     </div>
     <div>
-      <label for="price">Prix&nbsp;:&nbsp;</label>
+      <label for="price">Prix&nbsp;:</label
+      ><span class="required" [style.margin-right]="'5px'">*</span>
       <input
         type="text"
         name="price"
         id="price"
-        [(ngModel)]="productPrice"
         class="number"
+        [(ngModel)]="productPrice"
         required
         maxlength="7"
         #price="ngModel"
       />
       @if ((price.invalid || errorPrice()) && (price.touched || price.dirty)) {
         @if (price.errors?.['required']) {
-          <div class="text-danger error">Ce champ est obligatoire</div>
+          <div class="error">Ce champ est obligatoire</div>
         } @else {
-          <div class="text-danger error">
-            Le prix doit être un nombre supérieur à 0 et inférieur à 10000
-          </div>
+          <div class="error">Le prix doit être un nombre supérieur à 0 et inférieur à 10000</div>
         }
       }
     </div>
     <div>
-      <label for="productImg">Image&nbsp;:</label>
+      <label for="productImg">Image&nbsp;:</label><span class="required">*</span>
       <input
         type="text"
         name="productImg"
@@ -79,7 +93,7 @@
       />
       @if (productImg.invalid && (productImg.touched || productImg.dirty)) {
         @if (productImg.errors?.['required']) {
-          <div class="text-danger error">Ce champ est obligatoire</div>
+          <div class="error">Ce champ est obligatoire</div>
         }
       }
     </div>
@@ -88,7 +102,9 @@
       <textarea
         name="fullDescription"
         id="fullDescription"
+        rows="7"
         [(ngModel)]="product.fullDescription"
+        placeholder="{{ placeholderDescription }}"
       ></textarea>
     </div>
     <div>
@@ -100,6 +116,9 @@
         maxlength="100"
         #info="ngModel"
       ></textarea>
+      @if (warningMaxlength(info.value, 100) && (info.touched || info.dirty)) {
+        <div class="warning">Information : ce champ est limité à 100 caractères</div>
+      }
     </div>
     <div class="div-button">
       <button
@@ -109,7 +128,7 @@
       >
         {{ btnAction }}
       </button>
-      <button type="button" (click)="reset()" title="Effacer" aria-label="Effacer">
+      <button type="button" (click)="reset(productForm)" title="Effacer" aria-label="Effacer">
         <i class="fa-solid fa-eraser"></i>
       </button>
     </div>

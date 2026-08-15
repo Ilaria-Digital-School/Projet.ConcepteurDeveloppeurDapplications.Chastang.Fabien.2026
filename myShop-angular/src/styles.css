@@ -43,6 +43,21 @@ main {
   display: none;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
+.warning {
+  font-weight: normal;
+  color: rgb(235, 0, 0);
+  font-style: italic;
+}
+
+.error {
+  font-weight: normal;
+  color: rgb(235, 0, 0);
+}
+
 section {
   background-color: white;
   border-radius: 10px;
@@ -99,11 +114,6 @@ a.nav-link:not(active) {
   color: rgb(43, 88, 212);
   text-decoration: underline;
   cursor: pointer;
-}
-
-.error {
-  font-size: 15px;
-  font-weight: normal;
 }
 
 /*
@@ -184,8 +194,10 @@ button {
   margin: 2px;
 }
 
-.pointer {
-  cursor: pointer;
+.div-button {
+  text-align: center;
+  padding-top: 5px;
+  white-space: nowrap;
 }
 
 .btn-disabled,
@@ -396,6 +408,7 @@ button:active,
 \*****************************/
 
 .form {
+  position: relative;
   max-width: 500px;
   background-color: white;
   border: 1px solid rgb(175, 171, 171);
@@ -430,6 +443,12 @@ button:active,
   font-weight: bold;
 }
 
+.form .required {
+  color: red;
+  font-size: 20px;
+  margin-left: 5px;
+}
+
 .form input[type='text'],
 .form input[type='email'],
 .form input[type='password'],
@@ -443,21 +462,68 @@ button:active,
   margin-top: 5px;
 }
 
-.form .number {
-  max-width: 100px;
-  height: 30px;
-}
-
 .form input[type='checkbox'],
 .form input[type='radio'] {
   height: auto;
   margin-right: 5px;
 }
 
-.div-button {
-  text-align: center;
-  padding-top: 5px;
-  white-space: nowrap;
+.form .number {
+  max-width: 100px;
+  height: 30px;
+}
+
+/*
+    Information
+*/
+
+.form .info-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.form .info-icon i {
+  transform: scale(1.75);
+}
+
+.form .info-text {
+  z-index: 150;
+  position: absolute;
+  top: 100%;
+  right: 20px;
+  background-color: lightyellow;
+  border: 1px solid #777;
+  border-radius: 5px;
+  padding-top: 10px;
+  padding-left: 15px;
+  padding-right: 10px;
+  width: 500px;
+
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    visibility 0.3s ease;
+}
+
+.form .info-text.simple {
+  padding-bottom: 10px;
+  width: 430px;
+}
+
+.form .info-text p {
+  margin-bottom: 5px;
+}
+
+.form .info-text p:last-of-type {
+  margin-bottom: 0;
+}
+
+.form .info-icon:hover .info-text {
+  visibility: visible;
+  opacity: 1;
 }
 
 /*
@@ -476,6 +542,10 @@ button:active,
   .div-button {
     transform: scale(0.9);
   }
+
+.form .info-text {
+  width: 280px;
+}
 }
 
 /*****************************\

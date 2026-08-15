@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import { UserRole } from '../enums/user-role';
+import { EnumRoles } from '../enums/user-roles';
 import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  UserRole = UserRole;
-
   connectedUser: User | null = null;
 
   getConnectedUser(): User | null {
@@ -24,8 +22,8 @@ export class AuthService {
 
   isAdmin(): boolean {
     return (
-      this.getConnectedUser()?.role === UserRole.admin ||
-      this.connectedUser?.role === UserRole.superAdmin
+      this.getConnectedUser()?.role === EnumRoles.admin ||
+      this.connectedUser?.role === EnumRoles.superAdmin
     );
   }
 

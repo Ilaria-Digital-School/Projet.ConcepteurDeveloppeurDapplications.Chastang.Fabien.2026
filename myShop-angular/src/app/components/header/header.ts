@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
 import { CartService } from '../../services/cart-service';
-import { UserRole } from '../../enums/user-role';
+import { EnumRoles } from '../../enums/user-roles';
 import { User } from '../../models/user';
 
 @Component({
@@ -12,7 +12,7 @@ import { User } from '../../models/user';
   styleUrl: './header.css',
 })
 export class Header {
-  UserRole = UserRole;
+  EnumRoles = EnumRoles;
 
   private router = inject(Router);
   private authService = inject(AuthService);
