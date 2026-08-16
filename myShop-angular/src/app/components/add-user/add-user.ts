@@ -35,13 +35,16 @@ export class CustomValidators {
   styleUrl: './add-user.css',
 })
 export class AddUser {
-  Countries = Countries;
+  // Constants
+  public Countries = Countries;
 
+  // Native classes / Application services
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private userService = inject(UserService);
 
+  // Class properties
   userForm!: FormGroup;
   isEditMode!: boolean;
   userId!: string | null;
@@ -51,8 +54,8 @@ export class AddUser {
   userIni: User = new User();
   users: User[] = [];
   fromCart!: boolean;
+  fromTable!: boolean;
   valuesChange: boolean = false;
-
   helpHTML: string = `
     Les champs marqués d'une étoile (<span style="color: red; padding: 0 3px">*</span>) sont
     obligatoires.
@@ -64,6 +67,7 @@ export class AddUser {
   ngOnInit() {
     // Origin of the page request
     this.fromCart = this.router.url.includes('add-user-cart');
+    this.fromTable = this.router.url.includes('edit-user-table');
 
     // Get user ID if it exists
     this.userId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -236,7 +240,11 @@ export class AddUser {
         // Update the user
         this.userService.updateUser(USER).subscribe({
           next: (res: Object) => {
-            alert('Votre compte a été modifié.');
+            if (this.fromTable) {
+              this.router.navigate(['/dashboard']);
+            } else {
+              this.router.navigate(['/user-view', this.userId]);
+            }
           },
           error: (err: any) => {
             alert("Une erreur s'est produite lors de la modification.");
@@ -256,7 +264,7 @@ export class AddUser {
       this.userService.addUser(USER).subscribe({
         next: (res: Object) => {
           alert('Votre compte a été créé.');
-          this.reset();
+          this.gotoLogin();
         },
         error: (err: any) => {
           alert("Une erreur s'est produite lors de la création.");

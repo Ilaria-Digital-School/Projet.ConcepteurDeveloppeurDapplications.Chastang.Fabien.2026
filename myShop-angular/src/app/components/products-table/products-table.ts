@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product-service';
+import { Common } from '../../constants/common';
 
 @Component({
   selector: 'app-products-table',
@@ -10,15 +11,23 @@ import { ProductService } from '../../services/product-service';
   styleUrl: './products-table.css',
 })
 export class ProductsTable {
+  // Constants
+  public Common = Common;
+
+  // Native classes / Application services
   private router = inject(Router);
   private productService = inject(ProductService);
 
+  // User messages
+  private static msgDelProduct: string = 'Êtes-vous sûr de vouloir supprimer cet article ?';
+
+  // Class properties
   products: Product[] = [];
 
   // Initialization //////////////////////////////////////////////////////
 
-  // Initialize the product list
   ngOnInit() {
+    // Initialize the product list
     this.load();
   }
 
@@ -39,7 +48,7 @@ export class ProductsTable {
 
   // View a product
   view(id: string) {
-    this.router.navigate(['/product-details', id]);
+    this.router.navigate(['/product-view', id]);
   }
 
   // Edit a product
@@ -49,7 +58,7 @@ export class ProductsTable {
 
   // Delete a product
   remove(id: string) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
+    if (confirm(ProductsTable.msgDelProduct)) {
       // Remove the product
       this.productService.deleteProduct(id).subscribe({
         next: (res: Object) => {

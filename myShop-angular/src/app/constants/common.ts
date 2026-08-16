@@ -97,7 +97,9 @@ export class Common {
   }
 
   // Converts a number to a string by using the current or specified locale settings
-  static numberToString(value: number, locale: string = 'fr-FR', minFracDigits: number = 2) {
-    return value.toLocaleString(locale, { minimumFractionDigits: minFracDigits });
+  static numberToString(value: number, locale: string = 'fr-FR', numberDigits: number = 2) {
+    const POWER10 = 10 ** numberDigits;
+    const VALUE = Math.round(value * POWER10) / POWER10;
+    return VALUE.toLocaleString(locale, { minimumFractionDigits: numberDigits });
   }
 }

@@ -1,0 +1,70 @@
+section {
+  text-align: center;
+}
+
+fieldset {
+  display: inline-block;
+  margin: 5px;
+  padding: 10px 25px 25px 25px;
+  border: 2px solid rgb(175, 171, 171);
+  border-radius: 5px;
+  min-width: 500px;
+  text-align: left;
+}
+
+legend {
+  all: unset;
+  font-weight: 900;
+  font-size: 20px;
+  padding: 0 15px;
+}
+
+legend a {
+  all: unset;
+  color: black;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+fieldset > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+fieldset > div > div {
+  padding: 5px 15px;
+  width: 50%;
+  text-align: left;
+  white-space: nowrap;
+  border: 1px solid white;
+}
+
+fieldset > div > div:first-of-type {
+  font-weight: 600;
+  background-color: aliceblue;
+}
+
+fieldset > div > div:last-of-type {
+  background-color: whitesmoke;
+}
+
+/*
+    Responsive design: smartphone
+*/
+
+@media only screen and (max-width: 767px) {
+  fieldset {
+    min-width: 200px;
+    padding: 0 15px 15px 15px;
+  }
+
+  fieldset > div {
+    display: block;
+  }
+
+  fieldset > div > div {
+    width: 100%;
+  }
+}

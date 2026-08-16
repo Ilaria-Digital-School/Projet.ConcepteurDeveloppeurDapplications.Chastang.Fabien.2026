@@ -19,18 +19,21 @@ import { ProductService } from '../../services/product-service';
   styleUrl: './products-carousel.css',
 })
 export class ProductsCarousel {
+  // To retrieve DOM elements
   @ViewChildren('productCarousel') productsCarousel!: QueryList<ElementRef>;
   @ViewChildren('productCard') productsCard!: QueryList<ElementRef>;
 
+  // Native classes / Application services
+  private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private productService = inject(ProductService);
   private cartService = inject(CartService);
-  private router = inject(Router);
 
-  // Initialization //////////////////////////////////////////////////////
-
+  // Class properties
   products: Product[] = [];
   productId!: string | null;
+
+  // Initialization //////////////////////////////////////////////////////
 
   // Initialization: retrieving the products and the product specified by the ID passed in the URL
   ngOnInit() {
@@ -79,7 +82,7 @@ export class ProductsCarousel {
 
   // View a product
   view(id: string) {
-    this.router.navigate(['/product-details', id]);
+    this.router.navigate(['/product-view', id]);
   }
 
   // Add the product to the user's cart

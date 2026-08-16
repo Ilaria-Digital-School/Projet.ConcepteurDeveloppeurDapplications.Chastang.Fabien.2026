@@ -7,8 +7,10 @@ import { Component, HostListener } from '@angular/core';
   styleUrl: './scroll-top.css',
 })
 export class ScrollTop {
+  // Class properties
   isVisible: boolean = false;
 
+  // Decorator that declares a DOM event to listen for
   @HostListener('window:scroll', [])
   onWindowScroll() {
     // Displays the button as soon as the user scrolls down the page

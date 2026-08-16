@@ -12,12 +12,15 @@ import { User } from '../../models/user';
   styleUrl: './header.css',
 })
 export class Header {
-  EnumRoles = EnumRoles;
+  // Enumarations
+  public EnumRoles = EnumRoles;
 
+  // Native classes / Application services
   private router = inject(Router);
   private authService = inject(AuthService);
   public cartService = inject(CartService);
 
+  // Class properties
   title: string = 'My Shop';
   connectedUser: User | null = null;
 

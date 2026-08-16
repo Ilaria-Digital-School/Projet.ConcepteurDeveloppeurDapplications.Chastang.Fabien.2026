@@ -23,7 +23,7 @@
                 </div>
                 <label [for]="`quantity-${product.id}`">{{ product.description }}</label>
               </td>
-              <td>{{ product.price.toFixed(2) }} €</td>
+              <td>{{ Common.numberToString(product.price) }} €</td>
               <td>
                 <div class="input-group quantity">
                   <button
@@ -57,7 +57,14 @@
                   </button>
                 </div>
               </td>
-              <td>{{ (product.cartQuantity * product.price).toFixed(2) }} €</td>
+              <td>
+                {{
+                  typeof product.cartQuantity === 'number'
+                    ? Common.numberToString(product.cartQuantity * product.price)
+                    : ''
+                }}
+                €
+              </td>
               <td [style.white-space]="'nowrap'">
                 <button
                   type="button"
@@ -85,10 +92,10 @@
             <td>
               <div class="cell-total">
                 <div [style.white-space]="'nowrap'">
-                  {{ getTotalExcludingTax().toFixed(2) }} € HT
+                  {{ Common.numberToString(getTotalExcludingTax()) }} € HT
                 </div>
                 <div [style.white-space]="'nowrap'">
-                  {{ (this.tax * this.total).toFixed(2) }} € TTC
+                  {{ Common.numberToString(this.tax * this.total) }} € TTC
                 </div>
               </div>
             </td>

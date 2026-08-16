@@ -14,16 +14,23 @@ import { User } from '../../models/user';
   styleUrl: './users-table.css',
 })
 export class UsersTable {
+  // Constants
+  public Genders = Genders;
+  public Countries = Countries;
+  public Roles = Roles;
+
+  // Native classes / Application services
   private router = inject(Router);
   private userService = inject(UserService);
-  Genders = Genders;
-  Countries = Countries;
-  Roles = Roles;
 
+  // User messages
+  private static msgDelUser: string = 'Êtes-vous sûr de vouloir supprimer cet utilisateur ?';
+
+  // Class properties
   users: User[] = [];
   editUser!: User | null;
 
-  // Initialization //////////////////////////////////////////////////////
+  // Initialization ///////////////////////////////////////////////////////////
 
   // Initialize the user list
   ngOnInit() {
@@ -43,7 +50,7 @@ export class UsersTable {
     });
   }
 
-  // Actions /////////////////////////////////////////////////////////////
+  // Actions //////////////////////////////////////////////////////////////////
 
   // Edit a user inline
   inlineEdit(user: User) {
@@ -71,12 +78,12 @@ export class UsersTable {
   // Edit a user using the form
   formEdit(user: User) {
     // Redirect to the edit form
-    this.router.navigate(['/edit-user', user.id]);
+    this.router.navigate(['/edit-user-table', user.id]);
   }
 
   // Delete a user
   remove(id: string) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
+    if (confirm(UsersTable.msgDelUser)) {
       // Remove the user
       this.userService.deleteUser(id).subscribe({
         next: (res: Object) => {

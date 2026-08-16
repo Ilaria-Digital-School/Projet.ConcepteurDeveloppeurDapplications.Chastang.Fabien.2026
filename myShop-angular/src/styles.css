@@ -480,6 +480,12 @@ button:active,
   height: 30px;
 }
 
+.label-number {
+  display: inline-block;
+  width: 80px;
+  height: 25px;
+}
+
 /*
     Information
 */
@@ -550,9 +556,9 @@ button:active,
     transform: scale(0.9);
   }
 
-.form .info-text {
-  width: 280px;
-}
+  .form .info-text {
+    width: 280px;
+  }
 }
 
 /*****************************\

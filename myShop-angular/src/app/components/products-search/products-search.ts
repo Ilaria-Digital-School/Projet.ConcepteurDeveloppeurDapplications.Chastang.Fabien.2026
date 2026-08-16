@@ -12,9 +12,11 @@ import { map, Subject } from 'rxjs';
   styleUrl: './products-search.css',
 })
 export class ProductsSearch {
+  // Native classes / Application services
   private router = inject(Router);
   private productService = inject(ProductService);
 
+  // Class properties
   products: Product[] = [];
   filteredProducts: Product[] = [];
   searchSubject: Subject<string> = new Subject<string>();
@@ -60,6 +62,6 @@ export class ProductsSearch {
 
   // View a product
   view(id: string) {
-    this.router.navigate(['/product-details', id]);
+    this.router.navigate(['/product-view', id]);
   }
 }

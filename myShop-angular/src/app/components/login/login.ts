@@ -13,15 +13,16 @@ import { FormHelp } from '../form-help/form-help';
   styleUrl: './login.css',
 })
 export class Login {
+  // Native classes / Application services
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
   private userService = inject(UserService);
 
+  // Class properties
   loginForm!: FormGroup;
   user: User = new User();
   errorMsg: string = '';
   fromCart!: boolean;
-
   helpHTML: string = `
     Les champs marqués d'une étoile (<span style="color: red; padding: 0 3px">*</span>) sont
     obligatoires.

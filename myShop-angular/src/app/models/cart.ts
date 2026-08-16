@@ -1,4 +1,4 @@
-import { Common } from './common';
+import { Common } from '../constants/common';
 import { Product } from './product';
 
 // Cart class
@@ -14,7 +14,7 @@ export class Cart {
       products.forEach((product: Product) => {
         const PRODUCT = this.products.find((item: Product) => item.id === product.id);
         if (PRODUCT) {
-          PRODUCT.cartQuantity++;
+          if (typeof PRODUCT.cartQuantity === 'number') PRODUCT.cartQuantity++;
         } else {
           this.products.push(product);
         }

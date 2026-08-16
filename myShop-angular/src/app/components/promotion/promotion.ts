@@ -7,12 +7,13 @@ import { Component } from '@angular/core';
   styleUrl: './promotion.css',
 })
 export class Promotion {
-  saleDate!: string;
+  // Class properties
+  datePromo!: string;
 
   ngOnInit() {
-    let datePromo = new Date();
-    datePromo = new Date(datePromo.setMonth(datePromo.getMonth() + 1));
-    datePromo = new Date(datePromo.getFullYear(), datePromo.getMonth(), 0);
-    this.saleDate = datePromo.toLocaleDateString();
+    let date = new Date();
+    date = new Date(date.setMonth(date.getMonth() + 1));
+    date = new Date(date.getFullYear(), date.getMonth(), 0);
+    this.datePromo = date.toLocaleDateString();
   }
 }

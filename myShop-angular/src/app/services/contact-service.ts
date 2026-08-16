@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { ContactMessge } from '../models/contact-message';
+import { Contact } from '../models/contact';
 
 @Injectable({
   providedIn: 'root',
@@ -14,11 +14,11 @@ export class ContactService {
 
   // Response: product object or null
   getContactMessageById(id: string | null) {
-    return this.httpClient.get<ContactMessge>(`${this.contactURL}/${id}`);
+    return this.httpClient.get<Contact>(`${this.contactURL}/${id}`);
   }
 
   // Response: string, boolean, object + ID
-  addContactMessage(product: ContactMessge) {
+  addContactMessage(product: Contact) {
     return this.httpClient.post(this.contactURL, product);
   }
 

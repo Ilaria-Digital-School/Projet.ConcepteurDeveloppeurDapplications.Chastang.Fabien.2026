@@ -62,8 +62,10 @@
       }
     </div>
     <div>
-      <label for="price">Prix&nbsp;:</label
-      ><span class="required" [style.margin-right]="'5px'">*</span>
+      <div class="label-number">
+        <label for="price">Prix&nbsp;:</label>
+        <span class="required" [style.margin-right]="'5px'">*</span>
+      </div>
       <input
         type="text"
         name="price"
@@ -73,12 +75,38 @@
         required
         maxlength="7"
         #price="ngModel"
+        (change)="formatPrice()"
       />
       @if ((price?.invalid || errorPrice()) && (price?.touched || price?.dirty)) {
         @if (price?.errors?.['required']) {
           <div class="error">Ce champ est obligatoire</div>
         } @else {
           <div class="error">Le prix doit être un nombre supérieur à 0 et inférieur à 10000</div>
+        }
+      }
+    </div>
+    <div>
+      <div class="label-number">
+        <label for="price">Stock&nbsp;:</label>
+        <span class="required" [style.margin-right]="'5px'">*</span>
+      </div>
+      <input
+        type="text"
+        name="stock"
+        id="stock"
+        class="number"
+        [(ngModel)]="productStock"
+        required
+        maxlength="7"
+        #stock="ngModel"
+      />
+      @if ((stock?.invalid || errorStock()) && (stock?.touched || stock?.dirty)) {
+        @if (stock?.errors?.['required']) {
+          <div class="error">Ce champ est obligatoire</div>
+        } @else {
+          <div class="error">
+            Le stock doit être un nombre entier positif ou nul et inférieur à 10000
+          </div>
         }
       }
     </div>
@@ -130,6 +158,7 @@
           errorMinlength(productName?.value, 3) ||
           errorMinlength(description?.value, 10) ||
           errorPrice() ||
+          errorStock() ||
           !hasChanged()
         "
         [class.btn-disabled]="
@@ -137,6 +166,7 @@
           errorMinlength(productName?.value, 3) ||
           errorMinlength(description?.value, 10) ||
           errorPrice() ||
+          errorStock() ||
           !hasChanged()
         "
       >

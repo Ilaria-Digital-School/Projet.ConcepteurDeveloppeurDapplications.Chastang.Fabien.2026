@@ -7,7 +7,10 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
   styleUrl: './form-help.css',
 })
 export class FormHelp {
+  // To retrieve DOM elements
   @ViewChild('infoText') infoText!: ElementRef;
+
+  // To retrieve data from another component
   @Input() isSimple: any;
   @Input() helpHTML: any;
 

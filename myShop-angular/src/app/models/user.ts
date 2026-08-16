@@ -1,4 +1,4 @@
-import { Common } from './common';
+import { Common } from '../constants/common';
 import { Genders } from '../constants/genders';
 import { Interests } from '../constants/interests';
 import { Countries } from '../constants/countries';
@@ -17,7 +17,7 @@ export class User {
   visible: boolean = true;
 
   // Temporary property, not saved
-  additional: any = {}; // For additional properties (RxJS)
+  additional: any = {}; // For additional properties (RxJS) while preserving the 'User' type
 
   constructor(
     name: string | null = null,

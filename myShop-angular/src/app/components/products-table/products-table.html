@@ -8,24 +8,32 @@
         <th scope="col">Description</th>
         <th scope="col" [style.white-space]="'nowrap'">Prix (HT)</th>
         <th scope="col" [style.white-space]="'nowrap'">Prix (TTC)</th>
-        <th scope="col">Info</th>
+        <th scope="col">Stock</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
     <tbody class="table-group-divider">
       @for (product of products; track product.id; let i = $index) {
-        <tr>
+        <tr [class]="product.stock === 0 ? 'unavailable-row' : ''">
           <th scope="row">{{ i + 1 }}</th>
-          <td>{{ product.id }}</td>
-          <td [style.text-align]="'left'">{{ product.name }}</td>
-          <td [style.text-align]="'left'">{{ product.description }}</td>
-          <td>{{ product.price.toFixed(2) }} €</td>
-          <td>{{ product.additional.priceTax.toFixed(2) }} €</td>
-          @if (product.info === undefined || product.info === null || product.info == '') {
-            <td></td>
-          } @else {
-            <td [style.text-align]="'left'">{{ product.info }}</td>
-          }
+          <td>
+            <div [class]="product.stock === 0 ? 'unavailable-cell' : ''">
+              {{ product.id }}
+            </div>
+          </td>
+          <td>
+            <div [class]="product.stock === 0 ? 'unavailable-cell-left' : 'cell-left'">
+              {{ product.name }}
+            </div>
+          </td>
+          <td [class]="'cell-left'">{{ product.description }}</td>
+          <td>{{ Common.numberToString(product.price) }} €</td>
+          <td>{{ Common.numberToString(product.additional.priceTax) }} €</td>
+          <td>
+            <div [class]="product.stock === 0 ? 'unavailable-cell' : ''">
+              {{ product.stock }}
+            </div>
+          </td>
           <td [style.white-space]="'nowrap'">
             <button
               type="button"

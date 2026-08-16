@@ -5,24 +5,25 @@ import { CartService } from '../../services/cart-service';
 import { Product } from '../../models/product';
 
 @Component({
-  selector: 'app-product-details',
+  selector: 'app-product-view',
   imports: [],
-  templateUrl: './product-details.html',
-  styleUrl: './product-details.css',
+  templateUrl: './product-view.html',
+  styleUrl: './product-view.css',
 })
-export class ProductDetails {
+export class ProductView {
+  // Native classes / Application services
   private activatedRoute = inject(ActivatedRoute);
   private productService = inject(ProductService);
   private cartService = inject(CartService);
 
-  // Retrieve the product ////////////////////////////////////////////////
-
+  // Class properties
   productId!: string | null;
   product: Product = new Product();
   fullDescription: any[] = [];
 
-  // Initialize the card
+  // Initialize the view
   ngOnInit() {
+    // Retrieve the product
     this.productId = this.activatedRoute.snapshot.paramMap.get('id');
     this.productService.getProductById(this.productId).subscribe({
       next: (res: Product) => {

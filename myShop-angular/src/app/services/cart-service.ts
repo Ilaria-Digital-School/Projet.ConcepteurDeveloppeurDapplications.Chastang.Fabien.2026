@@ -24,7 +24,7 @@ export class CartService {
     }
   }
 
-  // Add a product in the cart
+  // Add an item to the cart
   add(product: Product) {
     this.cart.update((products: Product[]) => {
       product.cartQuantity = 1;
@@ -34,7 +34,7 @@ export class CartService {
     });
   }
 
-  // Remove a product from the cart
+  // Remove an item from the cart
   remove(product: Product) {
     this.cart.update((products: Product[]) => {
       const INDEX = products.findIndex((item: Product) => item.id === product.id);
@@ -54,6 +54,7 @@ export class CartService {
     });
   }
 
+  // Remove a product from the cart
   removeProduct(id: string) {
     this.cart.update((products: Product[]) => {
       const NEW_CART = products.filter((product: Product) => product.id !== id);
@@ -67,6 +68,7 @@ export class CartService {
     });
   }
 
+  // Delete the user's cart
   removeCart() {
     localStorage.removeItem('cart');
     this.cart.set([]);

@@ -1,7 +1,7 @@
-import { Common } from './common';
+import { Common } from '../constants/common';
 
 // Product class
-export class ContactMessge {
+export class Contact {
   id: string = Common.getID();
   name: string = '';
   email: string = '';

@@ -6,3 +6,18 @@
 .low-price {
   color: rgb(0, 64, 0);
 }
+
+.unavailable-row {
+  font-weight: 600;
+}
+
+.unavailable-cell,
+.unavailable-cell-left {
+  color: red;
+  transform: scale(1.1);
+}
+
+.cell-left,
+.unavailable-cell-left {
+  text-align: left;
+}

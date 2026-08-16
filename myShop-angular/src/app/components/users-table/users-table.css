@@ -1,0 +1,13 @@
+.admin-row {
+  font-weight: 600;
+}
+
+.admin-cell,
+.admin-cell-left {
+  color: red;
+}
+
+.cell-left,
+.admin-cell-left {
+  text-align: left;
+}

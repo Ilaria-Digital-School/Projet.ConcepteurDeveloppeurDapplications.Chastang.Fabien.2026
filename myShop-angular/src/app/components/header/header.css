@@ -9,16 +9,6 @@ header {
   background: linear-gradient(to bottom, darkblue, rgb(86, 131, 255));
 }
 
-header .selected-page {
-  display: inline-block;
-  transform: translateY(-1px) scale(1.2);
-  color: rgb(255, 230, 0);
-}
-
-header span .selected-page {
-  cursor: default;
-}
-
 header .profile:hover {
   transform: translateX(7px) translateY(-1px) scale(1.2);
 }
@@ -66,13 +56,8 @@ header .arrow:hover {
   gap: 5px;
 }
 
-.navbar-collapse.show a:hover,
-.navbar-collapse.show .selected-page {
+.navbar-collapse.show a:hover {
   transform: translateY(0) scale(1);
-}
-
-.navbar-collapse.show .selected-page {
-  font-weight: bold;
 }
 
 /*
@@ -125,16 +110,9 @@ header .arrow:hover {
   color: black;
 }
 
-.submenu .selected-page {
-  padding: 3px 10px;
-  cursor: default;
-  transform: translateX(4px) scale(1.1);
-  color: black;
-  font-weight: 600;
-}
-
 .submenu.separated li:last-of-type {
   border-top: 1px solid #777;
+  margin-top: 5px;
   padding-top: 3px;
   padding-bottom: 3px;
   font-size: 14px;

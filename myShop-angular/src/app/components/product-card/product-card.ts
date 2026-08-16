@@ -8,9 +8,12 @@ import { Product } from '../../models/product';
   styleUrl: './product-card.css',
 })
 export class ProductCard {
+  // To retrieve data from another component
   @Input() isList: any;
   @Input() isSearch: any;
   @Input() product: any;
+
+  // To send an event to another component
   @Output() viewEvent = new EventEmitter();
   @Output() addEvent = new EventEmitter();
   @Output() removeEvent = new EventEmitter();

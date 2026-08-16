@@ -12,9 +12,11 @@ import { take } from 'rxjs';
   styleUrl: './products.css',
 })
 export class Products {
+  // Native classes / Application services
   private router = inject(Router);
   private productService = inject(ProductService);
 
+  // Class properties
   maxCount: number = 6;
   products: Product[] = [];
 

@@ -15,8 +15,8 @@ export class Genders {
     const GENDER = this.list.find((item: any) => item.label.toLowerCase() === NAME);
     return GENDER ? GENDER.value : this.other.value;
   }
-  static getName(genderId: number) {
+  static getName(genderId: number, other: string | undefined = undefined) {
     const GENDER = this.list.find((item: any) => item.value === genderId);
-    return GENDER ? GENDER.label : this.other.label;
+    return GENDER === undefined ? (other === undefined ? other : this.other.label) : GENDER.label;
   }
 }
