@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
-// import { DatePipe, LowerCasePipe, UpperCasePipe } from '@angular/common';
-// import { TransformPipe } from '../../pipes/transform-pipe';
-// import { ReversePipe } from '../../pipes/reverse-pipe';
+import { AboutIntroduction } from "../about-introduction/about-introduction";
+import { AboutInformation } from "../about-information/about-information";
+import { AboutBenefits } from "../about-benefits/about-benefits";
 
 @Component({
   selector: 'app-about',
-  imports: [/* UpperCasePipe, LowerCasePipe, DatePipe, TransformPipe, ReversePipe */],
+  imports: [AboutIntroduction, AboutInformation, AboutBenefits],
   templateUrl: './about.html',
   styleUrl: './about.css',
 })
 export class About {
-  // now: Date = new Date();
 }

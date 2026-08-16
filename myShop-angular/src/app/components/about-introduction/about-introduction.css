@@ -1,0 +1,11 @@
+p:first-of-type {
+  margin-top: 20px;
+}
+
+p {
+  margin: 10px 0;
+}
+
+p:last-of-type {
+  margin-bottom: 0;
+}
