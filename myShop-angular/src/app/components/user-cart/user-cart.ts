@@ -45,9 +45,16 @@ export class UserCart {
     }
   }
 
+  // Product-related action ///////////////////////////////////////////////////
+
   // Method to retrieve the logged-in user
   getConnectedUser() {
     this.connectedUser = this.authService.getConnectedUser();
+  }
+
+  // View a product
+  view(id: string) {
+    this.router.navigate(['/product-details', id]);
   }
 
   // Increase the quantity of a product
@@ -85,6 +92,8 @@ export class UserCart {
     // Remove the product from the cart view
     this.userCart.products = this.userCart.products.filter((product: Product) => product.id !== id);
   }
+
+  // Cart-related action //////////////////////////////////////////////////////
 
   // Retrieve the total cart amount excluding tax
   getTotalExcludingTax() {
