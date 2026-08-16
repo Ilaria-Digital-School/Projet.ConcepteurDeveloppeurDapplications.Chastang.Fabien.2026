@@ -176,7 +176,6 @@ export class AddProduct {
       // Add the product
       this.productService.addProduct(PRODUCT).subscribe({
         next: (res: Object) => {
-          console.log(res);
           const PRODUCT = new Product();
           Object.assign(PRODUCT, res);
           this.router.navigate(['/product-view', PRODUCT.id]);
