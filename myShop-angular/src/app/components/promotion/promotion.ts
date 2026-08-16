@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-remnant-sale',
+  selector: 'app-promotion',
   imports: [],
-  templateUrl: './remnant-sale.html',
-  styleUrl: './remnant-sale.css',
+  templateUrl: './promotion.html',
+  styleUrl: './promotion.css',
 })
-export class RemnantSale {
+export class Promotion {
   saleDate!: string;
 
   ngOnInit() {
