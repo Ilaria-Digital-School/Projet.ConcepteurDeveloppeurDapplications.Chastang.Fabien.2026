@@ -76,7 +76,6 @@ header .arrow:hover {
   left: 0;
   padding: 0;
   list-style: none;
-  width: 140px;
   background-color: #fff;
   border: 1px solid #777;
   border-radius: 5px;
@@ -90,6 +89,14 @@ header .arrow:hover {
     opacity 0.3s ease,
     transform 0.3s ease,
     visibility 0.3s ease;
+}
+
+.submenu {
+  width: 140px;
+}
+
+.submenu.separated {
+  width: 165px;
 }
 
 .menu li:hover .submenu {

@@ -65,10 +65,10 @@
             @if (getConnectedUser()) {
               <ul class="submenu separated">
                 <li>
-                  <a [routerLink]="['/user-view', connectedUser?.id]"> Profile </a>
+                  <a [routerLink]="['/user-view', connectedUser?.id]"> Mon Profile </a>
                 </li>
                 <li>
-                  <a [routerLink]="['/user-orders', connectedUser?.id]"> Commandes </a>
+                  <a [routerLink]="['/user-orders', connectedUser?.id]"> Mes Commandes </a>
                 </li>
                 <li>
                   <a class="pointer" (click)="logout()">
