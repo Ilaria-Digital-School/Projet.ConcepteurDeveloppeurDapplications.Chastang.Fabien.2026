@@ -38,14 +38,15 @@
 }
 
 .row-total {
-  border: 2px solid var(--light2-gray);
+  border: 2px solid var(--middle1-gray);
   font-weight: 600;
   font-size: 17px;
 }
 
 .label-total {
-  font-size: 20px;
+  padding-left: 15px;
   text-align: left;
+  font-size: 20px;
 }
 
 .cell-total {

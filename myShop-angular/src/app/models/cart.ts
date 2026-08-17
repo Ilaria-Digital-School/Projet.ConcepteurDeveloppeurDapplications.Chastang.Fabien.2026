@@ -21,4 +21,15 @@ export class Cart {
       });
     }
   }
+
+  // Retrieve the total cart amount excluding tax
+  getTotalExcludingTax() {
+    const getTotal = (total: number, product: Product) => {
+      return (
+        total +
+        (typeof product.cartQuantity === 'number' ? product.cartQuantity * product.price : 0)
+      );
+    };
+    return this.products.reduce(getTotal, 0);
+  }
 }

@@ -110,12 +110,7 @@ export class UserCart {
 
   // Retrieve the total cart amount excluding tax
   getTotalExcludingTax() {
-    return (this.total = this.userCart.products.reduce((total: number, product: Product) => {
-      return (
-        total +
-        (typeof product.cartQuantity === 'number' ? product.cartQuantity * product.price : 0)
-      );
-    }, 0));
+    return (this.total = this.userCart.getTotalExcludingTax());
   }
 
   // Delete the user's cart
