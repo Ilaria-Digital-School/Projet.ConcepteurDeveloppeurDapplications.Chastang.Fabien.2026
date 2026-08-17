@@ -1,5 +1,5 @@
 footer {
-  background: linear-gradient(to top, darkblue, rgb(86, 131, 255));
+  background: linear-gradient(to top, var(--dark-blue), var(--light2-blue));
 }
 
 footer h2 {

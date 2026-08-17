@@ -8,12 +8,12 @@ import { Roles } from '../../constants/roles';
 import { User } from '../../models/user';
 
 @Component({
-  selector: 'app-users-table',
+  selector: 'app-table-users',
   imports: [FormsModule],
-  templateUrl: './users-table.html',
-  styleUrl: './users-table.css',
+  templateUrl: './table-users.html',
+  styleUrl: './table-users.css',
 })
-export class UsersTable {
+export class TableUsers {
   // Constants
   public Genders = Genders;
   public Countries = Countries;
@@ -84,7 +84,7 @@ export class UsersTable {
   // Delete a user
   remove(id: string) {
     // Confirmaton message to delete the user
-    if (confirm(UsersTable.msgDelUser)) {
+    if (confirm(TableUsers.msgDelUser)) {
       // Remove the user
       this.userService.deleteUser(id).subscribe({
         next: (res: Object) => {

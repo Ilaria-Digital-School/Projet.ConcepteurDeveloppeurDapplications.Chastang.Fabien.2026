@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { UsersTable } from '../users-table/users-table';
-import { ProductsTable } from '../products-table/products-table';
-import { OrdersTable } from '../orders-table/orders-table';
+import { TableUsers } from '../table-users/table-users';
+import { TableProducts } from '../table-products/table-products';
+import { TableOrders } from '../table-orders/table-orders';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [UsersTable, ProductsTable, OrdersTable],
+  imports: [TableUsers, TableProducts, TableOrders],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })

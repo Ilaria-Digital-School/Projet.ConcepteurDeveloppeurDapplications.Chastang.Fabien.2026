@@ -1,7 +1,7 @@
 .article-product,
 .article-product-selected {
   position: relative;
-  background-color: rgb(212, 211, 210);
+  background-color: var(--light2-gray);
   text-align: center;
   width: 300px;
   border-radius: 10px;
@@ -33,13 +33,13 @@
 
 .article-product p span,
 .article-product-selected p span {
-  color: rgb(185, 0, 0);
+  color: var(--dark1-red);
   font-weight: bold;
 }
 
 .article-product p:last-of-type,
 .article-product-selected p:last-of-type {
-  color: rgb(185, 0, 0);
+  color: var(--dark1-red);
   font-size: 20px;
   font-weight: 900;
 }
@@ -50,7 +50,7 @@
   display: inline-block;
   width: 200px;
   height: 200px;
-  border: 2px solid rgb(175, 171, 171);
+  border: 2px solid var(--middle1-gray);
   border-radius: 5px;
   padding: 5px;
 }

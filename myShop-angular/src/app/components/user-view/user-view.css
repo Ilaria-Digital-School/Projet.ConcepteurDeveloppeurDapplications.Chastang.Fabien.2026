@@ -6,7 +6,7 @@ fieldset {
   display: inline-block;
   margin: 5px;
   padding: 10px 25px 25px 25px;
-  border: 2px solid rgb(175, 171, 171);
+  border: 2px solid var(--middle-blue);
   border-radius: 5px;
   min-width: 500px;
   text-align: left;
@@ -17,13 +17,6 @@ legend {
   font-weight: 900;
   font-size: 20px;
   padding: 0 15px;
-}
-
-legend a {
-  all: unset;
-  color: black;
-  text-decoration: underline;
-  cursor: pointer;
 }
 
 fieldset > div {
@@ -43,11 +36,11 @@ fieldset > div > div {
 
 fieldset > div > div:first-of-type {
   font-weight: 600;
-  background-color: aliceblue;
+  background-color: var(--light1-blue);
 }
 
 fieldset > div > div:last-of-type {
-  background-color: whitesmoke;
+  background-color: var(--light1-gray);
 }
 
 /*

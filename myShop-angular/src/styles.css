@@ -1,3 +1,38 @@
+:root {
+  /* Blue */
+  --light1-blue: aliceblue;
+  --light2-blue: rgb(86, 131, 255);
+  --middle-blue: rgb(43, 88, 212);
+  --dark-blue: darkblue;
+
+  /* Gray */
+  --light1-gray: rgb(243, 243, 247);
+  --light2-gray: rgb(211, 211, 215);
+  --light3-gray: rgb(204, 204, 208);
+  --middle1-gray: rgb(171, 171, 175);
+  --middle2-gray: rgb(128, 128, 132);
+  --middle3-gray: rgb(119, 119, 123);
+  --dark1-gray: rgb(85, 85, 89);
+  --dark2-gray: rgb(51, 51, 55);
+
+  /* Green */
+  --light1-green: lightgreen;
+  --light2-green: rgb(0, 150, 0);
+  --dark1-green: darkgreen;
+  --dark2-green: rgb(0, 64, 0);
+
+  /* Red */
+  --error-red: rgb(225, 0, 0);
+  --middle1-red: rgb(220, 10, 0);
+  --middle2-red: rgb(200, 0, 0);
+  --dark1-red: rgb(185, 0, 0);
+  --dark2-red: darkred;
+
+  /* Yellow */
+  --light-yellow: lightyellow;
+  --middle-yellow: rgb(255, 230, 0);
+}
+
 /*****************************\
     Reset style
 \*****************************/
@@ -17,7 +52,7 @@ html {
 }
 body {
   height: 100%;
-  background-color: aliceblue;
+  background-color: var(--light1-blue);
   font-family: Arial, Helvetica, sans-serif;
 }
 .wrapper {
@@ -51,7 +86,7 @@ main {
 .error {
   font-weight: normal;
   font-size: 15px;
-  color: rgb(225, 0, 0);
+  color: var(--error-red);
 }
 
 .warning {
@@ -95,7 +130,7 @@ h2 {
 
 .h2-title-order {
   font-size: 20px;
-  color: #555;
+  color: var(--dark1-gray);
   margin-bottom: 20px;
 }
 
@@ -107,11 +142,11 @@ td {
 
 a,
 a.nav-link:not(active) {
-  color: rgb(43, 88, 212);
+  color: var(--middle-blue);
 }
 
 .link {
-  color: rgb(43, 88, 212);
+  color: var(--middle-blue);
   text-decoration: underline;
   cursor: pointer;
 }
@@ -139,10 +174,10 @@ a.nav-link:not(active) {
 
 header,
 footer {
-  border: 5px solid aliceblue;
+  border: 5px solid var(--light1-blue);
   border-radius: 10px;
   text-align: center;
-  color: aliceblue;
+  color: var(--light1-blue);
   padding: 10px;
 }
 
@@ -150,7 +185,7 @@ header a,
 footer a {
   display: inline-block;
   text-decoration: none;
-  color: aliceblue;
+  color: var(--light1-blue);
 }
 
 header a:hover,
@@ -186,9 +221,9 @@ header ul {
 \*****************************/
 
 button {
-  border: 2px solid darkblue;
+  border: 2px solid var(--dark-blue);
   border-radius: 5px;
-  background-color: rgb(43, 88, 212);
+  background-color: var(--middle-blue);
   color: white;
   padding: 5px 15px;
   margin: 2px;
@@ -203,9 +238,9 @@ button {
 .btn-disabled,
 .btn-disabled:hover,
 .btn-disabled:active {
-  background-color: #ccc;
+  background-color: var(--light3-gray);
   color: black;
-  border-color: #777;
+  border-color: var(--middle3-gray);
   transform: scale(1);
 }
 
@@ -218,21 +253,21 @@ button {
 
 #scroll-top,
 .navbar-toggler.btn-burger {
-  background-color: darkblue;
-  color: aliceblue;
+  background-color: var(--dark-blue);
+  color: var(--light1-blue);
   border-radius: 5px;
 }
 
 .navbar-toggler.btn-burger {
   padding: 5px 15px;
-  border: 2px solid aliceblue;
+  border: 2px solid var(--light1-blue);
   cursor: pointer;
 }
 
 button:hover,
 #scroll-top:hover,
 .navbar-toggler.btn-burger:hover {
-  background-color: rgb(86, 131, 255);
+  background-color: var(--light2-blue);
 }
 
 button:active,
@@ -261,7 +296,7 @@ button:active,
 
 .category-container app-category-card {
   text-align: center;
-  border: 1px solid rgb(175, 171, 171);
+  border: 1px solid var(--middle1-gray);
   border-radius: 10px;
   overflow: hidden;
   width: 150px;
@@ -277,7 +312,7 @@ button:active,
 .category-container app-category-card span {
   display: block;
   width: 100%;
-  color: #333;
+  color: var(--dark2-gray);
   font-weight: bold;
   padding: 10px 0;
   text-decoration: none;
@@ -336,21 +371,21 @@ button:active,
   border-radius: 3px;
 }
 .article-promo {
-  background-color: rgb(255, 230, 0);
-  color: rgb(185, 0, 0);
-  border: 1px solid rgb(185, 0, 0);
+  background-color: var(--middle-yellow);
+  color: var(--dark1-red);
+  border: 1px solid var(--dark1-red);
 }
 .article-new {
-  background-color: lightgreen;
-  color: rgb(0, 64, 0);
-  border: 1px solid rgb(0, 64, 0);
+  background-color: var(--light1-green);
+  color: var(--dark2-green);
+  border: 1px solid var(--dark2-green);
 }
 
 .article-favorite {
   position: absolute;
   top: -16px;
   right: -16px;
-  color: rgb(0, 150, 0);
+  color: var(--light2-green);
   font-size: 24px;
 }
 
@@ -366,14 +401,14 @@ button:active,
   border-radius: 3px;
 }
 .article-top {
-  background-color: rgb(255, 230, 0);
-  color: rgb(185, 0, 0);
-  border: 1px solid rgb(185, 0, 0);
+  background-color: var(--middle-yellow);
+  color: var(--dark1-red);
+  border: 1px solid var(--dark1-red);
 }
 .article-good {
-  background-color: lightgreen;
-  color: rgb(0, 64, 0);
-  border: 1px solid rgb(0, 64, 0);
+  background-color: var(--light1-green);
+  color: var(--dark2-green);
+  border: 1px solid var(--dark2-green);
 }
 
 .article-available,
@@ -388,10 +423,10 @@ button:active,
   border-radius: 5px;
 }
 .article-available {
-  background-color: darkgreen;
+  background-color: var(--dark1-green);
 }
 .article-unavailable {
-  background-color: darkred;
+  background-color: var(--dark2-red);
 }
 
 @media only screen and (max-width: 767px) {
@@ -412,8 +447,8 @@ button:active,
   margin: 20px auto;
   padding: 20px 10px 5px 10px;
   max-width: 500px;
-  background-color: aliceblue;
-  border: 1px solid rgb(175, 171, 171);
+  background-color: var(--light1-blue);
+  border: 1px solid var(--middle1-gray);
   border-radius: 10px;
 }
 
@@ -428,9 +463,9 @@ button:active,
 .form fieldset {
   margin: 10px;
   padding: 10px 30px 20px 30px;
-  border: 1px solid rgb(175, 171, 171);
+  border: 1px solid var(--middle1-gray);
   border-radius: 5px;
-  background-color: aliceblue;
+  background-color: var(--light1-blue);
 }
 
 .form legend {
@@ -449,7 +484,7 @@ button:active,
 }
 
 .form .required {
-  color: red;
+  color: var(--error-red);
   font-size: 20px;
   margin-left: 5px;
 }
@@ -460,7 +495,7 @@ button:active,
 .form textarea,
 .form select {
   background-color: white;
-  border: 1px solid rgb(175, 171, 171);
+  border: 1px solid var(--middle1-gray);
   border-radius: 5px;
   width: 100%;
   padding: 10px;
@@ -503,8 +538,8 @@ button:active,
   position: absolute;
   top: 100%;
   right: 20px;
-  background-color: lightyellow;
-  border: 1px solid #777;
+  background-color: var(--light-yellow);
+  border: 1px solid var(--middle3-gray);
   border-radius: 5px;
   padding-top: 10px;
   padding-left: 15px;
@@ -576,7 +611,7 @@ button:active,
 }
 
 /* .grid-container div {
-  background: rgb(52, 152, 219);
+  background: var(--light2-blue);
   color: white;
   padding: 20px;
   text-align: center;

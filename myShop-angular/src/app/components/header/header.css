@@ -6,7 +6,7 @@ header {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(to bottom, darkblue, rgb(86, 131, 255));
+  background: linear-gradient(to bottom, var(--dark-blue), var(--light2-blue));
 }
 
 header .profile:hover {
@@ -28,7 +28,7 @@ header .arrow:hover {
   position: absolute;
   bottom: 15px;
   left: 20px;
-  background-color: rgb(200, 0, 0);
+  background-color: var(--middle2-red);
   font-size: 12px;
   width: 24px;
   height: 24px;
@@ -76,8 +76,8 @@ header .arrow:hover {
   left: 0;
   padding: 0;
   list-style: none;
-  background-color: #fff;
-  border: 1px solid #777;
+  background-color: white;
+  border: 1px solid var(--middle2-gray);
   border-radius: 5px;
   text-align: left;
 
@@ -107,7 +107,7 @@ header .arrow:hover {
 
 .submenu li a {
   padding: 3px 10px;
-  color: #777;
+  color: var(--middle2-gray);
   text-decoration: none;
 }
 
@@ -118,7 +118,7 @@ header .arrow:hover {
 }
 
 .submenu.separated li:last-of-type {
-  border-top: 1px solid #777;
+  border-top: 1px solid var(--middle2-gray);
   margin-top: 5px;
   padding-top: 3px;
   padding-bottom: 3px;

@@ -1,10 +1,10 @@
 .high-price {
-  color: rgb(220, 10, 0);
+  color: var(--middle1-red);
   font-weight: bold;
 }
 
 .low-price {
-  color: rgb(0, 64, 0);
+  color: var(--dark2-green);
 }
 
 .unavailable-row {
@@ -12,8 +12,13 @@
 }
 
 .unavailable-cell,
+.unavailable-cell-id,
 .unavailable-cell-left {
-  color: red;
+  color: var(--error-red);
+}
+
+.unavailable-cell,
+.unavailable-cell-left {
   transform: scale(1.1);
 }
 

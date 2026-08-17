@@ -5,12 +5,12 @@ import { ProductService } from '../../services/product-service';
 import { Common } from '../../constants/common';
 
 @Component({
-  selector: 'app-products-table',
+  selector: 'app-table-products',
   imports: [],
-  templateUrl: './products-table.html',
-  styleUrl: './products-table.css',
+  templateUrl: './table-products.html',
+  styleUrl: './table-products.css',
 })
-export class ProductsTable {
+export class TableProducts {
   // Constants
   public Common = Common;
 
@@ -59,7 +59,7 @@ export class ProductsTable {
   // Delete a product
   remove(id: string) {
     // Confirmaton message to delete the product
-    if (confirm(ProductsTable.msgDelProduct)) {
+    if (confirm(TableProducts.msgDelProduct)) {
       // Remove the product
       this.productService.deleteProduct(id).subscribe({
         next: (res: Object) => {

@@ -17,7 +17,7 @@
         <tr [class]="product.stock === 0 ? 'unavailable-row' : ''">
           <th scope="row">{{ i + 1 }}</th>
           <td>
-            <div [class]="product.stock === 0 ? 'unavailable-cell' : ''">
+            <div [class]="product.stock === 0 ? 'unavailable-cell-id' : ''">
               {{ product.id }}
             </div>
           </td>

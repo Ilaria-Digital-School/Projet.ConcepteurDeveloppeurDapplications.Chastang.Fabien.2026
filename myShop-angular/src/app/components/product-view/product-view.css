@@ -22,7 +22,7 @@
 
 .section-product-view article {
   position: relative;
-  border: 1px solid gray;
+  border: 1px solid var(--middle2-gray);
   border-radius: 10px;
   max-width: 700px;
   min-width: 400px;
@@ -38,7 +38,7 @@
 
 .section-product-view .info {
   text-align: center;
-  color: rgb(185, 0, 0);
+  color: var(--dark1-red);
   font-weight: bold;
   margin-bottom: 15px;
 }
@@ -54,8 +54,8 @@
 
 .section-product-view .price span {
   padding: 4px 10px;
-  background-color: aliceblue;
-  border: 1px solid gray;
+  background-color: var(--light1-blue);
+  border: 1px solid var(--middle2-gray);
   border-radius: 7px;
 }
 
@@ -88,8 +88,8 @@
   padding-top: 4px;
   width: 35px;
   height: 35px;
+  border: 2px solid var(--light2-green);
   border-radius: 50%;
-  border: 2px solid rgb(0, 150, 0);
 }
 
 /*

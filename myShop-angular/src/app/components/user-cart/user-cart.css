@@ -11,10 +11,10 @@
 }
 
 .cell-product div {
-  background-color: aliceblue;;
+  background-color: var(--light1-blue);
   width: 150px;
   height: 150px;
-  border: 2px solid rgb(175, 171, 171);
+  border: 2px solid var(--middle1-gray);
   border-radius: 5px;
   padding: 5px;
 }
@@ -38,7 +38,7 @@
 }
 
 .row-total {
-  border: 2px solid #CCC;
+  border: 2px solid var(--light3-gray);
   font-weight: 600;
   font-size: 17px;
 }

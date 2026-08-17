@@ -10,7 +10,7 @@
 }
 
 .carousel-product {
-  background-color: aliceblue;
+  background-color: var(--light1-blue);
   width: 400px;
 }
 
@@ -34,13 +34,13 @@ button.carousel-control-next:active {
 button.carousel-control-prev,
 button.carousel-control-prev:hover,
 button.carousel-control-prev:active {
-  background: linear-gradient(to right, darkblue, aliceblue);
+  background: linear-gradient(to right, var(--dark-blue), var(--light1-blue));
 }
 
 button.carousel-control-next,
 button.carousel-control-next:hover,
 button.carousel-control-next:active {
-  background: linear-gradient(to left, darkblue, aliceblue);
+  background: linear-gradient(to left, var(--dark-blue), var(--light1-blue));
 }
 
 #products-card div {
