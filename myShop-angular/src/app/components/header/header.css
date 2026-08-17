@@ -28,7 +28,7 @@ header .arrow:hover {
   position: absolute;
   bottom: 15px;
   left: 20px;
-  background-color: var(--middle2-red);
+  background-color: var(--dark1-red);
   font-size: 12px;
   width: 24px;
   height: 24px;

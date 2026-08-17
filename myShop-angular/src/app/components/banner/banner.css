@@ -29,7 +29,7 @@
 
 .section-banner a {
   display: inline-block;
-  background: linear-gradient(var(--middle1-red), var(--dark1-red), var(--middle1-red));
+  background: linear-gradient(var(--middle-red), var(--dark1-red), var(--middle-red));
   text-decoration: none;
   color: var(--middle-yellow);
   font-weight: bold;

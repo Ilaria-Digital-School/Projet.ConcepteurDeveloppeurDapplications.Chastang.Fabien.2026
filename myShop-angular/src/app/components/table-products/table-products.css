@@ -1,5 +1,5 @@
 .high-price {
-  color: var(--middle1-red);
+  color: var(--middle-red);
   font-weight: bold;
 }
 
@@ -14,7 +14,7 @@
 .unavailable-cell,
 .unavailable-cell-id,
 .unavailable-cell-left {
-  color: var(--error-red);
+  color: var(--middle-red);
 }
 
 .unavailable-cell,
