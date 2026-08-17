@@ -27,6 +27,10 @@
   /* Yellow */
   --light-yellow: rgb(255, 255, 225);
   --middle-yellow: rgb(255, 230, 0);
+
+  /* Black shadows */
+  --black-shadow-light: rgba(0, 0, 0, 0.3);
+  --black-shadow-middle: rgba(0, 0, 0, 0.5);
 }
 
 /*****************************\
