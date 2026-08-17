@@ -1,12 +1,12 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'app-form-help',
+  selector: 'app-tooltip',
   imports: [],
-  templateUrl: './form-help.html',
-  styleUrl: './form-help.css',
+  templateUrl: './tooltip.html',
+  styleUrl: './tooltip.css',
 })
-export class FormHelp {
+export class Tooltip {
   // To retrieve DOM elements
   @ViewChild('infoText') infoText!: ElementRef;
 

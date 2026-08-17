@@ -2,7 +2,7 @@
   <!-- User Add/Edit Form -->
   <form class="form white" [formGroup]="userForm" (ngSubmit)="submit()">
     <!-- Information regarding the completion of the form -->
-    <app-form-help [isSimple]="true" [helpHTML]="helpHTML"></app-form-help>
+    <app-tooltip [isSimple]="true" [helpHTML]="helpHTML"></app-tooltip>
 
     <!-- Form title -->
     <h2>{{ title }}</h2>

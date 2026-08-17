@@ -13,7 +13,7 @@ import { EnumInterests } from '../../enums/user-interests';
 import { Interests } from '../../constants/interests';
 import { Countries } from '../../constants/countries';
 import { User } from '../../models/user';
-import { FormHelp } from '../form-help/form-help';
+import { Tooltip } from '../tooltip/tooltip';
 // import { JsonPipe } from '@angular/common';
 
 // Custom validators for the entire form /////////////////////////////////
@@ -30,7 +30,7 @@ export class CustomValidators {
 
 @Component({
   selector: 'app-add-user',
-  imports: [ReactiveFormsModule, FormHelp /*, JsonPipe*/],
+  imports: [ReactiveFormsModule, Tooltip /*, JsonPipe*/],
   templateUrl: './add-user.html',
   styleUrl: './add-user.css',
 })

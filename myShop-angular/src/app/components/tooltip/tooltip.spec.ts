@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormHelp } from './form-help';
+import { Tooltip } from './tooltip';
 
-describe('FormHelp', () => {
-  let component: FormHelp;
-  let fixture: ComponentFixture<FormHelp>;
+describe('Tooltip', () => {
+  let component: Tooltip;
+  let fixture: ComponentFixture<Tooltip>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormHelp]
+      imports: [Tooltip]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(FormHelp);
+    fixture = TestBed.createComponent(Tooltip);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

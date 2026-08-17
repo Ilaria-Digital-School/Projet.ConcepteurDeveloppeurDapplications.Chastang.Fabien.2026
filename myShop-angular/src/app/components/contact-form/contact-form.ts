@@ -3,11 +3,11 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ContactService } from '../../services/contact-service';
 import { Contact } from '../../models/contact';
-import { FormHelp } from '../form-help/form-help';
+import { Tooltip } from '../tooltip/tooltip';
 
 @Component({
   selector: 'app-contact-form',
-  imports: [FormsModule, FormHelp],
+  imports: [FormsModule, Tooltip],
   templateUrl: './contact-form.html',
   styleUrl: './contact-form.css',
 })

@@ -6,12 +6,12 @@ import { ProductService } from '../../services/product-service';
 import { take } from 'rxjs';
 
 @Component({
-  selector: 'app-products',
+  selector: 'app-products-home',
   imports: [ProductCard],
-  templateUrl: './products.html',
-  styleUrl: './products.css',
+  templateUrl: './products-home.html',
+  styleUrl: './products-home.css',
 })
-export class Products {
+export class ProductsHome {
   // Native classes / Application services
   private router = inject(Router);
   private productService = inject(ProductService);

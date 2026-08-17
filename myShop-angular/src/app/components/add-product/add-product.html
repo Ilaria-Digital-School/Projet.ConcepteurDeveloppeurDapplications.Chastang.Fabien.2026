@@ -2,7 +2,7 @@
   <!-- Product Add/Edit Form -->
   <form id="productForm" #productForm="ngForm" (ngSubmit)="submit(productForm)" class="form">
     <!-- Information regarding the completion of the form -->
-    <app-form-help [isSimple]="false" [helpHTML]="helpHTML"></app-form-help>
+    <app-tooltip [isSimple]="false" [helpHTML]="helpHTML"></app-tooltip>
 
     <!-- Form title -->
     <h2>{{ title }}</h2>

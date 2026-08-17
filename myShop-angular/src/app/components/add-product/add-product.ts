@@ -3,7 +3,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../services/product-service';
 import { Product } from '../../models/product';
-import { FormHelp } from '../form-help/form-help';
+import { Tooltip } from '../tooltip/tooltip';
 import { Common } from '../../constants/common';
 
 const PLACEHOLDER_FULL_DESC = `$$Titre 1
@@ -35,7 +35,7 @@ const HELP_HTML = `
 
 @Component({
   selector: 'app-add-product',
-  imports: [FormsModule, FormHelp],
+  imports: [FormsModule, Tooltip],
   templateUrl: './add-product.html',
   styleUrl: './add-product.css',
 })

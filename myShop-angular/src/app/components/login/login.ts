@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 import { EnumRoles } from '../../enums/user-roles';
 import { UserService } from '../../services/user-service';
 import { User } from '../../models/user';
-import { FormHelp } from '../form-help/form-help';
+import { Tooltip } from '../tooltip/tooltip';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, FormHelp],
+  imports: [ReactiveFormsModule, Tooltip],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
