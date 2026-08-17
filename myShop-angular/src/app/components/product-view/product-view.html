@@ -1,5 +1,6 @@
 <section class="section-product-view">
   <div class="div-img">
+    <div>{{ product.name }}</div>
     <span
       [class]="product.favorite ? 'article-favorite' : 'inactive'"
       title="Article favori"
@@ -7,7 +8,9 @@
     >
       <i class="fa-solid fa-heart"></i>
     </span>
-    <img [src]="product.img" [alt]="product.name" />
+    <div>
+      <img [src]="product.img" [alt]="product.name" />
+    </div>
   </div>
   <div>
     <article [tabindex]="'0'">

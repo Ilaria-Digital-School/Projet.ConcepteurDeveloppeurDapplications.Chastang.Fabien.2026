@@ -83,6 +83,7 @@ export class UsersTable {
 
   // Delete a user
   remove(id: string) {
+    // Confirmaton message to delete the user
     if (confirm(UsersTable.msgDelUser)) {
       // Remove the user
       this.userService.deleteUser(id).subscribe({

@@ -2,13 +2,13 @@
   "products": [
     {
       "id": "BN4bdfCKWuf",
-      "name": "Chemise",
+      "name": "Chemise Homme",
       "description": "Chemise homme en coton bleu clair",
       "price": 20,
       "stock": 10,
       "img": "assets/img/clothing/men/shirts/cms1.png",
       "fullDescription": "$$Restez à l'aise même sous la chaleur\n\nConçue pour les journées ensoleillées, cette chemise d'été allie légèreté et respirabilité pour apporter une sensation de confort agréable lors de vos sorties.\n\nSa matière favorise une bonne circulation de l'air, aide à réguler l'humidité et rend le port plus agréable.\n\nProfitez pleinement de l'été en restant à votre aise.\n\n$$Un style naturel, chic avec simplicité\n\nAvec sa coupe ajustée et sa belle fluidité, cette chemise offre une allure élégante et décontractée. Inutile d'en faire trop, elle s'adapte facilement à toutes vos tenues.\n\nPortée ouverte ou fermée, avec un short ou un pantalon, elle conserve un style sobre et raffiné.\n\n$$Entretien facile pour un été sans tracas\n\nCette Chemise est conçue pour vous simplifier la vie : elle passe en machine et sèche simplement à l'air libre.\n\nMême légèrement froissée, elle garde son charme naturel. Son tissu offre une sensation de douceur et de confort agréable à chaque port.\n\nSon confort et sa douceur en font une pièce appropriée pour vous accompagner durant l'été.",
-      "info": "Cet article est fortement recommandé par nos client",
+      "info": "Cet article est fortement recommandé par nos clients",
       "favorite": true,
       "visible": true
     },
@@ -38,7 +38,7 @@
     },
     {
       "id": "xVlVC7SoNAY",
-      "name": "Jean",
+      "name": "Jean Homme",
       "description": "Jean homme gris",
       "price": 30,
       "stock": 10,
@@ -50,7 +50,7 @@
     },
     {
       "id": "B5Np9Lj40Yg",
-      "name": "Jean",
+      "name": "Jean Homme",
       "description": "Jean homme bleu",
       "price": 40,
       "stock": 0,

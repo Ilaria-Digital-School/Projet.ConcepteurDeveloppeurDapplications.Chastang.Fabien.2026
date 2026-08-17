@@ -58,6 +58,7 @@ export class ProductsTable {
 
   // Delete a product
   remove(id: string) {
+    // Confirmaton message to delete the product
     if (confirm(ProductsTable.msgDelProduct)) {
       // Remove the product
       this.productService.deleteProduct(id).subscribe({

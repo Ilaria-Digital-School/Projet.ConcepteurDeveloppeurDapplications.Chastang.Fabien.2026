@@ -47,17 +47,15 @@ main {
   cursor: pointer;
 }
 
-.warning {
-  font-weight: normal;
-  font-size: 15px;
-  color: rgb(225, 0, 0);
-  font-style: italic;
-}
-
+.warning,
 .error {
   font-weight: normal;
   font-size: 15px;
   color: rgb(225, 0, 0);
+}
+
+.warning {
+  font-style: italic;
 }
 
 section {

@@ -72,6 +72,7 @@
         id="price"
         class="number"
         [(ngModel)]="productPrice"
+        placeholder="0,00"
         required
         maxlength="7"
         #price="ngModel"
@@ -143,6 +144,7 @@
         name="info"
         id="info"
         [(ngModel)]="product.info"
+        placeholder="Par exemple « Cet article est fortement recommandé par nos clients »"
         maxlength="100"
         #info="ngModel"
       ></textarea>

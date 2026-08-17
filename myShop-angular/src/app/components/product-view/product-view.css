@@ -5,8 +5,19 @@
   flex-wrap: wrap;
 }
 
-.section-product-view .div-img{
+.section-product-view .div-img {
   position: relative;
+}
+
+.section-product-view .div-img div:first-of-type {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
 }
 
 .section-product-view article {
@@ -86,6 +97,10 @@
 */
 
 @media only screen and (max-width: 767px) {
+  .section-product-view .div-img div:first-of-type {
+    display: none;
+  }
+
   .section-product-view article {
     min-width: 100px;
   }

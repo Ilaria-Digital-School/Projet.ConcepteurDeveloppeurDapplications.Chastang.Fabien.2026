@@ -78,6 +78,7 @@ export class UserCart {
 
   // Decrease the quantity of a product
   removeOne(product: Product) {
+    // Confirmation message only if the quantity in the cart is equal to 1
     if (product.cartQuantity === 1 && !confirm(UserCart.msgDelProduct)) return;
 
     // Remove an item from the cart via CartService (local storage)
@@ -95,6 +96,7 @@ export class UserCart {
 
   // Remove a product
   removeProduct(id: string) {
+    // Confirmation message to remove a product
     if (!confirm(UserCart.msgDelProduct)) return;
 
     // Remove the product from the cart via CartService (local storage)
@@ -118,6 +120,7 @@ export class UserCart {
 
   // Delete the user's cart
   removeCart() {
+    // Confirmation message to delete the user's cart
     if (!confirm(UserCart.msgDelCart)) return;
 
     // Delete the user's cart via CartService (local storage)
