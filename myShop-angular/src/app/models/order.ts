@@ -2,12 +2,13 @@ import { Common } from '../constants/common';
 import { Cart } from './cart';
 import { Product } from './product';
 
+// Order class
 export class Order {
   id: string = Common.getID();
   date: number = Date.now();
   userId: string = '';
-  products: Product[] = [];
-  promoCode: string = '';
+  products: Product[] = []; // List of products from the 'Cart' object, with their 
+  promoCode: string = '';   // prices at the time of the order and their quantities
   taxPercent: number = 0;
   promoPercent: number = 0;
   totalExcludingTax: number = 0;

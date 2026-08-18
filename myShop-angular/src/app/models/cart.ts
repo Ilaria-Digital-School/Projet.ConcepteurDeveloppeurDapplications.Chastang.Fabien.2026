@@ -1,7 +1,8 @@
 import { Common } from '../constants/common';
 import { Product } from './product';
 
-// Cart class
+// 'Cart' object initialized from the list of products with a
+// quantity of 1 for each item; list stored in local storage
 export class Cart {
   id: string = Common.getID();
   userId: string = '';
@@ -10,6 +11,8 @@ export class Cart {
   constructor(products: Product[] | null = null, userId: string | null = null) {
     if (typeof userId === 'string') this.userId = userId;
 
+    // Initializing the product list where each product appears
+    // only once, but the quantity can be greater than 1
     if (Array.isArray(products)) {
       products.forEach((product: Product) => {
         const PRODUCT = this.products.find((item: Product) => item.id === product.id);
