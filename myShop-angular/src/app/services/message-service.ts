@@ -20,8 +20,8 @@ export class MessageService {
 
   // Response: string, boolean, object + ID
   addMessageMessage(message: Message): Observable<Message> {
-    message.removeBeforeSaveMessage(); // Remove these properties before saving the message
-    return this.httpClient.post<Message>(this.messageURL, message);
+    const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
+    return this.httpClient.post<Message>(this.messageURL, MESSAGE);
   }
 
   // Response: string, boolean
