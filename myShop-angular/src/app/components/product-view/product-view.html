@@ -16,8 +16,8 @@
     <article [tabindex]="'0'">
       <span [class]="product.price < 25 ? 'article-good' : 'inactive'">Bonne<br />Affaire</span>
       <span [class]="product.price > 50 ? 'article-top' : 'inactive'">Top<br />Produit</span>
-      <span [class]="product.stock > 0 ? 'article-available' : 'article-unavailable'">
-        {{ product.stock > 0 ? 'En stock' : 'Indisponible' }}
+      <span [class]="typeof product.stock === 'number' && product.stock > 0 ? 'article-available' : 'article-unavailable'">
+        {{ typeof product.stock === 'number' && product.stock > 0 ? 'En stock' : 'Indisponible' }}
       </span>
       @if (fullDescription.length > 0) {
         <h2>{{ product.description }}</h2>

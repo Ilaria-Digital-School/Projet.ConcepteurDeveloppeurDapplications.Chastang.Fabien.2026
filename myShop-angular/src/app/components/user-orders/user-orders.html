@@ -1,1 +1,9 @@
-<app-user-order></app-user-order>
+@for (order of orders; track order.id; let i = $index) {
+  <section>
+    <app-user-order [order]="order"></app-user-order>
+  </section>
+} @empty {
+  <section>
+    <h2 class="h2-title">Vous n'avez aucune commande</h2>
+  </section>
+}

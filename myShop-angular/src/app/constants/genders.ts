@@ -10,13 +10,13 @@ export class Genders {
   ];
 
   // Get the ID from the name and the name from the ID
-  static getId(genderName: string) {
+  static getId(genderName: string): number {
     const NAME = genderName.trim().toLowerCase();
     const GENDER = this.list.find((item: any) => item.label.toLowerCase() === NAME);
     return GENDER ? GENDER.value : this.other.value;
   }
-  static getName(genderId: number, other: string | undefined = undefined) {
+  static getName(genderId: number, other: string | undefined = undefined): string {
     const GENDER = this.list.find((item: any) => item.value === genderId);
-    return GENDER === undefined ? (other === undefined ? other : this.other.label) : GENDER.label;
+    return GENDER === undefined ? (other === undefined ? this.other.label : other) : GENDER.label;
   }
 }

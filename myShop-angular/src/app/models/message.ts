@@ -1,11 +1,11 @@
 import { Common } from '../constants/common';
 
 // Product class
-export class Contact {
+export class Message {
   id: string = Common.getID();
   name: string = '';
   email: string = '';
-  message: string = '';
+  text: string = '';
 
   // Temporary properties, not saved
   additional: any = {}; // For additional properties (RxJS)
@@ -13,10 +13,18 @@ export class Contact {
   constructor(
     name: string | null = null,
     email: string | null = null,
-    message: string | null = null,
+    text: string | null = null,
   ) {
     if (typeof name === 'string') this.name = name;
     if (typeof email === 'string') this.email = email;
-    if (typeof message === 'string') this.message = message;
+    if (typeof text === 'string') this.text = text;
+  }
+
+  // Remove these properties before saving the message
+  removeBeforeSaveMessage() {
+    const MESSAGE = new Message();
+    Object.assign(MESSAGE, this);
+    delete MESSAGE.additional;
+    return MESSAGE;
   }
 }

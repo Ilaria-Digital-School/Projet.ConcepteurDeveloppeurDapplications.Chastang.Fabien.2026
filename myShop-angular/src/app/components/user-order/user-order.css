@@ -1,0 +1,48 @@
+.h2-info {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--dark1-gray);
+  margin-bottom: 20px;
+}
+
+.cell-product {
+  width: 110px;
+}
+
+.cell-product div {
+  background-color: var(--light1-blue);
+  width: 100px;
+  height: 100px;
+  border: 2px solid var(--middle1-gray);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.cell-product div img {
+  max-height: 100%;
+  width: auto;
+}
+
+.status {
+  background-color: var(--light1-gray);
+  font-weight: 600;
+}
+
+.row-total {
+  border: 2px solid var(--middle1-gray);
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.label-total {
+  padding-left: 15px;
+  text-align: left;
+  font-size: 20px;
+}
+
+.cell-total {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+}

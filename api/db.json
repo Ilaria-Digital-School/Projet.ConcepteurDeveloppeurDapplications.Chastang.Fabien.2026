@@ -5,9 +5,9 @@
       "name": "Chemise Homme",
       "description": "Chemise homme en coton bleu clair",
       "price": 20,
-      "stock": 10,
       "img": "assets/img/clothing/men/shirts/cms1.png",
       "fullDescription": "$$Restez à l'aise même sous la chaleur\n\nConçue pour les journées ensoleillées, cette chemise d'été allie légèreté et respirabilité pour apporter une sensation de confort agréable lors de vos sorties.\n\nSa matière favorise une bonne circulation de l'air, aide à réguler l'humidité et rend le port plus agréable.\n\nProfitez pleinement de l'été en restant à votre aise.\n\n$$Un style naturel, chic avec simplicité\n\nAvec sa coupe ajustée et sa belle fluidité, cette chemise offre une allure élégante et décontractée. Inutile d'en faire trop, elle s'adapte facilement à toutes vos tenues.\n\nPortée ouverte ou fermée, avec un short ou un pantalon, elle conserve un style sobre et raffiné.\n\n$$Entretien facile pour un été sans tracas\n\nCette Chemise est conçue pour vous simplifier la vie : elle passe en machine et sèche simplement à l'air libre.\n\nMême légèrement froissée, elle garde son charme naturel. Son tissu offre une sensation de douceur et de confort agréable à chaque port.\n\nSon confort et sa douceur en font une pièce appropriée pour vous accompagner durant l'été.",
+      "stock": 10,
       "info": "Cet article est fortement recommandé par nos clients",
       "favorite": true,
       "visible": true
@@ -17,9 +17,9 @@
       "name": "Robe",
       "description": "Robe en jean denim indigo",
       "price": 40,
-      "stock": 0,
       "img": "assets/img/clothing/women/dresses/cwd1.png",
       "fullDescription": "",
+      "stock": 0,
       "info": "",
       "favorite": true,
       "visible": true
@@ -29,9 +29,9 @@
       "name": "Robe",
       "description": "Robe en coton bleu nuit",
       "price": 70,
-      "stock": 5,
       "img": "assets/img/clothing/women/dresses/cwd2.png",
       "fullDescription": "",
+      "stock": 5,
       "info": "",
       "favorite": false,
       "visible": true
@@ -41,9 +41,9 @@
       "name": "Jean Homme",
       "description": "Jean homme gris",
       "price": 30,
-      "stock": 10,
       "img": "assets/img/clothing/men/jeans/cmj3.png",
       "fullDescription": "",
+      "stock": 10,
       "info": "",
       "favorite": false,
       "visible": true
@@ -53,9 +53,9 @@
       "name": "Jean Homme",
       "description": "Jean homme bleu",
       "price": 40,
-      "stock": 0,
       "img": "assets/img/clothing/men/jeans/cmj2.png",
       "fullDescription": "",
+      "stock": 0,
       "info": "",
       "favorite": false,
       "visible": true
@@ -114,7 +114,7 @@
       "visible": true
     }
   ],
-  "contacts": [
+  "messages": [
     {
       "id": "fQbkvjaKRgy",
       "name": "Fabien",
@@ -122,6 +122,71 @@
       "message": "Mon message"
     }
   ],
-  "orders": [],
+  "orders": [
+    {
+      "id": "oIuVYfgttJe",
+      "date": 1787235535344,
+      "userId": "tapQ6zz5B64",
+      "products": [
+        {
+          "id": "BN4bdfCKWuf",
+          "name": "Chemise",
+          "description": "Chemise homme en coton bleu clair",
+          "price": 20,
+          "img": "assets/img/clothing/men/shirts/cms1.png",
+          "fullDescription": "$$Restez à l'aise même sous la chaleur\n\nConçue pour les journées ensoleillées, cette chemise d'été allie légèreté et respirabilité pour apporter une sensation de confort agréable lors de vos sorties.\n\nSa matière favorise une bonne circulation de l'air, aide à réguler l'humidité et rend le port plus agréable.\n\nProfitez pleinement de l'été en restant à votre aise.\n\n$$Un style naturel, chic avec simplicité\n\nAvec sa coupe ajustée et sa belle fluidité, cette chemise offre une allure élégante et décontractée. Inutile d'en faire trop, elle s'adapte facilement à toutes vos tenues.\n\nPortée ouverte ou fermée, avec un short ou un pantalon, elle conserve un style sobre et raffiné.\n\n$$Entretien facile pour un été sans tracas\n\nCette Chemise est conçue pour vous simplifier la vie : elle passe en machine et sèche simplement à l'air libre.\n\nMême légèrement froissée, elle garde son charme naturel. Son tissu offre une sensation de douceur et de confort agréable à chaque port.\n\nSon confort et sa douceur en font une pièce appropriée pour vous accompagner durant l'été.",
+          "cartQuantity": 2
+        },
+        {
+          "id": "xVlVC7SoNAY",
+          "name": "Jean Homme",
+          "description": "Jean homme gris",
+          "price": 30,
+          "img": "assets/img/clothing/men/jeans/cmj3.png",
+          "fullDescription": "",
+          "cartQuantity": 1
+        }
+      ],
+      "promoCode": "",
+      "taxPercent": 20,
+      "promoPercent": 0,
+      "totalExcludingTax": 70,
+      "totalIncludingTax": 84,
+      "totalPromotion": 0,
+      "status": 3
+    },
+    {
+      "id": "uUgR78BvKmp",
+      "date": 1787245232099,
+      "userId": "tapQ6zz5B64",
+      "products": [
+        {
+          "id": "WeHNcyId4xk",
+          "name": "Robe",
+          "description": "Robe en coton bleu nuit",
+          "price": 70,
+          "img": "assets/img/clothing/women/dresses/cwd2.png",
+          "fullDescription": "",
+          "cartQuantity": 1
+        },
+        {
+          "id": "xVlVC7SoNAY",
+          "name": "Jean Homme",
+          "description": "Jean homme gris",
+          "price": 30,
+          "img": "assets/img/clothing/men/jeans/cmj3.png",
+          "fullDescription": "",
+          "cartQuantity": 2
+        }
+      ],
+      "promoCode": "",
+      "taxPercent": 20,
+      "promoPercent": 0,
+      "totalExcludingTax": 130,
+      "totalIncludingTax": 156,
+      "totalPromotion": 0,
+      "status": 1
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }

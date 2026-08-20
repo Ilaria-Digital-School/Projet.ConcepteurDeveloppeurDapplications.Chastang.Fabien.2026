@@ -26,7 +26,7 @@ export class Cart {
   }
 
   // Retrieve the total cart amount excluding tax
-  getTotalExcludingTax() {
+  getTotalExcludingTax(): number {
     const getTotal = (total: number, product: Product) => {
       return (
         total +

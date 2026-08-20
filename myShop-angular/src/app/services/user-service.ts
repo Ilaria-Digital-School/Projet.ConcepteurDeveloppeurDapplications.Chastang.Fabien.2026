@@ -14,31 +14,33 @@ export class UserService {
   private httpClient = inject(HttpClient);
 
   // Response: array of objects (list of users)
-  getAllUsers() {
+  getAllUsers(): Observable<User[]> {
     return this.httpClient.get<User[]>(this.userURL);
   }
 
   // Response: user object or null
-  getUserById(id: string | null) {
+  getUserById(id: string | null): Observable<User> {
     return this.httpClient.get<User>(`${this.userURL}/${id}`);
   }
 
   // Response: string, boolean, object + ID
-  addUser(user: User) {
-    return this.httpClient.post(this.userURL, user);
+  addUser(user: User): Observable<User> {
+    const USER = user.removeBeforeSaveUser(); // Remove these properties before saving the user
+    return this.httpClient.post<User>(this.userURL, USER);
   }
 
   // Response: string, boolean, object + ID
-  updateUser(user: User) {
-    return this.httpClient.put(`${this.userURL}/${user.id}`, user);
+  updateUser(user: User): Observable<User> {
+    const USER = user.removeBeforeSaveUser(); // Remove these properties before saving the user
+    return this.httpClient.put<User>(`${this.userURL}/${user.id}`, USER);
   }
 
   // Response: string, boolean
-  deleteUser(id: string | null) {
-    return this.httpClient.delete(`${this.userURL}/${id}`);
+  deleteUser(id: string | null): Observable<User> {
+    return this.httpClient.delete<User>(`${this.userURL}/${id}`);
   }
 
-  login(data: { email: string; pswd: string }): Observable<any> {
+  login(data: { email: string; pswd: string }): Observable<User[]> {
     return this.httpClient.get<User[]>(`${this.userURL}?email=${data.email}&pswd=${data.pswd}`);
 
     // // IMPORTANT: method to use with a real backend

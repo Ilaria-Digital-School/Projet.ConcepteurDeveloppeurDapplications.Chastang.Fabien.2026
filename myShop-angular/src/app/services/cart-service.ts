@@ -25,17 +25,21 @@ export class CartService {
   }
 
   // Add an item to the cart
-  add(product: Product) {
+  add(product: Product): void {
     this.cart.update((products: Product[]) => {
-      product.cartQuantity = 1;
-      const NEW_CART = [...products, product];
+      const PRODUCT = new Product();
+      Object.assign(PRODUCT, product);
+      PRODUCT.cartQuantity = 1; // Initialize the product quantity to 1
+      PRODUCT.removeBeforeSaveCart(); // Remove these properties that are unnecessary for the cart
+
+      const NEW_CART = [...products, PRODUCT];
       localStorage.setItem('cart', JSON.stringify(NEW_CART));
       return NEW_CART;
     });
   }
 
   // Remove an item from the cart
-  remove(product: Product) {
+  remove(product: Product): void {
     this.cart.update((products: Product[]) => {
       const INDEX = products.findIndex((item: Product) => item.id === product.id);
       if (INDEX > -1) {
@@ -55,7 +59,7 @@ export class CartService {
   }
 
   // Remove a product from the cart
-  removeProduct(id: string) {
+  removeProduct(id: string): void {
     this.cart.update((products: Product[]) => {
       const NEW_CART = products.filter((product: Product) => product.id !== id);
       if (NEW_CART.length > 0) {
@@ -69,7 +73,7 @@ export class CartService {
   }
 
   // Delete the user's cart
-  removeCart() {
+  removeCart(): void {
     localStorage.removeItem('cart');
     this.cart.set([]);
   }

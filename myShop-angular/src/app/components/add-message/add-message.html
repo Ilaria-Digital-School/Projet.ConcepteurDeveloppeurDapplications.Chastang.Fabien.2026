@@ -1,6 +1,6 @@
-<!-- Contact form -->
+<!-- Message form -->
 <section>
-  <form id="contactForm" #contactForm="ngForm" (ngSubmit)="submit(contactForm)" class="form">
+  <form id="messageForm" #messageForm="ngForm" (ngSubmit)="submit(messageForm)" class="form">
     <!-- Information regarding the completion of the form -->
     <app-tooltip [isSimple]="true" [helpHTML]="helpHTML"></app-tooltip>
 
@@ -13,7 +13,7 @@
         type="text"
         name="userName"
         id="userName"
-        [(ngModel)]="contact.name"
+        [(ngModel)]="message.name"
         placeholder="Votre nom"
         required
         maxlength="50"
@@ -41,7 +41,7 @@
         type="email"
         name="userEmail"
         id="userEmail"
-        [(ngModel)]="contact.email"
+        [(ngModel)]="message.email"
         placeholder="votre@adresse.email"
         required
         #userEmail="ngModel"
@@ -64,7 +64,7 @@
         name="userMessage"
         id="userMessage"
         rows="4"
-        [(ngModel)]="contact.message"
+        [(ngModel)]="message.text"
         placeholder="Votre message"
         required
         maxlength="2000"
@@ -91,13 +91,13 @@
       <button
         type="submit"
         [disabled]="
-          contactForm.invalid ||
+          messageForm.invalid ||
           errorMinlengthStrict(userName?.value, 3) ||
           errorEmail(userEmail?.value) ||
           errorMinlengthStrict(userMessage?.value, 10)
         "
         [class.btn-disabled]="
-          contactForm.invalid ||
+          messageForm.invalid ||
           errorMinlengthStrict(userName?.value, 3) ||
           errorEmail(userEmail?.value) ||
           errorMinlengthStrict(userMessage?.value, 10)

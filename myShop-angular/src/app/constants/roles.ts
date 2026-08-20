@@ -10,12 +10,12 @@ export class Roles {
   ];
 
   // Get the ID from the name and the name from the ID
-  static getId(roleName: string) {
+  static getId(roleName: string): number {
     const NAME = roleName.trim().toLowerCase();
     const ROLE = this.list.find((item: any) => item.label.toLowerCase() === NAME);
     return ROLE ? ROLE.value : this.other.value;
   }
-  static getName(roleId: number) {
+  static getName(roleId: number): string {
     const ROLE = this.list.find((item: any) => item.value === roleId);
     return ROLE ? ROLE.label : this.other.label;
   }

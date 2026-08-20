@@ -95,7 +95,7 @@
                   {{ Common.numberToString(getTotalExcludingTax()) }} € HT
                 </div>
                 <div [style.white-space]="'nowrap'">
-                  {{ Common.numberToString(this.tax * this.total) }} € TTC
+                  {{ Common.numberToString((1 + this.taxPercent / 100) * this.total) }} € TTC
                 </div>
               </div>
             </td>

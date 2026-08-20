@@ -56,14 +56,14 @@ export class TableUsers {
   inlineEdit(user: User) {
     // Enable inline editing
     this.editUser = new User();
-    this.editUser = structuredClone(user);
+    Object.assign(this.editUser, user);
   }
 
   // Save changes after inline editing
   inlineSave(user: User) {
     if (user.name !== this.editUser?.name || user.email !== this.editUser?.email) {
       this.userService.updateUser(user).subscribe({
-        next: (res: Object) => {
+        next: (res: User) => {
           alert("L'utilisateur a été modifié.");
         },
         error: (err: any) => {
@@ -87,7 +87,7 @@ export class TableUsers {
     if (confirm(TableUsers.msgDelUser)) {
       // Remove the user
       this.userService.deleteUser(id).subscribe({
-        next: (res: Object) => {
+        next: (res: User) => {
           // Refresh the user list without calling the server
           this.users = this.users.filter((item: User) => item.id !== id);
           if (this.editUser) this.editUser = null;

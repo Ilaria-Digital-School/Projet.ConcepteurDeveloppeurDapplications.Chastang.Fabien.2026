@@ -1,23 +1,23 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ContactService } from '../../services/contact-service';
-import { Contact } from '../../models/contact';
+import { MessageService } from '../../services/message-service';
+import { Message } from '../../models/message';
 import { Tooltip } from '../tooltip/tooltip';
 
 @Component({
-  selector: 'app-contact-form',
+  selector: 'app-add-message',
   imports: [FormsModule, Tooltip],
-  templateUrl: './contact-form.html',
-  styleUrl: './contact-form.css',
+  templateUrl: './add-message.html',
+  styleUrl: './add-message.css',
 })
-export class ContactForm {
+export class AddMessage {
   // Native classes / Application services
   private router = inject(Router);
-  private contactService = inject(ContactService);
+  private messageService = inject(MessageService);
 
   // Class properties
-  contact: Contact = new Contact();
+  message: Message = new Message();
   helpHTML: string = `
     Les champs marqués d'une étoile (<span style="color: red; padding: 0 3px">*</span>) sont
     obligatoires.
@@ -49,18 +49,17 @@ export class ContactForm {
   // Submit the form //////////////////////////////////////////////////////////
 
   // Save the message
-  submit(contactForm: NgForm) {
-    const CONTACT = new Contact();
-    CONTACT.additional = undefined; // Remove this property before saving
+  submit(messageForm: NgForm) {
+    const MESSAGE = new Message();
 
-    const FORM_VAL = contactForm.value;
-    CONTACT.name = FORM_VAL.userName.trim();
-    CONTACT.email = FORM_VAL.userEmail.trim();
-    CONTACT.message = FORM_VAL.userMessage.trim();
+    const FORM_VAL = messageForm.value;
+    MESSAGE.name = FORM_VAL.userName.trim();
+    MESSAGE.email = FORM_VAL.userEmail.trim();
+    MESSAGE.text = FORM_VAL.userMessage.trim();
 
     // Add the product
-    this.contactService.addContactMessage(CONTACT).subscribe({
-      next: (res: Object) => {
+    this.messageService.addMessageMessage(MESSAGE).subscribe({
+      next: (res: Message) => {
         alert('Le message est enregistré.');
         this.router.navigate(['/']); // Go to homepage
       },

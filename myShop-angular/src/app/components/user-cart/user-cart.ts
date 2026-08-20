@@ -31,7 +31,7 @@ export class UserCart {
     'Vous devez être connecté pour passer commande.\nSouhaitez-vous vous connecter ou vous inscrire ?';
 
   // Class properties
-  tax: number = 1.2; // +20%
+  taxPercent: number = 20;
   total: number = 0;
   userCart!: Cart;
   connectedUser: User | null = null;

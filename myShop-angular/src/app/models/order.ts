@@ -1,4 +1,5 @@
 import { Common } from '../constants/common';
+import { EnumStatus } from '../enums/order-status';
 import { Cart } from './cart';
 import { Product } from './product';
 
@@ -7,13 +8,14 @@ export class Order {
   id: string = Common.getID();
   date: number = Date.now();
   userId: string = '';
-  products: Product[] = []; // List of products from the 'Cart' object, with their 
-  promoCode: string = '';   // prices at the time of the order and their quantities
+  products: Product[] = []; // List of products from the 'Cart' object, with their
+  promoCode: string = ''; // prices at the time of the order and their quantities
   taxPercent: number = 0;
   promoPercent: number = 0;
   totalExcludingTax: number = 0;
   totalIncludingTax: number = 0;
   totalPromotion: number = 0;
+  status: number = EnumStatus.pending;
 
   // Temporary property, not saved
   additional: any = {}; // For additional properties (RxJS) while preserving the 'Order' type
@@ -27,6 +29,7 @@ export class Order {
     totalExcludingTax: number | null = null,
     totalIncludingTax: number | null = null,
     totalPromotion: number | null = null,
+    status: number | null = null,
   ) {
     if (typeof userId === 'string') this.userId = userId;
     if (Array.isArray(products)) this.products = products;
@@ -36,6 +39,7 @@ export class Order {
     if (typeof totalExcludingTax === 'number') this.totalExcludingTax = totalExcludingTax;
     if (typeof totalIncludingTax === 'number') this.totalIncludingTax = totalIncludingTax;
     if (typeof totalPromotion === 'number') this.totalPromotion = totalPromotion;
+    if (typeof status === 'number') this.status = status;
   }
 
   // Rounded to two decimal places
@@ -57,7 +61,6 @@ export class Order {
 
     // Calculate the total cart amount excluding tax
     this.totalExcludingTax = cart.getTotalExcludingTax();
-
     // Calculate the total cart amount including tax
     this.totalIncludingTax = (1 + this.taxPercent / 100) * this.totalExcludingTax;
 
@@ -75,5 +78,19 @@ export class Order {
     this.totalExcludingTax = this.round(this.totalExcludingTax);
     this.totalIncludingTax = this.round(this.totalIncludingTax);
     if (this.totalPromotion > 0) this.totalPromotion = this.round(this.totalPromotion);
+  }
+
+  // Update the status
+  changeStatus(status: number) {
+    this.status = status;
+  }
+
+  // Remove these properties before saving the order
+  removeBeforeSaveOrder() {
+    const ORDER = new Order();
+    Object.assign(ORDER, this);
+    delete ORDER.additional;
+    ORDER.products = ORDER.products.map((product: Product) => product.removeBeforeSaveCart());
+    return ORDER;
   }
 }

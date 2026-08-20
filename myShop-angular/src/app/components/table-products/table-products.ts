@@ -62,7 +62,7 @@ export class TableProducts {
     if (confirm(TableProducts.msgDelProduct)) {
       // Remove the product
       this.productService.deleteProduct(id).subscribe({
-        next: (res: Object) => {
+        next: (res: Product) => {
           // Refresh the product list without calling the server
           this.products = this.products.filter((item: Product) => item.id !== id);
         },

@@ -28,11 +28,11 @@ export class Countries {
   ];
 
   // Get the ID from the name and the name from the ID
-  static etId(countryName: string) {
+  static etId(countryName: string): number {
     const COUNTRY = this.list.find((item) => item.label.toLowerCase() === countryName);
     return COUNTRY ? COUNTRY.value : this.other.value;
   }
-  static getName(countryId: number) {
+  static getName(countryId: number): string {
     const COUNTRY = this.list.find((item) => item.value === countryId);
     return COUNTRY ? COUNTRY.label : this.other.label;
   }

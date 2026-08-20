@@ -10,7 +10,7 @@ import { Login } from './components/login/login';
 import { AddUser } from './components/add-user/add-user';
 import { AddOrder } from './components/add-order/add-order';
 import { UserOrders } from './components/user-orders/user-orders';
-import { ContactForm } from './components/contact-form/contact-form';
+import { AddMessage } from './components/add-message/add-message';
 import { About } from './components/about/about';
 import { adminGuard } from './guards/admin-guard';
 import { UserView } from './components/user-view/user-view';
@@ -35,6 +35,6 @@ export const routes: Routes = [
   { path: 'edit-user-table/:id', component: AddUser },
   { path: 'add-order/:id', component: AddOrder },
   { path: 'user-orders/:id', component: UserOrders },
-  { path: 'contact', component: ContactForm },
+  { path: 'add-message', component: AddMessage },
   { path: 'about', component: About },
 ];

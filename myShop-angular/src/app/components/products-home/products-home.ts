@@ -27,18 +27,15 @@ export class ProductsHome {
 
   // Retrieve the products
   load() {
-    this.productService
-      .getAllProducts()
-      .pipe(take(this.maxCount))
-      .subscribe({
-        next: (res: Product[]) => {
-          this.products = structuredClone(res);
-        },
-        error: (err: any) => {
-          alert("Une erreur s'est produite lors de la récupération des données.");
-          console.log(err);
-        },
-      });
+    this.productService.getFirstProducts(this.maxCount).subscribe({
+      next: (res: Product[]) => {
+        this.products = structuredClone(res);
+      },
+      error: (err: any) => {
+        alert("Une erreur s'est produite lors de la récupération des données.");
+        console.log(err);
+      },
+    });
   }
 
   // View a product

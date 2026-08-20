@@ -1,9 +1,17 @@
-import { Component } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, Input } from '@angular/core';
+import { Common } from '../../constants/common';
+import { Status } from '../../constants/status';
 
 @Component({
   selector: 'app-user-order',
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './user-order.html',
   styleUrl: './user-order.css',
 })
-export class UserOrder {}
+export class UserOrder {
+  public Common = Common;
+  public Status = Status;
+
+  @Input() order: any;
+}

@@ -91,8 +91,8 @@ export class AddUser {
 
       this.userService.getUserById(this.userId).subscribe({
         next: (res: User) => {
-          this.user = structuredClone(res);
-          this.userIni = structuredClone(res);
+          Object.assign(this.user, res);
+          Object.assign(this.userIni, res);
           this.initFormValues();
         },
         error: (err: any) => {
@@ -200,8 +200,8 @@ export class AddUser {
     if (FORM_VAL.clothes) INTERESTS.push(EnumInterests.clothes);
     if (FORM_VAL.accessories) INTERESTS.push(EnumInterests.accessories);
 
-    const USER = structuredClone(this.user);
-    USER.additional = undefined; // Remove this property before saving
+    const USER = new User();
+    Object.assign(USER, this.user);
 
     if (this.isEditMode) {
       // Modify the user
@@ -239,7 +239,7 @@ export class AddUser {
       if (toSave) {
         // Update the user
         this.userService.updateUser(USER).subscribe({
-          next: (res: Object) => {
+          next: (res: User) => {
             if (this.fromTable) {
               this.router.navigate(['/dashboard']);
             } else {
@@ -262,7 +262,7 @@ export class AddUser {
       USER.country = parseInt(FORM_VAL.country);
 
       this.userService.addUser(USER).subscribe({
-        next: (res: Object) => {
+        next: (res: User) => {
           alert('Votre compte a été créé.');
           this.gotoLogin();
         },

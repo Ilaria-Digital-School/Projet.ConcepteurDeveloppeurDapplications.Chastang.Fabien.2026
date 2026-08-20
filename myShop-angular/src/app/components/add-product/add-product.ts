@@ -55,6 +55,7 @@ export class AddProduct {
   valuesChange: boolean = false;
   productPrice: string = '';
   productStock: string = '';
+  productInfo: string = '';
   placeholderFullDesc: string = PLACEHOLDER_FULL_DESC;
   helpHTML: string = HELP_HTML;
 
@@ -74,7 +75,8 @@ export class AddProduct {
           Object.assign(this.product, res);
           Object.assign(this.productIni, res);
           this.productPrice = Common.numberToString(this.productIni.price);
-          this.productStock = this.productIni.stock.toString();
+          this.productStock = typeof this.productIni.stock === 'number' ? this.productIni.stock.toString() : '0';
+          this.productInfo = typeof this.productIni.info === 'string' ? this.productIni.info : '';
         },
         error: (err: any) => {
           console.log(err);
@@ -133,7 +135,7 @@ export class AddProduct {
         this.product.stock !== this.productIni.stock ||
         this.product.img.trim() !== this.productIni.img ||
         this.product.fullDescription.trim() !== this.productIni.fullDescription ||
-        this.product.info.trim() !== this.productIni.info;
+        this.productInfo.trim() !== this.productIni.info;
     }
   }
 
@@ -146,25 +148,22 @@ export class AddProduct {
 
   // Add or update the product
   submit(productForm: NgForm) {
-    const PRODUCT = structuredClone(this.product);
-
-    // Remove these properties before saving the product
-    PRODUCT.cartQuantity = undefined;
-    PRODUCT.additional = undefined;
+    const PRODUCT = new Product();
+    Object.assign(PRODUCT, this.product);
 
     const FORM_VAL = productForm.value;
     PRODUCT.name = FORM_VAL.productName.trim();
     PRODUCT.description = FORM_VAL.description.trim();
     PRODUCT.price = Number(FORM_VAL.price.replace(',', '.'));
-    PRODUCT.stock = Number(FORM_VAL.stock);
     PRODUCT.img = FORM_VAL.productImg.trim();
     PRODUCT.fullDescription = FORM_VAL.fullDescription.trim();
+    PRODUCT.stock = Number(FORM_VAL.stock);
     PRODUCT.info = FORM_VAL.info.trim();
 
     if (this.isEditMode) {
       // Update the product
       this.productService.updateProduct(PRODUCT).subscribe({
-        next: (res: Object) => {
+        next: (res: Product) => {
           this.router.navigate(['/dashboard-product']);
         },
         error: (err: any) => {
@@ -175,10 +174,8 @@ export class AddProduct {
     } else {
       // Add the product
       this.productService.addProduct(PRODUCT).subscribe({
-        next: (res: Object) => {
-          const PRODUCT = new Product();
-          Object.assign(PRODUCT, res);
-          this.router.navigate(['/product-view', PRODUCT.id]);
+        next: (res: Product) => {
+          this.router.navigate(['/product-view', res.id]);
         },
         error: (err: any) => {
           alert("Une erreur s'est produite lors de l'ajout.");
@@ -191,9 +188,10 @@ export class AddProduct {
   // Reset the form
   reset(productForm: NgForm) {
     if (this.isEditMode) {
-      this.product = structuredClone(this.productIni);
+      Object.assign(this.product, this.productIni);
       this.productPrice = Common.numberToString(this.productIni.price);
-      this.productStock = this.productIni.stock.toString();
+      this.productStock = typeof this.productIni.stock === 'number' ? this.productIni.stock.toString() : '0';
+      this.productInfo = typeof this.productIni.info === 'string' ? this.productIni.info : '';
     } else {
       productForm.resetForm();
     }

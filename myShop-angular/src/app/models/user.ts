@@ -44,4 +44,12 @@ export class User {
       this.country = COUNTRY ? COUNTRY.value : Countries.other.value;
     }
   }
+
+  // Remove these properties before saving the user
+  removeBeforeSaveUser(): User {
+    const USER = new User();
+    Object.assign(USER, this);
+    delete USER.additional;
+    return USER;
+  }
 }

@@ -9,12 +9,12 @@ export class Interests {
   ];
 
   // Get the ID from the name and the name from the ID
-  static getId(interestName: string) {
+  static getId(interestName: string): number {
     const NAME = interestName.trim().toLowerCase();
     const INTEREST = this.list.find((item: any) => item.label.toLowerCase() === NAME);
     return INTEREST ? INTEREST.value : this.other.value;
   }
-  static getName(interestId: number) {
+  static getName(interestId: number): string {
     const INTEREST = this.list.find((item: any) => item.value === interestId);
     return INTEREST ? INTEREST.label : this.other.label;
   }
