@@ -84,6 +84,13 @@ export class Common {
     return this.randomString(11);
   }
 
+  static getOrderRef() {
+    const DIGITS = ['0','1','2','3','4','5','6','7','8','9'];
+    let reference = '';
+    for (let i = 0; i < 5; i++) reference += this.randomString(4, 1, DIGITS) + '-';
+    return reference.slice(0, -1);
+  }
+
   // Converts a string to a number by using the current or specified locale settings
   static stringToNumber(value: string, locale: string = 'fr-FR') {
     const FRAC_SEPARATOR = (1)

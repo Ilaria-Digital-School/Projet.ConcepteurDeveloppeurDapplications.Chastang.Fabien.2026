@@ -6,6 +6,7 @@ import { Product } from './product';
 // Order class
 export class Order {
   id: string = Common.getID();
+  reference: string = Common.getOrderRef();
   date: number = Date.now();
   userId: string = '';
   products: Product[] = []; // List of products from the 'Cart' object, with their

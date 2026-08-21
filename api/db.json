@@ -124,42 +124,20 @@
   ],
   "orders": [
     {
-      "id": "oIuVYfgttJe",
-      "date": 1787235535344,
+      "id": "1aOCLkASqBX",
+      "reference": "YHHM-V0J7-3ETD-DLXO-T9QM",
+      "date": 1787307508412,
       "userId": "tapQ6zz5B64",
       "products": [
         {
           "id": "BN4bdfCKWuf",
-          "name": "Chemise",
+          "name": "Chemise Homme",
           "description": "Chemise homme en coton bleu clair",
           "price": 20,
           "img": "assets/img/clothing/men/shirts/cms1.png",
           "fullDescription": "$$Restez à l'aise même sous la chaleur\n\nConçue pour les journées ensoleillées, cette chemise d'été allie légèreté et respirabilité pour apporter une sensation de confort agréable lors de vos sorties.\n\nSa matière favorise une bonne circulation de l'air, aide à réguler l'humidité et rend le port plus agréable.\n\nProfitez pleinement de l'été en restant à votre aise.\n\n$$Un style naturel, chic avec simplicité\n\nAvec sa coupe ajustée et sa belle fluidité, cette chemise offre une allure élégante et décontractée. Inutile d'en faire trop, elle s'adapte facilement à toutes vos tenues.\n\nPortée ouverte ou fermée, avec un short ou un pantalon, elle conserve un style sobre et raffiné.\n\n$$Entretien facile pour un été sans tracas\n\nCette Chemise est conçue pour vous simplifier la vie : elle passe en machine et sèche simplement à l'air libre.\n\nMême légèrement froissée, elle garde son charme naturel. Son tissu offre une sensation de douceur et de confort agréable à chaque port.\n\nSon confort et sa douceur en font une pièce appropriée pour vous accompagner durant l'été.",
           "cartQuantity": 2
         },
-        {
-          "id": "xVlVC7SoNAY",
-          "name": "Jean Homme",
-          "description": "Jean homme gris",
-          "price": 30,
-          "img": "assets/img/clothing/men/jeans/cmj3.png",
-          "fullDescription": "",
-          "cartQuantity": 1
-        }
-      ],
-      "promoCode": "",
-      "taxPercent": 20,
-      "promoPercent": 0,
-      "totalExcludingTax": 70,
-      "totalIncludingTax": 84,
-      "totalPromotion": 0,
-      "status": 3
-    },
-    {
-      "id": "uUgR78BvKmp",
-      "date": 1787245232099,
-      "userId": "tapQ6zz5B64",
-      "products": [
         {
           "id": "WeHNcyId4xk",
           "name": "Robe",
@@ -168,7 +146,22 @@
           "img": "assets/img/clothing/women/dresses/cwd2.png",
           "fullDescription": "",
           "cartQuantity": 1
-        },
+        }
+      ],
+      "promoCode": "",
+      "taxPercent": 20,
+      "promoPercent": 0,
+      "totalExcludingTax": 110,
+      "totalIncludingTax": 132,
+      "totalPromotion": 0,
+      "status": 3
+    },
+    {
+      "id": "90JZsSLJbnc",
+      "reference": "DI06-D0IU-N2R7-WM7K-83T7",
+      "date": 1787308167804,
+      "userId": "tapQ6zz5B64",
+      "products": [
         {
           "id": "xVlVC7SoNAY",
           "name": "Jean Homme",
@@ -177,15 +170,24 @@
           "img": "assets/img/clothing/men/jeans/cmj3.png",
           "fullDescription": "",
           "cartQuantity": 2
+        },
+        {
+          "id": "BN4bdfCKWuf",
+          "name": "Chemise Homme",
+          "description": "Chemise homme en coton bleu clair",
+          "price": 20,
+          "img": "assets/img/clothing/men/shirts/cms1.png",
+          "fullDescription": "$$Restez à l'aise même sous la chaleur\n\nConçue pour les journées ensoleillées, cette chemise d'été allie légèreté et respirabilité pour apporter une sensation de confort agréable lors de vos sorties.\n\nSa matière favorise une bonne circulation de l'air, aide à réguler l'humidité et rend le port plus agréable.\n\nProfitez pleinement de l'été en restant à votre aise.\n\n$$Un style naturel, chic avec simplicité\n\nAvec sa coupe ajustée et sa belle fluidité, cette chemise offre une allure élégante et décontractée. Inutile d'en faire trop, elle s'adapte facilement à toutes vos tenues.\n\nPortée ouverte ou fermée, avec un short ou un pantalon, elle conserve un style sobre et raffiné.\n\n$$Entretien facile pour un été sans tracas\n\nCette Chemise est conçue pour vous simplifier la vie : elle passe en machine et sèche simplement à l'air libre.\n\nMême légèrement froissée, elle garde son charme naturel. Son tissu offre une sensation de douceur et de confort agréable à chaque port.\n\nSon confort et sa douceur en font une pièce appropriée pour vous accompagner durant l'été.",
+          "cartQuantity": 1
         }
       ],
       "promoCode": "",
       "taxPercent": 20,
       "promoPercent": 0,
-      "totalExcludingTax": 130,
-      "totalIncludingTax": 156,
+      "totalExcludingTax": 80,
+      "totalIncludingTax": 96,
       "totalPromotion": 0,
-      "status": 1
+      "status": 0
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

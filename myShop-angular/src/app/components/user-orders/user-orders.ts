@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth-service';
 import { OrderService } from '../../services/order-service';
 import { User } from '../../models/user';
 import { Order } from '../../models/order';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user-orders',
@@ -13,6 +14,7 @@ import { Order } from '../../models/order';
 })
 export class UserOrders {
   // Native classes / Application services
+  private activatedRoute = inject(ActivatedRoute);
   private authService = inject(AuthService);
   private orderService = inject(OrderService);
 
@@ -22,11 +24,20 @@ export class UserOrders {
 
   // Initialize the properties to display the view
   ngOnInit() {
-    // Get the user if he is logged in
-    this.getConnectedUser();
+    // Retrieve the URL parameter if it exists
+    const USER_ID = this.activatedRoute.snapshot.paramMap.get('id');
+
+    let userId;
+    if (USER_ID === null) {
+      // If the parameter does not exist, get the user if he is logged in
+      this.getConnectedUser();
+      userId = this.connectedUser?.id;
+    } else {
+      userId = USER_ID;
+    }
 
     // Retrieve user orders
-    this.orderService.getOrdersByUserId(this.connectedUser?.id).subscribe({
+    this.orderService.getOrdersByUserId(userId).subscribe({
       next: (res: Order[]) => {
         this.orders = res;
       },

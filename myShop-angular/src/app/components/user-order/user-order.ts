@@ -10,8 +10,10 @@ import { Status } from '../../constants/status';
   styleUrl: './user-order.css',
 })
 export class UserOrder {
+  // Constants
   public Common = Common;
   public Status = Status;
 
+  // To retrieve data from another component
   @Input() order: any;
 }

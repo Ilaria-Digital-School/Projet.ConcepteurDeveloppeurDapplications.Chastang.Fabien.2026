@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user-service';
@@ -6,6 +6,7 @@ import { Genders } from '../../constants/genders';
 import { Countries } from '../../constants/countries';
 import { Roles } from '../../constants/roles';
 import { User } from '../../models/user';
+import { map, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-table-users',
@@ -14,6 +15,9 @@ import { User } from '../../models/user';
   styleUrl: './table-users.css',
 })
 export class TableUsers {
+  // To retrieve DOM elements
+  @ViewChild('search') search!: ElementRef<HTMLInputElement>;
+
   // Constants
   public Genders = Genders;
   public Countries = Countries;
@@ -28,6 +32,8 @@ export class TableUsers {
 
   // Class properties
   users: User[] = [];
+  filteredItems: User[] = [];
+  searchSubject: Subject<string> = new Subject<string>();
   editUser!: User | null;
 
   // Initialization ///////////////////////////////////////////////////////////
@@ -35,6 +41,21 @@ export class TableUsers {
   // Initialize the user list
   ngOnInit() {
     this.load();
+
+    // Search for products by name
+    this.searchSubject
+      .pipe(
+        map((email: string) => {
+          const EMAIL = email.toLocaleLowerCase();
+          return this.users.filter((user: User) => {
+            return user.email.toLowerCase().indexOf(EMAIL) === 0;
+          });
+        }),
+      )
+      .subscribe((res: User[]) => {
+        // Retrieve the users
+        this.filteredItems = res;
+      });
   }
 
   // Retrieve all users
@@ -42,12 +63,18 @@ export class TableUsers {
     this.userService.getAllUsers().subscribe({
       next: (res: User[]) => {
         this.users = res;
+        this.filteredItems = res;
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
         console.log(err);
       },
     });
+  }
+
+  // Search for products by name
+  searchItems(email: string) {
+    this.searchSubject.next(email);
   }
 
   // Actions //////////////////////////////////////////////////////////////////

@@ -18,7 +18,7 @@ export class ProductsSearch {
 
   // Class properties
   products: Product[] = [];
-  filteredProducts: Product[] = [];
+  filteredItems: Product[] = [];
   searchSubject: Subject<string> = new Subject<string>();
 
   // Initialize the product list
@@ -32,12 +32,12 @@ export class ProductsSearch {
         map((name: string) => {
           const NAME = name.toLocaleLowerCase();
           return this.products.filter((product: Product) => {
-            return product.name.toLowerCase().includes(NAME);
+            return product.name.toLowerCase().indexOf(NAME) === 0;
           });
         }),
       )
       .subscribe((res: Product[]) => {
-        this.filteredProducts = res;
+        this.filteredItems = res;
       });
   }
 
@@ -46,7 +46,7 @@ export class ProductsSearch {
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
         this.products = res;
-        this.filteredProducts = res;
+        this.filteredItems = res;
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
@@ -56,7 +56,7 @@ export class ProductsSearch {
   }
 
   // Search for products by name
-  search(name: string) {
+  searchItems(name: string) {
     this.searchSubject.next(name);
   }
 

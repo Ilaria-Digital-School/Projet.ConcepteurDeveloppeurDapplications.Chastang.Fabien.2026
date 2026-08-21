@@ -8,10 +8,10 @@
     id="search"
     placeholder="Rechercher..."
     aria-label="Rechercher des articles"
-    (input)="search($event.target.value)"
+    (input)="searchItems($event.target.value)"
   />
   <div class="product-container">
-    @for (product of filteredProducts; track product.id; let i = $index) {
+    @for (product of filteredItems; track product.id; let i = $index) {
       <app-product-card
         [product]="product"
         [isList]="1"

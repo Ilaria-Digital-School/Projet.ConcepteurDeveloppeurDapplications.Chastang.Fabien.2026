@@ -33,6 +33,16 @@ export class OrderService {
     );
   }
 
+  // Response: array of objects (list of orders)
+  getOrdersByUserIDs(userIDs: string[]): Observable<Order[]> {
+    return this.httpClient.get<Order[]>(`${this.orderURL}?userId=${userIDs.join('&userId=')}`).pipe(
+      // Orders sorted from newest to oldest
+      map((orders: Order[]) => {
+        return orders.sort((order1: Order, order2: Order) => order2.date - order1.date);
+      }),
+    );
+  }
+
   // Response: order object or null
   getOrderById(id: string | null): Observable<Order> {
     return this.httpClient.get<Order>(`${this.orderURL}/${id}`);
