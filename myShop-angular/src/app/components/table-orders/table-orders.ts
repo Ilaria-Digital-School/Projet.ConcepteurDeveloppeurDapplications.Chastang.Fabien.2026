@@ -86,7 +86,7 @@ export class TableOrders {
           const USER = this.users.find((user: User) => user.id === order.userId);
           return { ...order, user: USER };
         });
-        this.filteredItems = structuredClone(this.filteredItemsByName);
+        this.filteredItems = this.filteredItemsByName;
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
