@@ -43,7 +43,11 @@ export class ProductsCarousel {
     // Retrieve all products
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
-        this.products = structuredClone(res);
+        this.products = res.map((product: Product) => {
+          const PRODUCT = new Product();
+          Object.assign(PRODUCT, product);
+          return PRODUCT;
+        });
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");

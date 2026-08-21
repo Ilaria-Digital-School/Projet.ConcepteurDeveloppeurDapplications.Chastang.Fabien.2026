@@ -37,7 +37,7 @@ export class ProductsSearch {
         }),
       )
       .subscribe((res: Product[]) => {
-        this.filteredProducts = structuredClone(res);
+        this.filteredProducts = res;
       });
   }
 
@@ -45,8 +45,8 @@ export class ProductsSearch {
   load() {
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
-        this.products = structuredClone(res);
-        this.filteredProducts = structuredClone(res);
+        this.products = res;
+        this.filteredProducts = res;
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");

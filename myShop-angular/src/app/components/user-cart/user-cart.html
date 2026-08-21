@@ -1,6 +1,6 @@
 <!-- Shopping cart table -->
-<section>
-  @if (userCart.products.length > 0) {
+@if (userCart.products.length > 0) {
+  <section>
     <h2 class="h2-info">Mon panier</h2>
 
     <div class="table-responsive">
@@ -123,7 +123,9 @@
         </tbody>
       </table>
     </div>
-  } @else {
+  </section>
+} @else {
+  <section class="empty">
     <h2 class="h2-title">Votre panier est vide</h2>
-  }
-</section>
+  </section>
+}

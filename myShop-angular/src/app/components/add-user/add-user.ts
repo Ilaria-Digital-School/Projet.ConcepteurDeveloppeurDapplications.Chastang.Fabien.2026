@@ -91,8 +91,8 @@ export class AddUser {
 
       this.userService.getUserById(this.userId).subscribe({
         next: (res: User) => {
-          Object.assign(this.user, res);
-          Object.assign(this.userIni, res);
+          this.user = res;
+          this.userIni = res;
           this.initFormValues();
         },
         error: (err: any) => {
@@ -173,7 +173,7 @@ export class AddUser {
   load() {
     this.userService.getAllUsers().subscribe({
       next: (res: User[]) => {
-        this.users = structuredClone(res);
+        this.users = res;
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");

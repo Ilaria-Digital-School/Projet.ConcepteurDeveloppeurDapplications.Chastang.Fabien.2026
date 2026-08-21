@@ -72,8 +72,8 @@ export class AddProduct {
 
       this.productService.getProductById(this.productId).subscribe({
         next: (res: Product) => {
-          Object.assign(this.product, res);
-          Object.assign(this.productIni, res);
+          this.product = res;
+          this.productIni = res;
           this.productPrice = Common.numberToString(this.productIni.price);
           this.productStock = typeof this.productIni.stock === 'number' ? this.productIni.stock.toString() : '0';
           this.productInfo = typeof this.productIni.info === 'string' ? this.productIni.info : '';

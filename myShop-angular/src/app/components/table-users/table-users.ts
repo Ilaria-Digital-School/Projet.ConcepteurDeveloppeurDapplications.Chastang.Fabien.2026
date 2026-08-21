@@ -41,7 +41,7 @@ export class TableUsers {
   load() {
     this.userService.getAllUsers().subscribe({
       next: (res: User[]) => {
-        this.users = structuredClone(res);
+        this.users = res;
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");

@@ -35,7 +35,7 @@ export class TableProducts {
   load() {
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
-        this.products = structuredClone(res);
+        this.products = res;
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");

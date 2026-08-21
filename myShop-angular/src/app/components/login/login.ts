@@ -20,7 +20,6 @@ export class Login {
 
   // Class properties
   loginForm!: FormGroup;
-  user: User = new User();
   errorMsg: string = '';
   fromCart!: boolean;
   helpHTML: string = `
@@ -58,15 +57,15 @@ export class Login {
     this.userService.login(DATA).subscribe({
       next: (res: User[]) => {
         if (res.length > 0) {
-          Object.assign(this.user, res[0]);
+          const USER = res[0];
 
           // Store the logged-in user's data in local storage for a persistent session, or otherwise in session storage
-          if (FORM_VAL.permanent) localStorage.setItem('connectedUser', JSON.stringify(this.user));
-          else sessionStorage.setItem('connectedUser', JSON.stringify(this.user));
+          if (FORM_VAL.permanent) localStorage.setItem('connectedUser', JSON.stringify(USER));
+          else sessionStorage.setItem('connectedUser', JSON.stringify(USER));
 
           // Redirect to the home page for the user and to the dashboard for the administrator
           this.router.navigate([
-            this.user.role === EnumRoles.user ? (this.fromCart ? '/user-cart' : '/') : '/dashboard',
+            USER.role === EnumRoles.user ? (this.fromCart ? '/user-cart' : '/') : '/dashboard',
           ]);
         } else {
           this.errorMsg = 'E-mail ou mot de passe incorrect !';

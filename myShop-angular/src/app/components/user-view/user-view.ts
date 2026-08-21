@@ -32,7 +32,7 @@ export class UserView {
     this.userId = this.activatedRoute.snapshot.paramMap.get('id');
     this.userService.getUserById(this.userId).subscribe({
       next: (res: User) => {
-        Object.assign(this.user, res);
+        this.user = res;
       },
       error: (err: any) => {
         console.log(err);

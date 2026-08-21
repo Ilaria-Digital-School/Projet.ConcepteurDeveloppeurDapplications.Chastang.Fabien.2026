@@ -6,3 +6,9 @@ section {
 section:last-of-type {
   margin-bottom: 20px;
 }
+
+.empty {
+  margin: 20px;
+  padding-top: 20px;
+  padding-bottom: 10px;
+}

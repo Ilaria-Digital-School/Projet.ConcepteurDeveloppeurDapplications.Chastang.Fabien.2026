@@ -28,9 +28,9 @@ export class ProductView {
     this.productService.getProductById(this.productId).subscribe({
       next: (res: Product) => {
         Object.assign(this.product, res);
-        if (this.product.fullDescription) {
+
+        if (this.product.fullDescription)
           this.fullDescription = this.getFullDescription(this.product.fullDescription);
-        }
       },
       error: (err: any) => {
         console.log(err);

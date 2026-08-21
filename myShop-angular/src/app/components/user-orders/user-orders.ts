@@ -28,7 +28,7 @@ export class UserOrders {
     // Retrieve user orders
     this.orderService.getOrdersByUserId(this.connectedUser?.id).subscribe({
       next: (res: Order[]) => {
-        this.orders = structuredClone(res);
+        this.orders = res;
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
