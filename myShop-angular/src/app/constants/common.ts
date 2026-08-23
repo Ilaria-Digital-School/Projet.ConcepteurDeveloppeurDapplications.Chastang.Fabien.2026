@@ -84,6 +84,21 @@ export class Common {
     return this.randomString(11);
   }
 
+  // Returns the reference of a product
+  static getProductRef() {
+    const DIGITS = ['0','1','2','3','4','5','6','7','8','9'];
+    let reference = '';
+    for (let i = 0; i < 2; i++) reference += this.randomString(6, 1, DIGITS) + '-';
+    return reference.slice(0, -1);
+  }
+
+  // Returns the reference of a product
+  static getUserRef() {
+    const DIGITS = ['0','1','2','3','4','5','6','7','8','9'];
+    return this.randomString(10, 1, DIGITS);
+  }
+
+  // Returns the reference of an order
   static getOrderRef() {
     const DIGITS = ['0','1','2','3','4','5','6','7','8','9'];
     let reference = '';

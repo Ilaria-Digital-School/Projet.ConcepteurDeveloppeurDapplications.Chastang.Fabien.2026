@@ -27,13 +27,13 @@ export class Countries {
     this.other,
   ];
 
-  // Get the ID from the name and the name from the ID
-  static etId(countryName: string): number {
-    const COUNTRY = this.list.find((item) => item.label.toLowerCase() === countryName);
-    return COUNTRY ? COUNTRY.value : this.other.value;
+  // Get the value from the label and the label from the value
+  static getValue(label: string): number {
+    const ITEM = this.list.find((item) => item.label.toLowerCase() === label);
+    return ITEM ? ITEM.value : this.other.value;
   }
-  static getName(countryId: number): string {
-    const COUNTRY = this.list.find((item) => item.value === countryId);
-    return COUNTRY ? COUNTRY.label : this.other.label;
+  static getLabel(value: number): string {
+    const ITEM = this.list.find((item) => item.value === value);
+    return ITEM ? ITEM.label : this.other.label;
   }
 }

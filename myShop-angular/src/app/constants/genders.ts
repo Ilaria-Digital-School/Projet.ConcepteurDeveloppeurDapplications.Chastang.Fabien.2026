@@ -9,14 +9,14 @@ export class Genders {
     this.other,
   ];
 
-  // Get the ID from the name and the name from the ID
-  static getId(genderName: string): number {
-    const NAME = genderName.trim().toLowerCase();
-    const GENDER = this.list.find((item: any) => item.label.toLowerCase() === NAME);
-    return GENDER ? GENDER.value : this.other.value;
+  // Get the value from the label and the label from the value
+  static getValue(label: string): number {
+    const LABEL = label.trim().toLowerCase();
+    const ITEM = this.list.find((item: any) => item.label.toLowerCase() === LABEL);
+    return ITEM ? ITEM.value : this.other.value;
   }
-  static getName(genderId: number, other: string | undefined = undefined): string {
-    const GENDER = this.list.find((item: any) => item.value === genderId);
-    return GENDER === undefined ? (other === undefined ? this.other.label : other) : GENDER.label;
+  static getLabel(value: number, other: string | undefined = undefined): string {
+    const ITEM = this.list.find((item: any) => item.value === value);
+    return !ITEM || !ITEM.value ? (other ? other : this.other.label) : ITEM.label;
   }
 }

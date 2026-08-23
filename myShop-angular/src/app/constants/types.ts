@@ -1,11 +1,12 @@
-import { EnumInterests } from '../enums/user-interests';
+import { EnumTypes } from '../enums/product-types';
 
-// User's interests class
-export class Interests {
-  static other = { value: EnumInterests.none, id: 'other', label: '– Autre –' };
+// User's type class
+export class Types {
+  static other = { value: EnumTypes.other, id: 'other', label: '– Indéfini –' };
   static list = [
-    { value: EnumInterests.clothes, id: 'clothes', label: 'Vêtements' },
-    { value: EnumInterests.accessories, id: 'accessories', label: 'Accessoires' },
+    { value: EnumTypes.clothes, id: 'clothes', label: 'Vêtement' },
+    { value: EnumTypes.accessories, id: 'accessories', label: 'Accessoire' },
+    this.other,
   ];
 
   // Get the value from the label and the label from the value

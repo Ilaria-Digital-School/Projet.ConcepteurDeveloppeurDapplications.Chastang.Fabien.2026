@@ -12,14 +12,14 @@ export class Status {
     { value: EnumStatus.expired, id: 'expired', label: 'Expirée' },
   ];
 
-  // Get the ID from the name and the name from the ID
-  static getId(statusName: string): number {
-    const NAME = statusName.trim().toLowerCase();
-    const STATUS = this.list.find((item: any) => item.label.toLowerCase() === NAME);
-    return STATUS ? STATUS.value : -1;
+  // Get the value from the label and the label from the value
+  static getValue(label: string): number {
+    const LABEL = label.trim().toLowerCase();
+    const ITEM = this.list.find((item: any) => item.label.toLowerCase() === LABEL);
+    return ITEM ? ITEM.value : -1;
   }
-  static getName(statusId: number): string | null {
-    const STATUS = this.list.find((item: any) => item.value === statusId);
-    return STATUS ? STATUS.label : null;
+  static getLabel(value: number): string | null {
+    const ITEM = this.list.find((item: any) => item.value === value);
+    return ITEM ? ITEM.label : null;
   }
 }

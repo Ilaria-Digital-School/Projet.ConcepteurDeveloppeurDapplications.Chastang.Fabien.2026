@@ -4,19 +4,19 @@ import { EnumRoles } from "../enums/user-roles";
 export class Roles {
   static other = { value: EnumRoles.user, label: 'Utilisateur' };
   static list = [
-    { value: EnumRoles.admin, label: 'Admin.' },
+    { value: EnumRoles.admin, label: 'Administrateur' },
     { value: EnumRoles.superAdmin, label: 'Super Admin.' },
     this.other,
   ];
 
-  // Get the ID from the name and the name from the ID
-  static getId(roleName: string): number {
-    const NAME = roleName.trim().toLowerCase();
-    const ROLE = this.list.find((item: any) => item.label.toLowerCase() === NAME);
-    return ROLE ? ROLE.value : this.other.value;
+  // Get the value from the label and the label from the value
+  static getValue(label: string): number {
+    const LABEL = label.trim().toLowerCase();
+    const ITEM = this.list.find((item: any) => item.label.toLowerCase() === LABEL);
+    return ITEM ? ITEM.value : this.other.value;
   }
-  static getName(roleId: number): string {
-    const ROLE = this.list.find((item: any) => item.value === roleId);
-    return ROLE ? ROLE.label : this.other.label;
+  static getLabel(value: number): string {
+    const ITEM = this.list.find((item: any) => item.value === value);
+    return ITEM ? ITEM.label : this.other.label;
   }
 }
