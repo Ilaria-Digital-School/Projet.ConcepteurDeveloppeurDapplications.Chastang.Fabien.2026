@@ -118,34 +118,38 @@
       <legend>Informations supplémentaires</legend>
       <!-- Form fields regarding the user's gender -->
       <div class="field-container">
-        <div class="field-label" aria-label="Genre">Genre&nbsp;:&ensp;</div>
+        <div class="field-label" aria-label="Genre">Genre&nbsp;:</div>
         <div>
-          <div class="field">
-            <input type="radio" id="female" formControlName="gender" value="1" />
-            <label for="female"> Femme&ensp;</label>
-          </div>
-          <div class="field">
-            <input type="radio" id="male" formControlName="gender" value="2" />
-            <label for="male"> Homme&ensp;</label>
-          </div>
-          <div class="field">
-            <input type="radio" id="other" formControlName="gender" value="0" />
-            <label for="other"> Je le garde pour moi&ensp;</label>
-          </div>
+          @for (gender of Genders.list; track gender.value; let i = $index) {
+            <div class="field">
+              <input
+                type="radio"
+                [id]="gender.id"
+                [formControlName]="'gender'"
+                [value]="gender.value"
+              />
+              <label [for]="gender.id">
+                {{ Genders.getLabel(gender.value, 'Je le garde pour moi') }}
+              </label>
+            </div>
+          }
         </div>
       </div>
       <!-- Form fields regarding user interests -->
       <div class="field-container">
-        <div class="field-label" aria-label="Intérêts">Centres d'ntérêts&nbsp;:&ensp;</div>
+        <div class="field-label" aria-label="Intérêts">Centres d'ntérêts&nbsp;:</div>
         <div>
-          <div class="field">
-            <input type="checkbox" id="clothes" formControlName="clothes" value="1" />
-            <label for="clothes"> Vêtements&ensp;</label>
-          </div>
-          <div class="field">
-            <input type="checkbox" id="accessories" formControlName="accessories" value="2" />
-            <label for="accessories"> Accessores&ensp;</label>
-          </div>
+          @for (interest of Interests.list; track interest.value; let i = $index) {
+            <div class="field">
+              <input
+                type="checkbox"
+                [id]="interest.id"
+                [formControlName]="interest.id"
+                [value]="interest.value"
+              />
+              <label [for]="interest.id"> {{ interest.label }}</label>
+            </div>
+          }
         </div>
       </div>
       <!-- User's country -->

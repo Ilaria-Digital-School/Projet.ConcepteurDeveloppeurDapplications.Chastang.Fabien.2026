@@ -14,6 +14,7 @@ import { Interests } from '../../constants/interests';
 import { Countries } from '../../constants/countries';
 import { User } from '../../models/user';
 import { Tooltip } from '../tooltip/tooltip';
+import { Genders } from '../../constants/genders';
 // import { JsonPipe } from '@angular/common';
 
 // Custom validators for the entire form /////////////////////////////////
@@ -36,6 +37,8 @@ export class CustomValidators {
 })
 export class AddUser {
   // Constants
+  public Genders = Genders;
+  public Interests = Interests;
   public Countries = Countries;
 
   // Native classes / Application services
@@ -52,7 +55,7 @@ export class AddUser {
   btnAction!: string;
   user: User = new User();
   userIni: User = new User();
-  users: User[] = [];
+  userNew!: boolean;
   fromCart!: boolean;
   fromTable!: boolean;
   valuesChange: boolean = false;
@@ -83,10 +86,10 @@ export class AddUser {
       this.userForm = this.formBuilder.group({
         userName: ['', [Validators.required, Validators.pattern(RE_NAME)]],
         userEmail: ['', [Validators.required, Validators.email]],
-        gender: ['0'],
+        gender: [0],
         clothes: [false],
         accessories: [false],
-        country: ['0'],
+        country: [0],
       });
 
       this.userService.getUserById(this.userId).subscribe({
@@ -102,13 +105,15 @@ export class AddUser {
 
       // To detect changes
       this.userForm.valueChanges.subscribe((formValue: any) => {
-        this.valuesChange =
-          formValue.userName.trim() !== this.userIni.name ||
-          formValue.userEmail !== this.userIni.email ||
-          formValue.gender !== this.userIni.gender.toString() ||
-          formValue.clothes !== this.userIni.interests.includes(1) ||
-          formValue.accessories !== this.userIni.interests.includes(2) ||
-          formValue.country !== this.userIni.country.toString();
+        if (formValue.userName !== null) {
+          this.valuesChange =
+            formValue.userName.trim() !== this.userIni.name ||
+            formValue.userEmail !== this.userIni.email ||
+            formValue.gender !== this.userIni.gender ||
+            formValue.clothes !== this.userIni.interests.includes(1) ||
+            formValue.accessories !== this.userIni.interests.includes(2) ||
+            parseInt(formValue.country) !== this.userIni.country;
+        }
       });
     } else {
       // Add a new user
@@ -133,10 +138,10 @@ export class AddUser {
         userEmail: ['', [Validators.required, Validators.email]],
         pswd: ['', [Validators.required, Validators.pattern(PSWD_PATTERN)]],
         confirm: ['', Validators.required],
-        gender: ['0'],
+        gender: [0],
         clothes: [false],
         accessories: [false],
-        country: ['0'],
+        country: [0],
       });
 
       // Custom validator for the entire form
@@ -150,10 +155,10 @@ export class AddUser {
     this.userForm.patchValue({
       userName: this.userIni.name,
       userEmail: this.userIni.email,
-      gender: this.userIni.gender.toString(),
+      gender: this.userIni.gender,
       clothes: this.userIni.interests.includes(1),
       accessories: this.userIni.interests.includes(2),
-      country: this.userIni.country.toString(),
+      country: this.userIni.country,
     });
   }
 
@@ -162,7 +167,7 @@ export class AddUser {
     return this.valuesChange;
   }
 
-  // Check the maximum length
+  // Check the maximum length to inform the user
   warningMaxlength(value: string, maxlen: number): boolean {
     return typeof value === 'string' && value.length === maxlen;
   }
@@ -170,14 +175,20 @@ export class AddUser {
   // Submit the form //////////////////////////////////////////////////////////
 
   // Retrieve all users to check if the email does not exist
-  load() {
+  checkEmail(email: string) {
     this.userService.getAllUsers().subscribe({
       next: (res: User[]) => {
-        this.users = res;
+        if (res.some((user: User) => user.email === email)) {
+          alert('Cet e-mail existe déjà !');
+          this.userNew = false;
+        } else {
+          this.userNew = true;
+        }
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
         console.log(err);
+        this.userNew = false;
       },
     });
   }
@@ -186,13 +197,10 @@ export class AddUser {
   submit() {
     const FORM_VAL = this.userForm.value;
 
+    // Check if the email does not exist
     if (!this.isEditMode || (this.isEditMode && this.userIni.email !== FORM_VAL.userEmail)) {
-      // Check if the email does not exist
-      this.load();
-      if (this.users.some((user: User) => user.email === FORM_VAL.userEmail)) {
-        alert('Cet e-mail existe déjà !');
-        return;
-      }
+      this.checkEmail(FORM_VAL.userEmail);
+      if (!this.userNew) return;
     }
 
     // Manage the checkboxes
@@ -216,7 +224,7 @@ export class AddUser {
         toSave = true;
         USER.email = FORM_VAL.userEmail;
       }
-      const GENDER = parseInt(FORM_VAL.gender);
+      const GENDER = FORM_VAL.gender;
       if (this.userIni.gender !== GENDER) {
         toSave = true;
         USER.gender = GENDER;
@@ -257,7 +265,7 @@ export class AddUser {
       USER.name = FORM_VAL.userName.trim().replace(/\s{2,}/g, ' ');
       USER.email = FORM_VAL.userEmail;
       USER.pswd = FORM_VAL.pswd;
-      USER.gender = parseInt(FORM_VAL.gender);
+      USER.gender = FORM_VAL.gender;
       USER.interests = INTERESTS;
       USER.country = parseInt(FORM_VAL.country);
 
