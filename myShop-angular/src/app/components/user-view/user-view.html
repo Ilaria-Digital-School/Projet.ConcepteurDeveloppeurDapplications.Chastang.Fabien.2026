@@ -15,7 +15,7 @@
       <div>Genre :</div>
       <div>
         @if (user.gender > 0) {
-          {{ Genders.getName(user.gender) }}
+          {{ Genders.getLabel(user.gender) }}
         } @else {
           <span [style.font-style]="'italic'">Non précisé</span>
         }
@@ -26,9 +26,9 @@
       <div>
         @for (item of user.interests; track item; let i = $index) {
           @if (i < user.interests.length - 1) {
-            <span>{{ Interests.getName(item) }}, </span>
+            <span>{{ Interests.getLabel(item) }}, </span>
           } @else {
-            <span>{{ Interests.getName(item) }}</span>
+            <span>{{ Interests.getLabel(item) }}</span>
           }
         } @empty {
           <span [style.font-style]="'italic'">Non précisé</span>
@@ -39,7 +39,7 @@
       <div>Pays :</div>
       <div>
         @if (user.country > 0) {
-          {{ Countries.getName(user.country) }}
+          {{ Countries.getLabel(user.country) }}
         } @else {
           <span [style.font-style]="'italic'">Non précisé</span>
         }
