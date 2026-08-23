@@ -13,13 +13,7 @@
     </div>
     <div>
       <div>Genre :</div>
-      <div>
-        @if (user.gender > 0) {
-          {{ Genders.getLabel(user.gender) }}
-        } @else {
-          <span [style.font-style]="'italic'">Non précisé</span>
-        }
-      </div>
+      <div>{{ Genders.getLabel(user.gender, '—') }}</div>
     </div>
     <div>
       <div>Centres d'intérêts :</div>
@@ -31,19 +25,13 @@
             <span>{{ Interests.getLabel(item) }}</span>
           }
         } @empty {
-          <span [style.font-style]="'italic'">Non précisé</span>
+          <span [style.font-style]="'italic'">—</span>
         }
       </div>
     </div>
     <div>
       <div>Pays :</div>
-      <div>
-        @if (user.country > 0) {
-          {{ Countries.getLabel(user.country) }}
-        } @else {
-          <span [style.font-style]="'italic'">Non précisé</span>
-        }
-      </div>
+      <div>{{ Countries.getLabel(user.country, '—') }}</div>
     </div>
   </fieldset>
 </section>
