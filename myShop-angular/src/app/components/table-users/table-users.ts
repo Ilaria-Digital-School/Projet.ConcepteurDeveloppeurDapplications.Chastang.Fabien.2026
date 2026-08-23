@@ -147,9 +147,16 @@ export class TableUsers {
   // Save changes after inline editing
   saveInline(user: User) {
     if (user.name !== this.editUser?.name || user.email !== this.editUser?.email) {
-      this.userService.updateUser(user).subscribe({
+      const USER = new User();
+      Object.assign(USER, user);
+
+      this.userService.updateUser(USER).subscribe({
         next: (res: User) => {
           alert("L'utilisateur a été modifié.");
+
+          // Updating the user table
+          if (user.email !== this.editUser?.email)
+            this.searchEmailItems(this.emailUsers.nativeElement.value);
         },
         error: (err: any) => {
           alert("Une erreur s'est produite.");
@@ -157,6 +164,7 @@ export class TableUsers {
         },
       });
     }
+    // Disable inline editing
     this.editUser = null;
   }
 
@@ -175,6 +183,10 @@ export class TableUsers {
         next: (res: User) => {
           // Refresh the user list without calling the server
           this.users = this.users.filter((item: User) => item.id !== id);
+          this.filteredText = this.filteredText.filter((item: User) => item.id !== id);
+          this.filteredItems = this.filteredItems.filter((item: User) => item.id !== id);
+
+          // Disable inline editing if necessary
           if (this.editUser) this.editUser = null;
         },
         error: (err: any) => {
