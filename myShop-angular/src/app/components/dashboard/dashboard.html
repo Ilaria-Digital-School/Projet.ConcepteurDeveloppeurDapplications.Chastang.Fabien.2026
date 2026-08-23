@@ -51,7 +51,7 @@
       aria-labelledby="users-tab"
       tabindex="0"
     >
-      <app-table-users #users></app-table-users>
+      <app-table-users #usersTable></app-table-users>
     </div>
     <div
       [class]="'tab-pane fade show' + (from === 1 ? ' active' : '')"
@@ -60,7 +60,7 @@
       aria-labelledby="products-tab"
       tabindex="0"
     >
-      <app-table-products #products></app-table-products>
+      <app-table-products #productsTable></app-table-products>
     </div>
     <div
       [class]="'tab-pane fade show' + (from === 2 ? ' active' : '')"
@@ -69,7 +69,7 @@
       aria-labelledby="orders-tab"
       tabindex="0"
     >
-      <app-table-orders #orders></app-table-orders>
+      <app-table-orders #ordersTable></app-table-orders>
     </div>
   </div>
 </section>

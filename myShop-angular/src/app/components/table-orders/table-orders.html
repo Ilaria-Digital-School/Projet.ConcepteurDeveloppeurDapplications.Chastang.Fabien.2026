@@ -1,14 +1,22 @@
 <section class="search">
   <input
     type="text"
-    name="search"
+    name="searchEmail"
     id="search"
-    placeholder="Rechercher un client par son adresse mail..."
+    placeholder="Adresse mail..."
     aria-label="Rechercher un client par son adresse mail"
-    (input)="searchItems($event.target.value)"
-    #search
+    (input)="searchEmailItems($event.target.value)"
+    #searchEmail
   />
-  <select name="status" id="status" aria-label="Sélectionner le statut de la commande" (change)="selectItems($event.target)">
+  <input
+    type="text"
+    id="searchRef"
+    placeholder="Référence..."
+    aria-label="Rechercher une commande par sa référence"
+    (input)="searchRefItems($event.target.value)"
+    #searchRef
+  />
+  <select name="status" id="status" aria-label="Sélectionner le statut de la commande" (change)="selectStatusItems($event.target)">
     <option value="-1" selected>– Tous –</option>
     @for (status of Status.list; track status.value; let i = $index) {
       <option [value]="status.value">{{ status.label }}</option>
@@ -19,9 +27,9 @@
       <thead>
         <tr>
           <th scope="col">#</th>
+          <th scope="col">Référence</th>
           <th scope="col">Client</th>
           <th scope="col">Date</th>
-          <th scope="col">Référence</th>
           <th scope="col">Total (HT)</th>
           <th scope="col">Total facturé</th>
           <th scope="col">Statut</th>
@@ -31,6 +39,7 @@
         @for (order of filteredItems; track order.id; let i = $index) {
           <tr>
             <th scope="row">{{ i + 1 }}</th>
+            <td>{{ order.reference }}</td>
             <td>
               <a
                 [routerLink]="['/user-orders', order.user.id]"
@@ -41,7 +50,6 @@
               </a>
             </td>
             <td>{{ order.date | date: 'dd/MM/yyyy' }} à {{ order.date | date: 'HH:mm' }}</td>
-            <td>{{ order.reference }}</td>
             <td>{{ Common.numberToString(order.totalExcludingTax) }} €</td>
             <td>
               {{
@@ -51,7 +59,7 @@
               }}
               €
             </td>
-            <td>{{ Status.getName(order.status) }}</td>
+            <td>{{ Status.getLabel(order.status) }}</td>
           </tr>
         } @empty {
           <tr>

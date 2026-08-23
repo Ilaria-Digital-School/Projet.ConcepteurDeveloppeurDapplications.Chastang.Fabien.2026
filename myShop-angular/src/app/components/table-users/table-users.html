@@ -1,18 +1,32 @@
 <section class="search">
   <input
     type="text"
-    id="search"
-    placeholder="Rechercher un client par son adresse mail..."
+    id="searchEmail"
+    placeholder="Adresse mail..."
     aria-label="Rechercher un client par son adresse mail"
-    (input)="searchItems($event.target.value)"
-    #search
+    (input)="searchEmailItems($event.target.value)"
+    #searchEmail
   />
+  <input
+    type="text"
+    id="searchRef"
+    placeholder="Référence..."
+    aria-label="Rechercher un client par sa référence"
+    (input)="searchRefItems($event.target.value)"
+    #searchRef
+  />
+  <select name="role" id="role" aria-label="Sélectionner le role" (change)="selectRoleItems($event.target)">
+    <option value="-1" selected>– Tous –</option>
+    @for (role of roles; track role.value; let i = $index) {
+      <option [value]="role.value">{{ role.label }}</option>
+    }
+  </select>
   <div class="table-responsive">
     <table class="table table-striped table-hover table-sm">
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">ID</th>
+          <th scope="col">Référence</th>
           <th scope="col">Genre</th>
           <th scope="col">Nom</th>
           <th scope="col">E-mail</th>
@@ -25,8 +39,8 @@
         @for (user of filteredItems; track user.id; let i = $index) {
           <tr [class]="user.role !== 0 ? 'admin-row' : ''">
             <th scope="row">{{ i + 1 }}</th>
-            <td [class]="user.role !== 0 ? 'admin-cell' : ''">{{ user.id }}</td>
-            <td>{{ Genders.getName(user.gender) }}</td>
+            <td [class]="user.role !== 0 ? 'admin-cell' : ''">{{ user.reference }}</td>
+            <td>{{ Genders.getLabel(user.gender) }}</td>
             @if (user.id === editUser?.id) {
               <td>
                 <input type="text" id="userName" class="form-control" [(ngModel)]="user.name" />
@@ -38,9 +52,9 @@
               <td [class]="user.role !== 0 ? 'admin-cell-left' : 'cell-left'">{{ user.name }}</td>
               <td [class]="user.role !== 0 ? 'admin-cell-left' : 'cell-left'">{{ user.email }}</td>
             }
-            <td>{{ Countries.getName(user.country) }}</td>
+            <td>{{ Countries.getLabel(user.country) }}</td>
             <td [class]="user.role !== 0 ? 'admin-cell' : ''">
-              {{ Roles.getName(user.role) }}
+              {{ Roles.getLabel(user.role) }}
             </td>
             <td [style.white-space]="'nowrap'">
               @if (user.id === editUser?.id) {
@@ -49,7 +63,7 @@
                   class="btn btn-warning"
                   title="Enregister les modification"
                   aria-label="Enregister les modification"
-                  (click)="inlineSave(user)"
+                  (click)="saveInline(user)"
                 >
                   <i class="fa-solid fa-floppy-disk"></i>
                 </button>
@@ -59,7 +73,7 @@
                   class="btn btn-success"
                   title="Éditer en ligne"
                   aria-label="Éditer en ligne"
-                  (click)="inlineEdit(user)"
+                  (click)="editInline(user)"
                 >
                   <i class="fa-solid fa-file-pen"></i>
                 </button>
@@ -69,7 +83,7 @@
                 class="btn btn-success"
                 title="Éditer avec le formulaire"
                 aria-label="Éditer avec le formulaire"
-                (click)="formEdit(user)"
+                (click)="gotoForm(user)"
               >
                 <i class="fa-brands fa-jxl"></i>
               </button>

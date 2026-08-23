@@ -12,9 +12,9 @@ import { Router } from '@angular/router';
 })
 export class Dashboard {
   // To retrieve DOM elements
-  @ViewChild('users') users!: TableUsers;
-  @ViewChild('products') products!: TableProducts;
-  @ViewChild('orders') orders!: TableOrders;
+  @ViewChild('usersTable') usersTable!: TableUsers;
+  @ViewChild('productsTable') productsTable!: TableProducts;
+  @ViewChild('ordersTable') ordersTable!: TableOrders;
 
   // Native classes / Application services
   private router = inject(Router);
@@ -33,14 +33,14 @@ export class Dashboard {
   }
 
   usersFocus() {
-    this.users.search.nativeElement.focus();
+    this.usersTable.searchEmail.nativeElement.focus();
   }
 
   productsFocus() {
-    this.products.search.nativeElement.focus();
+    this.productsTable.searchName.nativeElement.focus();
   }
 
   ordersFocus() {
-    this.orders.search.nativeElement.focus();
+    this.ordersTable.searchEmail.nativeElement.focus();
   }
 }

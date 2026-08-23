@@ -16,7 +16,7 @@ import { map, Subject } from 'rxjs';
 })
 export class TableUsers {
   // To retrieve DOM elements
-  @ViewChild('search') search!: ElementRef<HTMLInputElement>;
+  @ViewChild('searchEmail') searchEmail!: ElementRef<HTMLInputElement>;
 
   // Constants
   public Genders = Genders;
@@ -31,38 +31,72 @@ export class TableUsers {
   private static msgDelUser: string = 'Êtes-vous sûr de vouloir supprimer cet utilisateur ?';
 
   // Class properties
+  roles!: any[];
   users: User[] = [];
   filteredItems: User[] = [];
-  searchSubject: Subject<string> = new Subject<string>();
+  filteredText: User[] = [];
+  filteredByEmail: User[] = [];
+  filteredByRef: User[] = [];
+  searchByEmailSubject: Subject<string> = new Subject<string>();
+  searchByRefSubject: Subject<string> = new Subject<string>();
+  selectedRole: number = -1;
   editUser!: User | null;
 
   // Initialization ///////////////////////////////////////////////////////////
 
   // Initialize the user list
   ngOnInit() {
+    // Sort the roles
+    this.roles = Roles.list.sort((r1: any, r2: any) => r1.value - r2.value);
+
+    // Load all users
     this.load();
 
-    // Search for products by name
-    this.searchSubject
+    // Search for users by email
+    this.searchByEmailSubject
       .pipe(
         map((email: string) => {
           const EMAIL = email.toLocaleLowerCase();
-          return this.users.filter((user: User) => {
-            return user.email.toLowerCase().indexOf(EMAIL) === 0;
-          });
+          return this.users.filter((user: User) => user.email.toLowerCase().indexOf(EMAIL) === 0);
         }),
       )
       .subscribe((res: User[]) => {
-        // Retrieve the users
-        this.filteredItems = res;
+        this.filteredByEmail = res;
+        this.filteredText = res.filter((user: User) =>
+          // Filter by user reference
+          this.filteredByRef.some((item: User) => item.id === user.id),
+        );
+        this.filterByRole(); // Filter by user role
+      });
+
+    // Search for users by reference
+    this.searchByRefSubject
+      .pipe(
+        map((reference: string) => {
+          const REFERENCE = reference.toLocaleUpperCase();
+          return this.users.filter((user: User) => user.reference.indexOf(REFERENCE) === 0);
+        }),
+      )
+      .subscribe((res: User[]) => {
+        this.filteredByRef = res;
+        this.filteredText = res.filter((user: User) =>
+          // Filter by user email
+          this.filteredByEmail.some((item: User) => item.id === user.id),
+        );
+        this.filterByRole(); // Filter by user role
       });
   }
+
+  // Load and filter //////////////////////////////////////////////////////////
 
   // Retrieve all users
   load() {
     this.userService.getAllUsers().subscribe({
       next: (res: User[]) => {
-        this.users = res;
+        this.users = res; // All users
+        this.filteredByEmail = res;
+        this.filteredByRef = res;
+        this.filteredText = res;
         this.filteredItems = res;
       },
       error: (err: any) => {
@@ -72,22 +106,46 @@ export class TableUsers {
     });
   }
 
-  // Search for products by name
-  searchItems(email: string) {
-    this.searchSubject.next(email);
+  // Filter by user role
+  filterByRole() {
+    if (this.selectedRole === -1) {
+      this.filteredItems = this.filteredText;
+    } else {
+      this.filteredItems = this.filteredText.filter(
+        (user: User) => user.role === this.selectedRole,
+      );
+    }
+  }
+
+  // Search ///////////////////////////////////////////////////////////////////
+
+  // Search for users by email
+  searchEmailItems(email: string) {
+    this.searchByEmailSubject.next(email);
+  }
+
+  // Search for users by reference
+  searchRefItems(reference: string) {
+    this.searchByRefSubject.next(reference);
+  }
+
+  // Search for users by role
+  selectRoleItems(select: any) {
+    this.selectedRole = Number(select.options[select.selectedIndex].value);
+    this.filterByRole();
   }
 
   // Actions //////////////////////////////////////////////////////////////////
 
   // Edit a user inline
-  inlineEdit(user: User) {
+  editInline(user: User) {
     // Enable inline editing
     this.editUser = new User();
     Object.assign(this.editUser, user);
   }
 
   // Save changes after inline editing
-  inlineSave(user: User) {
+  saveInline(user: User) {
     if (user.name !== this.editUser?.name || user.email !== this.editUser?.email) {
       this.userService.updateUser(user).subscribe({
         next: (res: User) => {
@@ -103,7 +161,7 @@ export class TableUsers {
   }
 
   // Edit a user using the form
-  formEdit(user: User) {
+  gotoForm(user: User) {
     // Redirect to the edit form
     this.router.navigate(['/edit-user-table', user.id]);
   }

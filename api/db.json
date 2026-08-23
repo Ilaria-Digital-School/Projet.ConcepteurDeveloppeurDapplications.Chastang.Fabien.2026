@@ -2,22 +2,32 @@
   "products": [
     {
       "id": "BN4bdfCKWuf",
+      "reference": "6XKSDQ-M9CBDP",
       "name": "Chemise Homme",
       "description": "Chemise homme en coton bleu clair",
       "price": 20,
       "img": "assets/img/clothing/men/shirts/cms1.png",
+      "types": [
+        1
+      ],
+      "categories": [
+        2
+      ],
       "fullDescription": "$$Restez à l'aise même sous la chaleur\n\nConçue pour les journées ensoleillées, cette chemise d'été allie légèreté et respirabilité pour apporter une sensation de confort agréable lors de vos sorties.\n\nSa matière favorise une bonne circulation de l'air, aide à réguler l'humidité et rend le port plus agréable.\n\nProfitez pleinement de l'été en restant à votre aise.\n\n$$Un style naturel, chic avec simplicité\n\nAvec sa coupe ajustée et sa belle fluidité, cette chemise offre une allure élégante et décontractée. Inutile d'en faire trop, elle s'adapte facilement à toutes vos tenues.\n\nPortée ouverte ou fermée, avec un short ou un pantalon, elle conserve un style sobre et raffiné.\n\n$$Entretien facile pour un été sans tracas\n\nCette Chemise est conçue pour vous simplifier la vie : elle passe en machine et sèche simplement à l'air libre.\n\nMême légèrement froissée, elle garde son charme naturel. Son tissu offre une sensation de douceur et de confort agréable à chaque port.\n\nSon confort et sa douceur en font une pièce appropriée pour vous accompagner durant l'été.",
-      "stock": 10,
+      "stock": 8,
       "info": "Cet article est fortement recommandé par nos clients",
       "favorite": true,
       "visible": true
     },
     {
       "id": "a1Fsngvgtdn",
+      "reference": "DADKFY-XP9IOL",
       "name": "Robe",
       "description": "Robe en jean denim indigo",
       "price": 40,
       "img": "assets/img/clothing/women/dresses/cwd1.png",
+      "types": [],
+      "categories": [],
       "fullDescription": "",
       "stock": 0,
       "info": "",
@@ -26,36 +36,45 @@
     },
     {
       "id": "WeHNcyId4xk",
+      "reference": "IASKOP-V4K5ID",
       "name": "Robe",
       "description": "Robe en coton bleu nuit",
       "price": 70,
       "img": "assets/img/clothing/women/dresses/cwd2.png",
+      "types": [],
+      "categories": [],
       "fullDescription": "",
-      "stock": 5,
+      "stock": 22,
       "info": "",
       "favorite": false,
       "visible": true
     },
     {
       "id": "xVlVC7SoNAY",
+      "reference": "ZZTYI5-I8ONMF",
       "name": "Jean Homme",
       "description": "Jean homme gris",
       "price": 30,
       "img": "assets/img/clothing/men/jeans/cmj3.png",
+      "types": [],
+      "categories": [],
       "fullDescription": "",
-      "stock": 10,
+      "stock": 63,
       "info": "",
       "favorite": false,
       "visible": true
     },
     {
       "id": "B5Np9Lj40Yg",
+      "reference": "0DDVBL-GF02RL",
       "name": "Jean Homme",
       "description": "Jean homme bleu",
       "price": 40,
       "img": "assets/img/clothing/men/jeans/cmj2.png",
+      "types": [],
+      "categories": [],
       "fullDescription": "",
-      "stock": 0,
+      "stock": 14,
       "info": "",
       "favorite": false,
       "visible": true
@@ -64,6 +83,7 @@
   "users": [
     {
       "id": "9yGc7G1khwe",
+      "reference": "BNVNS5BS7F",
       "name": "Fabien",
       "email": "admin.fabien@myshop.com",
       "pswd": "3kb!BWFe;dgXqV]",
@@ -75,6 +95,7 @@
     },
     {
       "id": "Q47pLXwdKmv",
+      "reference": "ZB9VKBOZ26",
       "name": "Louis",
       "email": "louis.machin@domain.com",
       "pswd": "Ialj:75/A,~tmUt",
@@ -88,6 +109,7 @@
     },
     {
       "id": "dYtBHw6xvkp",
+      "reference": "DAY7DO3ZQI",
       "name": "Janette",
       "email": "janette.bidule@domain.com",
       "pswd": "3Fx$Njqb6yeh4hj",
@@ -102,6 +124,7 @@
     },
     {
       "id": "tapQ6zz5B64",
+      "reference": "DAY7DO3ZQI",
       "name": "Alfred",
       "email": "alfred.truc@domaine.fr",
       "pswd": "S66bbGaHPvAAAX!",
@@ -131,19 +154,25 @@
       "products": [
         {
           "id": "BN4bdfCKWuf",
+          "reference": "6XKSDQ-M9CBDP",
           "name": "Chemise Homme",
           "description": "Chemise homme en coton bleu clair",
           "price": 20,
           "img": "assets/img/clothing/men/shirts/cms1.png",
+          "types": [],
+          "categories": [],
           "fullDescription": "$$Restez à l'aise même sous la chaleur\n\nConçue pour les journées ensoleillées, cette chemise d'été allie légèreté et respirabilité pour apporter une sensation de confort agréable lors de vos sorties.\n\nSa matière favorise une bonne circulation de l'air, aide à réguler l'humidité et rend le port plus agréable.\n\nProfitez pleinement de l'été en restant à votre aise.\n\n$$Un style naturel, chic avec simplicité\n\nAvec sa coupe ajustée et sa belle fluidité, cette chemise offre une allure élégante et décontractée. Inutile d'en faire trop, elle s'adapte facilement à toutes vos tenues.\n\nPortée ouverte ou fermée, avec un short ou un pantalon, elle conserve un style sobre et raffiné.\n\n$$Entretien facile pour un été sans tracas\n\nCette Chemise est conçue pour vous simplifier la vie : elle passe en machine et sèche simplement à l'air libre.\n\nMême légèrement froissée, elle garde son charme naturel. Son tissu offre une sensation de douceur et de confort agréable à chaque port.\n\nSon confort et sa douceur en font une pièce appropriée pour vous accompagner durant l'été.",
           "cartQuantity": 2
         },
         {
           "id": "WeHNcyId4xk",
+          "reference": "IASKOP-V4K5ID",
           "name": "Robe",
           "description": "Robe en coton bleu nuit",
           "price": 70,
           "img": "assets/img/clothing/women/dresses/cwd2.png",
+          "types": [],
+          "categories": [],
           "fullDescription": "",
           "cartQuantity": 1
         }
@@ -164,19 +193,25 @@
       "products": [
         {
           "id": "xVlVC7SoNAY",
+          "reference": "ZZTYI5-I8ONMF",
           "name": "Jean Homme",
           "description": "Jean homme gris",
           "price": 30,
           "img": "assets/img/clothing/men/jeans/cmj3.png",
+          "types": [],
+          "categories": [],
           "fullDescription": "",
           "cartQuantity": 2
         },
         {
           "id": "BN4bdfCKWuf",
+          "reference": "6XKSDQ-M9CBDP",
           "name": "Chemise Homme",
           "description": "Chemise homme en coton bleu clair",
           "price": 20,
           "img": "assets/img/clothing/men/shirts/cms1.png",
+          "types": [],
+          "categories": [],
           "fullDescription": "$$Restez à l'aise même sous la chaleur\n\nConçue pour les journées ensoleillées, cette chemise d'été allie légèreté et respirabilité pour apporter une sensation de confort agréable lors de vos sorties.\n\nSa matière favorise une bonne circulation de l'air, aide à réguler l'humidité et rend le port plus agréable.\n\nProfitez pleinement de l'été en restant à votre aise.\n\n$$Un style naturel, chic avec simplicité\n\nAvec sa coupe ajustée et sa belle fluidité, cette chemise offre une allure élégante et décontractée. Inutile d'en faire trop, elle s'adapte facilement à toutes vos tenues.\n\nPortée ouverte ou fermée, avec un short ou un pantalon, elle conserve un style sobre et raffiné.\n\n$$Entretien facile pour un été sans tracas\n\nCette Chemise est conçue pour vous simplifier la vie : elle passe en machine et sèche simplement à l'air libre.\n\nMême légèrement froissée, elle garde son charme naturel. Son tissu offre une sensation de douceur et de confort agréable à chaque port.\n\nSon confort et sa douceur en font une pièce appropriée pour vous accompagner durant l'été.",
           "cartQuantity": 1
         }

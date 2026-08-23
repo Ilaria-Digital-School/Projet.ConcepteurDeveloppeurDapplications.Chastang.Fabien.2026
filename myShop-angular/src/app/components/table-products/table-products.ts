@@ -13,7 +13,7 @@ import { map, Subject } from 'rxjs';
 })
 export class TableProducts {
   // To retrieve DOM elements
-  @ViewChild('search') search!: ElementRef<HTMLInputElement>;
+  @ViewChild('searchName') searchName!: ElementRef<HTMLInputElement>;
 
   // Constants
   public Common = Common;
@@ -22,40 +22,72 @@ export class TableProducts {
   private router = inject(Router);
   private productService = inject(ProductService);
 
-  // User messages
+  // Product messages
   private static msgDelProduct: string = 'Êtes-vous sûr de vouloir supprimer cet article ?';
 
   // Class properties
   products: Product[] = [];
   filteredItems: Product[] = [];
-  searchSubject: Subject<string> = new Subject<string>();
+  filteredText: Product[] = [];
+  filteredByName: Product[] = [];
+  filteredByRef: Product[] = [];
+  searchByNameSubject: Subject<string> = new Subject<string>();
+  searchByRefSubject: Subject<string> = new Subject<string>();
+  selectedStock: number = -1;
 
   // Initialization //////////////////////////////////////////////////////
 
   ngOnInit() {
-    // Initialize the product list
+    // Load all products
     this.load();
 
     // Search for products by name
-    this.searchSubject
+    this.searchByNameSubject
       .pipe(
         map((name: string) => {
           const NAME = name.toLocaleLowerCase();
-          return this.products.filter((product: Product) => {
-            return product.name.toLowerCase().indexOf(NAME) === 0;
-          });
+          return this.products.filter(
+            (product: Product) => product.name.toLowerCase().indexOf(NAME) === 0,
+          );
         }),
       )
       .subscribe((res: Product[]) => {
-        this.filteredItems = res;
+        this.filteredByName = res;
+        this.filteredText = res.filter((product: Product) =>
+          // Filter by user reference
+          this.filteredByRef.some((item: Product) => item.id === product.id),
+        );
+        this.filterByStock(); // Filter by product stock
+      });
+
+    // Search for products by reference
+    this.searchByRefSubject
+      .pipe(
+        map((reference: string) => {
+          const REFERENCE = reference.toLocaleUpperCase();
+          return this.products.filter((user: Product) => user.reference.indexOf(REFERENCE) === 0);
+        }),
+      )
+      .subscribe((res: Product[]) => {
+        this.filteredByRef = res;
+        this.filteredText = res.filter((user: Product) =>
+          // Filter by user email
+          this.filteredByName.some((item: Product) => item.id === user.id),
+        );
+        this.filterByStock(); // Filter by product stock
       });
   }
+
+  // Load and filter //////////////////////////////////////////////////////////
 
   // Retrieve all products
   load() {
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
-        this.products = res;
+        this.products = res; // All products
+        this.filteredByName = res;
+        this.filteredByRef = res;
+        this.filteredText = res;
         this.filteredItems = res;
       },
       error: (err: any) => {
@@ -65,9 +97,37 @@ export class TableProducts {
     });
   }
 
+  // Filter by product stock
+  filterByStock() {
+    if (this.selectedStock === -1) {
+      this.filteredItems = this.filteredText;
+    } else if (this.selectedStock >= 0) {
+      this.filteredItems = this.filteredText.filter(
+        (product: Product) => product.stock !== undefined && product.stock <= this.selectedStock,
+      );
+    } else {
+      this.filteredItems = this.filteredText.filter(
+        (product: Product) => product.stock !== undefined && product.stock > -this.selectedStock,
+      );
+    }
+  }
+
+  // Search ///////////////////////////////////////////////////////////////////
+
+  // Search for users by reference
+  searchRefItems(reference: string) {
+    this.searchByRefSubject.next(reference);
+  }
+
   // Search for products by name
-  searchItems(name: string) {
-    this.searchSubject.next(name);
+  searchNameItems(name: string) {
+    this.searchByNameSubject.next(name);
+  }
+
+  // Search for users by role
+  selectStockItems(select: any) {
+    this.selectedStock = Number(select.options[select.selectedIndex].value);
+    this.filterByStock();
   }
 
   // Actions /////////////////////////////////////////////////////////////

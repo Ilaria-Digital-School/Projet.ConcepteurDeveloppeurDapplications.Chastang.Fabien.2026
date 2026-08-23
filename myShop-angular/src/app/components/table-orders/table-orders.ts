@@ -17,7 +17,7 @@ import { Status } from '../../constants/status';
 })
 export class TableOrders {
   // To retrieve DOM elements
-  @ViewChild('search') search!: ElementRef<HTMLInputElement>;
+  @ViewChild('searchEmail') searchEmail!: ElementRef<HTMLInputElement>;
 
   // Constants
   public Common = Common;
@@ -28,11 +28,13 @@ export class TableOrders {
   private orderService = inject(OrderService);
 
   // Class properties
-  users: User[] = [];
-  orders: Order[] = [];
+  ordersUsers: any[] = [];
+  filteredText: User[] = [];
   filteredItems: any[] = [];
-  filteredItemsByName: any[] = [];
-  searchSubject: Subject<string> = new Subject<string>();
+  filteredByEmail: any[] = [];
+  filteredByRef: User[] = [];
+  searchByEmailSubject: Subject<string> = new Subject<string>();
+  searchByRefSubject: Subject<string> = new Subject<string>();
   selectedStatus: number = -1;
 
   // Initialize ///////////////////////////////////////////////////////////////
@@ -42,51 +44,51 @@ export class TableOrders {
     this.load();
 
     // Search for users by email
-    this.searchSubject
+    this.searchByEmailSubject
       .pipe(
         map((email: string) => {
-          const EMAIL = email.toLowerCase();
-          return this.users.filter((user: User) => {
-            return user.email.toLowerCase().indexOf(EMAIL) === 0;
-          });
+          const EMAIL = email.toLocaleLowerCase();
+          return this.ordersUsers.filter(
+            (order: any) => order.user.email.toLowerCase().indexOf(EMAIL) === 0,
+          );
+        }),
+      )
+      .subscribe((res: any[]) => {
+        this.filteredByEmail = res;
+        this.filteredText = res.filter((order: any) =>
+          // Filter by order reference
+          this.filteredByRef.some((item: any) => item.id === order.id),
+        );
+        this.filterByStatus(); // Filter by order status
+      });
+
+    // Search for orders by reference
+    this.searchByRefSubject
+      .pipe(
+        map((reference: string) => {
+          const REFERENCE = reference.toLocaleUpperCase();
+          return this.ordersUsers.filter((order: any) => order.reference.indexOf(REFERENCE) === 0);
         }),
       )
       .subscribe((res: User[]) => {
-        // Retrieve these users' orders
-        this.filterByUsers(res);
-
-        // Filter by order status
-        this.filterByStatus();
+        this.filteredByRef = res;
+        this.filteredText = res.filter((order: any) =>
+          // Filter by user email
+          this.filteredByEmail.some((item: any) => item.id === order.id),
+        );
+        this.filterByStatus(); // Filter by order status
       });
   }
 
-  // Load /////////////////////////////////////////////////////////////////////
+  // Load and filter //////////////////////////////////////////////////////////
 
   // Load data
   load() {
-    // Retrieve all users before loading the orders
-    this.userService.getAllUsers().subscribe({
-      next: (res: User[]) => {
-        this.users = res;
-        this.loadOrders(); // Retrieve all orders
-      },
-      error: (err: any) => {
-        alert("Une erreur s'est produite lors de la récupération des données.");
-        console.log(err);
-      },
-    });
-  }
-
-  // Retrieve all orders
-  loadOrders() {
+    // Retrieve all orders before loading the users
     this.orderService.getAllOrders().subscribe({
       next: (res: Order[]) => {
-        this.orders = res;
-        this.filteredItemsByName = res.map((order: Order) => {
-          const USER = this.users.find((user: User) => user.id === order.userId);
-          return { ...order, user: USER };
-        });
-        this.filteredItems = this.filteredItemsByName;
+        this.ordersUsers = res;
+        this.loadUsers(); // Retrieve all users and associate all orders with their users
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
@@ -95,36 +97,51 @@ export class TableOrders {
     });
   }
 
-  // Filter ///////////////////////////////////////////////////////////////////
-
-  // Retrieve orders for a list of users
-  filterByUsers(users: User[]) {
-    const USER_IDS = users.map((user: User) => user.id);
-
-    this.filteredItemsByName = this.orders
-      .filter((order: Order) => USER_IDS.includes(order.userId))
-      .map((order: Order) => {
-        const USER = users.find((user: User) => user.id === order.userId);
-        return { ...order, user: USER };
-      });
+  // Retrieve all users and associate all orders with their users
+  loadUsers() {
+    this.userService.getAllUsers().subscribe({
+      next: (res: User[]) => {
+        // All orders associate with their users
+        this.ordersUsers = this.ordersUsers.map((order: Order) => {
+          return { ...order, user: res.find((user: User) => user.id === order.userId) };
+        });
+        this.filteredByEmail = this.ordersUsers;
+        this.filteredByRef = this.ordersUsers;
+        this.filteredText = this.ordersUsers;
+        this.filteredItems = this.ordersUsers;
+      },
+      error: (err: any) => {
+        alert("Une erreur s'est produite lors de la récupération des données.");
+        console.log(err);
+      },
+    });
   }
 
   // Filter by order status
   filterByStatus() {
-    this.filteredItems = this.filteredItemsByName.filter(
-      (order: any) => this.selectedStatus === -1 || order.status === this.selectedStatus,
-    );
+    if (this.selectedStatus === -1) {
+      this.filteredItems = this.filteredByEmail;
+    } else {
+      this.filteredItems = this.filteredByEmail.filter(
+        (order: any) => order.status === this.selectedStatus,
+      );
+    }
   }
 
   // Search ///////////////////////////////////////////////////////////////////
 
   // Search for users by email
-  searchItems(email: string) {
-    this.searchSubject.next(email);
+  searchEmailItems(email: string) {
+    this.searchByEmailSubject.next(email);
+  }
+
+  // Search for users by reference
+  searchRefItems(reference: string) {
+    this.searchByRefSubject.next(reference);
   }
 
   // Search for orders by status
-  selectItems(select: any) {
+  selectStatusItems(select: any) {
     this.selectedStatus = Number(select.options[select.selectedIndex].value);
     this.filterByStatus();
   }
