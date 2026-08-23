@@ -13,7 +13,7 @@ import { map, Subject } from 'rxjs';
 })
 export class TableProducts {
   // To retrieve DOM elements
-  @ViewChild('searchName') searchName!: ElementRef<HTMLInputElement>;
+  @ViewChild('nameProducts') nameProducts!: ElementRef<HTMLInputElement>;
 
   // Constants
   public Common = Common;

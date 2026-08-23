@@ -1,19 +1,19 @@
 <section class="search">
   <input
     type="text"
-    id="searchEmail"
+    id="emailUsers"
     placeholder="Adresse mail..."
     aria-label="Rechercher un client par son adresse mail"
     (input)="searchEmailItems($event.target.value)"
-    #searchEmail
+    #emailUsers
   />
   <input
     type="text"
-    id="searchRef"
+    id="referenceUsers"
     placeholder="Référence..."
     aria-label="Rechercher un client par sa référence"
     (input)="searchRefItems($event.target.value)"
-    #searchRef
+    #referenceUsers
   />
   <select name="role" id="role" aria-label="Sélectionner le role" (change)="selectRoleItems($event.target)">
     <option value="-1" selected>– Tous –</option>
@@ -40,19 +40,19 @@
           <tr [class]="user.role !== 0 ? 'admin-row' : ''">
             <th scope="row">{{ i + 1 }}</th>
             <td [class]="user.role !== 0 ? 'admin-cell' : ''">{{ user.reference }}</td>
-            <td>{{ Genders.getLabel(user.gender) }}</td>
+            <td>{{ Genders.getLabel(user.gender, '—') }}</td>
             @if (user.id === editUser?.id) {
-              <td>
+              <td class="inline">
                 <input type="text" id="userName" class="form-control" [(ngModel)]="user.name" />
               </td>
-              <td>
-                <input type="text" id="email" class="form-control" [(ngModel)]="user.email" />
+              <td class="inline">
+                <input type="email" id="userEmail" class="form-control" [(ngModel)]="user.email" />
               </td>
             } @else {
               <td [class]="user.role !== 0 ? 'admin-cell-left' : 'cell-left'">{{ user.name }}</td>
               <td [class]="user.role !== 0 ? 'admin-cell-left' : 'cell-left'">{{ user.email }}</td>
             }
-            <td>{{ Countries.getLabel(user.country) }}</td>
+            <td>{{ Countries.getLabel(user.country, '—') }}</td>
             <td [class]="user.role !== 0 ? 'admin-cell' : ''">
               {{ Roles.getLabel(user.role) }}
             </td>

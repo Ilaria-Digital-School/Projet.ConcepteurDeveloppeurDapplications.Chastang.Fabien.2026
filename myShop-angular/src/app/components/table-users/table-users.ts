@@ -16,7 +16,7 @@ import { map, Subject } from 'rxjs';
 })
 export class TableUsers {
   // To retrieve DOM elements
-  @ViewChild('searchEmail') searchEmail!: ElementRef<HTMLInputElement>;
+  @ViewChild('emailUsers') emailUsers!: ElementRef<HTMLInputElement>;
 
   // Constants
   public Genders = Genders;

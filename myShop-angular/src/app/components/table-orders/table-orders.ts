@@ -17,7 +17,7 @@ import { Status } from '../../constants/status';
 })
 export class TableOrders {
   // To retrieve DOM elements
-  @ViewChild('searchEmail') searchEmail!: ElementRef<HTMLInputElement>;
+  @ViewChild('emailOrders') emailOrders!: ElementRef<HTMLInputElement>;
 
   // Constants
   public Common = Common;

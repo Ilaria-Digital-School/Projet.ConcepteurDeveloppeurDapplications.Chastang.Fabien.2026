@@ -33,14 +33,14 @@ export class Dashboard {
   }
 
   usersFocus() {
-    this.usersTable.searchEmail.nativeElement.focus();
+    this.usersTable.emailUsers.nativeElement.focus();
   }
 
   productsFocus() {
-    this.productsTable.searchName.nativeElement.focus();
+    this.productsTable.nameProducts.nativeElement.focus();
   }
 
   ordersFocus() {
-    this.ordersTable.searchEmail.nativeElement.focus();
+    this.ordersTable.emailOrders.nativeElement.focus();
   }
 }

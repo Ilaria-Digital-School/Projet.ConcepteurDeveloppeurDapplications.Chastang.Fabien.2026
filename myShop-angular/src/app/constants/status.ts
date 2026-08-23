@@ -18,8 +18,8 @@ export class Status {
     const ITEM = this.list.find((item: any) => item.label.toLowerCase() === LABEL);
     return ITEM ? ITEM.value : -1;
   }
-  static getLabel(value: number): string | null {
+  static getLabel(value: number, other: string | undefined = undefined): string | null {
     const ITEM = this.list.find((item: any) => item.value === value);
-    return ITEM ? ITEM.label : null;
+    return !ITEM ? (other ? other : null) : ITEM.label;
   }
 }

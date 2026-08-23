@@ -1,19 +1,19 @@
 <section class="search">
   <input
     type="text"
-    id="searchName"
+    id="nameProducts"
     placeholder="Nom du produit..."
     aria-label="Rechercher un produit par son nom"
     (input)="searchNameItems($event.target.value)"
-    #searchName
+    #nameProducts
   />
   <input
     type="text"
-    id="searchRef"
+    id="referenceProducts"
     placeholder="Référence..."
     aria-label="Rechercher un produit par sa référence"
     (input)="searchRefItems($event.target.value)"
-    #searchRef
+    #referenceProducts
   />
   <select name="stock" id="stock" aria-label="Sélectionner le stock maximal" (change)="selectStockItems($event.target)">
     <option value="-1" selected>– Tous –</option>

@@ -1,20 +1,20 @@
 <section class="search">
   <input
     type="text"
-    name="searchEmail"
+    name="emailOrders"
     id="search"
     placeholder="Adresse mail..."
     aria-label="Rechercher un client par son adresse mail"
     (input)="searchEmailItems($event.target.value)"
-    #searchEmail
+    #emailOrders
   />
   <input
     type="text"
-    id="searchRef"
+    id="referenceOrders"
     placeholder="Référence..."
     aria-label="Rechercher une commande par sa référence"
     (input)="searchRefItems($event.target.value)"
-    #searchRef
+    #referenceOrders
   />
   <select name="status" id="status" aria-label="Sélectionner le statut de la commande" (change)="selectStatusItems($event.target)">
     <option value="-1" selected>– Tous –</option>

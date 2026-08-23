@@ -32,8 +32,8 @@ export class Countries {
     const ITEM = this.list.find((item) => item.label.toLowerCase() === label);
     return ITEM ? ITEM.value : this.other.value;
   }
-  static getLabel(value: number): string {
+  static getLabel(value: number, other: string | undefined = undefined): string {
     const ITEM = this.list.find((item) => item.value === value);
-    return ITEM ? ITEM.label : this.other.label;
+    return !ITEM || !ITEM.value ? (other ? other : this.other.label) : ITEM.label;
   }
 }
