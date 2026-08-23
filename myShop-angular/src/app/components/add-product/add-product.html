@@ -128,6 +128,46 @@
         }
       }
     </div>
+    <div class="field-container first">
+      <div class="field-label" aria-label="Types de produit">Types&nbsp;:</div>
+      <div>
+        @for (type of Types.list; track type.value; let i = $index) {
+          @if (type.value !== Types.other.value) {
+            <div class="field">
+              <input
+                type="checkbox"
+                [id]="type.id"
+                name="productType"
+                [value]="type.value"
+                (click)="ngDoCheck()"
+                #productType
+              />
+              <label [for]="type.id"> {{ type.label }}</label>
+            </div>
+          }
+        }
+      </div>
+    </div>
+    <div class="field-container">
+      <div class="field-label" aria-label="Catégories du produit">Catégories&nbsp;:</div>
+      <div>
+        @for (category of Categories.list; track category.value; let i = $index) {
+          @if (category.value !== Categories.other.value) {
+            <div class="field">
+              <input
+                type="checkbox"
+                [id]="category.id"
+                name="productCategory"
+                [value]="category.value"
+                (click)="ngDoCheck()"
+                #productCategory
+              />
+              <label [for]="category.id"> {{ category.label }}</label>
+            </div>
+          }
+        }
+      </div>
+    </div>
     <div>
       <label for="fullDescription">Description détaillée&nbsp;:</label>
       <textarea

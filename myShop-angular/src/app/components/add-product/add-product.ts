@@ -1,10 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../services/product-service';
 import { Product } from '../../models/product';
 import { Tooltip } from '../tooltip/tooltip';
 import { Common } from '../../constants/common';
+import { Types } from '../../constants/types';
+import { Categories } from '../../constants/categories';
 
 const PLACEHOLDER_FULL_DESC = `$$Titre 1
 Paragraphe 1.1
@@ -40,6 +42,14 @@ const HELP_HTML = `
   styleUrl: './add-product.css',
 })
 export class AddProduct {
+  // To retrieve DOM elements
+  @ViewChildren('productType') productTypes!: QueryList<ElementRef>;
+  @ViewChildren('productCategory') productCategories!: QueryList<ElementRef>;
+
+  // Constants
+  public Types = Types;
+  public Categories = Categories;
+
   // Native classes / Application services
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
@@ -74,9 +84,7 @@ export class AddProduct {
         next: (res: Product) => {
           this.product = res;
           this.productIni = res;
-          this.productPrice = Common.numberToString(this.productIni.price);
-          this.productStock = typeof this.productIni.stock === 'number' ? this.productIni.stock.toString() : '0';
-          this.productInfo = typeof this.productIni.info === 'string' ? this.productIni.info : '';
+          this.init(); // Initialize data
         },
         error: (err: any) => {
           console.log(err);
@@ -88,6 +96,40 @@ export class AddProduct {
       this.btnAction = 'Ajouter';
       this.valuesChange = true;
     }
+  }
+
+  // Initialize data
+  init() {
+    // Initialize optional product information
+    this.productInfo = typeof this.productIni.info === 'string' ? this.productIni.info : '';
+
+    // Initialize the price and the stock
+    this.initNumber();
+
+    // Initialize the types and the categories
+    this.initCheckbox();
+  }
+
+  // Initialize the price and the stock
+  initNumber() {
+    this.productPrice = Common.numberToString(this.productIni.price);
+    this.productStock =
+      typeof this.productIni.stock === 'number' ? this.productIni.stock.toString() : '0';
+  }
+
+  // Initialize the types and the categories
+  initCheckbox() {
+    // Initialize the types
+    this.productTypes.forEach((item: ElementRef<HTMLInputElement>) => {
+      item.nativeElement.checked = this.productIni.types.includes(Number(item.nativeElement.value));
+    });
+
+    // Initialize the categories
+    this.productCategories.forEach((item: ElementRef<HTMLInputElement>) => {
+      item.nativeElement.checked = this.productIni.categories.includes(
+        Number(item.nativeElement.value),
+      );
+    });
   }
 
   // Form verification ///////////////////////////////////////////////////
@@ -134,9 +176,19 @@ export class AddProduct {
         this.product.price !== this.productIni.price ||
         this.product.stock !== this.productIni.stock ||
         this.product.img.trim() !== this.productIni.img ||
+        !this.isIdentical(this.getTypes(), this.productIni.types) ||
+        !this.isIdentical(this.getCategories(), this.productIni.categories) ||
         this.product.fullDescription.trim() !== this.productIni.fullDescription ||
         this.productInfo.trim() !== this.productIni.info;
     }
+  }
+
+  // Compare two arrays
+  isIdentical(array1: number[], array2: number[]): boolean {
+    return (
+      array1.every((item: number) => array2.includes(item)) &&
+      array2.every((item: number) => array1.includes(item))
+    );
   }
 
   // Edit mode: to notify of a change
@@ -145,6 +197,24 @@ export class AddProduct {
   }
 
   // Actions /////////////////////////////////////////////////////////////
+
+  // Retrieve the types from the form
+  getTypes(): number[] {
+    const TYPES: number[] = [];
+    this.productTypes.forEach((item: ElementRef<HTMLInputElement>) => {
+      if (item.nativeElement.checked) TYPES.push(Number(item.nativeElement.value));
+    });
+    return TYPES;
+  }
+
+  // Retrieve the types from the form
+  getCategories(): number[] {
+    const CATEGORIES: number[] = [];
+    this.productCategories.forEach((item: ElementRef<HTMLInputElement>) => {
+      if (item.nativeElement.checked) CATEGORIES.push(Number(item.nativeElement.value));
+    });
+    return CATEGORIES;
+  }
 
   // Add or update the product
   submit(productForm: NgForm) {
@@ -156,6 +226,8 @@ export class AddProduct {
     PRODUCT.description = FORM_VAL.description.trim();
     PRODUCT.price = Number(FORM_VAL.price.replace(',', '.'));
     PRODUCT.img = FORM_VAL.productImg.trim();
+    PRODUCT.types = this.getTypes();
+    PRODUCT.categories = this.getCategories();
     PRODUCT.fullDescription = FORM_VAL.fullDescription.trim();
     PRODUCT.stock = Number(FORM_VAL.stock);
     PRODUCT.info = FORM_VAL.info.trim();
@@ -189,9 +261,7 @@ export class AddProduct {
   reset(productForm: NgForm) {
     if (this.isEditMode) {
       Object.assign(this.product, this.productIni);
-      this.productPrice = Common.numberToString(this.productIni.price);
-      this.productStock = typeof this.productIni.stock === 'number' ? this.productIni.stock.toString() : '0';
-      this.productInfo = typeof this.productIni.info === 'string' ? this.productIni.info : '';
+      this.init(); // Initialize data
     } else {
       productForm.resetForm();
     }
