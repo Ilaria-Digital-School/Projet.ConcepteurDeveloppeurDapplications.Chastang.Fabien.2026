@@ -5,7 +5,7 @@ import { Product } from './product';
 
 // Order class
 export class Order {
-  id: string = Common.getID();
+  id: string = '';
   reference: string = Common.getOrderRef();
   date: number = Date.now();
   userId: string = '';
@@ -79,6 +79,11 @@ export class Order {
     this.totalExcludingTax = this.round(this.totalExcludingTax);
     this.totalIncludingTax = this.round(this.totalIncludingTax);
     if (this.totalPromotion > 0) this.totalPromotion = this.round(this.totalPromotion);
+  }
+
+  // Retrieve the total invoiced price
+  getTotalInvoiced() {
+    return this.totalPromotion > 0 ? this.totalPromotion : this.totalIncludingTax;
   }
 
   // Update the status

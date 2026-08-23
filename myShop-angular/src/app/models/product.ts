@@ -2,12 +2,17 @@ import { Common } from '../constants/common';
 
 // Product class
 export class Product {
-  id: string = Common.getID();
+  id: string = '';
+  reference: string = Common.getProductRef();
   name: string = '';
   description: string = '';
   price: number = 0;
   img: string = '';
+  types: number[] = [];
+  categories: number[] = [];
   fullDescription: string = '';
+
+  // Remove when ordering
   stock: number | undefined = 0;
   info: string | undefined = '';
   favorite: boolean | undefined = false;
@@ -24,6 +29,8 @@ export class Product {
     description: string | null = null,
     price: number | null = null,
     img: string | null = null,
+    types: number[] | null = null,
+    categories: number[] | null = null,
     fullDescription: string | null = null,
     stock: number | null = null,
     info: string | null = null,
@@ -33,6 +40,8 @@ export class Product {
     if (typeof description === 'string') this.description = description;
     if (typeof price === 'number') this.price = price;
     if (typeof img === 'string') this.img = img;
+    if (Array.isArray(types)) this.types = types;
+    if (Array.isArray(categories)) this.categories = categories;
     if (typeof fullDescription === 'string') this.fullDescription = fullDescription;
     if (typeof stock === 'number') this.stock = stock;
     if (typeof info === 'string') this.info = info;

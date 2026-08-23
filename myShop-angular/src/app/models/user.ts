@@ -6,7 +6,8 @@ import { Roles } from '../constants/roles';
 
 // User class
 export class User {
-  id: string = Common.getID();
+  id: string = '';
+  reference: string = Common.getUserRef();
   name: string = '';
   email: string = '';
   pswd: string = '';

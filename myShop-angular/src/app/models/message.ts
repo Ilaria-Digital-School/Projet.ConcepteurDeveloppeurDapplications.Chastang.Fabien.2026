@@ -2,7 +2,7 @@ import { Common } from '../constants/common';
 
 // Product class
 export class Message {
-  id: string = Common.getID();
+  id: string = '';
   name: string = '';
   email: string = '';
   text: string = '';

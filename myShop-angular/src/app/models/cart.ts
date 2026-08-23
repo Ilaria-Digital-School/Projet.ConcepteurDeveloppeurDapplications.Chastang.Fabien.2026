@@ -4,7 +4,7 @@ import { Product } from './product';
 // 'Cart' object initialized from the list of products with a
 // quantity of 1 for each item; list stored in local storage
 export class Cart {
-  id: string = Common.getID();
+  id: string = '';
   userId: string = '';
   products: Product[] = [];
 
