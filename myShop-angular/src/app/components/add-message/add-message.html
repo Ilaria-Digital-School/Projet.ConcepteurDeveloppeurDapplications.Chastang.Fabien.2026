@@ -15,6 +15,7 @@
         id="userName"
         [(ngModel)]="message.name"
         placeholder="Votre nom"
+        autocomplete="off"
         required
         maxlength="50"
         #userName="ngModel"
@@ -43,6 +44,7 @@
         id="userEmail"
         [(ngModel)]="message.email"
         placeholder="votre@adresse.email"
+        autocomplete="off"
         required
         #userEmail="ngModel"
       />
