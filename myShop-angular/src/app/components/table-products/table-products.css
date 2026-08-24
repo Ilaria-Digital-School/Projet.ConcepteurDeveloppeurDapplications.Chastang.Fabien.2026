@@ -33,9 +33,12 @@
   color: var(--middle-red);
 }
 
-.unavailable-cell,
-.unavailable-cell-left {
+.unavailable-cell {
   transform: scale(1.1);
+}
+
+.unavailable-cell-left {
+  transform: translateX(6px) scale(1.1);
 }
 
 .cell-left,
