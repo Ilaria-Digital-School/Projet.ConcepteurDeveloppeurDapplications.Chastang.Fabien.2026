@@ -3,6 +3,13 @@
 }
 
 .search input {
-    margin-bottom: 15px;
-    width: 50%;
+  margin-bottom: 15px;
+  margin-right: 5px;
+  width: 40%;
+  height: 28px;
+}
+
+.search select {
+  margin-right: 5px;
+  height: 28px;
 }

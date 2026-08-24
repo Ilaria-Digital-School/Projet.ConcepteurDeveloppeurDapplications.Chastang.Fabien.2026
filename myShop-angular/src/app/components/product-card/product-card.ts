@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Product } from '../../models/product';
+import { Common } from '../../constants/common';
 
 @Component({
   selector: 'app-product-card',
@@ -8,6 +9,9 @@ import { Product } from '../../models/product';
   styleUrl: './product-card.css',
 })
 export class ProductCard {
+  // Constants
+  public Common = Common;
+
   // To retrieve data from another component
   @Input() isList: any;
   @Input() isSearch: any;

@@ -64,7 +64,7 @@ export class UserCart {
 
   // View a product
   view(id: string) {
-    this.router.navigate(['/product-details', id]);
+    this.router.navigate(['/product-view', id]);
   }
 
   // Increase the quantity of a product

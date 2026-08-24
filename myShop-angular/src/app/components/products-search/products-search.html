@@ -1,15 +1,36 @@
 <section class="search">
-  <h2 class="h2-title">
-    <label for="search">Nos Articles</label>
-  </h2>
+  <h2 class="h2-title">Nos Articles</h2>
 
   <input
     type="text"
-    id="search"
-    placeholder="Rechercher..."
-    aria-label="Rechercher des articles"
-    (input)="searchItems($event.target.value)"
+    id="nameProducts"
+    placeholder="Nom de l'article..."
+    aria-label="Rechercher des articles par leur nom"
+    (input)="searchNameItems($event.target.value)"
+    #nameProducts
   />
+  <select
+    name="type"
+    id="type"
+    aria-label="Sélectionner le type"
+    (change)="selectTypeItems($event.target)"
+  >
+    <option value="-1" selected>– Tous –</option>
+    @for (type of Types.list; track type.value; let i = $index) {
+      <option [value]="type.value">{{ Types.getLabel(type.value, 'Non précisé') }}</option>
+    }
+  </select>
+  <select
+    name="category"
+    id="category"
+    aria-label="Sélectionner la catégorie"
+    (change)="selectCategoryItems($event.target)"
+  >
+    <option value="-1" selected>– Tous –</option>
+    @for (category of Categories.list; track category.value; let i = $index) {
+      <option [value]="category.value">{{ Categories.getLabel(category.value, 'Non précisé') }}</option>
+    }
+  </select>
   <div class="product-container">
     @for (product of filteredItems; track product.id; let i = $index) {
       <app-product-card

@@ -28,7 +28,7 @@
         <p class="info">{{ product.info }}</p>
       }
       <div class="price">
-        <span>Prix: {{ product.price }} €</span>
+        <span>Prix: {{ Common.numberToString(product.price) }} € <span id="info-tax">(HT)</span></span>
         <div>
           <button
             type="button"

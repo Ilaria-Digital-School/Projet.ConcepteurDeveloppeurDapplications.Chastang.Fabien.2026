@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product-service';
 import { CartService } from '../../services/cart-service';
 import { Product } from '../../models/product';
+import { Common } from '../../constants/common';
 
 @Component({
   selector: 'app-product-view',
@@ -11,6 +12,9 @@ import { Product } from '../../models/product';
   styleUrl: './product-view.css',
 })
 export class ProductView {
+  // Constants
+  public Common = Common;
+
   // Native classes / Application services
   private activatedRoute = inject(ActivatedRoute);
   private productService = inject(ProductService);

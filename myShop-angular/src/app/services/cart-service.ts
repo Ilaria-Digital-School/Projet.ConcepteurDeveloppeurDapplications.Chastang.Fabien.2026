@@ -27,8 +27,12 @@ export class CartService {
   // Add an item to the cart
   add(product: Product): void {
     this.cart.update((products: Product[]) => {
-      product.cartQuantity = 1; // Initialize the product quantity to 1
-      const PRODUCT = product.removeBeforeSaveCart(); // Remove these properties that are unnecessary for the cart
+      // Initialize the product quantity to 1 if it is not defined
+      if(product.cartQuantity === undefined) product.cartQuantity = 1;
+
+      // Remove these properties that are unnecessary for the cart
+      const PRODUCT = product.removeBeforeSaveCart();
+      PRODUCT.cartQuantity = 1; // Reset the property to 1 if necessary
 
       const NEW_CART = [...products, PRODUCT];
       localStorage.setItem('cart', JSON.stringify(NEW_CART));
