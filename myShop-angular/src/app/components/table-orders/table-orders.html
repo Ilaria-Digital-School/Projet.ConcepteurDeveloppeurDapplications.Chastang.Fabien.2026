@@ -16,7 +16,12 @@
     (input)="searchRefItems($event.target.value)"
     #referenceOrders
   />
-  <select name="status" id="status" aria-label="Sélectionner le statut de la commande" (change)="selectStatusItems($event.target)">
+  <select
+    name="status"
+    id="status"
+    aria-label="Sélectionner le statut de la commande"
+    (change)="selectStatusItems($event.target)"
+  >
     <option value="-1" selected>– Tous –</option>
     @for (status of Status.list; track status.value; let i = $index) {
       <option [value]="status.value">{{ status.label }}</option>
@@ -30,8 +35,8 @@
           <th scope="col">Référence</th>
           <th scope="col">Client</th>
           <th scope="col">Date</th>
-          <th scope="col">Total (HT)</th>
-          <th scope="col">Total facturé</th>
+          <th scope="col" [style.white-space]="'nowrap'">Total (HT)</th>
+          <th scope="col" [style.white-space]="'nowrap'">Total facturé</th>
           <th scope="col">Statut</th>
         </tr>
       </thead>

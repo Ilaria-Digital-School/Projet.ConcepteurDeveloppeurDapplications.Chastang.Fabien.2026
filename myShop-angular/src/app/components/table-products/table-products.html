@@ -15,7 +15,12 @@
     (input)="searchRefItems($event.target.value)"
     #referenceProducts
   />
-  <select name="stock" id="stock" aria-label="Sélectionner le stock maximal" (change)="selectStockItems($event.target)">
+  <select
+    name="stock"
+    id="stock"
+    aria-label="Sélectionner le stock maximal"
+    (change)="selectStockItems($event.target)"
+  >
     <option value="-1" selected>– Tous –</option>
     <option value="0">En rupture</option>
     <option value="10">≤ 10</option>
