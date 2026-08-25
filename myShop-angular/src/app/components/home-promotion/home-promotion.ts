@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-promotion',
+  selector: 'app-home-promotion',
   imports: [],
-  templateUrl: './promotion.html',
-  styleUrl: './promotion.css',
+  templateUrl: './home-promotion.html',
+  styleUrl: './home-promotion.css',
 })
-export class Promotion {
+export class HomePromotion {
   // Class properties
   datePromo!: string;
 

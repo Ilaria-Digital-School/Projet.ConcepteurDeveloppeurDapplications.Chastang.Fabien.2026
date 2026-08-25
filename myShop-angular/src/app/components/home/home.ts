@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { Banner } from '../banner/banner';
+import { HomeBanner } from '../home-banner/home-banner';
 import { CategoriesHome } from '../categories-home/categories-home';
 import { ProductsHome } from '../products-home/products-home';
-import { Promotion } from '../promotion/promotion';
+import { HomePromotion } from '../home-promotion/home-promotion';
 
 @Component({
   selector: 'app-home',
-  imports: [Banner, CategoriesHome, ProductsHome, Promotion],
+  imports: [HomeBanner, CategoriesHome, ProductsHome, HomePromotion],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })

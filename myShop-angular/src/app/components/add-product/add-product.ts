@@ -11,14 +11,14 @@ import { Categories } from '../../constants/categories';
 const PLACEHOLDER_FULL_DESC = `$$Titre 1
 Paragraphe 1.1
 Paragraphe 1.2
-...
+…
 $$Titre 2
 Paragraphe 2.1
-...`;
+…`;
 
 const HELP_HTML = `
 <p>
-  Les champs marqués d'une étoile (<span style="color: red; padding: 0 3px">*</span>) sont
+  Les champs marqués d'un astérisque (<span style="color: red; padding: 0 3px">*</span>) sont
   obligatoires.
 </p>
 <p>Lors de la rédaction de la description détaillée :</p>
@@ -34,6 +34,8 @@ const HELP_HTML = `
   </li>
 </ul>
 `;
+
+// Component //////////////////////////////////////////////////////////////////
 
 @Component({
   selector: 'app-add-product',
@@ -69,14 +71,15 @@ export class AddProduct {
   placeholderFullDesc: string = PLACEHOLDER_FULL_DESC;
   helpHTML: string = HELP_HTML;
 
-  // Initialize the form /////////////////////////////////////////////////
+  // Initialize the form //////////////////////////////////////////////////////
 
   ngOnInit() {
     this.productId = this.activatedRoute.snapshot.paramMap.get('id');
     this.isEditMode = this.productId ? true : false;
 
     if (this.isEditMode) {
-      // Edit mode: retrieve the product by its ID
+      // Edit mode: retrieve the product by its ID ////////
+
       this.title = 'Mise à jour';
       this.btnAction = 'Modifier';
 
@@ -91,7 +94,8 @@ export class AddProduct {
         },
       });
     } else {
-      // Add a new product
+      // Add a new product ////////////////////////////////
+
       this.title = 'Nouvel Article';
       this.btnAction = 'Ajouter';
       this.valuesChange = true;
@@ -132,7 +136,7 @@ export class AddProduct {
     });
   }
 
-  // Form verification ///////////////////////////////////////////////////
+  // Form verification ////////////////////////////////////////////////////////
 
   // Check the minimum length
   errorMinlength(value: string, minlen: number): boolean {
@@ -196,7 +200,7 @@ export class AddProduct {
     return this.valuesChange;
   }
 
-  // Actions /////////////////////////////////////////////////////////////
+  // Actions //////////////////////////////////////////////////////////////////
 
   // Retrieve the types from the form
   getTypes(): number[] {
@@ -233,7 +237,8 @@ export class AddProduct {
     PRODUCT.info = FORM_VAL.info.trim();
 
     if (this.isEditMode) {
-      // Update the product
+      // Update the product ///////////////////////////////
+
       this.productService.updateProduct(PRODUCT).subscribe({
         next: (res: Product) => {
           this.router.navigate(['/dashboard-product']);
@@ -244,7 +249,8 @@ export class AddProduct {
         },
       });
     } else {
-      // Add the product
+      // Add the product //////////////////////////////////
+
       this.productService.addProduct(PRODUCT).subscribe({
         next: (res: Product) => {
           this.router.navigate(['/product-view', res.id]);

@@ -2,9 +2,9 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-banner',
+  selector: 'app-home-banner',
   imports: [RouterLink],
-  templateUrl: './banner.html',
-  styleUrl: './banner.css',
+  templateUrl: './home-banner.html',
+  styleUrl: './home-banner.css',
 })
-export class Banner {}
+export class HomeBanner {}

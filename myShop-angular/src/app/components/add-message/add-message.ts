@@ -5,6 +5,13 @@ import { MessageService } from '../../services/message-service';
 import { Message } from '../../models/message';
 import { Tooltip } from '../tooltip/tooltip';
 
+const HELP_HTML = `
+Les champs marqués d'un astérisque (<span style="color: red; padding: 0 3px">*</span>) sont
+obligatoires.
+`;
+
+// Component //////////////////////////////////////////////////////////////////
+
 @Component({
   selector: 'app-add-message',
   imports: [FormsModule, Tooltip],
@@ -18,10 +25,7 @@ export class AddMessage {
 
   // Class properties
   message: Message = new Message();
-  helpHTML: string = `
-    Les champs marqués d'une étoile (<span style="color: red; padding: 0 3px">*</span>) sont
-    obligatoires.
-  `;
+  helpHTML: string = HELP_HTML;
 
   // Check the form ///////////////////////////////////////////////////////////
 

@@ -17,7 +17,7 @@ import { Tooltip } from '../tooltip/tooltip';
 import { Genders } from '../../constants/genders';
 // import { JsonPipe } from '@angular/common';
 
-// Custom validators for the entire form /////////////////////////////////
+// Custom validators for the entire form //////////////////////////////////////
 
 export class CustomValidators {
   // Confirm password
@@ -27,7 +27,12 @@ export class CustomValidators {
   }
 }
 
-// Component /////////////////////////////////////////////////////////////
+const HELP_HTML = `
+Les champs marqués d'un astérisque (<span style="color: red; padding: 0 3px">*</span>) sont
+obligatoires.
+`;
+
+// Component //////////////////////////////////////////////////////////////////
 
 @Component({
   selector: 'app-add-user',
@@ -59,10 +64,7 @@ export class AddUser {
   fromCart!: boolean;
   fromTable!: boolean;
   valuesChange: boolean = false;
-  helpHTML: string = `
-    Les champs marqués d'une étoile (<span style="color: red; padding: 0 3px">*</span>) sont
-    obligatoires.
-  `;
+  helpHTML: string = HELP_HTML;
 
   // Form initialization and validation ///////////////////////////////////////
 
@@ -78,7 +80,8 @@ export class AddUser {
     const RE_NAME = /(.{0,}\S.{0,}){3,}/;
 
     if (this.isEditMode) {
-      // Edit mode: retrieve the user by its ID
+      // Edit mode: retrieve the user by its ID ///////////
+
       this.title = 'Mise à jour';
       this.btnAction = 'Modifier';
 
@@ -116,7 +119,8 @@ export class AddUser {
         }
       });
     } else {
-      // Add a new user
+      // Add a new user ///////////////////////////////////
+
       this.title = 'Inscription';
       this.btnAction = 'Ajouter';
       this.valuesChange = true;
@@ -212,7 +216,8 @@ export class AddUser {
     Object.assign(USER, this.user);
 
     if (this.isEditMode) {
-      // Modify the user
+      // Modify the user //////////////////////////////////
+
       let toSave = false;
 
       const NAME = FORM_VAL.userName.trim().replace(/\s{2,}/g, ' ');
@@ -261,7 +266,8 @@ export class AddUser {
         });
       }
     } else {
-      // Add the user
+      // Add the user /////////////////////////////////////
+
       USER.name = FORM_VAL.userName.trim().replace(/\s{2,}/g, ' ');
       USER.email = FORM_VAL.userEmail;
       USER.pswd = FORM_VAL.pswd;
