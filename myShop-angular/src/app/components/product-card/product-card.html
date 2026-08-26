@@ -29,7 +29,7 @@
     <img [src]="product.img" [alt]="product.name" />
   </div>
   <p>{{ product.description }}</p>
-  <p>Prix: {{ Common.numberToString(product.price) }} € <span id="info-tax">(HT)</span></p>
+  <p>Prix: {{ Common.numberToString(product.price) }} €<span id="info-tax">(HT)</span></p>
   @if (isSearch === 1) {
     <button
       type="button"

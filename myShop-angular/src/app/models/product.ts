@@ -1,4 +1,4 @@
-import { Common } from '../constants/common';
+import { Common } from '../constants/global/common';
 
 // Product class
 export class Product {
@@ -59,13 +59,11 @@ export class Product {
 
   // Remove these properties before saving the order
   removeBeforeSaveCart(): Product {
-    const PRODUCT = new Product();
-    Object.assign(PRODUCT, this);
+    const PRODUCT = this.removeBeforeSaveProduct();
     delete PRODUCT.stock;
     delete PRODUCT.info;
     delete PRODUCT.favorite;
     delete PRODUCT.visible;
-    delete PRODUCT.additional;
     return PRODUCT;
   }
 }

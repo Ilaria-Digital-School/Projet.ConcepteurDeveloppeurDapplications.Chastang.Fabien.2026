@@ -4,8 +4,8 @@ import { ProductCard } from '../product-card/product-card';
 import { ProductService } from '../../services/product-service';
 import { Router } from '@angular/router';
 import { map, Subject } from 'rxjs';
-import { Types } from '../../constants/types';
-import { Categories } from '../../constants/categories';
+import { Types } from '../../constants/product-types';
+import { Categories } from '../../constants/product-categories';
 
 @Component({
   selector: 'app-products-search',
@@ -66,9 +66,12 @@ export class ProductsSearch {
   load() {
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
-        this.products = res;
-        this.filteredText = res;
-        this.filteredItems = res;
+        this.products = res.sort((p1: Product, p2: Product) => {
+          const COMPARE = p1.name.localeCompare(p2.name);
+          return COMPARE === 0 ? p1.description.localeCompare(p2.description) : COMPARE;
+        });
+        this.filteredText = structuredClone(this.products);
+        this.filteredItems = structuredClone(this.products);
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");

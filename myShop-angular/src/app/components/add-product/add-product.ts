@@ -4,9 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../services/product-service';
 import { Product } from '../../models/product';
 import { Tooltip } from '../tooltip/tooltip';
-import { Common } from '../../constants/common';
-import { Types } from '../../constants/types';
-import { Categories } from '../../constants/categories';
+import { Common } from '../../constants/global/common';
+import { Types } from '../../constants/product-types';
+import { Categories } from '../../constants/product-categories';
 
 const PLACEHOLDER_FULL_DESC = `$$Titre 1
 Paragraphe 1.1

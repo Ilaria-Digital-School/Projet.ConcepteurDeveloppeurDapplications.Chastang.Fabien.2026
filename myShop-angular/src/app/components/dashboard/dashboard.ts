@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { TableUsers } from '../table-users/table-users';
 import { TableProducts } from '../table-products/table-products';
 import { TableOrders } from '../table-orders/table-orders';

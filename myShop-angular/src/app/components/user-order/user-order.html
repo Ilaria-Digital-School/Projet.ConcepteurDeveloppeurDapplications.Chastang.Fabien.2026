@@ -12,9 +12,9 @@
       <tr>
         <th scope="col">#</th>
         <th scope="col">Produit</th>
-        <th scope="col">Prix <span id="info-tax">(HT)</span></th>
+        <th scope="col">Prix<span id="info-tax">(HT)</span></th>
         <th scope="col">Quantité</th>
-        <th scope="col">Total <span id="info-tax">(HT)</span></th>
+        <th scope="col">Total<span id="info-tax">(HT)</span></th>
         <th scope="col">Statut</th>
       </tr>
     </thead>
@@ -43,10 +43,10 @@
         <td colspan="3">
           <div class="cell-total">
             <div [style.white-space]="'nowrap'">
-              {{ Common.numberToString(order.totalExcludingTax) }} € <span id="info-tax">(HT)</span>
+              {{ Common.numberToString(order.totalExcludingTax) }} €<span id="info-tax">(HT)</span>
             </div>
             <div [style.white-space]="'nowrap'">
-              {{ Common.numberToString(order.totalIncludingTax) }} € <span id="info-tax">(TTC)</span>
+              {{ Common.numberToString(order.totalIncludingTax) }} €<span id="info-tax">(TTC)</span>
             </div>
             @if (order.totalPromotion > 0) {
               <div [style.white-space]="'nowrap'">

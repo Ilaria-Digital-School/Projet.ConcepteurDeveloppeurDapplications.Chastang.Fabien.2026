@@ -1,12 +1,13 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserService } from '../../services/user-service';
-import { Genders } from '../../constants/genders';
-import { Countries } from '../../constants/countries';
-import { Roles } from '../../constants/roles';
-import { User } from '../../models/user';
 import { map, Subject } from 'rxjs';
+import { UserService } from '../../services/user-service';
+import { Genders } from '../../constants/user-genders';
+import { Countries } from '../../constants/user-countries';
+import { Roles } from '../../constants/user-roles';
+import { User } from '../../models/user';
+import { ItemShort, SortParams } from '../../constants/global/types';
 
 @Component({
   selector: 'app-table-users',
@@ -17,6 +18,9 @@ import { map, Subject } from 'rxjs';
 export class TableUsers {
   // To retrieve DOM elements
   @ViewChild('emailUsers') emailUsers!: ElementRef<HTMLInputElement>;
+  @ViewChild('sortName') sortName!: ElementRef<HTMLElement>;
+  @ViewChild('sortEmail') sortEmail!: ElementRef<HTMLElement>;
+  @ViewChild('sortRole') sortRole!: ElementRef<HTMLElement>;
 
   // Constants
   public Genders = Genders;
@@ -31,7 +35,7 @@ export class TableUsers {
   private static msgDelUser: string = 'Êtes-vous sûr de vouloir supprimer cet utilisateur ?';
 
   // Class properties
-  roles!: any[];
+  roles!: ItemShort[];
   users: User[] = [];
   filteredItems: User[] = [];
   filteredText: User[] = [];
@@ -40,14 +44,22 @@ export class TableUsers {
   searchByEmailSubject: Subject<string> = new Subject<string>();
   searchByRefSubject: Subject<string> = new Subject<string>();
   selectedRole: number = -1;
+  sortColumns!: SortParams[];
   editUser!: User | null;
 
   // Initialization ///////////////////////////////////////////////////////////
 
   // Initialize the user list
   ngOnInit() {
+    // Initialize the array that handles the sorting
+    this.sortColumns = [
+      { col: 'name', sort: true, up: true },
+      { col: 'email', sort: false, up: true },
+      { col: 'role', sort: false, up: true },
+    ];
+
     // Sort the roles
-    this.roles = Roles.list.sort((r1: any, r2: any) => r1.value - r2.value);
+    this.roles = Roles.list.sort((r1: ItemShort, r2: ItemShort) => r1.value - r2.value);
 
     // Load all users
     this.load();
@@ -93,11 +105,15 @@ export class TableUsers {
   load() {
     this.userService.getAllUsers().subscribe({
       next: (res: User[]) => {
-        this.users = res; // All users
-        this.filteredByEmail = res;
-        this.filteredByRef = res;
-        this.filteredText = res;
-        this.filteredItems = res;
+        // All users
+        this.users = res.sort((item1: User, item2: User) => {
+          const COMPARE = item1.name.localeCompare(item2.name);
+          return COMPARE === 0 ? item1.email.localeCompare(item2.email) : COMPARE;
+        });
+        this.filteredByEmail = structuredClone(this.users);
+        this.filteredByRef = structuredClone(this.users);
+        this.filteredText = structuredClone(this.users);
+        this.filteredItems = structuredClone(this.users);
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
@@ -133,6 +149,152 @@ export class TableUsers {
   selectRoleItems(select: any) {
     this.selectedRole = Number(select.options[select.selectedIndex].value);
     this.filterByRole();
+  }
+
+  // Sort /////////////////////////////////////////////////////////////////////
+
+  sort(column: string) {
+    const SORT = this.sortColumns.find((item: SortParams) => item.sort);
+    if (SORT) {
+      switch (column) {
+        case 'email':
+          // Sort users by email
+          if (SORT.col === column) {
+            SORT.up = !SORT.up;
+            this.users = this.sortByEmail(this.users, SORT.up);
+            this.filteredByEmail = this.sortByEmail(this.filteredByEmail, SORT.up);
+            this.filteredByRef = this.sortByEmail(this.filteredByRef, SORT.up);
+            this.filteredText = this.sortByEmail(this.filteredText, SORT.up);
+            this.filteredItems = this.sortByEmail(this.filteredItems, SORT.up);
+            if (SORT.up) {
+              this.sortEmail.nativeElement.classList.replace('fa-caret-down', 'fa-caret-up');
+            } else {
+              this.sortEmail.nativeElement.classList.replace('fa-caret-up', 'fa-caret-down');
+            }
+          } else {
+            this.initSort(SORT, column);
+            this.users = this.sortByEmail(this.users, true);
+            this.filteredByEmail = this.sortByEmail(this.filteredByEmail, true);
+            this.filteredByRef = this.sortByEmail(this.filteredByRef, true);
+            this.filteredText = this.sortByEmail(this.filteredText, true);
+            this.filteredItems = this.sortByEmail(this.filteredItems, true);
+            this.sortEmail.nativeElement.classList.remove('hidden');
+            this.sortEmail.nativeElement.classList.replace('fa-caret-down', 'fa-caret-up');
+          }
+          break;
+
+        case 'role':
+          // Sort users by role
+          if (SORT.col === column) {
+            SORT.up = !SORT.up;
+            this.users = this.sortByRole(this.users, SORT.up);
+            this.filteredByEmail = this.sortByRole(this.filteredByEmail, SORT.up);
+            this.filteredByRef = this.sortByRole(this.filteredByRef, SORT.up);
+            this.filteredText = this.sortByRole(this.filteredText, SORT.up);
+            this.filteredItems = this.sortByRole(this.filteredItems, SORT.up);
+            if (SORT.up) {
+              this.sortRole.nativeElement.classList.replace('fa-caret-down', 'fa-caret-up');
+            } else {
+              this.sortRole.nativeElement.classList.replace('fa-caret-up', 'fa-caret-down');
+            }
+          } else {
+            this.initSort(SORT, column);
+            this.users = this.sortByRole(this.users, true);
+            this.filteredByEmail = this.sortByRole(this.filteredByEmail, true);
+            this.filteredByRef = this.sortByRole(this.filteredByRef, true);
+            this.filteredText = this.sortByRole(this.filteredText, true);
+            this.filteredItems = this.sortByRole(this.filteredItems, true);
+            this.sortRole.nativeElement.classList.remove('hidden');
+            this.sortRole.nativeElement.classList.replace('fa-caret-down', 'fa-caret-up');
+          }
+          break;
+
+        default:
+          // Sort users by name
+          if (SORT.col === column) {
+            SORT.up = !SORT.up;
+            this.users = this.sortByName(this.users, SORT.up);
+            this.filteredByEmail = this.sortByName(this.filteredByEmail, SORT.up);
+            this.filteredByRef = this.sortByName(this.filteredByRef, SORT.up);
+            this.filteredText = this.sortByName(this.filteredText, SORT.up);
+            this.filteredItems = this.sortByName(this.filteredItems, SORT.up);
+            if (SORT.up) {
+              this.sortName.nativeElement.classList.replace('fa-caret-down', 'fa-caret-up');
+            } else {
+              this.sortName.nativeElement.classList.replace('fa-caret-up', 'fa-caret-down');
+            }
+          } else {
+            this.initSort(SORT, column);
+            this.users = this.sortByName(this.users, true);
+            this.filteredByEmail = this.sortByName(this.filteredByEmail, true);
+            this.filteredByRef = this.sortByName(this.filteredByRef, true);
+            this.filteredText = this.sortByName(this.filteredText, true);
+            this.filteredItems = this.sortByName(this.filteredItems, true);
+            this.sortName.nativeElement.classList.remove('hidden');
+            this.sortName.nativeElement.classList.replace('fa-caret-down', 'fa-caret-up');
+          }
+      }
+    }
+  }
+
+  // Sort users by name (default)
+  sortByName(array: User[], up: boolean): User[] {
+    if (up) {
+      return array.sort((item1: User, item2: User) => {
+        const COMPARE = item1.name.localeCompare(item2.name);
+        return COMPARE === 0 ? item1.email.localeCompare(item2.email) : COMPARE;
+      });
+    } else {
+      return array.sort((item1: User, item2: User) => {
+        const COMPARE = item2.name.localeCompare(item1.name);
+        return COMPARE === 0 ? item2.email.localeCompare(item1.email) : COMPARE;
+      });
+    }
+  }
+
+  // Sort users by email
+  sortByEmail(array: User[], up: boolean): User[] {
+    if (up) {
+      return array.sort((item1: User, item2: User) => item1.email.localeCompare(item2.email));
+    } else {
+      return array.sort((item1: User, item2: User) => item2.email.localeCompare(item1.email));
+    }
+  }
+
+  // Sort users by email
+  sortByRole(array: User[], up: boolean): User[] {
+    if (up) {
+      return array.sort((item1: User, item2: User) => {
+        const COMPARE = item1.role - item2.role;
+        return COMPARE === 0 ? item1.email.localeCompare(item2.email) : COMPARE;
+      });
+    } else {
+      return array.sort((item1: User, item2: User) => {
+        const COMPARE = item2.role - item1.role;
+        return COMPARE === 0 ? item2.email.localeCompare(item1.email) : COMPARE;
+      });
+    }
+  }
+
+  // Initialise the sort when the column changes
+  initSort(sorted: SortParams, column: string, up: boolean = true) {
+    sorted.sort = false;
+    switch (sorted.col) {
+      case 'email':
+        this.sortEmail.nativeElement.classList.add('hidden');
+        break;
+      case 'role':
+        this.sortRole.nativeElement.classList.add('hidden');
+        break;
+      default:
+        this.sortName.nativeElement.classList.add('hidden');
+    }
+
+    const TO_SORT = this.sortColumns.find((item: SortParams) => item.col === column);
+    if (TO_SORT) {
+      TO_SORT.sort = true;
+      TO_SORT.up = up;
+    }
   }
 
   // Actions //////////////////////////////////////////////////////////////////

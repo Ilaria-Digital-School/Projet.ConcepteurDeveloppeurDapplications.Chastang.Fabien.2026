@@ -33,10 +33,22 @@
           <th scope="col">#</th>
           <th scope="col">Référence</th>
           <th scope="col">Genre</th>
-          <th scope="col">Nom</th>
-          <th scope="col">E-mail</th>
+          <th scope="col">
+            <a class="link" (click)="sort('name')">
+              Nom<i #sortName class="fa-solid fa-caret-up arrow"></i>
+            </a>
+          </th>
+          <th scope="col">
+            <a class="link" (click)="sort('email')">
+              E-mail<i #sortEmail class="fa-solid fa-caret-up arrow hidden"></i>
+            </a>
+          </th>
           <th scope="col">Pays</th>
-          <th scope="col">Role</th>
+          <th scope="col">
+            <a class="link" (click)="sort('role')">
+              Role<i #sortRole class="fa-solid fa-caret-up arrow hidden"></i>
+            </a>
+          </th>
           <th scope="col">Action</th>
         </tr>
       </thead>

@@ -10,11 +10,12 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user-service';
 import { EnumInterests } from '../../enums/user-interests';
-import { Interests } from '../../constants/interests';
-import { Countries } from '../../constants/countries';
+import { Interests } from '../../constants/user-interests';
+import { Countries } from '../../constants/user-countries';
 import { User } from '../../models/user';
 import { Tooltip } from '../tooltip/tooltip';
-import { Genders } from '../../constants/genders';
+import { Genders } from '../../constants/user-genders';
+import { ItemConst } from '../../constants/global/types';
 // import { JsonPipe } from '@angular/common';
 
 // Custom validators for the entire form //////////////////////////////////////
@@ -236,7 +237,7 @@ export class AddUser {
       }
       if (
         Interests.list.some(
-          (item: any) =>
+          (item: ItemConst) =>
             this.userIni.interests.includes(item.value) !== INTERESTS.includes(item.value),
         )
       ) {

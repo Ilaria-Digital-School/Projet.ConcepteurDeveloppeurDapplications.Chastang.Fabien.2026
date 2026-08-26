@@ -1,8 +1,8 @@
-import { Common } from '../constants/common';
-import { Genders } from '../constants/genders';
-import { Interests } from '../constants/interests';
-import { Countries } from '../constants/countries';
-import { Roles } from '../constants/roles';
+import { Common } from '../constants/global/common';
+import { Genders } from '../constants/user-genders';
+import { Interests } from '../constants/user-interests';
+import { Countries } from '../constants/user-countries';
+import { Roles } from '../constants/user-roles';
 
 // User class
 export class User {

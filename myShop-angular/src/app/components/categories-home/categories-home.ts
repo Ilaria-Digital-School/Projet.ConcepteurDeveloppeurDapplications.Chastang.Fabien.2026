@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Category } from '../../constants/global/types';
 import { CategoryCard } from '../category-card/category-card';
 
 @Component({
@@ -9,7 +10,7 @@ import { CategoryCard } from '../category-card/category-card';
 })
 export class CategoriesHome {
   path: string = 'assets/img/clothing/';
-  categories: any[] = [
+  categories: Category[] = [
     {
       name: 'Femme',
       description: 'Mode Femme',

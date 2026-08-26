@@ -3,7 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product-service';
 import { CartService } from '../../services/cart-service';
 import { Product } from '../../models/product';
-import { Common } from '../../constants/common';
+import { Common } from '../../constants/global/common';
+import { FullDesc } from '../../constants/global/types';
 
 @Component({
   selector: 'app-product-view',
@@ -23,7 +24,7 @@ export class ProductView {
   // Class properties
   productId!: string | null;
   product: Product = new Product();
-  fullDescription: any[] = [];
+  fullDescription: FullDesc[] = [];
 
   // Initialize the view
   ngOnInit() {
@@ -62,8 +63,8 @@ export class ProductView {
   //   ...
   // ]
 
-  getFullDescription(description: string) {
-    const RESULT = [];
+  getFullDescription(description: string): FullDesc[] {
+    const RESULT: FullDesc[] = [];
     const RE_TITLE = /^\s{0,}\${2,}\s{0,}/;
     const DESCRIPTION = description
       .split('\n')
@@ -72,7 +73,7 @@ export class ProductView {
       })
       .filter((value: string) => value !== '');
 
-    let objDesc: any = null;
+    let objDesc: FullDesc | null = null;
     DESCRIPTION.forEach((value: string) => {
       const IS_TITLE = RE_TITLE.test(value);
 
@@ -86,7 +87,7 @@ export class ProductView {
             description: [],
           };
         } else {
-          objDesc = { description: [value] };
+          objDesc = { title: undefined, description: [value] };
         }
       } else {
         objDesc.description.push(value);

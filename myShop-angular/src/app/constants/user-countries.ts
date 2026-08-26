@@ -1,7 +1,9 @@
+import { ItemShort } from './global/types';
+
 // User's country class
 export class Countries {
-  static other = { value: 0, label: '– Autre –' };
-  static list = [
+  static other: ItemShort = { value: 0, label: '– Autre –' };
+  static list: ItemShort[] = [
     { value: 1, label: 'Allemagne' },
     { value: 2, label: 'Autriche' },
     { value: 3, label: 'Belgique' },
@@ -29,11 +31,11 @@ export class Countries {
 
   // Get the value from the label and the label from the value
   static getValue(label: string): number {
-    const ITEM = this.list.find((item) => item.label.toLowerCase() === label);
+    const ITEM = this.list.find((item: ItemShort) => item.label.toLowerCase() === label);
     return ITEM ? ITEM.value : this.other.value;
   }
   static getLabel(value: number, other: string | undefined = undefined): string {
-    const ITEM = this.list.find((item) => item.value === value);
+    const ITEM = this.list.find((item: ItemShort) => item.value === value);
     return !ITEM || !ITEM.value ? (other ? other : this.other.label) : ITEM.label;
   }
 }

@@ -1,7 +1,8 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { Common } from '../../constants/common';
-import { Status } from '../../constants/status';
+import { Common } from '../../constants/global/common';
+import { Status } from '../../constants/order-status';
+import { Product } from '../../models/product';
 
 @Component({
   selector: 'app-user-order',
@@ -16,4 +17,12 @@ export class UserOrder {
 
   // To retrieve data from another component
   @Input() order: any;
+
+  // Sort the product array alphabetically by name
+  ngOnInit() {
+    this.order.products = this.order.products.sort((p1: Product, p2: Product) => {
+      const COMPARE = p1.name.localeCompare(p2.name);
+      return COMPARE === 0 ? p1.description.localeCompare(p2.description) : COMPARE;
+    });
+  }
 }

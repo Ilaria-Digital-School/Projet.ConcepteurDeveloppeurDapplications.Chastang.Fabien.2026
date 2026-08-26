@@ -43,11 +43,16 @@ export class ProductsCarousel {
     // Retrieve all products
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
-        this.products = res.map((product: Product) => {
-          const PRODUCT = new Product();
-          Object.assign(PRODUCT, product);
-          return PRODUCT;
-        });
+        this.products = res
+          .map((product: Product) => {
+            const PRODUCT = new Product();
+            Object.assign(PRODUCT, product);
+            return PRODUCT;
+          })
+          .sort((p1: Product, p2: Product) => {
+            const COMPARE = p1.name.localeCompare(p2.name);
+            return COMPARE === 0 ? p1.description.localeCompare(p2.description) : COMPARE;
+          });
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");

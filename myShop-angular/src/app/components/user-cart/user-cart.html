@@ -8,9 +8,9 @@
         <thead>
           <tr>
             <th scope="col">Produit</th>
-            <th scope="col">Prix <span id="info-tax">(HT)</span></th>
+            <th scope="col">Prix<span id="info-tax">(HT)</span></th>
             <th scope="col" class="col-input">Quantité</th>
-            <th scope="col">Total <span id="info-tax">(HT)</span></th>
+            <th scope="col">Total<span id="info-tax">(HT)</span></th>
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -92,10 +92,10 @@
             <td>
               <div class="cell-total">
                 <div [style.white-space]="'nowrap'">
-                  {{ Common.numberToString(getTotalExcludingTax()) }} € <span id="info-tax">(HT)</span>
+                  {{ Common.numberToString(getTotalExcludingTax()) }} €<span id="info-tax">(HT)</span>
                 </div>
                 <div [style.white-space]="'nowrap'">
-                  {{ Common.numberToString((1 + this.taxPercent / 100) * this.total) }} € <span id="info-tax">(TTC)</span>
+                  {{ Common.numberToString((1 + this.taxPercent / 100) * this.total) }} €<span id="info-tax">(TTC)</span>
                 </div>
               </div>
             </td>
