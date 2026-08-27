@@ -1,4 +1,4 @@
-import { SortArrays, SortElement, SortParams } from './types';
+import { SortArrays, SortElement, SortVariables } from './types';
 
 export class Common {
   // Pseudorandom string generation functions /////////////////////////////////
@@ -145,10 +145,10 @@ export class Common {
   static sort(
     arrays: SortArrays,
     sortElements: SortElement[],
-    sortParams: SortParams[],
+    sortVariables: SortVariables[],
     column: string,
   ) {
-    const SORT = sortParams.find((item: SortParams) => item.sort);
+    const SORT = sortVariables.find((item: SortVariables) => item.sort);
     if (SORT !== undefined) {
       for (const ITEM of sortElements)
         if (ITEM.col === column) {
@@ -163,7 +163,7 @@ export class Common {
             this.handleArrow(ITEM.HTMLCol, SORT.up);
           } else {
             // Initialize the new sort when the column has changed
-            const TO_SORT = sortParams.find((item: SortParams) => item.col === column);
+            const TO_SORT = sortVariables.find((item: SortVariables) => item.col === column);
             if (TO_SORT) {
               TO_SORT.sort = true;
               TO_SORT.up = ITEM.up;

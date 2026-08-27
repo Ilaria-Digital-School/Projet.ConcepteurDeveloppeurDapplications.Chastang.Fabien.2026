@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { map, Subject } from 'rxjs';
 import { Common } from '../../constants/global/common';
-import { ItemCstShort, SortArrays, SortElement, SortParams } from '../../constants/global/types';
+import { ItemCstShort, SortElement, SortVariables } from '../../constants/global/types';
 import { UserGenders } from '../../constants/user-genders';
 import { UserCountries } from '../../constants/user-countries';
 import { UserRoles } from '../../constants/user-roles';
@@ -48,7 +48,7 @@ export class TableUsers {
   editUser!: User | null;
   // Used for sorting
   sortElements!: SortElement[];
-  sortParams!: SortParams[];
+  sortVariables!: SortVariables[];
 
   // Initialization ///////////////////////////////////////////////////////////
 
@@ -95,16 +95,16 @@ export class TableUsers {
       });
   }
 
-  // Initialize the arrays that handles the sorting
+  // Initialize the arrays that handle the sorting
   ngAfterViewInit() {
-    // Defines the sorting elements (all fixed attributes)
+    // Defines the sorting elements: here, all attributes are fixed
     this.sortElements = [
       { col: 'name', up: true, func: this.sortByName, HTMLCol: this.sortName.nativeElement },
       { col: 'email', up: true, func: this.sortByEmail, HTMLCol: this.sortEmail.nativeElement },
       { col: 'role', up: true, func: this.sortByRole, HTMLCol: this.sortRole.nativeElement },
     ];
-    // Varies according to the sort order (variable attributes: 'sort' and 'up')
-    this.sortParams = [
+    // Defines the sorting variables: 'sort' and/or 'up' are updated each time a sort is performed
+    this.sortVariables = [
       { col: 'name', sort: true, up: true },
       { col: 'email', sort: false, up: true },
       { col: 'role', sort: false, up: true },
@@ -170,7 +170,7 @@ export class TableUsers {
     Common.sort(
       [this.users, this.filteredByEmail, this.filteredByRef, this.filteredText, this.filteredItems],
       this.sortElements,
-      this.sortParams,
+      this.sortVariables,
       column,
     );
   }

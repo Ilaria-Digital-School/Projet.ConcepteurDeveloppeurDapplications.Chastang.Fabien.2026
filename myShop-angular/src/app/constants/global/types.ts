@@ -15,4 +15,4 @@ export type OrderExt = { order: Order; user: User | undefined };
 export type SortArrays = Array<any[]>;
 export type SortFunction = (array: any[], direction: boolean) => any[];
 export type SortElement = { col: string; up: boolean; func: SortFunction; HTMLCol: HTMLElement };
-export type SortParams = { col: string; sort: boolean; up: boolean };
+export type SortVariables = { col: string; sort: boolean; up: boolean };

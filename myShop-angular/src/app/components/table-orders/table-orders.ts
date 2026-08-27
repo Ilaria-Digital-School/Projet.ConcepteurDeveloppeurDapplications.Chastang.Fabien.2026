@@ -3,7 +3,7 @@ import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { map, Subject } from 'rxjs';
 import { Common } from '../../constants/global/common';
-import { OrderExt, SortParams, SortElement, SortArrays } from '../../constants/global/types';
+import { OrderExt, SortElement, SortVariables } from '../../constants/global/types';
 import { OrderStatus } from '../../constants/order-status';
 import { UserService } from '../../services/user-service';
 import { OrderService } from '../../services/order-service';
@@ -42,7 +42,7 @@ export class TableOrders {
   selectedStatus: number = -1;
   // Used for sorting
   sortElements!: SortElement[];
-  sortParams!: SortParams[];
+  sortVariables!: SortVariables[];
 
   // Initialize ///////////////////////////////////////////////////////////////
 
@@ -89,16 +89,16 @@ export class TableOrders {
       });
   }
 
-  // Initialize the arrays that handles the sorting
+  // Initialize the arrays that handle the sorting
   ngAfterViewInit() {
-    // Defines the sorting elements (all fixed attributes)
+    // Defines the sorting elements: here, all attributes are fixed
     this.sortElements = [
       { col: 'email', up: true, func: this.sortByEmail, HTMLCol: this.sortEmail.nativeElement },
       { col: 'date', up: false, func: this.sortByDate, HTMLCol: this.sortDate.nativeElement },
       { col: 'status', up: true, func: this.sortByStatus, HTMLCol: this.sortStatus.nativeElement },
     ];
-    // Varies according to the sort order (variable attributes: 'sort' and 'up')
-    this.sortParams = [
+    // Defines the sorting variables: 'sort' and/or 'up' are updated each time a sort is performed
+    this.sortVariables = [
       { col: 'email', sort: false, up: true },
       { col: 'date', sort: true, up: false },
       { col: 'status', sort: false, up: true },
@@ -185,7 +185,7 @@ export class TableOrders {
         this.filteredItems,
       ],
       this.sortElements,
-      this.sortParams,
+      this.sortVariables,
       column,
     );
   }

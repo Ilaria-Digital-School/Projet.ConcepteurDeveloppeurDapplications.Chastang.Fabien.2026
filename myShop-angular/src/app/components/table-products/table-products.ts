@@ -1,7 +1,7 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Common } from '../../constants/global/common';
-import { SortArrays, SortElement, SortParams } from '../../constants/global/types';
+import { SortElement, SortVariables } from '../../constants/global/types';
 import { ProductService } from '../../services/product-service';
 import { Product } from '../../models/product';
 import { map, Subject } from 'rxjs';
@@ -40,7 +40,7 @@ export class TableProducts {
   selectedStock: number = -1;
   // Used for sorting
   sortElements!: SortElement[];
-  sortParams!: SortParams[];
+  sortVariables!: SortVariables[];
 
   // Initialization //////////////////////////////////////////////////////
 
@@ -87,16 +87,16 @@ export class TableProducts {
       });
   }
 
-  // Initialize the arrays that handles the sorting
+  // Initialize the arrays that handle the sorting
   ngAfterViewInit() {
-    // Defines the sorting elements (all fixed attributes)
+    // Defines the sorting elements: here, all attributes are fixed
     this.sortElements = [
       { col: 'name', up: true, func: this.sortByName, HTMLCol: this.sortName.nativeElement },
       { col: 'price', up: true, func: this.sortByPrice, HTMLCol: this.sortPrice.nativeElement },
       { col: 'stock', up: true, func: this.sortByStock, HTMLCol: this.sortStock.nativeElement },
     ];
-    // Varies according to the sort order (variable attributes: 'sort' and 'up')
-    this.sortParams = [
+    // Defines the sorting variables: 'sort' and/or 'up' are updated each time a sort is performed
+    this.sortVariables = [
       { col: 'name', sort: true, up: true },
       { col: 'price', sort: false, up: true },
       { col: 'stock', sort: false, up: true },
@@ -172,7 +172,7 @@ export class TableProducts {
         this.filteredItems,
       ],
       this.sortElements,
-      this.sortParams,
+      this.sortVariables,
       column,
     );
   }
