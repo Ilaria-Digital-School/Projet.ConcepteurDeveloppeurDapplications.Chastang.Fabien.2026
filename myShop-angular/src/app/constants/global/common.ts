@@ -148,41 +148,41 @@ export class Common {
     sortVariables: SortVariables[],
     column: string,
   ) {
-    const SORT = sortVariables.find((item: SortVariables) => item.sort);
-    if (SORT !== undefined) {
-      for (const ITEM of sortElements)
-        if (ITEM.col === column) {
-          if (SORT.col === column) {
+    const SORTED = sortVariables.find((item: SortVariables) => item.sort);
+    if (SORTED !== undefined) {
+      for (const ELT_SORT of sortElements)
+        if (ELT_SORT.col === column) {
+          if (SORTED.col === column) {
             // The column has not changed, only the sort order is reversed
-            SORT.up = !SORT.up;
+            SORTED.up = !SORTED.up;
 
             // Sort all arrays
-            for (let array of arrays) array = ITEM.func(array, SORT.up);
+            for (let array of arrays) array = ELT_SORT.func(array, SORTED.up);
 
             // Reverse the arrow
-            this.handleArrow(ITEM.HTMLCol, SORT.up);
+            this.handleArrow(ELT_SORT.HTMLCol, SORTED.up);
           } else {
             // Initialize the new sort when the column has changed
             const TO_SORT = sortVariables.find((item: SortVariables) => item.col === column);
             if (TO_SORT) {
               TO_SORT.sort = true;
-              TO_SORT.up = ITEM.up;
+              TO_SORT.up = ELT_SORT.up;
             }
 
             // Sort all arrays
-            for (let array of arrays) array = ITEM.func(array, ITEM.up);
+            for (let array of arrays) array = ELT_SORT.func(array, ELT_SORT.up);
 
             // Hide the previous sort arrow
-            SORT.sort = false;
-            for (const ITEM2 of sortElements)
-              if (ITEM2.col === SORT.col) {
-                ITEM2.HTMLCol.classList.add('hidden');
+            SORTED.sort = false;
+            for (const ELT_HIDE of sortElements)
+              if (ELT_HIDE.col === SORTED.col) {
+                ELT_HIDE.HTMLCol.classList.add('hidden');
                 break;
               }
 
             // Show the new sort arrow
-            ITEM.HTMLCol.classList.remove('hidden');
-            this.handleArrow(ITEM.HTMLCol, ITEM.up);
+            ELT_SORT.HTMLCol.classList.remove('hidden');
+            this.handleArrow(ELT_SORT.HTMLCol, ELT_SORT.up);
           }
           break;
         }
