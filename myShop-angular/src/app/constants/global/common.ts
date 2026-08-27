@@ -135,11 +135,8 @@ export class Common {
   // Used by 'TableUsers', 'TableProducts' and 'TableOrders' component
 
   private static handleArrow(HTMLCol: HTMLElement, up: boolean) {
-    if (up) {
-      HTMLCol.classList.replace('fa-caret-down', 'fa-caret-up');
-    } else {
-      HTMLCol.classList.replace('fa-caret-up', 'fa-caret-down');
-    }
+    const [TO_REP, REP_BY] = up ? ['down', 'up'] : ['up', 'down'];
+    HTMLCol.classList.replace(`fa-caret-${TO_REP}`, `fa-caret-${REP_BY}`);
   }
 
   static sort(
