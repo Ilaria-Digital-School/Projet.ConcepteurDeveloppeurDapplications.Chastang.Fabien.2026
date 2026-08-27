@@ -2,9 +2,9 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { UserService } from '../../services/user-service';
 import { User } from '../../models/user';
-import { Genders } from '../../constants/user-genders';
-import { Interests } from '../../constants/user-interests';
-import { Countries } from '../../constants/user-countries';
+import { UserGenders } from '../../constants/user-genders';
+import { UserInterests } from '../../constants/user-interests';
+import { UserCountries } from '../../constants/user-countries';
 
 @Component({
   selector: 'app-user-view',
@@ -14,9 +14,9 @@ import { Countries } from '../../constants/user-countries';
 })
 export class UserView {
   // Contants
-  public Genders = Genders;
-  public Interests = Interests;
-  public Countries = Countries;
+  public UserGenders = UserGenders;
+  public UserInterests = UserInterests;
+  public UserCountries = UserCountries;
 
   // Native classes / Application services
   private activatedRoute = inject(ActivatedRoute);

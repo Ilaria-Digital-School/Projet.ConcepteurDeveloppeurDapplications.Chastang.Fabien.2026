@@ -1,4 +1,3 @@
-import { Common } from '../constants/global/common';
 import { Product } from './product';
 
 // 'Cart' object initialized from the list of products with a

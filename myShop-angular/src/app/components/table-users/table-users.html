@@ -57,7 +57,7 @@
           <tr [class]="user.role !== 0 ? 'admin-row' : ''">
             <th scope="row">{{ i + 1 }}</th>
             <td [class]="user.role !== 0 ? 'admin-cell' : ''">{{ user.reference }}</td>
-            <td>{{ Genders.getLabel(user.gender, '—') }}</td>
+            <td>{{ UserGenders.getLabel(user.gender, '—') }}</td>
             @if (user.id === editUser?.id) {
               <td class="inline">
                 <input
@@ -81,9 +81,9 @@
               <td [class]="user.role !== 0 ? 'admin-cell-left' : 'cell-left'">{{ user.name }}</td>
               <td [class]="user.role !== 0 ? 'admin-cell-left' : 'cell-left'">{{ user.email }}</td>
             }
-            <td>{{ Countries.getLabel(user.country, '—') }}</td>
+            <td>{{ UserCountries.getLabel(user.country, '—') }}</td>
             <td [class]="user.role !== 0 ? 'admin-cell' : ''">
-              {{ Roles.getLabel(user.role) }}
+              {{ UserRoles.getLabel(user.role) }}
             </td>
             <td [style.white-space]="'nowrap'">
               @if (user.id === editUser?.id) {

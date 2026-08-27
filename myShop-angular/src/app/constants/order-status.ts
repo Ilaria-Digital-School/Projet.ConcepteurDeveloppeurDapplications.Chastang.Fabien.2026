@@ -3,7 +3,7 @@ import { EnumStatus } from '../enums/order-status';
 type ItemConst = { value: number, id: string, label: string };
 
 // User's gender class
-export class Status {
+export class OrderStatus {
   static list: ItemConst[] = [
     { value: EnumStatus.pending, id: 'pending', label: 'En attente' },
     { value: EnumStatus.inprogress, id: 'inprogress', label: 'En cours' },

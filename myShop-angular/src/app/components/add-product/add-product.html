@@ -129,10 +129,10 @@
       }
     </div>
     <div class="field-container first">
-      <div class="field-label" aria-label="Types de produit">Types&nbsp;:</div>
+      <div class="field-label" aria-label="ProductTypes de produit">ProductTypes&nbsp;:</div>
       <div>
-        @for (type of Types.list; track type.value; let i = $index) {
-          @if (type.value !== Types.other.value) {
+        @for (type of ProductTypes.list; track type.value; let i = $index) {
+          @if (type.value !== ProductTypes.other.value) {
             <div class="field">
               <input
                 type="checkbox"
@@ -151,8 +151,8 @@
     <div class="field-container">
       <div class="field-label" aria-label="Catégories du produit">Catégories&nbsp;:</div>
       <div>
-        @for (category of Categories.list; track category.value; let i = $index) {
-          @if (category.value !== Categories.other.value) {
+        @for (category of ProductCategories.list; track category.value; let i = $index) {
+          @if (category.value !== ProductCategories.other.value) {
             <div class="field">
               <input
                 type="checkbox"

@@ -5,8 +5,8 @@ import { ProductService } from '../../services/product-service';
 import { Product } from '../../models/product';
 import { Tooltip } from '../tooltip/tooltip';
 import { Common } from '../../constants/global/common';
-import { Types } from '../../constants/product-types';
-import { Categories } from '../../constants/product-categories';
+import { ProductTypes } from '../../constants/product-types';
+import { ProductCategories } from '../../constants/product-categories';
 
 const PLACEHOLDER_FULL_DESC = `$$Titre 1
 Paragraphe 1.1
@@ -49,8 +49,8 @@ export class AddProduct {
   @ViewChildren('productCategory') productCategories!: QueryList<ElementRef>;
 
   // Constants
-  public Types = Types;
-  public Categories = Categories;
+  public ProductTypes = ProductTypes;
+  public ProductCategories = ProductCategories;
 
   // Native classes / Application services
   private activatedRoute = inject(ActivatedRoute);

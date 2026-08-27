@@ -7,7 +7,7 @@ import { OrderService } from '../../services/order-service';
 import { User } from '../../models/user';
 import { Order } from '../../models/order';
 import { Common } from '../../constants/global/common';
-import { Status } from '../../constants/order-status';
+import { OrderStatus } from '../../constants/order-status';
 import { SortParams, OrderExt } from '../../constants/global/types';
 
 @Component({
@@ -25,7 +25,7 @@ export class TableOrders {
 
   // Constants
   public Common = Common;
-  public Status = Status;
+  public OrderStatus = OrderStatus;
 
   // Native classes / Application services
   private userService = inject(UserService);

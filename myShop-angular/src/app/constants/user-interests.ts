@@ -1,10 +1,10 @@
 import { EnumInterests } from '../enums/user-interests';
-import { ItemConst } from "./global/types";
+import { ItemCst } from "./global/types";
 
 // User's interests class
-export class Interests {
-  static other: ItemConst = { value: EnumInterests.none, id: 'other', label: '– Autre –' };
-  static list: ItemConst[] = [
+export class UserInterests {
+  static other: ItemCst = { value: EnumInterests.none, id: 'other', label: '– Autre –' };
+  static list: ItemCst[] = [
     { value: EnumInterests.clothes, id: 'clothes', label: 'Vêtements' },
     { value: EnumInterests.accessories, id: 'accessories', label: 'Accessoires' },
   ];
@@ -12,11 +12,11 @@ export class Interests {
   // Get the value from the label and the label from the value
   static getValue(label: string): number {
     const LABEL = label.trim().toLowerCase();
-    const ITEM = this.list.find((item: ItemConst) => item.label.toLowerCase() === LABEL);
+    const ITEM = this.list.find((item: ItemCst) => item.label.toLowerCase() === LABEL);
     return ITEM ? ITEM.value : this.other.value;
   }
   static getLabel(value: number, other: string | undefined = undefined): string {
-    const ITEM = this.list.find((item: ItemConst) => item.value === value);
+    const ITEM = this.list.find((item: ItemCst) => item.value === value);
     return !ITEM || !ITEM.value ? (other ? other : this.other.label) : ITEM.label;
   }
 }

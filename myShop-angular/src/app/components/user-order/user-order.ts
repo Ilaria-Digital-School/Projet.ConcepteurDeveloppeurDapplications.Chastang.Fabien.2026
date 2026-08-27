@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Common } from '../../constants/global/common';
-import { Status } from '../../constants/order-status';
+import { OrderStatus } from '../../constants/order-status';
 import { Product } from '../../models/product';
 
 @Component({
@@ -13,7 +13,7 @@ import { Product } from '../../models/product';
 export class UserOrder {
   // Constants
   public Common = Common;
-  public Status = Status;
+  public OrderStatus = OrderStatus;
 
   // To retrieve data from another component
   @Input() order: any;

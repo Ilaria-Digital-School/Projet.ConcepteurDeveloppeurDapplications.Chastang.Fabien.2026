@@ -13,16 +13,16 @@
     </div>
     <div>
       <div>Genre :</div>
-      <div>{{ Genders.getLabel(user.gender, '—') }}</div>
+      <div>{{ UserGenders.getLabel(user.gender, '—') }}</div>
     </div>
     <div>
       <div>Centres d'intérêts :</div>
       <div>
         @for (item of user.interests; track item; let i = $index) {
           @if (i < user.interests.length - 1) {
-            <span>{{ Interests.getLabel(item) }}, </span>
+            <span>{{ UserInterests.getLabel(item) }}, </span>
           } @else {
-            <span>{{ Interests.getLabel(item) }}</span>
+            <span>{{ UserInterests.getLabel(item) }}</span>
           }
         } @empty {
           <span [style.font-style]="'italic'">—</span>
@@ -31,7 +31,7 @@
     </div>
     <div>
       <div>Pays :</div>
-      <div>{{ Countries.getLabel(user.country, '—') }}</div>
+      <div>{{ UserCountries.getLabel(user.country, '—') }}</div>
     </div>
   </fieldset>
 </section>

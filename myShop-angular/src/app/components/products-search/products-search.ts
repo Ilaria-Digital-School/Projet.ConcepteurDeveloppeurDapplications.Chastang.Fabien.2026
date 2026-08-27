@@ -4,8 +4,8 @@ import { ProductCard } from '../product-card/product-card';
 import { ProductService } from '../../services/product-service';
 import { Router } from '@angular/router';
 import { map, Subject } from 'rxjs';
-import { Types } from '../../constants/product-types';
-import { Categories } from '../../constants/product-categories';
+import { ProductTypes } from '../../constants/product-types';
+import { ProductCategories } from '../../constants/product-categories';
 
 @Component({
   selector: 'app-products-search',
@@ -15,8 +15,8 @@ import { Categories } from '../../constants/product-categories';
 })
 export class ProductsSearch {
   // Constants
-  public Types = Types;
-  public Categories = Categories;
+  public ProductTypes = ProductTypes;
+  public ProductCategories = ProductCategories;
 
   // To retrieve DOM elements
   @ViewChild('nameProducts') nameProducts!: ElementRef<HTMLInputElement>;

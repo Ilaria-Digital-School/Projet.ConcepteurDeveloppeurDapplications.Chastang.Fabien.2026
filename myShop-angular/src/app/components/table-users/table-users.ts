@@ -3,11 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { map, Subject } from 'rxjs';
 import { UserService } from '../../services/user-service';
-import { Genders } from '../../constants/user-genders';
-import { Countries } from '../../constants/user-countries';
-import { Roles } from '../../constants/user-roles';
+import { UserGenders } from '../../constants/user-genders';
+import { UserCountries } from '../../constants/user-countries';
+import { UserRoles } from '../../constants/user-roles';
 import { User } from '../../models/user';
-import { ItemShort, SortParams } from '../../constants/global/types';
+import { ItemCstShort, SortParams } from '../../constants/global/types';
 
 @Component({
   selector: 'app-table-users',
@@ -23,9 +23,9 @@ export class TableUsers {
   @ViewChild('sortRole') sortRole!: ElementRef<HTMLElement>;
 
   // Constants
-  public Genders = Genders;
-  public Countries = Countries;
-  public Roles = Roles;
+  public UserGenders = UserGenders;
+  public UserCountries = UserCountries;
+  public UserRoles = UserRoles;
 
   // Native classes / Application services
   private router = inject(Router);
@@ -35,7 +35,7 @@ export class TableUsers {
   private static msgDelUser: string = 'Êtes-vous sûr de vouloir supprimer cet utilisateur ?';
 
   // Class properties
-  roles!: ItemShort[];
+  roles!: ItemCstShort[];
   users: User[] = [];
   filteredItems: User[] = [];
   filteredText: User[] = [];
@@ -59,7 +59,7 @@ export class TableUsers {
     ];
 
     // Sort the roles
-    this.roles = Roles.list.sort((r1: ItemShort, r2: ItemShort) => r1.value - r2.value);
+    this.roles = UserRoles.list.sort((r1: ItemCstShort, r2: ItemCstShort) => r1.value - r2.value);
 
     // Load all users
     this.load();

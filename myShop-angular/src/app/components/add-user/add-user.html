@@ -120,7 +120,7 @@
       <div class="field-container">
         <div class="field-label" aria-label="Genre">Genre&nbsp;:</div>
         <div>
-          @for (gender of Genders.list; track gender.value; let i = $index) {
+          @for (gender of UserGenders.list; track gender.value; let i = $index) {
             <div class="field">
               <input
                 type="radio"
@@ -129,7 +129,7 @@
                 [value]="gender.value"
               />
               <label [for]="gender.id">
-                {{ Genders.getLabel(gender.value, 'Je le garde pour moi') }}
+                {{ UserGenders.getLabel(gender.value, 'Je le garde pour moi') }}
               </label>
             </div>
           }
@@ -139,7 +139,7 @@
       <div class="field-container">
         <div class="field-label" aria-label="Intérêts">Centres d'ntérêts&nbsp;:</div>
         <div>
-          @for (interest of Interests.list; track interest.value; let i = $index) {
+          @for (interest of UserInterests.list; track interest.value; let i = $index) {
             <div class="field">
               <input
                 type="checkbox"
@@ -156,7 +156,7 @@
       <div>
         <label for="country">Pays&nbsp;:</label>
         <select id="country" formControlName="country" autocomplete="off">
-          @for (country of Countries.list; track country.value; let i = $index) {
+          @for (country of UserCountries.list; track country.value; let i = $index) {
             <option [value]="country.value">{{ country.label }}</option>
           }
         </select>

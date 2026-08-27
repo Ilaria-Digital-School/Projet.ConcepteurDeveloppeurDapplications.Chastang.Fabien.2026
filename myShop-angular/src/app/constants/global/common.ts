@@ -59,29 +59,29 @@ export class Common {
         func = () => randChar(33, 94);
     }
 
-    let ID = '';
+    let randStr = '';
     let addChrLen = additionalChars.length;
 
     if (addChrLen > 0) {
       for (let i = 0; i < length; i++) {
         let choice = Math.floor((interval + addChrLen) * Math.random());
         if (choice < interval) {
-          ID += func();
+          randStr += func();
         } else {
           let rank = Math.floor(addChrLen * Math.random());
-          ID += additionalChars[rank];
+          randStr += additionalChars[rank];
         }
       }
     } else {
-      for (let i = 0; i < length; i++) ID += func();
+      for (let i = 0; i < length; i++) randStr += func();
     }
 
-    return ID;
+    return randStr;
   }
 
-  // Returns an 11-character alphanumeric identifier
+  // Returns an 10-character alphanumeric identifier
   static getID() {
-    return this.randomString(11);
+    return this.randomString(10);
   }
 
   // Returns the reference of a product

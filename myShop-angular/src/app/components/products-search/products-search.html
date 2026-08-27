@@ -16,8 +16,8 @@
     (change)="selectTypeItems($event.target)"
   >
     <option value="-1" selected>– Tous –</option>
-    @for (type of Types.list; track type.value; let i = $index) {
-      <option [value]="type.value">{{ Types.getLabel(type.value, 'Non précisé') }}</option>
+    @for (type of ProductTypes.list; track type.value; let i = $index) {
+      <option [value]="type.value">{{ ProductTypes.getLabel(type.value, 'Non précisé') }}</option>
     }
   </select>
   <select
@@ -27,8 +27,8 @@
     (change)="selectCategoryItems($event.target)"
   >
     <option value="-1" selected>– Tous –</option>
-    @for (category of Categories.list; track category.value; let i = $index) {
-      <option [value]="category.value">{{ Categories.getLabel(category.value, 'Non précisé') }}</option>
+    @for (category of ProductCategories.list; track category.value; let i = $index) {
+      <option [value]="category.value">{{ ProductCategories.getLabel(category.value, 'Non précisé') }}</option>
     }
   </select>
   <div class="product-container">

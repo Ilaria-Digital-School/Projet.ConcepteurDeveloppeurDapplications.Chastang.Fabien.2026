@@ -1,8 +1,8 @@
 import { Common } from '../constants/global/common';
-import { Genders } from '../constants/user-genders';
-import { Interests } from '../constants/user-interests';
-import { Countries } from '../constants/user-countries';
-import { Roles } from '../constants/user-roles';
+import { UserGenders } from '../constants/user-genders';
+import { UserInterests } from '../constants/user-interests';
+import { UserCountries } from '../constants/user-countries';
+import { UserRoles } from '../constants/user-roles';
 
 // User class
 export class User {
@@ -11,10 +11,10 @@ export class User {
   name: string = '';
   email: string = '';
   pswd: string = '';
-  gender: number = Genders.other.value;
+  gender: number = UserGenders.other.value;
   interests: number[] = [];
-  country: number = Countries.other.value;
-  role: number = Roles.other.value;
+  country: number = UserCountries.other.value;
+  role: number = UserRoles.other.value;
   visible: boolean = true;
 
   // Temporary property, not saved
@@ -32,17 +32,17 @@ export class User {
     if (typeof email === 'string') this.email = email;
     if (typeof pswd === 'string') this.pswd = pswd;
     if (typeof gender === 'number') {
-      const GENDER: any = Genders.list.find((item: any) => item.value === gender);
-      this.gender = GENDER ? GENDER.value : Genders.other.value;
+      const GENDER: any = UserGenders.list.find((item: any) => item.value === gender);
+      this.gender = GENDER ? GENDER.value : UserGenders.other.value;
     }
     if (Array.isArray(interests)) {
-      this.interests = Interests.list
+      this.interests = UserInterests.list
         .filter((item: any) => interests.includes(item.value))
         .map((item: any) => item.value);
     }
     if (typeof country === 'number') {
-      const COUNTRY: any = Countries.list.find((item: any) => item.value === country);
-      this.country = COUNTRY ? COUNTRY.value : Countries.other.value;
+      const COUNTRY: any = UserCountries.list.find((item: any) => item.value === country);
+      this.country = COUNTRY ? COUNTRY.value : UserCountries.other.value;
     }
   }
 

@@ -10,12 +10,12 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user-service';
 import { EnumInterests } from '../../enums/user-interests';
-import { Interests } from '../../constants/user-interests';
-import { Countries } from '../../constants/user-countries';
+import { UserInterests } from '../../constants/user-interests';
+import { UserCountries } from '../../constants/user-countries';
+import { UserGenders } from '../../constants/user-genders';
+import { ItemCst } from '../../constants/global/types';
 import { User } from '../../models/user';
 import { Tooltip } from '../tooltip/tooltip';
-import { Genders } from '../../constants/user-genders';
-import { ItemConst } from '../../constants/global/types';
 // import { JsonPipe } from '@angular/common';
 
 // Custom validators for the entire form //////////////////////////////////////
@@ -43,9 +43,9 @@ obligatoires.
 })
 export class AddUser {
   // Constants
-  public Genders = Genders;
-  public Interests = Interests;
-  public Countries = Countries;
+  public UserGenders = UserGenders;
+  public UserInterests = UserInterests;
+  public UserCountries = UserCountries;
 
   // Native classes / Application services
   private formBuilder = inject(FormBuilder);
@@ -236,8 +236,8 @@ export class AddUser {
         USER.gender = GENDER;
       }
       if (
-        Interests.list.some(
-          (item: ItemConst) =>
+        UserInterests.list.some(
+          (item: ItemCst) =>
             this.userIni.interests.includes(item.value) !== INTERESTS.includes(item.value),
         )
       ) {
