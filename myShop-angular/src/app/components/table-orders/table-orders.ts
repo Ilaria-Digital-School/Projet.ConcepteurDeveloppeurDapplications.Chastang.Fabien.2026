@@ -2,13 +2,13 @@ import { DatePipe } from '@angular/common';
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { map, Subject } from 'rxjs';
+import { Common } from '../../constants/global/common';
+import { OrderExt, SortParams, SortElement, SortArrays } from '../../constants/global/types';
+import { OrderStatus } from '../../constants/order-status';
 import { UserService } from '../../services/user-service';
 import { OrderService } from '../../services/order-service';
-import { User } from '../../models/user';
 import { Order } from '../../models/order';
-import { Common } from '../../constants/global/common';
-import { OrderStatus } from '../../constants/order-status';
-import { SortParams, OrderExt } from '../../constants/global/types';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-table-orders',
@@ -40,18 +40,13 @@ export class TableOrders {
   searchByEmailSubject: Subject<string> = new Subject<string>();
   searchByRefSubject: Subject<string> = new Subject<string>();
   selectedStatus: number = -1;
-  sortColumns!: SortParams[];
+  // Used for sorting
+  sortElements!: SortElement[];
+  sortParams!: SortParams[];
 
   // Initialize ///////////////////////////////////////////////////////////////
 
   ngOnInit() {
-    // Initialize the array that handles the sorting
-    this.sortColumns = [
-      { col: 'email', sort: false, up: true },
-      { col: 'date', sort: true, up: false },
-      { col: 'status', sort: false, up: true },
-    ];
-
     // Load data
     this.load();
 
@@ -92,6 +87,22 @@ export class TableOrders {
         );
         this.filterByStatus(); // Filter by order status
       });
+  }
+
+  // Initialize the arrays that handles the sorting
+  ngAfterViewInit() {
+    // Defines the sorting elements (all fixed attributes)
+    this.sortElements = [
+      { col: 'email', up: true, func: this.sortByEmail, HTMLCol: this.sortEmail.nativeElement },
+      { col: 'date', up: false, func: this.sortByDate, HTMLCol: this.sortDate.nativeElement },
+      { col: 'status', up: true, func: this.sortByStatus, HTMLCol: this.sortStatus.nativeElement },
+    ];
+    // Varies according to the sort order (variable attributes: 'sort' and 'up')
+    this.sortParams = [
+      { col: 'email', sort: false, up: true },
+      { col: 'date', sort: true, up: false },
+      { col: 'status', sort: false, up: true },
+    ];
   }
 
   // Load and filter //////////////////////////////////////////////////////////
@@ -163,88 +174,20 @@ export class TableOrders {
 
   // Sort /////////////////////////////////////////////////////////////////////
 
+  // Sort all arrays
   sort(column: string) {
-    const SORT = this.sortColumns.find((item: SortParams) => item.sort);
-    if (SORT !== undefined) {
-      switch (column) {
-        case 'email':
-          // Sort users by email
-          if (SORT.col === column) {
-            SORT.up = !SORT.up;
-            this.ordersUsers = this.sortByEmail(this.ordersUsers, SORT.up);
-            this.filteredByEmail = this.sortByEmail(this.filteredByEmail, SORT.up);
-            this.filteredByRef = this.sortByEmail(this.filteredByRef, SORT.up);
-            this.filteredText = this.sortByEmail(this.filteredText, SORT.up);
-            this.filteredItems = this.sortByEmail(this.filteredItems, SORT.up);
-            if (SORT.up) {
-              this.sortEmail.nativeElement.classList.replace('fa-caret-down', 'fa-caret-up');
-            } else {
-              this.sortEmail.nativeElement.classList.replace('fa-caret-up', 'fa-caret-down');
-            }
-          } else {
-            this.initSort(SORT, column);
-            this.ordersUsers = this.sortByEmail(this.ordersUsers, true);
-            this.filteredByEmail = this.sortByEmail(this.filteredByEmail, true);
-            this.filteredByRef = this.sortByEmail(this.filteredByRef, true);
-            this.filteredText = this.sortByEmail(this.filteredText, true);
-            this.filteredItems = this.sortByEmail(this.filteredItems, true);
-            this.sortEmail.nativeElement.classList.remove('hidden');
-            this.sortEmail.nativeElement.classList.replace('fa-caret-down', 'fa-caret-up');
-          }
-          break;
-
-        case 'status':
-          // Sort orders by status
-          if (SORT.col === column) {
-            SORT.up = !SORT.up;
-            this.ordersUsers = this.sortByStatus(this.ordersUsers, SORT.up);
-            this.filteredByEmail = this.sortByStatus(this.filteredByEmail, SORT.up);
-            this.filteredByRef = this.sortByStatus(this.filteredByRef, SORT.up);
-            this.filteredText = this.sortByStatus(this.filteredText, SORT.up);
-            this.filteredItems = this.sortByStatus(this.filteredItems, SORT.up);
-            if (SORT.up) {
-              this.sortStatus.nativeElement.classList.replace('fa-caret-down', 'fa-caret-up');
-            } else {
-              this.sortStatus.nativeElement.classList.replace('fa-caret-up', 'fa-caret-down');
-            }
-          } else {
-            this.initSort(SORT, column);
-            this.ordersUsers = this.sortByStatus(this.ordersUsers, true);
-            this.filteredByEmail = this.sortByStatus(this.filteredByEmail, true);
-            this.filteredByRef = this.sortByStatus(this.filteredByRef, true);
-            this.filteredText = this.sortByStatus(this.filteredText, true);
-            this.filteredItems = this.sortByStatus(this.filteredItems, true);
-            this.sortStatus.nativeElement.classList.remove('hidden');
-            this.sortStatus.nativeElement.classList.replace('fa-caret-down', 'fa-caret-up');
-          }
-          break;
-
-        default:
-          // Sort orders by date
-          if (SORT.col === column) {
-            SORT.up = !SORT.up;
-            this.ordersUsers = this.sortByDate(this.ordersUsers, SORT.up);
-            this.filteredByEmail = this.sortByDate(this.filteredByEmail, SORT.up);
-            this.filteredByRef = this.sortByDate(this.filteredByRef, SORT.up);
-            this.filteredText = this.sortByDate(this.filteredText, SORT.up);
-            this.filteredItems = this.sortByDate(this.filteredItems, SORT.up);
-            if (SORT.up) {
-              this.sortDate.nativeElement.classList.replace('fa-caret-down', 'fa-caret-up');
-            } else {
-              this.sortDate.nativeElement.classList.replace('fa-caret-up', 'fa-caret-down');
-            }
-          } else {
-            this.initSort(SORT, column, false);
-            this.ordersUsers = this.sortByDate(this.ordersUsers, false);
-            this.filteredByEmail = this.sortByDate(this.filteredByEmail, false);
-            this.filteredByRef = this.sortByDate(this.filteredByRef, false);
-            this.filteredText = this.sortByDate(this.filteredText, false);
-            this.filteredItems = this.sortByDate(this.filteredItems, false);
-            this.sortDate.nativeElement.classList.remove('hidden');
-            this.sortDate.nativeElement.classList.replace('fa-caret-up', 'fa-caret-down');
-          }
-      }
-    }
+    Common.sort(
+      [
+        this.ordersUsers,
+        this.filteredByEmail,
+        this.filteredByRef,
+        this.filteredText,
+        this.filteredItems,
+      ],
+      this.sortElements,
+      this.sortParams,
+      column,
+    );
   }
 
   // Sort orders by date (default)
@@ -289,27 +232,6 @@ export class TableOrders {
         const COMPARE = item2.order.status - item1.order.status;
         return COMPARE === 0 ? item2.order.date - item1.order.date : COMPARE;
       });
-    }
-  }
-
-  // Initialise the sort when the column changes
-  initSort(sorted: SortParams, column: string, up: boolean = true) {
-    sorted.sort = false;
-    switch (sorted.col) {
-      case 'email':
-        this.sortEmail.nativeElement.classList.add('hidden');
-        break;
-      case 'status':
-        this.sortStatus.nativeElement.classList.add('hidden');
-        break;
-      default:
-        this.sortDate.nativeElement.classList.add('hidden');
-    }
-
-    const TO_SORT = this.sortColumns.find((item: SortParams) => item.col === column);
-    if (TO_SORT) {
-      TO_SORT.sort = true;
-      TO_SORT.up = up;
     }
   }
 }

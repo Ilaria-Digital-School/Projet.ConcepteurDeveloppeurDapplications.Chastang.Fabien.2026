@@ -1,10 +1,10 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Product } from '../../models/product';
-import { ProductService } from '../../services/product-service';
 import { Common } from '../../constants/global/common';
+import { SortArrays, SortElement, SortParams } from '../../constants/global/types';
+import { ProductService } from '../../services/product-service';
+import { Product } from '../../models/product';
 import { map, Subject } from 'rxjs';
-import { SortParams } from '../../constants/global/types';
 
 @Component({
   selector: 'app-table-products',
@@ -38,18 +38,13 @@ export class TableProducts {
   searchByNameSubject: Subject<string> = new Subject<string>();
   searchByRefSubject: Subject<string> = new Subject<string>();
   selectedStock: number = -1;
-  sortColumns!: SortParams[];
+  // Used for sorting
+  sortElements!: SortElement[];
+  sortParams!: SortParams[];
 
   // Initialization //////////////////////////////////////////////////////
 
   ngOnInit() {
-    // Initialize the array that handles the sorting
-    this.sortColumns = [
-      { col: 'name', sort: true, up: true },
-      { col: 'price', sort: false, up: true },
-      { col: 'stock', sort: false, up: true },
-    ];
-
     // Load all products
     this.load();
 
@@ -90,6 +85,22 @@ export class TableProducts {
         );
         this.filterByStock(); // Filter by product stock
       });
+  }
+
+  // Initialize the arrays that handles the sorting
+  ngAfterViewInit() {
+    // Defines the sorting elements (all fixed attributes)
+    this.sortElements = [
+      { col: 'name', up: true, func: this.sortByName, HTMLCol: this.sortName.nativeElement },
+      { col: 'price', up: true, func: this.sortByPrice, HTMLCol: this.sortPrice.nativeElement },
+      { col: 'stock', up: true, func: this.sortByStock, HTMLCol: this.sortStock.nativeElement },
+    ];
+    // Varies according to the sort order (variable attributes: 'sort' and 'up')
+    this.sortParams = [
+      { col: 'name', sort: true, up: true },
+      { col: 'price', sort: false, up: true },
+      { col: 'stock', sort: false, up: true },
+    ];
   }
 
   // Load and filter //////////////////////////////////////////////////////////
@@ -150,88 +161,20 @@ export class TableProducts {
 
   // Sort /////////////////////////////////////////////////////////////////////
 
+  // Sort all arrays
   sort(column: string) {
-    const SORT = this.sortColumns.find((item: SortParams) => item.sort);
-    if (SORT) {
-      switch (column) {
-        case 'price':
-          // Sort products by name
-          if (SORT.col === column) {
-            SORT.up = !SORT.up;
-            this.products = this.sortByPrice(this.products, SORT.up);
-            this.filteredByName = this.sortByPrice(this.filteredByName, SORT.up);
-            this.filteredByRef = this.sortByPrice(this.filteredByRef, SORT.up);
-            this.filteredText = this.sortByPrice(this.filteredText, SORT.up);
-            this.filteredItems = this.sortByPrice(this.filteredItems, SORT.up);
-            if (SORT.up) {
-              this.sortPrice.nativeElement.classList.replace('fa-caret-down', 'fa-caret-up');
-            } else {
-              this.sortPrice.nativeElement.classList.replace('fa-caret-up', 'fa-caret-down');
-            }
-          } else {
-            this.initSort(SORT, column);
-            this.products = this.sortByPrice(this.products, true);
-            this.filteredByName = this.sortByPrice(this.filteredByName, true);
-            this.filteredByRef = this.sortByPrice(this.filteredByRef, true);
-            this.filteredText = this.sortByPrice(this.filteredText, true);
-            this.filteredItems = this.sortByPrice(this.filteredItems, true);
-            this.sortPrice.nativeElement.classList.remove('hidden');
-            this.sortPrice.nativeElement.classList.replace('fa-caret-down', 'fa-caret-up');
-          }
-          break;
-
-        case 'stock':
-          // Sort products by stock
-          if (SORT.col === column) {
-            SORT.up = !SORT.up;
-            this.products = this.sortByStock(this.products, SORT.up);
-            this.filteredByName = this.sortByStock(this.filteredByName, SORT.up);
-            this.filteredByRef = this.sortByStock(this.filteredByRef, SORT.up);
-            this.filteredText = this.sortByStock(this.filteredText, SORT.up);
-            this.filteredItems = this.sortByStock(this.filteredItems, SORT.up);
-            if (SORT.up) {
-              this.sortStock.nativeElement.classList.replace('fa-caret-down', 'fa-caret-up');
-            } else {
-              this.sortStock.nativeElement.classList.replace('fa-caret-up', 'fa-caret-down');
-            }
-          } else {
-            this.initSort(SORT, column);
-            this.products = this.sortByStock(this.products, true);
-            this.filteredByName = this.sortByStock(this.filteredByName, true);
-            this.filteredByRef = this.sortByStock(this.filteredByRef, true);
-            this.filteredText = this.sortByStock(this.filteredText, true);
-            this.filteredItems = this.sortByStock(this.filteredItems, true);
-            this.sortStock.nativeElement.classList.remove('hidden');
-            this.sortStock.nativeElement.classList.replace('fa-caret-down', 'fa-caret-up');
-          }
-          break;
-
-        default:
-          // Sort products by name
-          if (SORT.col === column) {
-            SORT.up = !SORT.up;
-            this.products = this.sortByName(this.products, SORT.up);
-            this.filteredByName = this.sortByName(this.filteredByName, SORT.up);
-            this.filteredByRef = this.sortByName(this.filteredByRef, SORT.up);
-            this.filteredText = this.sortByName(this.filteredText, SORT.up);
-            this.filteredItems = this.sortByName(this.filteredItems, SORT.up);
-            if (SORT.up) {
-              this.sortName.nativeElement.classList.replace('fa-caret-down', 'fa-caret-up');
-            } else {
-              this.sortName.nativeElement.classList.replace('fa-caret-up', 'fa-caret-down');
-            }
-          } else {
-            this.initSort(SORT, column);
-            this.products = this.sortByName(this.products, true);
-            this.filteredByName = this.sortByName(this.filteredByName, true);
-            this.filteredByRef = this.sortByName(this.filteredByRef, true);
-            this.filteredText = this.sortByName(this.filteredText, true);
-            this.filteredItems = this.sortByName(this.filteredItems, true);
-            this.sortName.nativeElement.classList.remove('hidden');
-            this.sortName.nativeElement.classList.replace('fa-caret-down', 'fa-caret-up');
-          }
-      }
-    }
+    Common.sort(
+      [
+        this.products,
+        this.filteredByName,
+        this.filteredByRef,
+        this.filteredText,
+        this.filteredItems,
+      ],
+      this.sortElements,
+      this.sortParams,
+      column,
+    );
   }
 
   // Sort products by name (default)
@@ -274,27 +217,6 @@ export class TableProducts {
           (typeof item1.stock === 'number' ? item1.stock : 0);
         return COMPARE === 0 ? item2.name.localeCompare(item1.name) : COMPARE;
       });
-    }
-  }
-
-  // Initialise the sort when the column changes
-  initSort(sorted: SortParams, column: string, up: boolean = true) {
-    sorted.sort = false;
-    switch (sorted.col) {
-      case 'price':
-        this.sortPrice.nativeElement.classList.add('hidden');
-        break;
-      case 'stock':
-        this.sortStock.nativeElement.classList.add('hidden');
-        break;
-      default:
-        this.sortName.nativeElement.classList.add('hidden');
-    }
-
-    const TO_SORT = this.sortColumns.find((item: SortParams) => item.col === column);
-    if (TO_SORT) {
-      TO_SORT.sort = true;
-      TO_SORT.up = up;
     }
   }
 

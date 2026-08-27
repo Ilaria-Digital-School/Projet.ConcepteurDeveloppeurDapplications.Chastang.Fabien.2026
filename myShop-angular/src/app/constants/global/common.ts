@@ -1,4 +1,8 @@
+import { SortArrays, SortElement, SortParams } from './types';
+
 export class Common {
+  // Pseudorandom string generation functions /////////////////////////////////
+
   // Returns a random string of characters
   // 'type' parameter:
   //    1 == Uppercase letters only
@@ -86,7 +90,7 @@ export class Common {
 
   // Returns the reference of a product
   static getProductRef() {
-    const DIGITS = ['0','1','2','3','4','5','6','7','8','9'];
+    const DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     let reference = '';
     for (let i = 0; i < 2; i++) reference += this.randomString(6, 1, DIGITS) + '-';
     return reference.slice(0, -1);
@@ -94,17 +98,19 @@ export class Common {
 
   // Returns the reference of a product
   static getUserRef() {
-    const DIGITS = ['0','1','2','3','4','5','6','7','8','9'];
+    const DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     return this.randomString(10, 1, DIGITS);
   }
 
   // Returns the reference of an order
   static getOrderRef() {
-    const DIGITS = ['0','1','2','3','4','5','6','7','8','9'];
+    const DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     let reference = '';
     for (let i = 0; i < 5; i++) reference += this.randomString(4, 1, DIGITS) + '-';
     return reference.slice(0, -1);
   }
+
+  // String-to-number and number-to-string conversion functions ///////////////
 
   // Converts a string to a number by using the current or specified locale settings
   static stringToNumber(value: string, locale: string = 'fr-FR') {
@@ -123,5 +129,63 @@ export class Common {
     const POWER10 = 10 ** numberDigits;
     const VALUE = Math.round(value * POWER10) / POWER10;
     return VALUE.toLocaleString(locale, { minimumFractionDigits: numberDigits });
+  }
+
+  // Sorting functions ////////////////////////////////////////////////////////
+  // Used by 'TableUsers', 'TableProducts' and 'TableOrders' component
+
+  private static handleArrow(HTMLCol: HTMLElement, up: boolean) {
+    if (up) {
+      HTMLCol.classList.replace('fa-caret-down', 'fa-caret-up');
+    } else {
+      HTMLCol.classList.replace('fa-caret-up', 'fa-caret-down');
+    }
+  }
+
+  static sort(
+    arrays: SortArrays,
+    sortElements: SortElement[],
+    sortParams: SortParams[],
+    column: string,
+  ) {
+    const SORT = sortParams.find((item: SortParams) => item.sort);
+    if (SORT !== undefined) {
+      for (const ITEM of sortElements)
+        if (ITEM.col === column) {
+          if (SORT.col === column) {
+            // The column has not changed, only the sort order is reversed
+            SORT.up = !SORT.up;
+
+            // Sort all arrays
+            for (let array of arrays) array = ITEM.func(array, SORT.up);
+
+            // Reverse the arrow
+            this.handleArrow(ITEM.HTMLCol, SORT.up);
+          } else {
+            // Initialize the new sort when the column has changed
+            const TO_SORT = sortParams.find((item: SortParams) => item.col === column);
+            if (TO_SORT) {
+              TO_SORT.sort = true;
+              TO_SORT.up = ITEM.up;
+            }
+
+            // Sort all arrays
+            for (let array of arrays) array = ITEM.func(array, ITEM.up);
+
+            // Hide the previous sort arrow
+            SORT.sort = false;
+            for (const ITEM2 of sortElements)
+              if (ITEM2.col === SORT.col) {
+                ITEM2.HTMLCol.classList.add('hidden');
+                break;
+              }
+
+            // Show the new sort arrow
+            ITEM.HTMLCol.classList.remove('hidden');
+            this.handleArrow(ITEM.HTMLCol, ITEM.up);
+          }
+          break;
+        }
+    }
   }
 }
