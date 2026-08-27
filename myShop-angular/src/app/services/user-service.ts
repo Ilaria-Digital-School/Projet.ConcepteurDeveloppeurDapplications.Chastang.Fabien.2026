@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
+import { UserLogin } from '../constants/global/types';
 
 @Injectable({
   providedIn: 'root',
@@ -40,7 +41,7 @@ export class UserService {
     return this.httpClient.delete<User>(`${this.userURL}/${id}`);
   }
 
-  login(data: { email: string; pswd: string }): Observable<User[]> {
+  login(data: UserLogin): Observable<User[]> {
     return this.httpClient.get<User[]>(`${this.userURL}?email=${data.email}&pswd=${data.pswd}`);
 
     // // IMPORTANT: method to use with a real backend

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { EnumRoles } from '../../enums/user-roles';
 import { UserService } from '../../services/user-service';
 import { User } from '../../models/user';
+import { UserLogin } from '../../constants/global/types';
 import { Tooltip } from '../tooltip/tooltip';
 
 @Component({
@@ -48,7 +49,7 @@ export class Login {
   // Login method
   login() {
     const FORM_VAL = this.loginForm.value;
-    const DATA = {
+    const DATA: UserLogin = {
       email: FORM_VAL.userEmail,
       pswd: FORM_VAL.pswd,
     };
