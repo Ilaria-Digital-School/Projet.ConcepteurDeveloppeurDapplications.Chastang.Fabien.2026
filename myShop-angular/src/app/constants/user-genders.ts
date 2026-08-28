@@ -1,5 +1,5 @@
 import { EnumGenders } from '../enums/user-genders';
-import { ItemCst } from "./global/types";
+import { ItemCst } from "../types/items";
 
 // User's gender class
 export class UserGenders {

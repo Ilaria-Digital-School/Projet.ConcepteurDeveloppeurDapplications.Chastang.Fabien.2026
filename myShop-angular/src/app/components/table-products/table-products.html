@@ -55,7 +55,7 @@
         </tr>
       </thead>
       <tbody class="table-group-divider">
-        @for (product of filteredItems; track product.id; let i = $index) {
+        @for (product of dashboardArrays.filteredItems; track product.id; let i = $index) {
           <tr [class]="product.stock === 0 ? 'unavailable-row' : ''">
             <th scope="row">{{ i + 1 }}</th>
             <td>

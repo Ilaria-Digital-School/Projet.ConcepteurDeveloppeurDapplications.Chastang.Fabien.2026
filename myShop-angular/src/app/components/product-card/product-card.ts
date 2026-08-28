@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Product } from '../../models/product';
-import { Common } from '../../constants/global/common';
+import { Common } from '../../constants/common';
 
 @Component({
   selector: 'app-product-card',

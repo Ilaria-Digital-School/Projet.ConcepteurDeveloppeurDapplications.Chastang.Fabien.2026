@@ -1,5 +1,5 @@
 import { EnumCategories } from '../enums/product-categories';
-import { ItemCst } from './global/types';
+import { ItemCst } from '../types/items';
 
 // User's category class
 export class ProductCategories {

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { EnumRoles } from '../../enums/user-roles';
 import { UserService } from '../../services/user-service';
 import { User } from '../../models/user';
-import { UserLogin } from '../../constants/global/types';
+import { UserLogin } from '../../types/common';
 import { Tooltip } from '../tooltip/tooltip';
 
 @Component({

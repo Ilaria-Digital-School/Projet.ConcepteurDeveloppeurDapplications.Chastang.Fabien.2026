@@ -1,4 +1,4 @@
-import { Common } from '../constants/global/common';
+import { Common } from '../constants/common';
 import { UserGenders } from '../constants/user-genders';
 import { UserInterests } from '../constants/user-interests';
 import { UserCountries } from '../constants/user-countries';

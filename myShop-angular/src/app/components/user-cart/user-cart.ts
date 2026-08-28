@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart-service';
 import { AuthService } from '../../services/auth-service';
-import { Common } from '../../constants/global/common';
+import { Common } from '../../constants/common';
 import { Cart } from '../../models/cart';
 import { Product } from '../../models/product';
 import { User } from '../../models/user';

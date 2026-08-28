@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product-service';
 import { CartService } from '../../services/cart-service';
 import { Product } from '../../models/product';
-import { Common } from '../../constants/global/common';
-import { FullDesc } from '../../constants/global/types';
+import { Common } from '../../constants/common';
+import { FullDesc } from '../../types/common';
 
 @Component({
   selector: 'app-product-view',

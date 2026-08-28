@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Category } from '../../constants/global/types';
+import { Category } from '../../types/common';
 import { CategoryCard } from '../category-card/category-card';
 
 @Component({

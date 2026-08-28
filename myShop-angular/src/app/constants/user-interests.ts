@@ -1,5 +1,5 @@
 import { EnumInterests } from '../enums/user-interests';
-import { ItemCst } from "./global/types";
+import { ItemCst } from "../types/items";
 
 // User's interests class
 export class UserInterests {

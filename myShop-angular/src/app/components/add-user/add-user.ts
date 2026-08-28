@@ -13,7 +13,7 @@ import { EnumInterests } from '../../enums/user-interests';
 import { UserInterests } from '../../constants/user-interests';
 import { UserCountries } from '../../constants/user-countries';
 import { UserGenders } from '../../constants/user-genders';
-import { ItemCst } from '../../constants/global/types';
+import { ItemCst } from '../../types/items';
 import { User } from '../../models/user';
 import { Tooltip } from '../tooltip/tooltip';
 // import { JsonPipe } from '@angular/common';

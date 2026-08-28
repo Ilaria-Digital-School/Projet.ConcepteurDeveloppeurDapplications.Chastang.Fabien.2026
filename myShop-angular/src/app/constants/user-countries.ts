@@ -1,4 +1,4 @@
-import { ItemCstShort } from './global/types';
+import { ItemCstShort } from '../types/items';
 
 // User's country class
 export class UserCountries {

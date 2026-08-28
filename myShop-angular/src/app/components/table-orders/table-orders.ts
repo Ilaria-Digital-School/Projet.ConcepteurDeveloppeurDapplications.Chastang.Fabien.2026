@@ -2,8 +2,10 @@ import { DatePipe } from '@angular/common';
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { map, Subject } from 'rxjs';
-import { Common } from '../../constants/global/common';
-import { OrderExt, SortElement, SortVariables } from '../../constants/global/types';
+import { Common } from '../../constants/common';
+import { OrderExt } from '../../types/common';
+import { Dashboard } from '../../constants/dashboard';
+import { DashboardArrays, SortElement, SortVariables } from '../../types/dashboard';
 import { OrderStatus } from '../../constants/order-status';
 import { UserService } from '../../services/user-service';
 import { OrderService } from '../../services/order-service';
@@ -32,16 +34,12 @@ export class TableOrders {
   private orderService = inject(OrderService);
 
   // Class properties
-  ordersUsers: OrderExt[] = [];
-  filteredText: OrderExt[] = [];
-  filteredItems: OrderExt[] = [];
-  filteredByEmail: OrderExt[] = [];
-  filteredByRef: OrderExt[] = [];
+  dashboardArrays: DashboardArrays<OrderExt> = new DashboardArrays<OrderExt>();
   searchByEmailSubject: Subject<string> = new Subject<string>();
   searchByRefSubject: Subject<string> = new Subject<string>();
   selectedStatus: number = -1;
   // Used for sorting
-  sortElements!: SortElement[];
+  sortElements!: SortElement<OrderExt>[];
   sortVariables!: SortVariables[];
 
   // Initialize ///////////////////////////////////////////////////////////////
@@ -55,16 +53,18 @@ export class TableOrders {
       .pipe(
         map((email: string) => {
           const EMAIL = email.toLocaleLowerCase();
-          return this.ordersUsers.filter(
+          return this.dashboardArrays.unfiltered.filter(
             (orderExt: OrderExt) => orderExt.user?.email.toLowerCase().indexOf(EMAIL) === 0,
           );
         }),
       )
       .subscribe((res: OrderExt[]) => {
-        this.filteredByEmail = res;
-        this.filteredText = res.filter((orderExt: OrderExt) =>
+        this.dashboardArrays.filteredByText = res;
+        this.dashboardArrays.filteredText = res.filter((orderExt: OrderExt) =>
           // Filter by order reference
-          this.filteredByRef.some((item: OrderExt) => item.order.id === orderExt.order.id),
+          this.dashboardArrays.filteredByRef.some(
+            (item: OrderExt) => item.order.id === orderExt.order.id,
+          ),
         );
         this.filterByStatus(); // Filter by order status
       });
@@ -74,22 +74,24 @@ export class TableOrders {
       .pipe(
         map((reference: string) => {
           const REFERENCE = reference.toLocaleUpperCase();
-          return this.ordersUsers.filter(
+          return this.dashboardArrays.unfiltered.filter(
             (orderExt: OrderExt) => orderExt.order.reference.indexOf(REFERENCE) === 0,
           );
         }),
       )
       .subscribe((res: OrderExt[]) => {
-        this.filteredByRef = res;
-        this.filteredText = res.filter((orderExt: OrderExt) =>
+        this.dashboardArrays.filteredByRef = res;
+        this.dashboardArrays.filteredText = res.filter((orderExt: OrderExt) =>
           // Filter by user email
-          this.filteredByEmail.some((item: OrderExt) => item.order.id === orderExt.order.id),
+          this.dashboardArrays.filteredByText.some(
+            (item: OrderExt) => item.order.id === orderExt.order.id,
+          ),
         );
         this.filterByStatus(); // Filter by order status
       });
   }
 
-  // Initialize the arrays that handle the sorting
+  // Initialize the dashboardArrays that handle the sorting
   ngAfterViewInit() {
     // Defines the sorting elements: here, all attributes are fixed
     this.sortElements = [
@@ -126,15 +128,15 @@ export class TableOrders {
     this.userService.getAllUsers().subscribe({
       next: (res: User[]) => {
         // All orders associate with their users
-        this.ordersUsers = orders
+        this.dashboardArrays.unfiltered = orders
           .map((order: Order) => {
             return { order: order, user: res.find((user: User) => user.id === order.userId) };
           })
           .sort((item1: OrderExt, item2: OrderExt) => item2.order.date - item1.order.date);
-        this.filteredByEmail = structuredClone(this.ordersUsers);
-        this.filteredByRef = structuredClone(this.ordersUsers);
-        this.filteredText = structuredClone(this.ordersUsers);
-        this.filteredItems = structuredClone(this.ordersUsers);
+        this.dashboardArrays.filteredByText = structuredClone(this.dashboardArrays.unfiltered);
+        this.dashboardArrays.filteredByRef = structuredClone(this.dashboardArrays.unfiltered);
+        this.dashboardArrays.filteredText = structuredClone(this.dashboardArrays.unfiltered);
+        this.dashboardArrays.filteredItems = structuredClone(this.dashboardArrays.unfiltered);
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
@@ -146,9 +148,9 @@ export class TableOrders {
   // Filter by order status
   filterByStatus() {
     if (this.selectedStatus === -1) {
-      this.filteredItems = this.filteredByEmail;
+      this.dashboardArrays.filteredItems = this.dashboardArrays.filteredByText;
     } else {
-      this.filteredItems = this.filteredByEmail.filter(
+      this.dashboardArrays.filteredItems = this.dashboardArrays.filteredByText.filter(
         (orderExt: OrderExt) => orderExt.order.status === this.selectedStatus,
       );
     }
@@ -174,20 +176,9 @@ export class TableOrders {
 
   // Sort /////////////////////////////////////////////////////////////////////
 
-  // Sort all arrays
+  // Sort all dashboardArrays
   sort(column: string) {
-    Common.sort(
-      [
-        this.ordersUsers,
-        this.filteredByEmail,
-        this.filteredByRef,
-        this.filteredText,
-        this.filteredItems,
-      ],
-      this.sortElements,
-      this.sortVariables,
-      column,
-    );
+    Dashboard.sort<OrderExt>(this.dashboardArrays, this.sortElements, this.sortVariables, column);
   }
 
   // Sort orders by date (default)

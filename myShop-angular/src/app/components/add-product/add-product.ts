@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../services/product-service';
 import { Product } from '../../models/product';
 import { Tooltip } from '../tooltip/tooltip';
-import { Common } from '../../constants/global/common';
+import { Common } from '../../constants/common';
 import { ProductTypes } from '../../constants/product-types';
 import { ProductCategories } from '../../constants/product-categories';
 

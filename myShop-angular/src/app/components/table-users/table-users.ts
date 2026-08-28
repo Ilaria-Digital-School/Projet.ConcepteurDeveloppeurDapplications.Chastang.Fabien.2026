@@ -2,8 +2,9 @@ import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { map, Subject } from 'rxjs';
-import { Common } from '../../constants/global/common';
-import { ItemCstShort, SortElement, SortVariables } from '../../constants/global/types';
+import { Dashboard } from '../../constants/dashboard';
+import { ItemCstShort } from '../../types/items';
+import { DashboardArrays, SortElement, SortVariables } from '../../types/dashboard';
 import { UserGenders } from '../../constants/user-genders';
 import { UserCountries } from '../../constants/user-countries';
 import { UserRoles } from '../../constants/user-roles';
@@ -37,17 +38,13 @@ export class TableUsers {
 
   // Class properties
   roles!: ItemCstShort[];
-  users: User[] = [];
-  filteredItems: User[] = [];
-  filteredText: User[] = [];
-  filteredByEmail: User[] = [];
-  filteredByRef: User[] = [];
+  dashboardArrays: DashboardArrays<User> = new DashboardArrays<User>();
   searchByEmailSubject: Subject<string> = new Subject<string>();
   searchByRefSubject: Subject<string> = new Subject<string>();
   selectedRole: number = -1;
   editUser!: User | null;
   // Used for sorting
-  sortElements!: SortElement[];
+  sortElements!: SortElement<User>[];
   sortVariables!: SortVariables[];
 
   // Initialization ///////////////////////////////////////////////////////////
@@ -65,14 +62,16 @@ export class TableUsers {
       .pipe(
         map((email: string) => {
           const EMAIL = email.toLocaleLowerCase();
-          return this.users.filter((user: User) => user.email.toLowerCase().indexOf(EMAIL) === 0);
+          return this.dashboardArrays.unfiltered.filter(
+            (user: User) => user.email.toLowerCase().indexOf(EMAIL) === 0,
+          );
         }),
       )
       .subscribe((res: User[]) => {
-        this.filteredByEmail = res;
-        this.filteredText = res.filter((user: User) =>
+        this.dashboardArrays.filteredByText = res;
+        this.dashboardArrays.filteredText = res.filter((user: User) =>
           // Filter by user reference
-          this.filteredByRef.some((item: User) => item.id === user.id),
+          this.dashboardArrays.filteredByRef.some((item: User) => item.id === user.id),
         );
         this.filterByRole(); // Filter by user role
       });
@@ -82,20 +81,22 @@ export class TableUsers {
       .pipe(
         map((reference: string) => {
           const REFERENCE = reference.toLocaleUpperCase();
-          return this.users.filter((user: User) => user.reference.indexOf(REFERENCE) === 0);
+          return this.dashboardArrays.unfiltered.filter(
+            (user: User) => user.reference.indexOf(REFERENCE) === 0,
+          );
         }),
       )
       .subscribe((res: User[]) => {
-        this.filteredByRef = res;
-        this.filteredText = res.filter((user: User) =>
+        this.dashboardArrays.filteredByRef = res;
+        this.dashboardArrays.filteredText = res.filter((user: User) =>
           // Filter by user email
-          this.filteredByEmail.some((item: User) => item.id === user.id),
+          this.dashboardArrays.filteredByText.some((item: User) => item.id === user.id),
         );
         this.filterByRole(); // Filter by user role
       });
   }
 
-  // Initialize the arrays that handle the sorting
+  // Initialize the dashboardArrays that handle the sorting
   ngAfterViewInit() {
     // Defines the sorting elements: here, all attributes are fixed
     this.sortElements = [
@@ -118,14 +119,14 @@ export class TableUsers {
     this.userService.getAllUsers().subscribe({
       next: (res: User[]) => {
         // All users
-        this.users = res.sort((item1: User, item2: User) => {
+        this.dashboardArrays.unfiltered = res.sort((item1: User, item2: User) => {
           const COMPARE = item1.name.localeCompare(item2.name);
           return COMPARE === 0 ? item1.email.localeCompare(item2.email) : COMPARE;
         });
-        this.filteredByEmail = structuredClone(this.users);
-        this.filteredByRef = structuredClone(this.users);
-        this.filteredText = structuredClone(this.users);
-        this.filteredItems = structuredClone(this.users);
+        this.dashboardArrays.filteredByText = structuredClone(this.dashboardArrays.unfiltered);
+        this.dashboardArrays.filteredByRef = structuredClone(this.dashboardArrays.unfiltered);
+        this.dashboardArrays.filteredText = structuredClone(this.dashboardArrays.unfiltered);
+        this.dashboardArrays.filteredItems = structuredClone(this.dashboardArrays.unfiltered);
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
@@ -137,9 +138,9 @@ export class TableUsers {
   // Filter by user role
   filterByRole() {
     if (this.selectedRole === -1) {
-      this.filteredItems = this.filteredText;
+      this.dashboardArrays.filteredItems = this.dashboardArrays.filteredText;
     } else {
-      this.filteredItems = this.filteredText.filter(
+      this.dashboardArrays.filteredItems = this.dashboardArrays.filteredText.filter(
         (user: User) => user.role === this.selectedRole,
       );
     }
@@ -165,14 +166,9 @@ export class TableUsers {
 
   // Sort /////////////////////////////////////////////////////////////////////
 
-  // Sort all arrays
+  // Sort all dashboardArrays
   sort(column: string) {
-    Common.sort(
-      [this.users, this.filteredByEmail, this.filteredByRef, this.filteredText, this.filteredItems],
-      this.sortElements,
-      this.sortVariables,
-      column,
-    );
+    Dashboard.sort<User>(this.dashboardArrays, this.sortElements, this.sortVariables, column);
   }
 
   // Sort users by name (default)
@@ -261,9 +257,15 @@ export class TableUsers {
       this.userService.deleteUser(id).subscribe({
         next: (res: User) => {
           // Refresh the user list without calling the server
-          this.users = this.users.filter((item: User) => item.id !== id);
-          this.filteredText = this.filteredText.filter((item: User) => item.id !== id);
-          this.filteredItems = this.filteredItems.filter((item: User) => item.id !== id);
+          this.dashboardArrays.unfiltered = this.dashboardArrays.unfiltered.filter(
+            (item: User) => item.id !== id,
+          );
+          this.dashboardArrays.filteredText = this.dashboardArrays.filteredText.filter(
+            (item: User) => item.id !== id,
+          );
+          this.dashboardArrays.filteredItems = this.dashboardArrays.filteredItems.filter(
+            (item: User) => item.id !== id,
+          );
 
           // Disable inline editing if necessary
           if (this.editUser) this.editUser = null;

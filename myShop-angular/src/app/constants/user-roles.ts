@@ -1,5 +1,5 @@
 import { EnumRoles } from "../enums/user-roles";
-import { ItemCstShort } from "./global/types";
+import { ItemCstShort } from "../types/items";
 
 // User's role class
 export class UserRoles {

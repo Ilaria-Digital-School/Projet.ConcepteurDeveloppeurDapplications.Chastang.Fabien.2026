@@ -1,4 +1,4 @@
-import { Common } from '../constants/global/common';
+import { Common } from '../constants/common';
 import { EnumStatus } from '../enums/order-status';
 import { Cart } from './cart';
 import { Product } from './product';

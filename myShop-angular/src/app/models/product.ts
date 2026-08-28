@@ -1,4 +1,4 @@
-import { Common } from '../constants/global/common';
+import { Common } from '../constants/common';
 
 // Product class
 export class Product {

@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { Common } from '../../constants/global/common';
+import { Common } from '../../constants/common';
 import { OrderStatus } from '../../constants/order-status';
 import { Product } from '../../models/product';
 

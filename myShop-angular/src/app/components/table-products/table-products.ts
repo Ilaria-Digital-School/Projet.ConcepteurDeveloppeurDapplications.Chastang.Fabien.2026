@@ -1,7 +1,8 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Common } from '../../constants/global/common';
-import { SortElement, SortVariables } from '../../constants/global/types';
+import { Common } from '../../constants/common';
+import { Dashboard } from '../../constants/dashboard';
+import { DashboardArrays, SortElement, SortVariables } from '../../types/dashboard';
 import { ProductService } from '../../services/product-service';
 import { Product } from '../../models/product';
 import { map, Subject } from 'rxjs';
@@ -30,16 +31,12 @@ export class TableProducts {
   private static msgDelProduct: string = 'Êtes-vous sûr de vouloir supprimer cet article ?';
 
   // Class properties
-  products: Product[] = [];
-  filteredItems: Product[] = [];
-  filteredText: Product[] = [];
-  filteredByName: Product[] = [];
-  filteredByRef: Product[] = [];
+  dashboardArrays: DashboardArrays<Product> = new DashboardArrays<Product>();
   searchByNameSubject: Subject<string> = new Subject<string>();
   searchByRefSubject: Subject<string> = new Subject<string>();
   selectedStock: number = -1;
   // Used for sorting
-  sortElements!: SortElement[];
+  sortElements!: SortElement<Product>[];
   sortVariables!: SortVariables[];
 
   // Initialization //////////////////////////////////////////////////////
@@ -53,16 +50,16 @@ export class TableProducts {
       .pipe(
         map((name: string) => {
           const NAME = name.toLocaleLowerCase();
-          return this.products.filter(
+          return this.dashboardArrays.unfiltered.filter(
             (product: Product) => product.name.toLowerCase().indexOf(NAME) === 0,
           );
         }),
       )
       .subscribe((res: Product[]) => {
-        this.filteredByName = res;
-        this.filteredText = res.filter((product: Product) =>
+        this.dashboardArrays.filteredByText = res;
+        this.dashboardArrays.filteredText = res.filter((product: Product) =>
           // Filter by product reference
-          this.filteredByRef.some((item: Product) => item.id === product.id),
+          this.dashboardArrays.filteredByRef.some((item: Product) => item.id === product.id),
         );
         this.filterByStock(); // Filter by product stock
       });
@@ -72,22 +69,22 @@ export class TableProducts {
       .pipe(
         map((reference: string) => {
           const REFERENCE = reference.toLocaleUpperCase();
-          return this.products.filter(
+          return this.dashboardArrays.unfiltered.filter(
             (product: Product) => product.reference.indexOf(REFERENCE) === 0,
           );
         }),
       )
       .subscribe((res: Product[]) => {
-        this.filteredByRef = res;
-        this.filteredText = res.filter((product: Product) =>
+        this.dashboardArrays.filteredByRef = res;
+        this.dashboardArrays.filteredText = res.filter((product: Product) =>
           // Filter by product name
-          this.filteredByName.some((item: Product) => item.id === product.id),
+          this.dashboardArrays.filteredByText.some((item: Product) => item.id === product.id),
         );
         this.filterByStock(); // Filter by product stock
       });
   }
 
-  // Initialize the arrays that handle the sorting
+  // Initialize the dashboardArrays that handle the sorting
   ngAfterViewInit() {
     // Defines the sorting elements: here, all attributes are fixed
     this.sortElements = [
@@ -110,14 +107,14 @@ export class TableProducts {
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
         // All products
-        this.products = res.sort((p1: Product, p2: Product) => {
+        this.dashboardArrays.unfiltered = res.sort((p1: Product, p2: Product) => {
           const COMPARE = p1.name.localeCompare(p2.name);
           return COMPARE === 0 ? p1.description.localeCompare(p2.description) : COMPARE;
         });
-        this.filteredByName = structuredClone(this.products);
-        this.filteredByRef = structuredClone(this.products);
-        this.filteredText = structuredClone(this.products);
-        this.filteredItems = structuredClone(this.products);
+        this.dashboardArrays.filteredByText = structuredClone(this.dashboardArrays.unfiltered);
+        this.dashboardArrays.filteredByRef = structuredClone(this.dashboardArrays.unfiltered);
+        this.dashboardArrays.filteredText = structuredClone(this.dashboardArrays.unfiltered);
+        this.dashboardArrays.filteredItems = structuredClone(this.dashboardArrays.unfiltered);
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
@@ -129,13 +126,13 @@ export class TableProducts {
   // Filter by product stock
   filterByStock() {
     if (this.selectedStock === -1) {
-      this.filteredItems = this.filteredText;
+      this.dashboardArrays.filteredItems = this.dashboardArrays.filteredText;
     } else if (this.selectedStock >= 0) {
-      this.filteredItems = this.filteredText.filter(
+      this.dashboardArrays.filteredItems = this.dashboardArrays.filteredText.filter(
         (product: Product) => product.stock !== undefined && product.stock <= this.selectedStock,
       );
     } else {
-      this.filteredItems = this.filteredText.filter(
+      this.dashboardArrays.filteredItems = this.dashboardArrays.filteredText.filter(
         (product: Product) => product.stock !== undefined && product.stock > -this.selectedStock,
       );
     }
@@ -161,20 +158,9 @@ export class TableProducts {
 
   // Sort /////////////////////////////////////////////////////////////////////
 
-  // Sort all arrays
+  // Sort all dashboardArrays
   sort(column: string) {
-    Common.sort(
-      [
-        this.products,
-        this.filteredByName,
-        this.filteredByRef,
-        this.filteredText,
-        this.filteredItems,
-      ],
-      this.sortElements,
-      this.sortVariables,
-      column,
-    );
+    Dashboard.sort<Product>(this.dashboardArrays, this.sortElements, this.sortVariables, column);
   }
 
   // Sort products by name (default)
@@ -240,9 +226,15 @@ export class TableProducts {
       this.productService.deleteProduct(id).subscribe({
         next: (res: Product) => {
           // Refresh the product list without calling the server
-          this.products = this.products.filter((item: Product) => item.id !== id);
-          this.filteredText = this.filteredText.filter((item: Product) => item.id !== id);
-          this.filteredItems = this.filteredItems.filter((item: Product) => item.id !== id);
+          this.dashboardArrays.unfiltered = this.dashboardArrays.unfiltered.filter(
+            (item: Product) => item.id !== id,
+          );
+          this.dashboardArrays.filteredText = this.dashboardArrays.filteredText.filter(
+            (item: Product) => item.id !== id,
+          );
+          this.dashboardArrays.filteredItems = this.dashboardArrays.filteredItems.filter(
+            (item: Product) => item.id !== id,
+          );
         },
         error: (err: any) => {
           alert("Une erreur s'est produite lors de la suppression.");
