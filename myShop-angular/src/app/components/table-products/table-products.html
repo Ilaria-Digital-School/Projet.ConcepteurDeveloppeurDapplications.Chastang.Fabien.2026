@@ -4,7 +4,7 @@
     id="nameProducts"
     placeholder="Nom du produit..."
     aria-label="Rechercher un produit par son nom"
-    (input)="searchNameItems($event.target.value)"
+    (input)="dashboard.searchTextItems($event.target.value)"
     #nameProducts
   />
   <input
@@ -12,14 +12,14 @@
     id="referenceProducts"
     placeholder="Référence..."
     aria-label="Rechercher un produit par sa référence"
-    (input)="searchRefItems($event.target.value)"
+    (input)="dashboard.searchRefItems($event.target.value)"
     #referenceProducts
   />
   <select
     name="stock"
     id="stock"
     aria-label="Sélectionner le stock maximal"
-    (change)="selectStockItems($event.target)"
+    (change)="dashboard.selectValueItems($event.target)"
   >
     <option value="-1" selected>– Tous –</option>
     <option value="0">En rupture</option>
@@ -34,20 +34,20 @@
           <th scope="col">#</th>
           <th scope="col">Référence</th>
           <th scope="col">
-            <a class="link" (click)="sort('name')">
+            <a class="link" (click)="dashboard.sort('name')">
               Nom<i #sortName class="fa-solid fa-caret-up arrow"></i>
             </a>
           </th>
           <th scope="col">Description</th>
           <th scope="col" [style.white-space]="'nowrap'">
-            <a class="link" (click)="sort('price')">
+            <a class="link" (click)="dashboard.sort('price')">
               Prix<span id="info-tax">(HT)</span>
               <i #sortPrice class="fa-solid fa-caret-up arrow hidden"></i>
             </a>
           </th>
           <th scope="col" [style.white-space]="'nowrap'">Prix<span id="info-tax">(TTC)</span></th>
           <th scope="col">
-            <a class="link" (click)="sort('stock')">
+            <a class="link" (click)="dashboard.sort('stock')">
               Stock<i #sortStock class="fa-solid fa-caret-up arrow hidden"></i>
             </a>
           </th>
@@ -55,7 +55,7 @@
         </tr>
       </thead>
       <tbody class="table-group-divider">
-        @for (product of dashboardArrays.filteredItems; track product.id; let i = $index) {
+        @for (product of dashboard.arrays.filteredItems; track product.id; let i = $index) {
           <tr [class]="product.stock === 0 ? 'unavailable-row' : ''">
             <th scope="row">{{ i + 1 }}</th>
             <td>

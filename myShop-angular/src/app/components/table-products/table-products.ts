@@ -1,11 +1,10 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Common } from '../../constants/common';
-import { Dashboard } from '../../constants/dashboard';
-import { DashboardArrays, SortElement, SortVariables } from '../../types/dashboard';
+import { DashboardHandle } from '../../models/dashboard';
 import { ProductService } from '../../services/product-service';
 import { Product } from '../../models/product';
-import { map, Subject } from 'rxjs';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-table-products',
@@ -31,13 +30,7 @@ export class TableProducts {
   private static msgDelProduct: string = 'Êtes-vous sûr de vouloir supprimer cet article ?';
 
   // Class properties
-  dashboardArrays: DashboardArrays<Product> = new DashboardArrays<Product>();
-  searchByNameSubject: Subject<string> = new Subject<string>();
-  searchByRefSubject: Subject<string> = new Subject<string>();
-  selectedStock: number = -1;
-  // Used for sorting
-  sortElements!: SortElement<Product>[];
-  sortVariables!: SortVariables[];
+  dashboard: DashboardHandle<Product> = new DashboardHandle<Product>();
 
   // Initialization //////////////////////////////////////////////////////
 
@@ -46,58 +39,59 @@ export class TableProducts {
     this.load();
 
     // Search for products by name
-    this.searchByNameSubject
+    this.dashboard.searchByTextSubject
       .pipe(
         map((name: string) => {
           const NAME = name.toLocaleLowerCase();
-          return this.dashboardArrays.unfiltered.filter(
+          return this.dashboard.arrays.unfiltered.filter(
             (product: Product) => product.name.toLowerCase().indexOf(NAME) === 0,
           );
         }),
       )
       .subscribe((res: Product[]) => {
-        this.dashboardArrays.filteredByText = res;
-        this.dashboardArrays.filteredText = res.filter((product: Product) =>
+        this.dashboard.arrays.filteredByText = res;
+        this.dashboard.arrays.filteredText = res.filter((product: Product) =>
           // Filter by product reference
-          this.dashboardArrays.filteredByRef.some((item: Product) => item.id === product.id),
+          this.dashboard.arrays.filteredByRef.some((item: Product) => item.id === product.id),
         );
-        this.filterByStock(); // Filter by product stock
+        this.filterByValue(); // Filter by product stock
       });
 
     // Search for products by reference
-    this.searchByRefSubject
+    this.dashboard.searchByRefSubject
       .pipe(
         map((reference: string) => {
           const REFERENCE = reference.toLocaleUpperCase();
-          return this.dashboardArrays.unfiltered.filter(
+          return this.dashboard.arrays.unfiltered.filter(
             (product: Product) => product.reference.indexOf(REFERENCE) === 0,
           );
         }),
       )
       .subscribe((res: Product[]) => {
-        this.dashboardArrays.filteredByRef = res;
-        this.dashboardArrays.filteredText = res.filter((product: Product) =>
+        this.dashboard.arrays.filteredByRef = res;
+        this.dashboard.arrays.filteredText = res.filter((product: Product) =>
           // Filter by product name
-          this.dashboardArrays.filteredByText.some((item: Product) => item.id === product.id),
+          this.dashboard.arrays.filteredByText.some((item: Product) => item.id === product.id),
         );
-        this.filterByStock(); // Filter by product stock
+        this.filterByValue(); // Filter by product stock
       });
   }
 
-  // Initialize the dashboardArrays that handle the sorting
   ngAfterViewInit() {
     // Defines the sorting elements: here, all attributes are fixed
-    this.sortElements = [
+    this.dashboard.sortElements = [
       { col: 'name', up: true, func: this.sortByName, HTMLCol: this.sortName.nativeElement },
       { col: 'price', up: true, func: this.sortByPrice, HTMLCol: this.sortPrice.nativeElement },
       { col: 'stock', up: true, func: this.sortByStock, HTMLCol: this.sortStock.nativeElement },
     ];
     // Defines the sorting variables: 'sort' and/or 'up' are updated each time a sort is performed
-    this.sortVariables = [
+    this.dashboard.sortVariables = [
       { col: 'name', sort: true, up: true },
       { col: 'price', sort: false, up: true },
       { col: 'stock', sort: false, up: true },
     ];
+    // Initialize the filter method
+    this.dashboard.filterByValue = this.filterByValue;
   }
 
   // Load and filter //////////////////////////////////////////////////////////
@@ -107,14 +101,14 @@ export class TableProducts {
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
         // All products
-        this.dashboardArrays.unfiltered = res.sort((p1: Product, p2: Product) => {
+        this.dashboard.arrays.unfiltered = res.sort((p1: Product, p2: Product) => {
           const COMPARE = p1.name.localeCompare(p2.name);
           return COMPARE === 0 ? p1.description.localeCompare(p2.description) : COMPARE;
         });
-        this.dashboardArrays.filteredByText = structuredClone(this.dashboardArrays.unfiltered);
-        this.dashboardArrays.filteredByRef = structuredClone(this.dashboardArrays.unfiltered);
-        this.dashboardArrays.filteredText = structuredClone(this.dashboardArrays.unfiltered);
-        this.dashboardArrays.filteredItems = structuredClone(this.dashboardArrays.unfiltered);
+        this.dashboard.arrays.filteredByText = structuredClone(this.dashboard.arrays.unfiltered);
+        this.dashboard.arrays.filteredByRef = structuredClone(this.dashboard.arrays.unfiltered);
+        this.dashboard.arrays.filteredText = structuredClone(this.dashboard.arrays.unfiltered);
+        this.dashboard.arrays.filteredItems = structuredClone(this.dashboard.arrays.unfiltered);
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
@@ -124,44 +118,21 @@ export class TableProducts {
   }
 
   // Filter by product stock
-  filterByStock() {
-    if (this.selectedStock === -1) {
-      this.dashboardArrays.filteredItems = this.dashboardArrays.filteredText;
-    } else if (this.selectedStock >= 0) {
-      this.dashboardArrays.filteredItems = this.dashboardArrays.filteredText.filter(
-        (product: Product) => product.stock !== undefined && product.stock <= this.selectedStock,
+  filterByValue() {
+    if (this.dashboard.selectedValue === -1) {
+      this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredText;
+    } else if (this.dashboard.selectedValue >= 0) {
+      this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredText.filter(
+        (product: Product) => product.stock !== undefined && product.stock <= this.dashboard.selectedValue,
       );
     } else {
-      this.dashboardArrays.filteredItems = this.dashboardArrays.filteredText.filter(
-        (product: Product) => product.stock !== undefined && product.stock > -this.selectedStock,
+      this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredText.filter(
+        (product: Product) => product.stock !== undefined && product.stock > -this.dashboard.selectedValue,
       );
     }
   }
 
-  // Search ///////////////////////////////////////////////////////////////////
-
-  // Search for products by reference
-  searchRefItems(reference: string) {
-    this.searchByRefSubject.next(reference);
-  }
-
-  // Search for products by name
-  searchNameItems(name: string) {
-    this.searchByNameSubject.next(name);
-  }
-
-  // Search for products by stock
-  selectStockItems(select: any) {
-    this.selectedStock = Number(select.options[select.selectedIndex].value);
-    this.filterByStock();
-  }
-
   // Sort /////////////////////////////////////////////////////////////////////
-
-  // Sort all dashboardArrays
-  sort(column: string) {
-    Dashboard.sort<Product>(this.dashboardArrays, this.sortElements, this.sortVariables, column);
-  }
 
   // Sort products by name (default)
   sortByName(array: Product[], up: boolean): Product[] {
@@ -226,13 +197,13 @@ export class TableProducts {
       this.productService.deleteProduct(id).subscribe({
         next: (res: Product) => {
           // Refresh the product list without calling the server
-          this.dashboardArrays.unfiltered = this.dashboardArrays.unfiltered.filter(
+          this.dashboard.arrays.unfiltered = this.dashboard.arrays.unfiltered.filter(
             (item: Product) => item.id !== id,
           );
-          this.dashboardArrays.filteredText = this.dashboardArrays.filteredText.filter(
+          this.dashboard.arrays.filteredText = this.dashboard.arrays.filteredText.filter(
             (item: Product) => item.id !== id,
           );
-          this.dashboardArrays.filteredItems = this.dashboardArrays.filteredItems.filter(
+          this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredItems.filter(
             (item: Product) => item.id !== id,
           );
         },

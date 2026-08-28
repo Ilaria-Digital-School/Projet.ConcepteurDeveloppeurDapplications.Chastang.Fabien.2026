@@ -1,11 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { map, Subject } from 'rxjs';
+import { map } from 'rxjs';
 import { Common } from '../../constants/common';
 import { OrderExt } from '../../types/common';
-import { Dashboard } from '../../constants/dashboard';
-import { DashboardArrays, SortElement, SortVariables } from '../../types/dashboard';
+import { DashboardHandle } from '../../models/dashboard';
 import { OrderStatus } from '../../constants/order-status';
 import { UserService } from '../../services/user-service';
 import { OrderService } from '../../services/order-service';
@@ -34,13 +33,7 @@ export class TableOrders {
   private orderService = inject(OrderService);
 
   // Class properties
-  dashboardArrays: DashboardArrays<OrderExt> = new DashboardArrays<OrderExt>();
-  searchByEmailSubject: Subject<string> = new Subject<string>();
-  searchByRefSubject: Subject<string> = new Subject<string>();
-  selectedStatus: number = -1;
-  // Used for sorting
-  sortElements!: SortElement<OrderExt>[];
-  sortVariables!: SortVariables[];
+  dashboard: DashboardHandle<OrderExt> = new DashboardHandle<OrderExt>();
 
   // Initialize ///////////////////////////////////////////////////////////////
 
@@ -49,62 +42,64 @@ export class TableOrders {
     this.load();
 
     // Search for users by email
-    this.searchByEmailSubject
+    this.dashboard.searchByTextSubject
       .pipe(
         map((email: string) => {
           const EMAIL = email.toLocaleLowerCase();
-          return this.dashboardArrays.unfiltered.filter(
+          return this.dashboard.arrays.unfiltered.filter(
             (orderExt: OrderExt) => orderExt.user?.email.toLowerCase().indexOf(EMAIL) === 0,
           );
         }),
       )
       .subscribe((res: OrderExt[]) => {
-        this.dashboardArrays.filteredByText = res;
-        this.dashboardArrays.filteredText = res.filter((orderExt: OrderExt) =>
+        this.dashboard.arrays.filteredByText = res;
+        this.dashboard.arrays.filteredText = res.filter((orderExt: OrderExt) =>
           // Filter by order reference
-          this.dashboardArrays.filteredByRef.some(
+          this.dashboard.arrays.filteredByRef.some(
             (item: OrderExt) => item.order.id === orderExt.order.id,
           ),
         );
-        this.filterByStatus(); // Filter by order status
+        this.filterByValue(); // Filter by order status
       });
 
     // Search for orders by reference
-    this.searchByRefSubject
+    this.dashboard.searchByRefSubject
       .pipe(
         map((reference: string) => {
           const REFERENCE = reference.toLocaleUpperCase();
-          return this.dashboardArrays.unfiltered.filter(
+          return this.dashboard.arrays.unfiltered.filter(
             (orderExt: OrderExt) => orderExt.order.reference.indexOf(REFERENCE) === 0,
           );
         }),
       )
       .subscribe((res: OrderExt[]) => {
-        this.dashboardArrays.filteredByRef = res;
-        this.dashboardArrays.filteredText = res.filter((orderExt: OrderExt) =>
+        this.dashboard.arrays.filteredByRef = res;
+        this.dashboard.arrays.filteredText = res.filter((orderExt: OrderExt) =>
           // Filter by user email
-          this.dashboardArrays.filteredByText.some(
+          this.dashboard.arrays.filteredByText.some(
             (item: OrderExt) => item.order.id === orderExt.order.id,
           ),
         );
-        this.filterByStatus(); // Filter by order status
+        this.filterByValue(); // Filter by order status
       });
   }
 
-  // Initialize the dashboardArrays that handle the sorting
+  // Initialize the dashboard.arrays that handle the sorting
   ngAfterViewInit() {
     // Defines the sorting elements: here, all attributes are fixed
-    this.sortElements = [
+    this.dashboard.sortElements = [
       { col: 'email', up: true, func: this.sortByEmail, HTMLCol: this.sortEmail.nativeElement },
       { col: 'date', up: false, func: this.sortByDate, HTMLCol: this.sortDate.nativeElement },
       { col: 'status', up: true, func: this.sortByStatus, HTMLCol: this.sortStatus.nativeElement },
     ];
     // Defines the sorting variables: 'sort' and/or 'up' are updated each time a sort is performed
-    this.sortVariables = [
+    this.dashboard.sortVariables = [
       { col: 'email', sort: false, up: true },
       { col: 'date', sort: true, up: false },
       { col: 'status', sort: false, up: true },
     ];
+    // Initialize the filter method
+    this.dashboard.filterByValue = this.filterByValue;
   }
 
   // Load and filter //////////////////////////////////////////////////////////
@@ -128,15 +123,15 @@ export class TableOrders {
     this.userService.getAllUsers().subscribe({
       next: (res: User[]) => {
         // All orders associate with their users
-        this.dashboardArrays.unfiltered = orders
+        this.dashboard.arrays.unfiltered = orders
           .map((order: Order) => {
             return { order: order, user: res.find((user: User) => user.id === order.userId) };
           })
           .sort((item1: OrderExt, item2: OrderExt) => item2.order.date - item1.order.date);
-        this.dashboardArrays.filteredByText = structuredClone(this.dashboardArrays.unfiltered);
-        this.dashboardArrays.filteredByRef = structuredClone(this.dashboardArrays.unfiltered);
-        this.dashboardArrays.filteredText = structuredClone(this.dashboardArrays.unfiltered);
-        this.dashboardArrays.filteredItems = structuredClone(this.dashboardArrays.unfiltered);
+        this.dashboard.arrays.filteredByText = structuredClone(this.dashboard.arrays.unfiltered);
+        this.dashboard.arrays.filteredByRef = structuredClone(this.dashboard.arrays.unfiltered);
+        this.dashboard.arrays.filteredText = structuredClone(this.dashboard.arrays.unfiltered);
+        this.dashboard.arrays.filteredItems = structuredClone(this.dashboard.arrays.unfiltered);
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
@@ -146,40 +141,17 @@ export class TableOrders {
   }
 
   // Filter by order status
-  filterByStatus() {
-    if (this.selectedStatus === -1) {
-      this.dashboardArrays.filteredItems = this.dashboardArrays.filteredByText;
+  filterByValue() {
+    if (this.dashboard.selectedValue === -1) {
+      this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredByText;
     } else {
-      this.dashboardArrays.filteredItems = this.dashboardArrays.filteredByText.filter(
-        (orderExt: OrderExt) => orderExt.order.status === this.selectedStatus,
+      this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredByText.filter(
+        (orderExt: OrderExt) => orderExt.order.status === this.dashboard.selectedValue,
       );
     }
   }
 
-  // Search ///////////////////////////////////////////////////////////////////
-
-  // Search for users by email
-  searchEmailItems(email: string) {
-    this.searchByEmailSubject.next(email);
-  }
-
-  // Search for orders by reference
-  searchRefItems(reference: string) {
-    this.searchByRefSubject.next(reference);
-  }
-
-  // Search for orders by status
-  selectStatusItems(select: any) {
-    this.selectedStatus = Number(select.options[select.selectedIndex].value);
-    this.filterByStatus();
-  }
-
   // Sort /////////////////////////////////////////////////////////////////////
-
-  // Sort all dashboardArrays
-  sort(column: string) {
-    Dashboard.sort<OrderExt>(this.dashboardArrays, this.sortElements, this.sortVariables, column);
-  }
 
   // Sort orders by date (default)
   sortByDate(array: OrderExt[], up: boolean): OrderExt[] {

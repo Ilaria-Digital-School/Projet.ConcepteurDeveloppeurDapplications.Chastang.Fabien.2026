@@ -4,7 +4,7 @@
     id="emailUsers"
     placeholder="Adresse mail..."
     aria-label="Rechercher un client par son adresse mail"
-    (input)="searchEmailItems($event.target.value)"
+    (input)="dashboard.searchTextItems($event.target.value)"
     #emailUsers
   />
   <input
@@ -12,14 +12,14 @@
     id="referenceUsers"
     placeholder="Référence..."
     aria-label="Rechercher un client par sa référence"
-    (input)="searchRefItems($event.target.value)"
+    (input)="dashboard.searchRefItems($event.target.value)"
     #referenceUsers
   />
   <select
     name="role"
     id="role"
     aria-label="Sélectionner le role"
-    (change)="selectRoleItems($event.target)"
+    (change)="dashboard.selectValueItems($event.target)"
   >
     <option value="-1" selected>– Tous –</option>
     @for (role of roles; track role.value; let i = $index) {
@@ -34,18 +34,18 @@
           <th scope="col">Référence</th>
           <th scope="col">Genre</th>
           <th scope="col">
-            <a class="link" (click)="sort('name')">
+            <a class="link" (click)="dashboard.sort('name')">
               Nom<i #sortName class="fa-solid fa-caret-up arrow"></i>
             </a>
           </th>
           <th scope="col">
-            <a class="link" (click)="sort('email')">
+            <a class="link" (click)="dashboard.sort('email')">
               E-mail<i #sortEmail class="fa-solid fa-caret-up arrow hidden"></i>
             </a>
           </th>
           <th scope="col">Pays</th>
           <th scope="col">
-            <a class="link" (click)="sort('role')">
+            <a class="link" (click)="dashboard.sort('role')">
               Role<i #sortRole class="fa-solid fa-caret-up arrow hidden"></i>
             </a>
           </th>
@@ -53,7 +53,7 @@
         </tr>
       </thead>
       <tbody class="table-group-divider">
-        @for (user of dashboardArrays.filteredItems; track user.id; let i = $index) {
+        @for (user of dashboard.arrays.filteredItems; track user.id; let i = $index) {
           <tr [class]="user.role !== 0 ? 'admin-row' : ''">
             <th scope="row">{{ i + 1 }}</th>
             <td [class]="user.role !== 0 ? 'admin-cell' : ''">{{ user.reference }}</td>

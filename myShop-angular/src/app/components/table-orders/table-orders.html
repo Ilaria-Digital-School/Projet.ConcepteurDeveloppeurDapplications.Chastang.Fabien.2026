@@ -5,7 +5,7 @@
     id="search"
     placeholder="Adresse mail..."
     aria-label="Rechercher un client par son adresse mail"
-    (input)="searchEmailItems($event.target.value)"
+    (input)="dashboard.searchTextItems($event.target.value)"
     #emailOrders
   />
   <input
@@ -13,14 +13,14 @@
     id="referenceOrders"
     placeholder="Référence..."
     aria-label="Rechercher une commande par sa référence"
-    (input)="searchRefItems($event.target.value)"
+    (input)="dashboard.searchRefItems($event.target.value)"
     #referenceOrders
   />
   <select
     name="status"
     id="status"
     aria-label="Sélectionner le statut de la commande"
-    (change)="selectStatusItems($event.target)"
+    (change)="dashboard.selectValueItems($event.target)"
   >
     <option value="-1" selected>– Tous –</option>
     @for (status of OrderStatus.list; track status.value; let i = $index) {
@@ -34,26 +34,26 @@
           <th scope="col">#</th>
           <th scope="col">Référence</th>
           <th scope="col">
-            <a class="link" (click)="sort('email')">
+            <a class="link" (click)="dashboard.sort('email')">
               Client<i #sortEmail class="fa-solid fa-caret-up arrow hidden"></i>
             </a>
           </th>
           <th scope="col">
-            <a class="link" (click)="sort('date')">
+            <a class="link" (click)="dashboard.sort('date')">
               Date<i #sortDate class="fa-solid fa-caret-down arrow"></i>
             </a>
           </th>
           <th scope="col" [style.white-space]="'nowrap'">Total <span id="info-tax">(HT)</span></th>
           <th scope="col" [style.white-space]="'nowrap'">Total facturé</th>
           <th scope="col">
-            <a class="link" (click)="sort('status')">
+            <a class="link" (click)="dashboard.sort('status')">
               Statut<i #sortStatus class="fa-solid fa-caret-up arrow hidden"></i>
             </a>
           </th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
-        @for (orderExt of dashboardArrays.filteredItems; track orderExt.order.id; let i = $index) {
+        @for (orderExt of dashboard.arrays.filteredItems; track orderExt.order.id; let i = $index) {
           <tr>
             <th scope="row">{{ i + 1 }}</th>
             <td>{{ orderExt.order.reference }}</td>
