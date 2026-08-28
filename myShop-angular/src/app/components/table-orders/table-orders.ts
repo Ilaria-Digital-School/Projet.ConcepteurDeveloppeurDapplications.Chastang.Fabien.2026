@@ -2,14 +2,15 @@ import { DatePipe } from '@angular/common';
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { map } from 'rxjs';
-import { Common } from '../../constants/common';
 import { OrderExt } from '../../types/common';
-import { DashboardHandle } from '../../models/dashboard';
+import { Common } from '../../constants/common';
 import { OrderStatus } from '../../constants/order-status';
+import { User } from '../../models/user';
+import { Order } from '../../models/order';
+import { DashboardHandle } from '../../models/dashboard';
 import { UserService } from '../../services/user-service';
 import { OrderService } from '../../services/order-service';
-import { Order } from '../../models/order';
-import { User } from '../../models/user';
+import { ItemCst } from '../../types/items';
 
 @Component({
   selector: 'app-table-orders',
@@ -32,12 +33,16 @@ export class TableOrders {
   private userService = inject(UserService);
   private orderService = inject(OrderService);
 
-  // Class properties
+  // Class properties grouped in the 'DashboardHandle' class
   dashboard: DashboardHandle<OrderExt> = new DashboardHandle<OrderExt>();
+  orderStatus!: ItemCst[];
 
   // Initialize ///////////////////////////////////////////////////////////////
 
   ngOnInit() {
+    // Sort the order's status
+    this.orderStatus = OrderStatus.list.sort((i1: ItemCst, i2: ItemCst) => i1.value - i2.value);
+
     // Load data
     this.load();
 
@@ -59,7 +64,7 @@ export class TableOrders {
             (item: OrderExt) => item.order.id === orderExt.order.id,
           ),
         );
-        this.filterByValue(); // Filter by order status
+        this.dashboard.filterByValue(); // Filter by order status
       });
 
     // Search for orders by reference
@@ -80,26 +85,27 @@ export class TableOrders {
             (item: OrderExt) => item.order.id === orderExt.order.id,
           ),
         );
-        this.filterByValue(); // Filter by order status
+        this.dashboard.filterByValue(); // Filter by order status
       });
   }
 
-  // Initialize the dashboard.arrays that handle the sorting
   ngAfterViewInit() {
+    // Initialize the filter method
+    this.dashboard.filterByValue = this.filterByStatus;
+
     // Defines the sorting elements: here, all attributes are fixed
     this.dashboard.sortElements = [
       { col: 'email', up: true, func: this.sortByEmail, HTMLCol: this.sortEmail.nativeElement },
       { col: 'date', up: false, func: this.sortByDate, HTMLCol: this.sortDate.nativeElement },
       { col: 'status', up: true, func: this.sortByStatus, HTMLCol: this.sortStatus.nativeElement },
     ];
+
     // Defines the sorting variables: 'sort' and/or 'up' are updated each time a sort is performed
     this.dashboard.sortVariables = [
       { col: 'email', sort: false, up: true },
       { col: 'date', sort: true, up: false },
       { col: 'status', sort: false, up: true },
     ];
-    // Initialize the filter method
-    this.dashboard.filterByValue = this.filterByValue;
   }
 
   // Load and filter //////////////////////////////////////////////////////////
@@ -141,7 +147,7 @@ export class TableOrders {
   }
 
   // Filter by order status
-  filterByValue() {
+  filterByStatus() {
     if (this.dashboard.selectedValue === -1) {
       this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredByText;
     } else {

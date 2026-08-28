@@ -23,7 +23,7 @@
     (change)="dashboard.selectValueItems($event.target)"
   >
     <option value="-1" selected>– Tous –</option>
-    @for (status of OrderStatus.list; track status.value; let i = $index) {
+    @for (status of orderStatus; track status.value; let i = $index) {
       <option [value]="status.value">{{ status.label }}</option>
     }
   </select>

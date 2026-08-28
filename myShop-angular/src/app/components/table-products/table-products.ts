@@ -1,10 +1,10 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { map } from 'rxjs';
 import { Common } from '../../constants/common';
+import { Product } from '../../models/product';
 import { DashboardHandle } from '../../models/dashboard';
 import { ProductService } from '../../services/product-service';
-import { Product } from '../../models/product';
-import { map } from 'rxjs';
 
 @Component({
   selector: 'app-table-products',
@@ -29,7 +29,7 @@ export class TableProducts {
   // Product messages
   private static msgDelProduct: string = 'Êtes-vous sûr de vouloir supprimer cet article ?';
 
-  // Class properties
+  // Class properties grouped in the 'DashboardHandle' class
   dashboard: DashboardHandle<Product> = new DashboardHandle<Product>();
 
   // Initialization //////////////////////////////////////////////////////
@@ -54,7 +54,7 @@ export class TableProducts {
           // Filter by product reference
           this.dashboard.arrays.filteredByRef.some((item: Product) => item.id === product.id),
         );
-        this.filterByValue(); // Filter by product stock
+        this.dashboard.filterByValue(); // Filter by product stock
       });
 
     // Search for products by reference
@@ -73,25 +73,27 @@ export class TableProducts {
           // Filter by product name
           this.dashboard.arrays.filteredByText.some((item: Product) => item.id === product.id),
         );
-        this.filterByValue(); // Filter by product stock
+        this.dashboard.filterByValue(); // Filter by product stock
       });
   }
 
   ngAfterViewInit() {
+    // Initialize the filter method
+    this.dashboard.filterByValue = this.filterByStock;
+
     // Defines the sorting elements: here, all attributes are fixed
     this.dashboard.sortElements = [
       { col: 'name', up: true, func: this.sortByName, HTMLCol: this.sortName.nativeElement },
       { col: 'price', up: true, func: this.sortByPrice, HTMLCol: this.sortPrice.nativeElement },
       { col: 'stock', up: true, func: this.sortByStock, HTMLCol: this.sortStock.nativeElement },
     ];
+
     // Defines the sorting variables: 'sort' and/or 'up' are updated each time a sort is performed
     this.dashboard.sortVariables = [
       { col: 'name', sort: true, up: true },
       { col: 'price', sort: false, up: true },
       { col: 'stock', sort: false, up: true },
     ];
-    // Initialize the filter method
-    this.dashboard.filterByValue = this.filterByValue;
   }
 
   // Load and filter //////////////////////////////////////////////////////////
@@ -118,16 +120,18 @@ export class TableProducts {
   }
 
   // Filter by product stock
-  filterByValue() {
+  filterByStock() {
     if (this.dashboard.selectedValue === -1) {
       this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredText;
     } else if (this.dashboard.selectedValue >= 0) {
       this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredText.filter(
-        (product: Product) => product.stock !== undefined && product.stock <= this.dashboard.selectedValue,
+        (product: Product) =>
+          product.stock !== undefined && product.stock <= this.dashboard.selectedValue,
       );
     } else {
       this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredText.filter(
-        (product: Product) => product.stock !== undefined && product.stock > -this.dashboard.selectedValue,
+        (product: Product) =>
+          product.stock !== undefined && product.stock > -this.dashboard.selectedValue,
       );
     }
   }

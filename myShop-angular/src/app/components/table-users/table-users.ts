@@ -2,13 +2,13 @@ import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { map } from 'rxjs';
-import { DashboardHandle } from '../../models/dashboard';
 import { ItemCstShort } from '../../types/items';
 import { UserGenders } from '../../constants/user-genders';
 import { UserCountries } from '../../constants/user-countries';
 import { UserRoles } from '../../constants/user-roles';
-import { UserService } from '../../services/user-service';
 import { User } from '../../models/user';
+import { DashboardHandle } from '../../models/dashboard';
+import { UserService } from '../../services/user-service';
 
 @Component({
   selector: 'app-table-users',
@@ -35,17 +35,19 @@ export class TableUsers {
   // User messages
   private static msgDelUser: string = 'Êtes-vous sûr de vouloir supprimer cet utilisateur ?';
 
-  // Class properties
-  roles!: ItemCstShort[];
+  // Class properties grouped in the 'DashboardHandle' class
   dashboard: DashboardHandle<User> = new DashboardHandle<User>();
+  userRoles!: ItemCstShort[];
   editUser!: User | null;
 
   // Initialization ///////////////////////////////////////////////////////////
 
   // Initialize the user list
   ngOnInit() {
-    // Sort the roles
-    this.roles = UserRoles.list.sort((r1: ItemCstShort, r2: ItemCstShort) => r1.value - r2.value);
+    // Sort the user's roles
+    this.userRoles = UserRoles.list.sort(
+      (i1: ItemCstShort, i2: ItemCstShort) => i1.value - i2.value,
+    );
 
     // Load all users
     this.load();
@@ -66,7 +68,7 @@ export class TableUsers {
           // Filter by user reference
           this.dashboard.arrays.filteredByRef.some((item: User) => item.id === user.id),
         );
-        this.filterByValue(); // Filter by user role
+        this.dashboard.filterByValue(); // Filter by user role
       });
 
     // Search for users by reference
@@ -85,26 +87,27 @@ export class TableUsers {
           // Filter by user email
           this.dashboard.arrays.filteredByText.some((item: User) => item.id === user.id),
         );
-        this.filterByValue(); // Filter by user role
+        this.dashboard.filterByValue(); // Filter by user role
       });
   }
 
-  // Initialize the dashboard.arrays that handle the sorting
   ngAfterViewInit() {
+    // Initialize the filter method
+    this.dashboard.filterByValue = this.filterByRole;
+
     // Defines the sorting elements: here, all attributes are fixed
     this.dashboard.sortElements = [
       { col: 'name', up: true, func: this.sortByName, HTMLCol: this.sortName.nativeElement },
       { col: 'email', up: true, func: this.sortByEmail, HTMLCol: this.sortEmail.nativeElement },
       { col: 'role', up: true, func: this.sortByRole, HTMLCol: this.sortRole.nativeElement },
     ];
+
     // Defines the sorting variables: 'sort' and/or 'up' are updated each time a sort is performed
     this.dashboard.sortVariables = [
       { col: 'name', sort: true, up: true },
       { col: 'email', sort: false, up: true },
       { col: 'role', sort: false, up: true },
     ];
-    // Initialize the filter method
-    this.dashboard.filterByValue = this.filterByValue;
   }
 
   // Load and filter //////////////////////////////////////////////////////////
@@ -131,7 +134,7 @@ export class TableUsers {
   }
 
   // Filter by user role
-  filterByValue() {
+  filterByRole() {
     if (this.dashboard.selectedValue === -1) {
       this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredText;
     } else {

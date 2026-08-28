@@ -22,7 +22,7 @@
     (change)="dashboard.selectValueItems($event.target)"
   >
     <option value="-1" selected>– Tous –</option>
-    @for (role of roles; track role.value; let i = $index) {
+    @for (role of userRoles; track role.value; let i = $index) {
       <option [value]="role.value">{{ role.label }}</option>
     }
   </select>
