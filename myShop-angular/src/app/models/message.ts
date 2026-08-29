@@ -1,4 +1,4 @@
-// Product class
+// Message class
 export class Message {
   id: string = '';
   name: string = '';

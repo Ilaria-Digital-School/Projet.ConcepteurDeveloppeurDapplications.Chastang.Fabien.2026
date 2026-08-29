@@ -1,6 +1,6 @@
 import { ItemCstShort } from '../types/items';
 
-// User's country class
+// User country class
 export class UserCountries {
   static other: ItemCstShort = { value: 0, label: '– Autre –' };
   static list: ItemCstShort[] = [

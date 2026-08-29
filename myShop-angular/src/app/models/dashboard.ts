@@ -1,6 +1,7 @@
 import { Subject } from 'rxjs';
 import { DashboardArrays, SortElement, SortVariables } from '../types/dashboard';
 
+// Dashboard class
 export class DashboardHandle<T> {
   // Object containing the 5 arrays
   arrays: DashboardArrays<T>;

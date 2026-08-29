@@ -1,3 +1,4 @@
+// Enumeration of product categories
 export enum EnumCategories {
   other = 0,
   women = 1,

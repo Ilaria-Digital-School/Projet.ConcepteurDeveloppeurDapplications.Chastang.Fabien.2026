@@ -1,7 +1,7 @@
 import { EnumInterests } from '../enums/user-interests';
 import { ItemCst } from "../types/items";
 
-// User's interests class
+// User interests class
 export class UserInterests {
   static other: ItemCst = { value: EnumInterests.none, id: 'other', label: '– Autre –' };
   static list: ItemCst[] = [

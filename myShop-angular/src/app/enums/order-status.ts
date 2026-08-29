@@ -1,3 +1,4 @@
+// Enumeration of order status
 export enum EnumStatus {
   pending = 0,
   inprogress = 1,

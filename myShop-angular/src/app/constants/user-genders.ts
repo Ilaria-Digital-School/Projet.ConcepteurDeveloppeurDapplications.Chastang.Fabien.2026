@@ -1,7 +1,7 @@
 import { EnumGenders } from '../enums/user-genders';
 import { ItemCst } from "../types/items";
 
-// User's gender class
+// User gender class
 export class UserGenders {
   static other: ItemCst = { value: EnumGenders.other, id: 'other', label: '– Indéfini –' };
   static list: ItemCst[] = [

@@ -1,7 +1,7 @@
 import { EnumRoles } from "../enums/user-roles";
 import { ItemCstShort } from "../types/items";
 
-// User's role class
+// User role class
 export class UserRoles {
   static other: ItemCstShort = { value: EnumRoles.user, label: 'Utilisateur' };
   static list: ItemCstShort[] = [

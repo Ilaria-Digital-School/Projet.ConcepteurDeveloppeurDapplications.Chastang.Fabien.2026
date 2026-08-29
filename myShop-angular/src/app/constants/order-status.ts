@@ -1,7 +1,7 @@
 import { EnumStatus } from '../enums/order-status';
 import { ItemCst } from '../types/items';
 
-// User's gender class
+// Order status class
 export class OrderStatus {
   static list: ItemCst[] = [
     { value: EnumStatus.pending, id: 'pending', label: 'En attente' },
