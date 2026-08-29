@@ -27,21 +27,21 @@ export class ProductsSearch {
 
   // Class properties
   products: Product[] = [];
+  filteredName: Product[] = [];
   filteredItems: Product[] = [];
-  filteredText: Product[] = [];
-  searchByNameSubject: Subject<string> = new Subject<string>();
+  searchNameSubject: Subject<string> = new Subject<string>();
   selectedType: number = -1;
   selectedCategory: number = -1;
 
-  // Initialization //////////////////////////////////////////////////////
+  // Load the data and initialize the search function /////////////////////////
 
-  // Initialize the product list
+  // Initialize the product lists and the search function
   ngOnInit() {
     // Retrieve the products
     this.load();
 
     // Search for products by name
-    this.searchByNameSubject
+    this.searchNameSubject
       .pipe(
         map((name: string) => {
           const NAME = name.toLocaleLowerCase();
@@ -51,18 +51,12 @@ export class ProductsSearch {
         }),
       )
       .subscribe((res: Product[]) => {
-        this.filteredText = res;
+        this.filteredName = res;
         this.filterSelect(); // Filter by product type and category
       });
   }
 
-  ngAfterViewInit() {
-    this.nameProducts?.nativeElement.focus();
-  }
-
-  // Load and filter //////////////////////////////////////////////////////////
-
-  // Retrieve the products
+  // Retrieve all products
   load() {
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
@@ -70,7 +64,7 @@ export class ProductsSearch {
           const COMPARE = p1.name.localeCompare(p2.name);
           return COMPARE === 0 ? p1.description.localeCompare(p2.description) : COMPARE;
         });
-        this.filteredText = structuredClone(this.products);
+        this.filteredName = structuredClone(this.products);
         this.filteredItems = structuredClone(this.products);
       },
       error: (err: any) => {
@@ -80,21 +74,45 @@ export class ProductsSearch {
     });
   }
 
+  // Set the focus in the product name search field
+  ngAfterViewInit() {
+    this.nameProducts?.nativeElement.focus();
+  }
+
+  // Search ///////////////////////////////////////////////////////////////////
+
+  // Search for products by name
+  searchNameItems(name: string) {
+    this.searchNameSubject.next(name);
+  }
+
+  // Search for products by type
+  selectTypeItems(select: any) {
+    this.selectedType = Number(select.options[select.selectedIndex].value);
+    this.filterSelect();
+  }
+
+  // Search for products by category
+  selectCategoryItems(select: any) {
+    this.selectedCategory = Number(select.options[select.selectedIndex].value);
+    this.filterSelect();
+  }
+
   // Filter by product type and category
   filterSelect() {
     switch (this.selectedType) {
       case -1:
         switch (this.selectedCategory) {
           case -1:
-            this.filteredItems = this.filteredText;
+            this.filteredItems = this.filteredName;
             break;
           case 0:
-            this.filteredItems = this.filteredText.filter(
+            this.filteredItems = this.filteredName.filter(
               (product: Product) => product.categories.length === 0,
             );
             break;
           default:
-            this.filteredItems = this.filteredText.filter((product: Product) =>
+            this.filteredItems = this.filteredName.filter((product: Product) =>
               product.categories.includes(this.selectedCategory),
             );
         }
@@ -102,17 +120,17 @@ export class ProductsSearch {
       case 0:
         switch (this.selectedCategory) {
           case -1:
-            this.filteredItems = this.filteredText.filter(
+            this.filteredItems = this.filteredName.filter(
               (product: Product) => product.types.length === 0,
             );
             break;
           case 0:
-            this.filteredItems = this.filteredText.filter(
+            this.filteredItems = this.filteredName.filter(
               (product: Product) => product.types.length === 0 && product.categories.length === 0,
             );
             break;
           default:
-            this.filteredItems = this.filteredText.filter(
+            this.filteredItems = this.filteredName.filter(
               (product: Product) =>
                 product.types.length === 0 && product.categories.includes(this.selectedCategory),
             );
@@ -121,43 +139,24 @@ export class ProductsSearch {
       default:
         switch (this.selectedCategory) {
           case -1:
-            this.filteredItems = this.filteredText.filter((product: Product) =>
+            this.filteredItems = this.filteredName.filter((product: Product) =>
               product.types.includes(this.selectedType),
             );
             break;
           case 0:
-            this.filteredItems = this.filteredText.filter(
+            this.filteredItems = this.filteredName.filter(
               (product: Product) =>
                 product.types.includes(this.selectedType) && product.categories.length === 0,
             );
             break;
           default:
-            this.filteredItems = this.filteredText.filter(
+            this.filteredItems = this.filteredName.filter(
               (product: Product) =>
                 product.types.includes(this.selectedType) &&
                 product.categories.includes(this.selectedCategory),
             );
         }
     }
-  }
-
-  // Search ///////////////////////////////////////////////////////////////////
-
-  // Search for products by name
-  searchNameItems(name: string) {
-    this.searchByNameSubject.next(name);
-  }
-
-  // Search for users by role
-  selectTypeItems(select: any) {
-    this.selectedType = Number(select.options[select.selectedIndex].value);
-    this.filterSelect();
-  }
-
-  // Search for users by role
-  selectCategoryItems(select: any) {
-    this.selectedCategory = Number(select.options[select.selectedIndex].value);
-    this.filterSelect();
   }
 
   // Actions //////////////////////////////////////////////////////////////////

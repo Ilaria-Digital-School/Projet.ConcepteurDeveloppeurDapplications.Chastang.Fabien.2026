@@ -26,10 +26,14 @@ export class ProductView {
   product: Product = new Product();
   fullDescription: FullDesc[] = [];
 
+  // Initialization ///////////////////////////////////////////////////////////
+
   // Initialize the view
   ngOnInit() {
-    // Retrieve the product
+    // Retrieve the product ID
     this.productId = this.activatedRoute.snapshot.paramMap.get('id');
+
+    // Get the product data
     this.productService.getProductById(this.productId).subscribe({
       next: (res: Product) => {
         Object.assign(this.product, res);
@@ -97,6 +101,8 @@ export class ProductView {
 
     return RESULT;
   }
+
+  // Actions //////////////////////////////////////////////////////////////////
 
   // Add the product to the user's cart
   addCart(product: Product) {

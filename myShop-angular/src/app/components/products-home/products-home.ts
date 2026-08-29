@@ -21,11 +21,6 @@ export class ProductsHome {
 
   // Initialize the product list
   ngOnInit() {
-    this.load();
-  }
-
-  // Retrieve the products
-  load() {
     this.productService.getFirstProducts(this.maxCount).subscribe({
       next: (res: Product[]) => {
         this.products = res.sort((p1: Product, p2: Product) => {

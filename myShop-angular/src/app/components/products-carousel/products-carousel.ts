@@ -33,9 +33,9 @@ export class ProductsCarousel {
   products: Product[] = [];
   productId!: string | null;
 
-  // Initialization //////////////////////////////////////////////////////
+  // Initialization ///////////////////////////////////////////////////////////
 
-  // Initialization: retrieving the products and the product specified by the ID passed in the URL
+  // Retrieving the products and the product specified by the ID passed in the URL
   ngOnInit() {
     // Get the product ID
     this.productId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -60,6 +60,8 @@ export class ProductsCarousel {
       },
     });
   }
+
+  // Carousel management //////////////////////////////////////////////////////
 
   // Handle the slide change and show the active product card
   @HostListener('slid.bs.carousel', ['$event'])
@@ -88,6 +90,8 @@ export class ProductsCarousel {
       (this.productId !== null && id === this.productId) || (this.productId === null && index === 0)
     );
   }
+
+  // Actions //////////////////////////////////////////////////////////////////
 
   // View a product
   view(id: string) {

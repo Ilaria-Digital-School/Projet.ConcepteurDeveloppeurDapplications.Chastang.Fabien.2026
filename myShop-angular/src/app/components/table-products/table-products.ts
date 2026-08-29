@@ -32,14 +32,15 @@ export class TableProducts {
   // Class properties grouped in the 'DashboardHandle' class
   dashboard: DashboardHandle<Product> = new DashboardHandle<Product>();
 
-  // Initialization //////////////////////////////////////////////////////
+  // Load and search //////////////////////////////////////////////////////////
 
+  // Initialize product lists and search functions
   ngOnInit() {
     // Load all products
     this.load();
 
     // Search for products by name
-    this.dashboard.searchByTextSubject
+    this.dashboard.searchTextSubject
       .pipe(
         map((name: string) => {
           const NAME = name.toLocaleLowerCase();
@@ -49,16 +50,17 @@ export class TableProducts {
         }),
       )
       .subscribe((res: Product[]) => {
-        this.dashboard.arrays.filteredByText = res;
-        this.dashboard.arrays.filteredText = res.filter((product: Product) =>
+        this.dashboard.arrays.filteredText = res;
+        this.dashboard.arrays.filteredTextRef = res.filter((product: Product) =>
           // Filter by product reference
-          this.dashboard.arrays.filteredByRef.some((item: Product) => item.id === product.id),
+          this.dashboard.arrays.filteredRef.some((item: Product) => item.id === product.id),
         );
-        this.dashboard.filterByValue(); // Filter by product stock
+        // Filter by product stock
+        this.filterStock();
       });
 
     // Search for products by reference
-    this.dashboard.searchByRefSubject
+    this.dashboard.searchRefSubject
       .pipe(
         map((reference: string) => {
           const REFERENCE = reference.toLocaleUpperCase();
@@ -68,19 +70,62 @@ export class TableProducts {
         }),
       )
       .subscribe((res: Product[]) => {
-        this.dashboard.arrays.filteredByRef = res;
-        this.dashboard.arrays.filteredText = res.filter((product: Product) =>
+        this.dashboard.arrays.filteredRef = res;
+        this.dashboard.arrays.filteredTextRef = res.filter((product: Product) =>
           // Filter by product name
-          this.dashboard.arrays.filteredByText.some((item: Product) => item.id === product.id),
+          this.dashboard.arrays.filteredText.some((item: Product) => item.id === product.id),
         );
-        this.dashboard.filterByValue(); // Filter by product stock
+        // Filter by product stock
+        this.filterStock();
       });
   }
 
-  ngAfterViewInit() {
-    // Initialize the filter method
-    this.dashboard.filterByValue = this.filterByStock;
+  // Retrieve all products
+  load() {
+    this.productService.getAllProducts().subscribe({
+      next: (res: Product[]) => {
+        // All products
+        this.dashboard.arrays.unfiltered = res.sort((p1: Product, p2: Product) => {
+          const COMPARE = p1.name.localeCompare(p2.name);
+          return COMPARE === 0 ? p1.description.localeCompare(p2.description) : COMPARE;
+        });
+        this.dashboard.arrays.filteredText = structuredClone(this.dashboard.arrays.unfiltered);
+        this.dashboard.arrays.filteredRef = structuredClone(this.dashboard.arrays.unfiltered);
+        this.dashboard.arrays.filteredTextRef = structuredClone(this.dashboard.arrays.unfiltered);
+        this.dashboard.arrays.filteredItems = structuredClone(this.dashboard.arrays.unfiltered);
+      },
+      error: (err: any) => {
+        alert("Une erreur s'est produite lors de la récupération des données.");
+        console.log(err);
+      },
+    });
+  }
 
+  // Filter by product stock
+  filterStock() {
+    if (this.dashboard.selectedValue === -1) {
+      this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredTextRef;
+    } else if (this.dashboard.selectedValue >= 0) {
+      this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredTextRef.filter(
+        (product: Product) => product.stock !== undefined && product.stock <= this.dashboard.selectedValue,
+      );
+    } else {
+      this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredTextRef.filter(
+        (product: Product) => product.stock !== undefined && product.stock > -this.dashboard.selectedValue,
+      );
+    }
+  }
+
+  // Search by product stock
+  selectStock(select: any) {
+    this.dashboard.selectedValue = Number(select.options[select.selectedIndex].value);
+    this.filterStock();
+  }
+
+  // Sort /////////////////////////////////////////////////////////////////////
+
+  // Initialize sorting
+  ngAfterViewInit() {
     // Defines the sorting elements: here, all attributes are fixed
     this.dashboard.sortElements = [
       { col: 'name', up: true, func: this.sortByName, HTMLCol: this.sortName.nativeElement },
@@ -95,48 +140,6 @@ export class TableProducts {
       { col: 'stock', sort: false, up: true },
     ];
   }
-
-  // Load and filter //////////////////////////////////////////////////////////
-
-  // Retrieve all products
-  load() {
-    this.productService.getAllProducts().subscribe({
-      next: (res: Product[]) => {
-        // All products
-        this.dashboard.arrays.unfiltered = res.sort((p1: Product, p2: Product) => {
-          const COMPARE = p1.name.localeCompare(p2.name);
-          return COMPARE === 0 ? p1.description.localeCompare(p2.description) : COMPARE;
-        });
-        this.dashboard.arrays.filteredByText = structuredClone(this.dashboard.arrays.unfiltered);
-        this.dashboard.arrays.filteredByRef = structuredClone(this.dashboard.arrays.unfiltered);
-        this.dashboard.arrays.filteredText = structuredClone(this.dashboard.arrays.unfiltered);
-        this.dashboard.arrays.filteredItems = structuredClone(this.dashboard.arrays.unfiltered);
-      },
-      error: (err: any) => {
-        alert("Une erreur s'est produite lors de la récupération des données.");
-        console.log(err);
-      },
-    });
-  }
-
-  // Filter by product stock
-  filterByStock() {
-    if (this.dashboard.selectedValue === -1) {
-      this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredText;
-    } else if (this.dashboard.selectedValue >= 0) {
-      this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredText.filter(
-        (product: Product) =>
-          product.stock !== undefined && product.stock <= this.dashboard.selectedValue,
-      );
-    } else {
-      this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredText.filter(
-        (product: Product) =>
-          product.stock !== undefined && product.stock > -this.dashboard.selectedValue,
-      );
-    }
-  }
-
-  // Sort /////////////////////////////////////////////////////////////////////
 
   // Sort products by name (default)
   sortByName(array: Product[], up: boolean): Product[] {
@@ -153,7 +156,7 @@ export class TableProducts {
     }
   }
 
-  // Sort products by name
+  // Sort products by price
   sortByPrice(array: Product[], up: boolean): Product[] {
     if (up) {
       return array.sort((item1: Product, item2: Product) => item1.price - item2.price);
@@ -162,7 +165,7 @@ export class TableProducts {
     }
   }
 
-  // Sort products by name
+  // Sort products by stock
   sortByStock(array: Product[], up: boolean): Product[] {
     if (up) {
       return array.sort((item1: Product, item2: Product) => {
@@ -204,7 +207,7 @@ export class TableProducts {
           this.dashboard.arrays.unfiltered = this.dashboard.arrays.unfiltered.filter(
             (item: Product) => item.id !== id,
           );
-          this.dashboard.arrays.filteredText = this.dashboard.arrays.filteredText.filter(
+          this.dashboard.arrays.filteredTextRef = this.dashboard.arrays.filteredTextRef.filter(
             (item: Product) => item.id !== id,
           );
           this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredItems.filter(

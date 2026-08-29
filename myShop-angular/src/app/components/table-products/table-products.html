@@ -19,7 +19,7 @@
     name="stock"
     id="stock"
     aria-label="Sélectionner le stock maximal"
-    (change)="dashboard.selectValueItems($event.target)"
+    (change)="selectStock($event.target)"
   >
     <option value="-1" selected>– Tous –</option>
     <option value="0">En rupture</option>

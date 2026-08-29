@@ -20,7 +20,7 @@
     name="status"
     id="status"
     aria-label="Sélectionner le statut de la commande"
-    (change)="dashboard.selectValueItems($event.target)"
+    (change)="selectStatus($event.target)"
   >
     <option value="-1" selected>– Tous –</option>
     @for (status of orderStatus; track status.value; let i = $index) {

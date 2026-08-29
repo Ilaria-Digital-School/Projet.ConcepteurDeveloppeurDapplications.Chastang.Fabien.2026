@@ -58,12 +58,21 @@ export class Product {
   }
 
   // Remove these properties before saving the order
-  removeBeforeSaveCart(): Product {
-    const PRODUCT = this.removeBeforeSaveProduct();
+  removeBeforeSaveOrder(): Product {
+    const PRODUCT = new Product();
+    Object.assign(PRODUCT, this);
     delete PRODUCT.stock;
     delete PRODUCT.info;
     delete PRODUCT.favorite;
     delete PRODUCT.visible;
+    delete PRODUCT.additional;
+    return PRODUCT;
+  }
+
+  // Remove these properties before saving the cart to local storage
+  removeBeforeSaveCart(): Product {
+    const PRODUCT = this.removeBeforeSaveOrder();
+    delete PRODUCT.cartQuantity;
     return PRODUCT;
   }
 }

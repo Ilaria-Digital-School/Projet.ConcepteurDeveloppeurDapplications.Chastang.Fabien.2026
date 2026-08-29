@@ -230,6 +230,61 @@
       "totalExcludingTax": 80,
       "totalIncludingTax": 96,
       "totalPromotion": 0,
+      "status": 1
+    },
+    {
+      "id": "qYZH9dA",
+      "reference": "ER6V-1TEA-D4T6-F92V-U0AJ",
+      "date": 1787996706186,
+      "userId": "tapQ6zz5B64",
+      "products": [
+        {
+          "id": "BN4bdfCKWuf",
+          "reference": "6XKSDQ-M9CBDP",
+          "name": "Chemise Homme",
+          "description": "Chemise homme en coton bleu clair",
+          "price": 20,
+          "img": "assets/img/clothing/men/shirts/cms1.png",
+          "types": [
+            1
+          ],
+          "categories": [
+            2
+          ],
+          "fullDescription": "$$Restez à l'aise même sous la chaleur\n\nConçue pour les journées ensoleillées, cette chemise d'été allie légèreté et respirabilité pour apporter une sensation de confort agréable lors de vos sorties.\n\nSa matière favorise une bonne circulation de l'air, aide à réguler l'humidité et rend le port plus agréable.\n\nProfitez pleinement de l'été en restant à votre aise.\n\n$$Un style naturel, chic avec simplicité\n\nAvec sa coupe ajustée et sa belle fluidité, cette chemise offre une allure élégante et décontractée. Inutile d'en faire trop, elle s'adapte facilement à toutes vos tenues.\n\nPortée ouverte ou fermée, avec un short ou un pantalon, elle conserve un style sobre et raffiné.\n\n$$Entretien facile pour un été sans tracas\n\nCette Chemise est conçue pour vous simplifier la vie : elle passe en machine et sèche simplement à l'air libre.\n\nMême légèrement froissée, elle garde son charme naturel. Son tissu offre une sensation de douceur et de confort agréable à chaque port.\n\nSon confort et sa douceur en font une pièce appropriée pour vous accompagner durant l'été.",
+          "cartQuantity": 2
+        },
+        {
+          "id": "xVlVC7SoNAY",
+          "reference": "ZZTYI5-I8ONMF",
+          "name": "Jean Homme",
+          "description": "Jean homme gris",
+          "price": 30,
+          "img": "assets/img/clothing/men/jeans/cmj3.png",
+          "types": [],
+          "categories": [],
+          "fullDescription": "",
+          "cartQuantity": 1
+        },
+        {
+          "id": "WeHNcyId4xk",
+          "reference": "IASKOP-V4K5ID",
+          "name": "Robe",
+          "description": "Robe en coton bleu nuit",
+          "price": 70,
+          "img": "assets/img/clothing/women/dresses/cwd2.png",
+          "types": [],
+          "categories": [],
+          "fullDescription": "",
+          "cartQuantity": 1
+        }
+      ],
+      "promoCode": "",
+      "taxPercent": 20,
+      "promoPercent": 0,
+      "totalExcludingTax": 140,
+      "totalIncludingTax": 168,
+      "totalPromotion": 0,
       "status": 0
     }
   ],

@@ -61,15 +61,15 @@ export class AddUser {
   btnAction!: string;
   user: User = new User();
   userIni: User = new User();
-  userNew!: boolean;
+  isNewEmail!: boolean;
   fromCart!: boolean;
   fromTable!: boolean;
   valuesChange: boolean = false;
   helpHTML: string = HELP_HTML;
 
-  // Form initialization and validation ///////////////////////////////////////
+  // Initialization ///////////////////////////////////////////////////////////
 
-  // Form definition and validation
+  // Form definition and validation, and data initialization
   ngOnInit() {
     // Origin of the page request
     this.fromCart = this.router.url.includes('add-user-cart');
@@ -177,23 +177,23 @@ export class AddUser {
     return typeof value === 'string' && value.length === maxlen;
   }
 
-  // Submit the form //////////////////////////////////////////////////////////
+  // Actions //////////////////////////////////////////////////////////////////
 
   // Retrieve all users to check if the email does not exist
-  checkEmail(email: string) {
+  checkNewEmail(email: string) {
     this.userService.getAllUsers().subscribe({
       next: (res: User[]) => {
         if (res.some((user: User) => user.email === email)) {
           alert('Cet e-mail existe déjà !');
-          this.userNew = false;
+          this.isNewEmail = false;
         } else {
-          this.userNew = true;
+          this.isNewEmail = true;
         }
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
         console.log(err);
-        this.userNew = false;
+        this.isNewEmail = false;
       },
     });
   }
@@ -204,8 +204,8 @@ export class AddUser {
 
     // Check if the email does not exist
     if (!this.isEditMode || (this.isEditMode && this.userIni.email !== FORM_VAL.userEmail)) {
-      this.checkEmail(FORM_VAL.userEmail);
-      if (!this.userNew) return;
+      this.checkNewEmail(FORM_VAL.userEmail);
+      if (!this.isNewEmail) return;
     }
 
     // Manage the checkboxes
@@ -289,13 +289,13 @@ export class AddUser {
     }
   }
 
-  // Reset the form ///////////////////////////////////////////////////////////
+  // Reset the form
   reset() {
     this.userForm.reset();
     this.initFormValues();
   }
 
-  // Go to the login form /////////////////////////////////////////////////////
+  // Go to the login form
   gotoLogin() {
     this.router.navigate([this.fromCart ? '/login-cart' : '/login']);
   }

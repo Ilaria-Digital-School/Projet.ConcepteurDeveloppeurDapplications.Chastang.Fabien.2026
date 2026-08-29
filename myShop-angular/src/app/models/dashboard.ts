@@ -1,49 +1,89 @@
-import { Subject } from "rxjs";
-import { DashboardArrays, SortElement, SortVariables } from "../types/dashboard";
-import { Dashboard } from "../constants/dashboard";
+import { Subject } from 'rxjs';
+import { DashboardArrays, SortElement, SortVariables } from '../types/dashboard';
 
 export class DashboardHandle<T> {
   // Object containing the 5 arrays
   arrays: DashboardArrays<T>;
+
   // Used for searching
-  searchByTextSubject: Subject<string>;
-  searchByRefSubject: Subject<string>;
+  searchTextSubject: Subject<string>;
+  searchRefSubject: Subject<string>;
   selectedValue: number;
+
   // Used for sorting
   sortElements!: SortElement<T>[];
   sortVariables!: SortVariables[];
 
   constructor() {
     this.arrays = new DashboardArrays<T>();
-    this.searchByTextSubject = new Subject<string>();
-    this.searchByRefSubject = new Subject<string>();
-    this.selectedValue= -1;
+    this.searchTextSubject = new Subject<string>();
+    this.searchRefSubject = new Subject<string>();
+    this.selectedValue = -1;
   }
 
   // Search methods ///////////////////////////////////////////////////////////
 
   // Search by email (User and Order) or name (Product)
   searchTextItems(text: string) {
-    this.searchByTextSubject.next(text);
+    this.searchTextSubject.next(text);
   }
 
   // Search by reference (User, Product and Order)
   searchRefItems(reference: string) {
-    this.searchByRefSubject.next(reference);
-  }
-
-  // Search by role (User), stock (Product) or status (Order)
-  filterByValue!: () => void;
-
-  selectValueItems(select: any) {
-    this.selectedValue = Number(select.options[select.selectedIndex].value);
-    this.filterByValue();
+    this.searchRefSubject.next(reference);
   }
 
   // Sort method //////////////////////////////////////////////////////////////
 
+  private handleArrow(HTMLCol: HTMLElement, up: boolean) {
+    const [TO_REP, REP_BY] = up ? ['down', 'up'] : ['up', 'down'];
+    HTMLCol.classList.replace(`fa-caret-${TO_REP}`, `fa-caret-${REP_BY}`);
+  }
+
   // Sort all arrays
   sort(column: string) {
-    Dashboard.sort<T>(this.arrays, this.sortElements, this.sortVariables, column);
+    const SORTED = this.sortVariables.find((item: SortVariables) => item.sort);
+    if (SORTED !== undefined) {
+      for (const ELT_SORT of this.sortElements)
+        if (ELT_SORT.col === column) {
+          if (SORTED.col === column) {
+            // The column has not changed, only the sort order is reversed
+            SORTED.up = !SORTED.up;
+
+            // Sort all arrays
+            Object.values(this.arrays).forEach(
+              (array: Array<T>) => (array = ELT_SORT.func(array, SORTED.up)),
+            );
+
+            // Reverse the arrow
+            this.handleArrow(ELT_SORT.HTMLCol, SORTED.up);
+          } else {
+            // Initialize the new sort when the column has changed
+            const TO_SORT = this.sortVariables.find((item: SortVariables) => item.col === column);
+            if (TO_SORT) {
+              TO_SORT.sort = true;
+              TO_SORT.up = ELT_SORT.up;
+            }
+
+            // Sort all arrays
+            Object.values(this.arrays).forEach(
+              (array: Array<T>) => (array = ELT_SORT.func(array, ELT_SORT.up)),
+            );
+
+            // Hide the previous sort arrow
+            SORTED.sort = false;
+            for (const ELT_HIDE of this.sortElements)
+              if (ELT_HIDE.col === SORTED.col) {
+                ELT_HIDE.HTMLCol.classList.add('hidden');
+                break;
+              }
+
+            // Show the new sort arrow
+            ELT_SORT.HTMLCol.classList.remove('hidden');
+            this.handleArrow(ELT_SORT.HTMLCol, ELT_SORT.up);
+          }
+          break;
+        }
+    }
   }
 }

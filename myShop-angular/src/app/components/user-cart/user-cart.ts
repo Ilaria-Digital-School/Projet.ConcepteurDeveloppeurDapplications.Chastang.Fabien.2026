@@ -60,7 +60,7 @@ export class UserCart {
     this.connectedUser = this.authService.getConnectedUser();
   }
 
-  // Product-related action ///////////////////////////////////////////////////
+  // Product-related actions //////////////////////////////////////////////////
 
   // View a product
   view(id: string) {
@@ -106,7 +106,7 @@ export class UserCart {
     this.userCart.products = this.userCart.products.filter((product: Product) => product.id !== id);
   }
 
-  // Cart-related action //////////////////////////////////////////////////////
+  // Cart-related actions /////////////////////////////////////////////////////
 
   // Retrieve the total cart amount excluding tax
   getTotalExcludingTax() {

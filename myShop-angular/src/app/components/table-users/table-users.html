@@ -19,7 +19,7 @@
     name="role"
     id="role"
     aria-label="Sélectionner le role"
-    (change)="dashboard.selectValueItems($event.target)"
+    (change)="selectRole($event.target)"
   >
     <option value="-1" selected>– Tous –</option>
     @for (role of userRoles; track role.value; let i = $index) {

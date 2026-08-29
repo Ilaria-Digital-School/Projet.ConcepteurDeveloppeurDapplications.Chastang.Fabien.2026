@@ -40,9 +40,9 @@ export class TableUsers {
   userRoles!: ItemCstShort[];
   editUser!: User | null;
 
-  // Initialization ///////////////////////////////////////////////////////////
+  // Load and search //////////////////////////////////////////////////////////
 
-  // Initialize the user list
+  // Initialize user lists and search functions
   ngOnInit() {
     // Sort the user's roles
     this.userRoles = UserRoles.list.sort(
@@ -53,7 +53,7 @@ export class TableUsers {
     this.load();
 
     // Search for users by email
-    this.dashboard.searchByTextSubject
+    this.dashboard.searchTextSubject
       .pipe(
         map((email: string) => {
           const EMAIL = email.toLocaleLowerCase();
@@ -63,16 +63,17 @@ export class TableUsers {
         }),
       )
       .subscribe((res: User[]) => {
-        this.dashboard.arrays.filteredByText = res;
-        this.dashboard.arrays.filteredText = res.filter((user: User) =>
+        this.dashboard.arrays.filteredText = res;
+        this.dashboard.arrays.filteredTextRef = res.filter((user: User) =>
           // Filter by user reference
-          this.dashboard.arrays.filteredByRef.some((item: User) => item.id === user.id),
+          this.dashboard.arrays.filteredRef.some((item: User) => item.id === user.id),
         );
-        this.dashboard.filterByValue(); // Filter by user role
+        // Filter by user role
+        this.filterRole();
       });
 
     // Search for users by reference
-    this.dashboard.searchByRefSubject
+    this.dashboard.searchRefSubject
       .pipe(
         map((reference: string) => {
           const REFERENCE = reference.toLocaleUpperCase();
@@ -82,19 +83,58 @@ export class TableUsers {
         }),
       )
       .subscribe((res: User[]) => {
-        this.dashboard.arrays.filteredByRef = res;
-        this.dashboard.arrays.filteredText = res.filter((user: User) =>
+        this.dashboard.arrays.filteredRef = res;
+        this.dashboard.arrays.filteredTextRef = res.filter((user: User) =>
           // Filter by user email
-          this.dashboard.arrays.filteredByText.some((item: User) => item.id === user.id),
+          this.dashboard.arrays.filteredText.some((item: User) => item.id === user.id),
         );
-        this.dashboard.filterByValue(); // Filter by user role
+        // Filter by user role
+        this.filterRole();
       });
   }
 
-  ngAfterViewInit() {
-    // Initialize the filter method
-    this.dashboard.filterByValue = this.filterByRole;
+  // Retrieve all users
+  load() {
+    this.userService.getAllUsers().subscribe({
+      next: (res: User[]) => {
+        // All users
+        this.dashboard.arrays.unfiltered = res.sort((item1: User, item2: User) => {
+          const COMPARE = item1.name.localeCompare(item2.name);
+          return COMPARE === 0 ? item1.email.localeCompare(item2.email) : COMPARE;
+        });
+        this.dashboard.arrays.filteredText = structuredClone(this.dashboard.arrays.unfiltered);
+        this.dashboard.arrays.filteredRef = structuredClone(this.dashboard.arrays.unfiltered);
+        this.dashboard.arrays.filteredTextRef = structuredClone(this.dashboard.arrays.unfiltered);
+        this.dashboard.arrays.filteredItems = structuredClone(this.dashboard.arrays.unfiltered);
+      },
+      error: (err: any) => {
+        alert("Une erreur s'est produite lors de la récupération des données.");
+        console.log(err);
+      },
+    });
+  }
 
+  // Filter by user role
+  filterRole() {
+    if (this.dashboard.selectedValue === -1) {
+      this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredTextRef;
+    } else {
+      this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredTextRef.filter(
+        (user: User) => user.role === this.dashboard.selectedValue,
+      );
+    }
+  }
+
+  // Search by user role
+  selectRole(select: any) {
+    this.dashboard.selectedValue = Number(select.options[select.selectedIndex].value);
+    this.filterRole();
+  }
+
+  // Sort /////////////////////////////////////////////////////////////////////
+
+  // Initialize sorting
+  ngAfterViewInit() {
     // Defines the sorting elements: here, all attributes are fixed
     this.dashboard.sortElements = [
       { col: 'name', up: true, func: this.sortByName, HTMLCol: this.sortName.nativeElement },
@@ -109,42 +149,6 @@ export class TableUsers {
       { col: 'role', sort: false, up: true },
     ];
   }
-
-  // Load and filter //////////////////////////////////////////////////////////
-
-  // Retrieve all users
-  load() {
-    this.userService.getAllUsers().subscribe({
-      next: (res: User[]) => {
-        // All users
-        this.dashboard.arrays.unfiltered = res.sort((item1: User, item2: User) => {
-          const COMPARE = item1.name.localeCompare(item2.name);
-          return COMPARE === 0 ? item1.email.localeCompare(item2.email) : COMPARE;
-        });
-        this.dashboard.arrays.filteredByText = structuredClone(this.dashboard.arrays.unfiltered);
-        this.dashboard.arrays.filteredByRef = structuredClone(this.dashboard.arrays.unfiltered);
-        this.dashboard.arrays.filteredText = structuredClone(this.dashboard.arrays.unfiltered);
-        this.dashboard.arrays.filteredItems = structuredClone(this.dashboard.arrays.unfiltered);
-      },
-      error: (err: any) => {
-        alert("Une erreur s'est produite lors de la récupération des données.");
-        console.log(err);
-      },
-    });
-  }
-
-  // Filter by user role
-  filterByRole() {
-    if (this.dashboard.selectedValue === -1) {
-      this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredText;
-    } else {
-      this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredText.filter(
-        (user: User) => user.role === this.dashboard.selectedValue,
-      );
-    }
-  }
-
-  // Sort /////////////////////////////////////////////////////////////////////
 
   // Sort users by name (default)
   sortByName(array: User[], up: boolean): User[] {
@@ -170,7 +174,7 @@ export class TableUsers {
     }
   }
 
-  // Sort users by email
+  // Sort users by role
   sortByRole(array: User[], up: boolean): User[] {
     if (up) {
       return array.sort((item1: User, item2: User) => {
@@ -235,7 +239,7 @@ export class TableUsers {
           this.dashboard.arrays.unfiltered = this.dashboard.arrays.unfiltered.filter(
             (item: User) => item.id !== id,
           );
-          this.dashboard.arrays.filteredText = this.dashboard.arrays.filteredText.filter(
+          this.dashboard.arrays.filteredTextRef = this.dashboard.arrays.filteredTextRef.filter(
             (item: User) => item.id !== id,
           );
           this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredItems.filter(

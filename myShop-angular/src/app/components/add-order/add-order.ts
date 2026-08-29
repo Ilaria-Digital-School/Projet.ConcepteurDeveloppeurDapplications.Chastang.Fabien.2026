@@ -24,6 +24,8 @@ export class AddOrder {
   userId!: string | null;
   userCart!: Cart;
 
+  // Initialization ///////////////////////////////////////////////////////////
+
   ngOnInit() {
     // Get the user ID parameter
     this.userId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -44,6 +46,8 @@ export class AddOrder {
     // Initialize the user ID
     if (this.userId !== null) this.userCart.userId = this.userId;
   }
+
+  // Actions //////////////////////////////////////////////////////////////////
 
   addOrder() {
     if (this.userCart.products.length > 0) {

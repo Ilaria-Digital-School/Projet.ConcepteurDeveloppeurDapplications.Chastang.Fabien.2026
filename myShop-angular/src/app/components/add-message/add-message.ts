@@ -29,6 +29,17 @@ export class AddMessage {
 
   // Check the form ///////////////////////////////////////////////////////////
 
+  // Check the maximum length for the name to inform the user
+  warningMaxlength(value: string, maxlen: number): boolean {
+    return typeof value === 'string' && value.length === maxlen;
+  }
+
+  // Check the email
+  errorEmail(value: string): boolean {
+    const RE_EMAIL = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return typeof value === 'string' && !RE_EMAIL.test(value);
+  }
+
   // Check the minimum length of the message
   errorMinlengthStrict(value: string, minlen: number): boolean {
     let error = false;
@@ -38,16 +49,6 @@ export class AddMessage {
       error = !RE.test(VALUE);
     }
     return error;
-  }
-
-  errorEmail(value: string): boolean {
-    const RE_EMAIL = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return typeof value === 'string' && !RE_EMAIL.test(value);
-  }
-
-  // Check the maximum length
-  warningMaxlength(value: string, maxlen: number): boolean {
-    return typeof value === 'string' && value.length === maxlen;
   }
 
   // Submit the form //////////////////////////////////////////////////////////

@@ -96,7 +96,7 @@ export class Order {
     const ORDER = new Order();
     Object.assign(ORDER, this);
     delete ORDER.additional;
-    ORDER.products = ORDER.products.map((product: Product) => product.removeBeforeSaveCart());
+    ORDER.products = ORDER.products.map((product: Product) => product.removeBeforeSaveOrder());
     return ORDER;
   }
 }
