@@ -1,20 +1,20 @@
 import { Component, inject, ViewChild } from '@angular/core';
-import { TableUsers } from '../table-users/table-users';
-import { TableProducts } from '../table-products/table-products';
-import { TableOrders } from '../table-orders/table-orders';
+import { DashboardUsers } from '../dashboard-users/dashboard-users';
+import { DashboardProducts } from '../dashboard-products/dashboard-products';
+import { DashboardOrders } from '../dashboard-orders/dashboard-orders';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [TableUsers, TableProducts, TableOrders],
+  imports: [DashboardUsers, DashboardProducts, DashboardOrders],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
 export class Dashboard {
   // To retrieve DOM elements
-  @ViewChild('usersTable') usersTable!: TableUsers;
-  @ViewChild('productsTable') productsTable!: TableProducts;
-  @ViewChild('ordersTable') ordersTable!: TableOrders;
+  @ViewChild('usersTable') usersTable!: DashboardUsers;
+  @ViewChild('productsTable') productsTable!: DashboardProducts;
+  @ViewChild('ordersTable') ordersTable!: DashboardOrders;
 
   // Native classes / Application services
   private router = inject(Router);

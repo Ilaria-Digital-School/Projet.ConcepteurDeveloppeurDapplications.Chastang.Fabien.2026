@@ -1,12 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Header } from './components/header/header';
-import { Footer } from './components/footer/footer';
-import { ScrollTop } from './components/scroll-top/scroll-top';
+import { PageHeader } from './components/page-header/page-header';
+import { PageFooter } from './components/page-footer/page-footer';
+import { PageScrollTop } from './components/page-scroll-top/page-scroll-top';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Footer, ScrollTop],
+  imports: [RouterOutlet, PageHeader, PageFooter, PageScrollTop],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

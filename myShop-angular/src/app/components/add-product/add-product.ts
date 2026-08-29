@@ -3,7 +3,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../services/product-service';
 import { Product } from '../../models/product';
-import { Tooltip } from '../tooltip/tooltip';
+import { FormTooltip } from '../form-tooltip/form-tooltip';
 import { Common } from '../../constants/common';
 import { ProductTypes } from '../../constants/product-types';
 import { ProductCategories } from '../../constants/product-categories';
@@ -39,7 +39,7 @@ const HELP_HTML = `
 
 @Component({
   selector: 'app-add-product',
-  imports: [FormsModule, Tooltip],
+  imports: [FormsModule, FormTooltip],
   templateUrl: './add-product.html',
   styleUrl: './add-product.css',
 })

@@ -2,7 +2,7 @@
   <!-- Product Add/Edit Form -->
   <form id="productForm" #productForm="ngForm" (ngSubmit)="submit(productForm)" class="form">
     <!-- Information regarding the completion of the form -->
-    <app-tooltip [isSimple]="false" [helpHTML]="helpHTML"></app-tooltip>
+    <app-form-tooltip [isSimple]="false" [helpHTML]="helpHTML"></app-form-tooltip>
 
     <!-- Form title -->
     <h2>{{ title }}</h2>
@@ -129,7 +129,7 @@
       }
     </div>
     <div class="field-container first">
-      <div class="field-label" aria-label="ProductTypes de produit">ProductTypes&nbsp;:</div>
+      <div class="field-label" aria-label="Types de produit">Types&nbsp;:</div>
       <div>
         @for (type of ProductTypes.list; track type.value; let i = $index) {
           @if (type.value !== ProductTypes.other.value) {

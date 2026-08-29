@@ -130,7 +130,7 @@ export class UserCart {
     if (this.connectedUser) {
       this.router.navigate(['/add-order', this.connectedUser.id]);
     } else if (confirm(UserCart.msgConnectToOrder)) {
-      this.router.navigate(['/login-cart']);
+      this.router.navigate(['/user-login-cart']);
     }
   }
 }

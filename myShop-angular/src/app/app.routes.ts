@@ -6,7 +6,7 @@ import { ProductView } from './components/product-view/product-view';
 import { AddProduct } from './components/add-product/add-product';
 import { Dashboard } from './components/dashboard/dashboard';
 import { UserCart } from './components/user-cart/user-cart';
-import { Login } from './components/login/login';
+import { UserLogin } from './components/user-login/user-login';
 import { AddUser } from './components/add-user/add-user';
 import { AddOrder } from './components/add-order/add-order';
 import { UserOrders } from './components/user-orders/user-orders';
@@ -26,8 +26,8 @@ export const routes: Routes = [
   { path: 'dashboard-product', component: Dashboard, canActivate: [adminGuard] },
   { path: 'dashboard-order', component: Dashboard, canActivate: [adminGuard] },
   { path: 'user-cart', component: UserCart },
-  { path: 'login', component: Login },
-  { path: 'login-cart', component: Login },
+  { path: 'user-login', component: UserLogin },
+  { path: 'user-login-cart', component: UserLogin },
   { path: 'user-view/:id', component: UserView },
   { path: 'add-user', component: AddUser },
   { path: 'add-user-cart', component: AddUser },

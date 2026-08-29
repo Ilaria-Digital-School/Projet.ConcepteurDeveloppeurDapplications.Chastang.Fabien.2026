@@ -15,7 +15,7 @@ import { UserCountries } from '../../constants/user-countries';
 import { UserGenders } from '../../constants/user-genders';
 import { ItemCst } from '../../types/items';
 import { User } from '../../models/user';
-import { Tooltip } from '../tooltip/tooltip';
+import { FormTooltip } from '../form-tooltip/form-tooltip';
 // import { JsonPipe } from '@angular/common';
 
 // Custom validators for the entire form //////////////////////////////////////
@@ -37,7 +37,7 @@ obligatoires.
 
 @Component({
   selector: 'app-add-user',
-  imports: [ReactiveFormsModule, Tooltip /*, JsonPipe*/],
+  imports: [ReactiveFormsModule, FormTooltip /*, JsonPipe*/],
   templateUrl: './add-user.html',
   styleUrl: './add-user.css',
 })
@@ -297,6 +297,6 @@ export class AddUser {
 
   // Go to the login form
   gotoLogin() {
-    this.router.navigate([this.fromCart ? '/login-cart' : '/login']);
+    this.router.navigate([this.fromCart ? '/user-login-cart' : '/user-login']);
   }
 }

@@ -3,7 +3,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from '../../services/message-service';
 import { Message } from '../../models/message';
-import { Tooltip } from '../tooltip/tooltip';
+import { FormTooltip } from '../form-tooltip/form-tooltip';
 
 const HELP_HTML = `
 Les champs marqués d'un astérisque (<span style="color: red; padding: 0 3px">*</span>) sont
@@ -14,7 +14,7 @@ obligatoires.
 
 @Component({
   selector: 'app-add-message',
-  imports: [FormsModule, Tooltip],
+  imports: [FormsModule, FormTooltip],
   templateUrl: './add-message.html',
   styleUrl: './add-message.css',
 })
