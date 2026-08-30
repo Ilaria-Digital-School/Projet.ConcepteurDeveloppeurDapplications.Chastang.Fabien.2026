@@ -83,7 +83,7 @@ export class Common {
   }
 
   /////////////////////////////////////////////////////////////////////////////
-  // Returns an 10-character alphanumeric identifier
+  // Returns a 10-character alphanumeric identifier
 
   static getID() {
     return this.randomString(10);
