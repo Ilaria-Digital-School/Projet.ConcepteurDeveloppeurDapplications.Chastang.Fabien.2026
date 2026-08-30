@@ -90,7 +90,7 @@ export class Common {
   }
 
   /////////////////////////////////////////////////////////////////////////////
-  // Functions returning 'Product', 'User', and 'Order' references
+  // Functions returning 'Product', 'User' and 'Order' references
 
   static digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
