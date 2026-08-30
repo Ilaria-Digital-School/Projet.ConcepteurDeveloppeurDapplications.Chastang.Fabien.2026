@@ -1,8 +1,8 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Common } from '../../constants/common';
-import { OrderStatus } from '../../constants/order-status';
 import { Product } from '../../models/product';
+import { StatusList } from '../../models/status';
 
 @Component({
   selector: 'app-user-order',
@@ -13,10 +13,12 @@ import { Product } from '../../models/product';
 export class UserOrder {
   // Constants
   public Common = Common;
-  public OrderStatus = OrderStatus;
 
   // To retrieve data from another component
   @Input() order: any;
+
+  // Class properties
+  orderStatus: StatusList = new StatusList();
 
   // Sort the product array alphabetically by name
   ngOnInit() {

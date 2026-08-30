@@ -2,12 +2,11 @@ import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { map } from 'rxjs';
-import { ItemCstShort } from '../../types/items';
-import { UserGenders } from '../../constants/user-genders';
-import { UserCountries } from '../../constants/user-countries';
-import { UserRoles } from '../../constants/user-roles';
-import { User } from '../../models/user';
 import { DashboardHandle } from '../../models/dashboard';
+import { User } from '../../models/user';
+import { RoleList } from '../../models/role';
+import { GenderList } from '../../models/gender';
+import { CountryList } from '../../models/country';
 import { UserService } from '../../services/user-service';
 
 @Component({
@@ -23,11 +22,6 @@ export class DashboardUsers {
   @ViewChild('sortEmail') sortEmail!: ElementRef<HTMLElement>;
   @ViewChild('sortRole') sortRole!: ElementRef<HTMLElement>;
 
-  // Constants
-  public UserGenders = UserGenders;
-  public UserCountries = UserCountries;
-  public UserRoles = UserRoles;
-
   // Native classes / Application services
   private router = inject(Router);
   private userService = inject(UserService);
@@ -37,18 +31,15 @@ export class DashboardUsers {
 
   // Class properties grouped in the 'DashboardHandle' class
   dashboard: DashboardHandle<User> = new DashboardHandle<User>();
-  userRoles!: ItemCstShort[];
+  roles: RoleList = new RoleList();
+  genders: GenderList = new GenderList();
+  countries: CountryList = new CountryList();
   editUser!: User | null;
 
   // Load and search //////////////////////////////////////////////////////////
 
   // Initialize user lists and search functions
   ngOnInit() {
-    // Sort the user's roles
-    this.userRoles = UserRoles.list.sort(
-      (i1: ItemCstShort, i2: ItemCstShort) => i1.value - i2.value,
-    );
-
     // Load all users
     this.load();
 

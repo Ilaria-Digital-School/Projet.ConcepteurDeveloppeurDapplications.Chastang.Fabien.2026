@@ -1,8 +1,16 @@
 <section>
   <fieldset>
     <legend>
-      <a [routerLink]="['/edit-user', userId]" title="Éditer" aria-label="Éditer"> Mes Informations </a>
+      <a [routerLink]="['/edit-user', userId]" title="Éditer" aria-label="Éditer">
+        Mes Informations
+      </a>
     </legend>
+    @if (user.role > 0) {
+      <div>
+        <div>Role :</div>
+        <div>{{ roles.getByValue(user.role)?.name }}</div>
+      </div>
+    }
     <div>
       <div>Nom :</div>
       <div>{{ user.name }}</div>
@@ -13,16 +21,16 @@
     </div>
     <div>
       <div>Genre :</div>
-      <div>{{ UserGenders.getLabel(user.gender, '—') }}</div>
+      <div>{{ user.gender > 0 ? genders.getByValue(user.gender)?.name : '—' }}</div>
     </div>
     <div>
       <div>Centres d'intérêts :</div>
       <div>
         @for (item of user.interests; track item; let i = $index) {
           @if (i < user.interests.length - 1) {
-            <span>{{ UserInterests.getLabel(item) }}, </span>
+            <span>{{ interests.getByValue(item)?.name }}, </span>
           } @else {
-            <span>{{ UserInterests.getLabel(item) }}</span>
+            <span>{{ interests.getByValue(item)?.name }}</span>
           }
         } @empty {
           <span [style.font-style]="'italic'">—</span>
@@ -31,7 +39,7 @@
     </div>
     <div>
       <div>Pays :</div>
-      <div>{{ UserCountries.getLabel(user.country, '—') }}</div>
+      <div>{{ user.country > 0 ? countries.getByValue(user.country)?.name : '—' }}</div>
     </div>
   </fieldset>
 </section>

@@ -1,12 +1,12 @@
 import { Component, ElementRef, inject, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductService } from '../../services/product-service';
-import { Product } from '../../models/product';
-import { FormTooltip } from '../form-tooltip/form-tooltip';
 import { Common } from '../../constants/common';
-import { ProductTypes } from '../../constants/product-types';
-import { ProductCategories } from '../../constants/product-categories';
+import { Product } from '../../models/product';
+import { InterestList } from '../../models/interest';
+import { CategoryList } from '../../models/category';
+import { ProductService } from '../../services/product-service';
+import { FormTooltip } from '../form-tooltip/form-tooltip';
 
 const PLACEHOLDER_FULL_DESC = `$$Titre 1
 Paragraphe 1.1
@@ -48,10 +48,6 @@ export class AddProduct {
   @ViewChildren('productType') productTypes!: QueryList<ElementRef>;
   @ViewChildren('productCategory') productCategories!: QueryList<ElementRef>;
 
-  // Constants
-  public ProductTypes = ProductTypes;
-  public ProductCategories = ProductCategories;
-
   // Native classes / Application services
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
@@ -68,6 +64,8 @@ export class AddProduct {
   productPrice: string = '';
   productStock: string = '';
   productInfo: string = '';
+  interests: InterestList = new InterestList();
+  categories: CategoryList = new CategoryList();
   placeholderFullDesc: string = PLACEHOLDER_FULL_DESC;
   helpHTML: string = HELP_HTML;
 
@@ -270,6 +268,7 @@ export class AddProduct {
       this.init(); // Initialize data
     } else {
       productForm.resetForm();
+      this.initCheckbox();
     }
   }
 }

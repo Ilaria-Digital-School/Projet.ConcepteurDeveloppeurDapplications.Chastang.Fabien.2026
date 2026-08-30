@@ -8,14 +8,12 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '../../services/user-service';
-import { EnumInterests } from '../../enums/user-interests';
-import { UserInterests } from '../../constants/user-interests';
-import { UserCountries } from '../../constants/user-countries';
-import { UserGenders } from '../../constants/user-genders';
-import { ItemCst } from '../../types/items';
 import { User } from '../../models/user';
+import { Interest, InterestList } from '../../models/interest';
+import { UserService } from '../../services/user-service';
 import { FormTooltip } from '../form-tooltip/form-tooltip';
+import { CountryList } from '../../models/country';
+import { GenderList } from '../../models/gender';
 // import { JsonPipe } from '@angular/common';
 
 // Custom validators for the entire form //////////////////////////////////////
@@ -42,11 +40,6 @@ obligatoires.
   styleUrl: './add-user.css',
 })
 export class AddUser {
-  // Constants
-  public UserGenders = UserGenders;
-  public UserInterests = UserInterests;
-  public UserCountries = UserCountries;
-
   // Native classes / Application services
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
@@ -55,6 +48,9 @@ export class AddUser {
 
   // Class properties
   userForm!: FormGroup;
+  genders: GenderList = new GenderList();
+  interests: InterestList = new InterestList();
+  countries: CountryList = new CountryList();
   isEditMode!: boolean;
   userId!: string | null;
   title!: string;
@@ -114,8 +110,9 @@ export class AddUser {
             formValue.userName.trim() !== this.userIni.name ||
             formValue.userEmail !== this.userIni.email ||
             formValue.gender !== this.userIni.gender ||
-            formValue.clothes !== this.userIni.interests.includes(1) ||
-            formValue.accessories !== this.userIni.interests.includes(2) ||
+            formValue.clothes !== this.userIni.interests.includes(this.interests.getValues().clothes) ||
+            formValue.accessories !==
+              this.userIni.interests.includes(this.interests.getValues().accessories) ||
             parseInt(formValue.country) !== this.userIni.country;
         }
       });
@@ -161,8 +158,8 @@ export class AddUser {
       userName: this.userIni.name,
       userEmail: this.userIni.email,
       gender: this.userIni.gender,
-      clothes: this.userIni.interests.includes(1),
-      accessories: this.userIni.interests.includes(2),
+      clothes: this.userIni.interests.includes(this.interests.getValues().clothes),
+      accessories: this.userIni.interests.includes(this.interests.getValues().accessories),
       country: this.userIni.country,
     });
   }
@@ -210,8 +207,8 @@ export class AddUser {
 
     // Manage the checkboxes
     const INTERESTS: number[] = [];
-    if (FORM_VAL.clothes) INTERESTS.push(EnumInterests.clothes);
-    if (FORM_VAL.accessories) INTERESTS.push(EnumInterests.accessories);
+    if (FORM_VAL.clothes) INTERESTS.push(this.interests.getValues().clothes);
+    if (FORM_VAL.accessories) INTERESTS.push(this.interests.getValues().accessories);
 
     const USER = new User();
     Object.assign(USER, this.user);
@@ -236,9 +233,8 @@ export class AddUser {
         USER.gender = GENDER;
       }
       if (
-        UserInterests.list.some(
-          (item: ItemCst) =>
-            this.userIni.interests.includes(item.value) !== INTERESTS.includes(item.value),
+        this.interests.getAll().some(
+          (i: Interest) => this.userIni.interests.includes(i.value) !== INTERESTS.includes(i.value),
         )
       ) {
         toSave = true;

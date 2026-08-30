@@ -7,10 +7,10 @@ import {
   HostListener,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductCard } from '../product-card/product-card';
 import { Product } from '../../models/product';
-import { CartService } from '../../services/cart-service';
 import { ProductService } from '../../services/product-service';
+import { CartService } from '../../services/cart-service';
+import { ProductCard } from '../product-card/product-card';
 
 @Component({
   selector: 'app-products-carousel',

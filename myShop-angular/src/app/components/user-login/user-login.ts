@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { EnumRoles } from '../../enums/user-roles';
 import { LoginData } from '../../types/common';
 import { User } from '../../models/user';
 import { FormTooltip } from '../form-tooltip/form-tooltip';
@@ -66,7 +65,7 @@ export class UserLogin {
 
           // Redirect to the home page for the user and to the dashboard for the administrator
           this.router.navigate([
-            USER.role === EnumRoles.user ? (this.fromCart ? '/user-cart' : '/') : '/dashboard',
+            USER.role === 0 ? (this.fromCart ? '/user-cart' : '/') : '/dashboard',
           ]);
         } else {
           this.errorMsg = 'E-mail ou mot de passe incorrect !';

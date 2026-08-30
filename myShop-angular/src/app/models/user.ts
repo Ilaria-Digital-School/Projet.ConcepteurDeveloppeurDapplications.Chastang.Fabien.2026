@@ -1,8 +1,4 @@
 import { Common } from '../constants/common';
-import { UserGenders } from '../constants/user-genders';
-import { UserInterests } from '../constants/user-interests';
-import { UserCountries } from '../constants/user-countries';
-import { UserRoles } from '../constants/user-roles';
 
 // User class
 export class User {
@@ -11,10 +7,10 @@ export class User {
   name: string = '';
   email: string = '';
   pswd: string = '';
-  gender: number = UserGenders.other.value;
+  gender: number = 0;
   interests: number[] = [];
-  country: number = UserCountries.other.value;
-  role: number = UserRoles.other.value;
+  country: number = 0;
+  role: number = 0;
   visible: boolean = true;
 
   // Temporary property, not saved
@@ -31,19 +27,9 @@ export class User {
     if (typeof name === 'string') this.name = name;
     if (typeof email === 'string') this.email = email;
     if (typeof pswd === 'string') this.pswd = pswd;
-    if (typeof gender === 'number') {
-      const GENDER: any = UserGenders.list.find((item: any) => item.value === gender);
-      this.gender = GENDER ? GENDER.value : UserGenders.other.value;
-    }
-    if (Array.isArray(interests)) {
-      this.interests = UserInterests.list
-        .filter((item: any) => interests.includes(item.value))
-        .map((item: any) => item.value);
-    }
-    if (typeof country === 'number') {
-      const COUNTRY: any = UserCountries.list.find((item: any) => item.value === country);
-      this.country = COUNTRY ? COUNTRY.value : UserCountries.other.value;
-    }
+    if (typeof gender === 'number') this.gender = gender;
+    if (Array.isArray(interests)) this.interests = interests;
+    if (typeof country === 'number') this.country = country;
   }
 
   // Remove these properties before saving the user

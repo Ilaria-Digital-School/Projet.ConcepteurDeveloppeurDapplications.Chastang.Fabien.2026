@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
+import { User } from '../../models/user';
+import { RoleList } from '../../models/role';
 import { AuthService } from '../../services/auth-service';
 import { CartService } from '../../services/cart-service';
-import { EnumRoles } from '../../enums/user-roles';
-import { User } from '../../models/user';
 
 @Component({
   selector: 'app-page-header',
@@ -12,9 +12,6 @@ import { User } from '../../models/user';
   styleUrl: './page-header.css',
 })
 export class PageHeader {
-  // Enumarations
-  public EnumRoles = EnumRoles;
-
   // Native classes / Application services
   private router = inject(Router);
   private authService = inject(AuthService);
@@ -23,6 +20,7 @@ export class PageHeader {
   // Class properties
   title: string = 'My Shop';
   connectedUser: User | null = null;
+  roles: RoleList = new RoleList();
 
   // Retrieve the logged-in user
   ngOnInit() {
@@ -32,6 +30,11 @@ export class PageHeader {
   // Method to retrieve the logged-in user
   getConnectedUser(): User | null {
     return (this.connectedUser = this.authService.getConnectedUser());
+  }
+
+  // Check if the user is an admin
+  isAdmin() {
+    return this.connectedUser !== null && this.connectedUser.role > 0;
   }
 
   // Logout

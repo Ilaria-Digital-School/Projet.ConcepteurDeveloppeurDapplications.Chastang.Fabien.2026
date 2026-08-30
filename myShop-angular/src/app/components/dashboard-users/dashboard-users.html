@@ -22,8 +22,8 @@
     (change)="selectRole($event.target)"
   >
     <option value="-1" selected>– Tous –</option>
-    @for (role of userRoles; track role.value; let i = $index) {
-      <option [value]="role.value">{{ role.label }}</option>
+    @for (role of roles.getAll(); track role.value; let i = $index) {
+      <option [value]="role.value">{{ role.name }}</option>
     }
   </select>
   <div class="table-responsive">
@@ -57,7 +57,7 @@
           <tr [class]="user.role !== 0 ? 'admin-row' : ''">
             <th scope="row">{{ i + 1 }}</th>
             <td [class]="user.role !== 0 ? 'admin-cell' : ''">{{ user.reference }}</td>
-            <td>{{ UserGenders.getLabel(user.gender, '—') }}</td>
+            <td>{{ user.gender > 0 ? genders.getByValue(user.gender)?.name : '—' }}</td>
             @if (user.id === editUser?.id) {
               <td class="inline">
                 <input
@@ -81,9 +81,9 @@
               <td [class]="user.role !== 0 ? 'admin-cell-left' : 'cell-left'">{{ user.name }}</td>
               <td [class]="user.role !== 0 ? 'admin-cell-left' : 'cell-left'">{{ user.email }}</td>
             }
-            <td>{{ UserCountries.getLabel(user.country, '—') }}</td>
+            <td>{{ user.country > 0 ? countries.getByValue(user.country)?.name : '—' }}</td>
             <td [class]="user.role !== 0 ? 'admin-cell' : ''">
-              {{ UserRoles.getLabel(user.role) }}
+              {{ roles.getByValue(user.role)?.name }}
             </td>
             <td [style.white-space]="'nowrap'">
               @if (user.id === editUser?.id) {

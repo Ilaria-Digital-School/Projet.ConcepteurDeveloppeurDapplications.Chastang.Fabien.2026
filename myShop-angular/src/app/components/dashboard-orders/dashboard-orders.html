@@ -23,8 +23,8 @@
     (change)="selectStatus($event.target)"
   >
     <option value="-1" selected>– Tous –</option>
-    @for (status of orderStatus; track status.value; let i = $index) {
-      <option [value]="status.value">{{ status.label }}</option>
+    @for (status of orderStatus.getAll(); track status.value; let i = $index) {
+      <option [value]="status.value">{{ status.name }}</option>
     }
   </select>
   <div class="table-responsive">
@@ -81,7 +81,7 @@
               }}
               €
             </td>
-            <td>{{ OrderStatus.getLabel(orderExt.order.status) }}</td>
+            <td>{{ orderStatus.getByValue(orderExt.order.status)?.name }}</td>
           </tr>
         } @empty {
           <tr>

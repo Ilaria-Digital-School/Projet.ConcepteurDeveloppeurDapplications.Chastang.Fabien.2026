@@ -2,15 +2,14 @@ import { DatePipe } from '@angular/common';
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { map } from 'rxjs';
-import { ItemCst } from '../../types/items';
 import { OrderExt } from '../../types/common';
 import { Common } from '../../constants/common';
-import { OrderStatus } from '../../constants/order-status';
-import { User } from '../../models/user';
 import { Order } from '../../models/order';
+import { User } from '../../models/user';
+import { StatusList } from '../../models/status';
 import { DashboardHandle } from '../../models/dashboard';
-import { UserService } from '../../services/user-service';
 import { OrderService } from '../../services/order-service';
+import { UserService } from '../../services/user-service';
 
 @Component({
   selector: 'app-dashboard-orders',
@@ -27,7 +26,6 @@ export class DashboardOrders {
 
   // Constants
   public Common = Common;
-  public OrderStatus = OrderStatus;
 
   // Native classes / Application services
   private userService = inject(UserService);
@@ -35,15 +33,12 @@ export class DashboardOrders {
 
   // Class properties grouped in the 'DashboardHandle' class
   dashboard: DashboardHandle<OrderExt> = new DashboardHandle<OrderExt>();
-  orderStatus!: ItemCst[];
+  orderStatus: StatusList = new StatusList();
 
   // Load and search //////////////////////////////////////////////////////////
 
   // Initialize order lists and search functions
   ngOnInit() {
-    // Sort the order's status
-    this.orderStatus = OrderStatus.list.sort((i1: ItemCst, i2: ItemCst) => i1.value - i2.value);
-
     // Load all orders
     this.load();
 

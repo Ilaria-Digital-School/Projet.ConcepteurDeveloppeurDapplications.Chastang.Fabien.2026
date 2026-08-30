@@ -26,10 +26,7 @@
           <li>
             <a [routerLink]="['/products-search']"> Nos Articles </a>
           </li>
-          @if (
-            getConnectedUser()?.role === EnumRoles.admin ||
-            connectedUser?.role === EnumRoles.superAdmin
-          ) {
+          @if (isAdmin()) {
             <li>
               <a class="pointer" aria-label="Administration">
                 <i class="fa-solid fa-tachograph-digital"></i>

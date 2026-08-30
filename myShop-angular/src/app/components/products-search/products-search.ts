@@ -1,11 +1,12 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { Product } from '../../models/product';
-import { ProductCard } from '../product-card/product-card';
-import { ProductService } from '../../services/product-service';
 import { Router } from '@angular/router';
 import { map, Subject } from 'rxjs';
-import { ProductTypes } from '../../constants/product-types';
-import { ProductCategories } from '../../constants/product-categories';
+import { Product } from '../../models/product';
+import { Interest, InterestList } from '../../models/interest';
+import { CategoryList } from '../../models/category';
+import { ProductService } from '../../services/product-service';
+import { InterestService } from '../../services/interest-service';
+import { ProductCard } from '../product-card/product-card';
 
 @Component({
   selector: 'app-products-search',
@@ -14,22 +15,21 @@ import { ProductCategories } from '../../constants/product-categories';
   styleUrl: './products-search.css',
 })
 export class ProductsSearch {
-  // Constants
-  public ProductTypes = ProductTypes;
-  public ProductCategories = ProductCategories;
-
   // To retrieve DOM elements
   @ViewChild('nameProducts') nameProducts!: ElementRef<HTMLInputElement>;
 
   // Native classes / Application services
   private router = inject(Router);
   private productService = inject(ProductService);
+  private interestService = inject(InterestService);
 
   // Class properties
   products: Product[] = [];
   filteredName: Product[] = [];
   filteredItems: Product[] = [];
   searchNameSubject: Subject<string> = new Subject<string>();
+  interests: InterestList = new InterestList();
+  categories: CategoryList = new CategoryList();
   selectedType: number = -1;
   selectedCategory: number = -1;
 

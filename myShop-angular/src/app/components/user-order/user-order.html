@@ -33,7 +33,7 @@
           <td>{{ Common.numberToString(product.cartQuantity * product.price) }} €</td>
           @if (i === 0) {
             <td class="status" [rowSpan]="order.products.length">
-              {{ OrderStatus.getLabel(order.status) }}
+              {{ orderStatus.getByValue(order.status)?.name }}
             </td>
           }
         </tr>

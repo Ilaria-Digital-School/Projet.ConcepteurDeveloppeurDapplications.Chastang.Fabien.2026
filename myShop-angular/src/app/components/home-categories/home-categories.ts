@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Category } from '../../types/common';
+import { CategoryList } from '../../models/category';
 import { CategoryCard } from '../category-card/category-card';
 
 @Component({
@@ -9,22 +9,6 @@ import { CategoryCard } from '../category-card/category-card';
   styleUrl: './home-categories.css',
 })
 export class HomeCategories {
-  path: string = 'assets/img/clothing/';
-  categories: Category[] = [
-    {
-      name: 'Femme',
-      description: 'Mode Femme',
-      img: `${this.path}women_s_fashion.png`,
-    },
-    {
-      name: 'Homme',
-      description: 'Mode Homme',
-      img: `${this.path}men_s_fashion.png`,
-    },
-    {
-      name: 'Enfant',
-      description: 'Mode Enfant',
-      img: `${this.path}children_s_fashion.png`,
-    },
-  ];
+  // Class properties
+  categories: CategoryList = new CategoryList();
 }

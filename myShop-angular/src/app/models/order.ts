@@ -1,5 +1,4 @@
 import { Common } from '../constants/common';
-import { EnumStatus } from '../enums/order-status';
 import { Cart } from './cart';
 import { Product } from './product';
 
@@ -16,7 +15,7 @@ export class Order {
   totalExcludingTax: number = 0;
   totalIncludingTax: number = 0;
   totalPromotion: number = 0;
-  status: number = EnumStatus.pending;
+  status: number = 0;
 
   // Temporary property, not saved
   additional: any = {}; // For additional properties (RxJS) while preserving the 'Order' type

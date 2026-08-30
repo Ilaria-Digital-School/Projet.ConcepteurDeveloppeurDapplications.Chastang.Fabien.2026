@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { EnumRoles } from '../enums/user-roles';
 import { User } from '../models/user';
 
 @Injectable({
@@ -21,10 +20,8 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    return (
-      this.getConnectedUser()?.role === EnumRoles.admin ||
-      this.connectedUser?.role === EnumRoles.superAdmin
-    );
+    this.getConnectedUser();
+    return this.connectedUser !== null && this.connectedUser.role > 0;
   }
 
   logout(): void {

@@ -3,24 +3,17 @@ import { DashboardArrays, SortElement, SortVariables } from '../types/dashboard'
 
 // Dashboard class
 export class DashboardHandle<T> {
-  // Object containing the 5 arrays
-  arrays: DashboardArrays<T>;
+  // Object containing the 5 arrays used for sorting
+  arrays: DashboardArrays<T> = new DashboardArrays<T>();
 
   // Used for searching
-  searchTextSubject: Subject<string>;
-  searchRefSubject: Subject<string>;
-  selectedValue: number;
+  searchTextSubject: Subject<string> = new Subject<string>();
+  searchRefSubject: Subject<string> = new Subject<string>();
+  selectedValue: number = -1;
 
   // Used for sorting
   sortElements!: SortElement<T>[];
   sortVariables!: SortVariables[];
-
-  constructor() {
-    this.arrays = new DashboardArrays<T>();
-    this.searchTextSubject = new Subject<string>();
-    this.searchRefSubject = new Subject<string>();
-    this.selectedValue = -1;
-  }
 
   // Search methods ///////////////////////////////////////////////////////////
 

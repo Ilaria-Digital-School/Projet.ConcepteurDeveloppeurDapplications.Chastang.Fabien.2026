@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { UserOrder } from '../user-order/user-order';
-import { AuthService } from '../../services/auth-service';
-import { OrderService } from '../../services/order-service';
+import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user';
 import { Order } from '../../models/order';
-import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../services/auth-service';
+import { OrderService } from '../../services/order-service';
+import { UserOrder } from '../user-order/user-order';
 
 @Component({
   selector: 'app-user-orders',
