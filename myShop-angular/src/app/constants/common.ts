@@ -1,5 +1,6 @@
 export class Common {
-  // Pseudorandom string generation functions /////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////
+  // Pseudorandom string generation function
 
   // Returns a random string of characters
   // 'type' parameter:
@@ -81,34 +82,39 @@ export class Common {
     return randStr;
   }
 
+  /////////////////////////////////////////////////////////////////////////////
   // Returns an 10-character alphanumeric identifier
+
   static getID() {
     return this.randomString(10);
   }
 
+  /////////////////////////////////////////////////////////////////////////////
+  // Functions returning 'Product', 'User', and 'Order' references
+
+  static digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
   // Returns the reference of a product
   static getProductRef() {
-    const DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     let reference = '';
-    for (let i = 0; i < 2; i++) reference += this.randomString(6, 1, DIGITS) + '-';
+    for (let i = 0; i < 2; i++) reference += this.randomString(6, 1, this.digits) + '-';
     return reference.slice(0, -1);
   }
 
   // Returns the reference of a product
   static getUserRef() {
-    const DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    return this.randomString(10, 1, DIGITS);
+    return this.randomString(10, 1, this.digits);
   }
 
   // Returns the reference of an order
   static getOrderRef() {
-    const DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     let reference = '';
-    for (let i = 0; i < 5; i++) reference += this.randomString(4, 1, DIGITS) + '-';
+    for (let i = 0; i < 5; i++) reference += this.randomString(4, 1, this.digits) + '-';
     return reference.slice(0, -1);
   }
 
-  // String-to-number and number-to-string conversion functions ///////////////
+  /////////////////////////////////////////////////////////////////////////////
+  // String-to-number and number-to-string conversion functions
 
   // Converts a string to a number by using the current or specified locale settings
   static stringToNumber(value: string, locale: string = 'fr-FR') {
