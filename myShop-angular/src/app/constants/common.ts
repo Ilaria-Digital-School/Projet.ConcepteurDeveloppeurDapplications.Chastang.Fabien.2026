@@ -1,6 +1,7 @@
+// Static class grouping general purpose functionalities
+
 export class Common {
-  /////////////////////////////////////////////////////////////////////////////
-  // Pseudorandom string generation function
+  // Pseudorandom string generation function //////////////////////////////////
 
   // Returns a random string of characters
   // 'type' parameter:
@@ -82,15 +83,13 @@ export class Common {
     return randStr;
   }
 
-  /////////////////////////////////////////////////////////////////////////////
-  // Returns a 10-character alphanumeric identifier
+  // Returns a 10-character alphanumeric identifier ///////////////////////////
 
   static getID() {
     return this.randomString(10);
   }
 
-  /////////////////////////////////////////////////////////////////////////////
-  // Functions returning 'Product', 'User' and 'Order' references
+  // Functions returning 'Product', 'User' and 'Order' references /////////////
 
   static digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
@@ -113,8 +112,7 @@ export class Common {
     return reference.slice(0, -1);
   }
 
-  /////////////////////////////////////////////////////////////////////////////
-  // String-to-number and number-to-string conversion functions
+  // String-to-number and number-to-string conversion functions ///////////////
 
   // Converts a string to a number by using the current or specified locale settings
   static stringToNumber(value: string, locale: string = 'fr-FR') {
