@@ -1,5 +1,8 @@
 import { Common } from '../constants/common';
 
+// Object structuring the full description of a product
+export type FullDesc = { title: string | undefined; description: Array<string> };
+
 // Product class
 export class Product {
   id: string = '';

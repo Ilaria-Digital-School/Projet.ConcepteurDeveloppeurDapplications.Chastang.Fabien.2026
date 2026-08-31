@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FullDesc } from '../../types/common';
 import { Common } from '../../constants/common';
-import { Product } from '../../models/product';
+import { Product, FullDesc } from '../../models/product';
 import { ProductService } from '../../services/product-service';
 import { CartService } from '../../services/cart-service';
 

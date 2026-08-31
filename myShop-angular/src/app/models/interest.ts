@@ -24,11 +24,19 @@ export class Interest {
   }
 }
 
+// Object containing the values ​​of interest
+export type InterestValues = { clothes: number; accessories: number };
+
+// Message displayed when an error occurs during the initialization
+// of the object containing the values ​​of interest
+const ERR_MSG_INTEREST_VALUES =
+  "Les données liées aux centres d'intérêt de l'utilisateur et aux types de produit sont invalides !";
+
 // Class to handle the interest list
 export class InterestList {
   private interestService = inject(InterestService);
   private interests: Interest[] = [];
-  private _objectValues!: { clothes: number; accessories: number };
+  private _objectValues!: InterestValues;
 
   constructor() {
     // Retrieve all interests
@@ -56,8 +64,8 @@ export class InterestList {
         accessories: ACCESSORIES.value,
       };
     } else {
-      // If an error occurs, exit initialization
-      alert('Les données permettant de remplir le formulaire sont invalides !');
+      // If an error occurs, display a message
+      alert(ERR_MSG_INTEREST_VALUES);
     }
   }
 
@@ -67,7 +75,7 @@ export class InterestList {
   }
 
   // Returns the object containing the values ​​of interest
-  get objectValues(): { clothes: number; accessories: number } {
+  get objectValues(): InterestValues {
     return this._objectValues;
   }
 

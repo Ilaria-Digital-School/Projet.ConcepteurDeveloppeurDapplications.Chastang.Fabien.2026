@@ -1,5 +1,8 @@
 import { Common } from '../constants/common';
 
+// Object containing the data allowing a user to log in
+export type LoginData = { email: string; pswd: string };
+
 // User class
 export class User {
   id: string = '';

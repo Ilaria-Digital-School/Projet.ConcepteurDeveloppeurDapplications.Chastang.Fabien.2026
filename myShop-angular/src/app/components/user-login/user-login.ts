@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginData } from '../../types/common';
-import { User } from '../../models/user';
+import { User, LoginData } from '../../models/user';
 import { FormTooltip } from '../form-tooltip/form-tooltip';
 import { UserService } from '../../services/user-service';
 

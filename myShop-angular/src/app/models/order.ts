@@ -1,6 +1,9 @@
 import { Common } from '../constants/common';
 import { Cart } from './cart';
 import { Product } from './product';
+import { User } from './user';
+
+export type OrderExt = { order: Order; user: User | undefined };
 
 // Order class
 export class Order {
