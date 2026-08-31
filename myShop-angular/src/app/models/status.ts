@@ -40,7 +40,7 @@ export class StatusList {
   }
 
   // Returns the status list
-  getAll(): Status[] {
+  get values(): Status[] {
     return this.status;
   }
 

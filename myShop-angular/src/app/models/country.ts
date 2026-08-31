@@ -37,7 +37,7 @@ export class CountryList {
   }
 
   // Returns the country list
-  getAll(): Country[] {
+  get values(): Country[] {
     return this.countries;
   }
 

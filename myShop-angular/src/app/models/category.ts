@@ -46,7 +46,7 @@ export class CategoryList {
   }
 
   // Returns the category list
-  getAll(): Category[] {
+  get values(): Category[] {
     return this.categories;
   }
 

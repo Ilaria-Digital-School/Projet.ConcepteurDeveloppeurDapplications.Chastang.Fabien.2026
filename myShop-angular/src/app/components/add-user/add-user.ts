@@ -110,9 +110,9 @@ export class AddUser {
             formValue.userName.trim() !== this.userIni.name ||
             formValue.userEmail !== this.userIni.email ||
             formValue.gender !== this.userIni.gender ||
-            formValue.clothes !== this.userIni.interests.includes(this.interests.getValues().clothes) ||
+            formValue.clothes !== this.userIni.interests.includes(this.interests.objectValues.clothes) ||
             formValue.accessories !==
-              this.userIni.interests.includes(this.interests.getValues().accessories) ||
+              this.userIni.interests.includes(this.interests.objectValues.accessories) ||
             parseInt(formValue.country) !== this.userIni.country;
         }
       });
@@ -158,8 +158,8 @@ export class AddUser {
       userName: this.userIni.name,
       userEmail: this.userIni.email,
       gender: this.userIni.gender,
-      clothes: this.userIni.interests.includes(this.interests.getValues().clothes),
-      accessories: this.userIni.interests.includes(this.interests.getValues().accessories),
+      clothes: this.userIni.interests.includes(this.interests.objectValues.clothes),
+      accessories: this.userIni.interests.includes(this.interests.objectValues.accessories),
       country: this.userIni.country,
     });
   }
@@ -207,8 +207,8 @@ export class AddUser {
 
     // Manage the checkboxes
     const INTERESTS: number[] = [];
-    if (FORM_VAL.clothes) INTERESTS.push(this.interests.getValues().clothes);
-    if (FORM_VAL.accessories) INTERESTS.push(this.interests.getValues().accessories);
+    if (FORM_VAL.clothes) INTERESTS.push(this.interests.objectValues.clothes);
+    if (FORM_VAL.accessories) INTERESTS.push(this.interests.objectValues.accessories);
 
     const USER = new User();
     Object.assign(USER, this.user);
@@ -233,7 +233,7 @@ export class AddUser {
         USER.gender = GENDER;
       }
       if (
-        this.interests.getAll().some(
+        this.interests.values.some(
           (i: Interest) => this.userIni.interests.includes(i.value) !== INTERESTS.includes(i.value),
         )
       ) {

@@ -16,7 +16,7 @@
     (change)="selectTypeItems($event.target)"
   >
     <option value="-1" selected>– Tous –</option>
-    @for (interest of interests.getAll(); track interest.value; let i = $index) {
+    @for (interest of interests.values; track interest.value; let i = $index) {
       <option [value]="interest.value">{{ interest.type }}</option>
     }
     <option value="0">Non précisé</option>
@@ -28,7 +28,7 @@
     (change)="selectCategoryItems($event.target)"
   >
     <option value="-1" selected>– Tous –</option>
-    @for (category of categories.getAll(); track category.value; let i = $index) {
+    @for (category of categories.values; track category.value; let i = $index) {
       <option [value]="category.value">{{ category.name }}</option>
     }
     <option value="0">Non précisé</option>

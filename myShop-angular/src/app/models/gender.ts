@@ -40,7 +40,7 @@ export class GenderList {
   }
 
   // Returns the gender list
-  getAll(): Gender[] {
+  get values(): Gender[] {
     return this.genders;
   }
 

@@ -28,7 +28,7 @@ export class Interest {
 export class InterestList {
   private interestService = inject(InterestService);
   private interests: Interest[] = [];
-  private values!: { clothes: number; accessories: number };
+  private _objectValues!: { clothes: number; accessories: number };
 
   constructor() {
     // Retrieve all interests
@@ -51,7 +51,7 @@ export class InterestList {
     const CLOTHES = this.interests.find((i: Interest) => i.field === 'clothes');
     const ACCESSORIES = this.interests.find((i: Interest) => i.field === 'accessories');
     if (CLOTHES !== undefined && ACCESSORIES !== undefined) {
-      this.values = {
+      this._objectValues = {
         clothes: CLOTHES.value,
         accessories: ACCESSORIES.value,
       };
@@ -62,13 +62,13 @@ export class InterestList {
   }
 
   // Returns the interest list
-  getAll(): Interest[] {
+  get values(): Interest[] {
     return this.interests;
   }
 
   // Returns the object containing the values ​​of interest
-  getValues(): { clothes: number; accessories: number } {
-    return this.values;
+  get objectValues(): { clothes: number; accessories: number } {
+    return this._objectValues;
   }
 
   // Returns a interest by its value

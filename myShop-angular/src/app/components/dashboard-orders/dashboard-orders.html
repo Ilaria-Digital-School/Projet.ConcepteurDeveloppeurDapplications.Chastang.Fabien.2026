@@ -23,7 +23,7 @@
     (change)="selectStatus($event.target)"
   >
     <option value="-1" selected>– Tous –</option>
-    @for (status of orderStatus.getAll(); track status.value; let i = $index) {
+    @for (status of orderStatus.values; track status.value; let i = $index) {
       <option [value]="status.value">{{ status.name }}</option>
     }
   </select>

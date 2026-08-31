@@ -22,7 +22,7 @@
     (change)="selectRole($event.target)"
   >
     <option value="-1" selected>– Tous –</option>
-    @for (role of roles.getAll(); track role.value; let i = $index) {
+    @for (role of roles.values; track role.value; let i = $index) {
       <option [value]="role.value">{{ role.name }}</option>
     }
   </select>
