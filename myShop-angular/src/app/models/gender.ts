@@ -48,9 +48,4 @@ export class GenderList {
   getByValue(value: number): Gender | undefined {
     return this.genders.find((gender: Gender) => gender.value === value);
   }
-
-  // Returns a gender by its field
-  getByField(field: string): Gender | undefined {
-    return this.genders.find((gender: Gender) => gender.field === field);
-  }
 }

@@ -48,9 +48,4 @@ export class RoleList {
   getByValue(value: number): Role | undefined {
     return this.roles.find((role: Role) => role.value === value);
   }
-
-  // Returns a role by its field
-  getByField(field: string): Role | undefined {
-    return this.roles.find((role: Role) => role.field === field);
-  }
 }

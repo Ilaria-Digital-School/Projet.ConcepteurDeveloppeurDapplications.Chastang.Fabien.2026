@@ -1,5 +1,5 @@
-import { inject } from "@angular/core";
-import { InterestService } from "../services/interest-service";
+import { inject } from '@angular/core';
+import { InterestService } from '../services/interest-service';
 
 // Interest class
 export class Interest {
@@ -37,23 +37,28 @@ export class InterestList {
         this.interests = res;
 
         // Initialize the object containing the values ​​of interest
-        const CLOTHES = this.interests.find((i: Interest) => i.field === 'clothes');
-        const ACCESSORIES = this.interests.find((i: Interest) => i.field === 'accessories');
-        if (CLOTHES !== undefined && ACCESSORIES !== undefined) {
-          this.values = {
-            clothes: CLOTHES.value,
-            accessories: ACCESSORIES.value,
-          };
-        } else {
-          // If an error occurs, exit initialization
-          alert('Les données permettant de remplir le formulaire sont invalides !');
-        }
+        this.initValues();
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
         console.log(err);
       },
     });
+  }
+
+  // Initialize the object containing the values ​​of interest
+  private initValues() {
+    const CLOTHES = this.interests.find((i: Interest) => i.field === 'clothes');
+    const ACCESSORIES = this.interests.find((i: Interest) => i.field === 'accessories');
+    if (CLOTHES !== undefined && ACCESSORIES !== undefined) {
+      this.values = {
+        clothes: CLOTHES.value,
+        accessories: ACCESSORIES.value,
+      };
+    } else {
+      // If an error occurs, exit initialization
+      alert('Les données permettant de remplir le formulaire sont invalides !');
+    }
   }
 
   // Returns the interest list
@@ -69,10 +74,5 @@ export class InterestList {
   // Returns a interest by its value
   getByValue(value: number): Interest | undefined {
     return this.interests.find((interest: Interest) => interest.value === value);
-  }
-
-  // Returns a interest by its field
-  getByField(field: string): Interest | undefined {
-    return this.interests.find((interest: Interest) => interest.field === field);
   }
 }

@@ -54,9 +54,4 @@ export class CategoryList {
   getByValue(value: number): Category | undefined {
     return this.categories.find((category: Category) => category.value === value);
   }
-
-  // Returns a category by its field
-  getByField(field: string): Category | undefined {
-    return this.categories.find((category: Category) => category.field === field);
-  }
 }

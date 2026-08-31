@@ -48,9 +48,4 @@ export class StatusList {
   getByValue(value: number): Status | undefined {
     return this.status.find((status: Status) => status.value === value);
   }
-
-  // Returns a status by its field
-  getByField(field: string): Status | undefined {
-    return this.status.find((status: Status) => status.field === field);
-  }
 }
