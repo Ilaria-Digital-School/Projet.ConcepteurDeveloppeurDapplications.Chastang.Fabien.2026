@@ -131,7 +131,7 @@
     <div class="field-container first">
       <div class="field-label" aria-label="Types de produit">Types&nbsp;:</div>
       <div>
-        @for (interest of interests.values; track interest.value; let i = $index) {
+        @for (interest of interests.items; track interest.value; let i = $index) {
           <div class="field">
             <input
               type="checkbox"
@@ -149,7 +149,7 @@
     <div class="field-container">
       <div class="field-label" aria-label="Catégories du produit">Catégories&nbsp;:</div>
       <div>
-        @for (category of categories.values; track category.value; let i = $index) {
+        @for (category of categories.items; track category.value; let i = $index) {
           <div class="field">
             <input
               type="checkbox"

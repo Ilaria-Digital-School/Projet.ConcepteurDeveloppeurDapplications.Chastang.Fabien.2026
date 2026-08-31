@@ -2,7 +2,7 @@
   <h2 class="h2-title">Catégories</h2>
 
   <div class="category-container">
-    @for (category of categories.values; track $index) {
+    @for (category of categories.items; track $index) {
       <app-category-card [category]="category"></app-category-card>
     }
   </div>

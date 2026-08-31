@@ -62,7 +62,7 @@ export class InterestList {
   }
 
   // Returns the interest list
-  get values(): Interest[] {
+  get items(): Interest[] {
     return this.interests;
   }
 

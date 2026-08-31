@@ -120,7 +120,7 @@
       <div class="field-container">
         <div class="field-label" aria-label="Genre">Genre&nbsp;:</div>
         <div>
-          @for (gender of genders.values; track gender.value; let i = $index) {
+          @for (gender of genders.items; track gender.value; let i = $index) {
             <div class="field">
               <input
                 type="radio"
@@ -141,7 +141,7 @@
       <div class="field-container">
         <div class="field-label" aria-label="Intérêts">Centres d'ntérêts&nbsp;:</div>
         <div>
-          @for (interest of interests.values; track interest.value; let i = $index) {
+          @for (interest of interests.items; track interest.value; let i = $index) {
             <div class="field">
               <input
                 type="checkbox"
@@ -158,7 +158,7 @@
       <div>
         <label for="country">Pays&nbsp;:</label>
         <select id="country" formControlName="country" autocomplete="off">
-          @for (country of countries.values; track country.value; let i = $index) {
+          @for (country of countries.items; track country.value; let i = $index) {
             <option [value]="country.value">{{ country.name }}</option>
           }
           <option value="0">– Autre –</option>

@@ -40,7 +40,7 @@ export class RoleList {
   }
 
   // Returns the role list
-  get values(): Role[] {
+  get items(): Role[] {
     return this.roles;
   }
 

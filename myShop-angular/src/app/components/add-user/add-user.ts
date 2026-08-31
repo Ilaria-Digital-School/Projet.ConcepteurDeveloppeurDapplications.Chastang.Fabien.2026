@@ -233,7 +233,7 @@ export class AddUser {
         USER.gender = GENDER;
       }
       if (
-        this.interests.values.some(
+        this.interests.items.some(
           (i: Interest) => this.userIni.interests.includes(i.value) !== INTERESTS.includes(i.value),
         )
       ) {
