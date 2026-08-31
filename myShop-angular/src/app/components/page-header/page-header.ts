@@ -22,19 +22,14 @@ export class PageHeader {
   connectedUser: User | null = null;
   roles: RoleList = new RoleList();
 
-  // Retrieve the logged-in user
-  ngOnInit() {
-    this.getConnectedUser();
-  }
-
   // Method to retrieve the logged-in user
   getConnectedUser(): User | null {
     return (this.connectedUser = this.authService.getConnectedUser());
   }
 
-  // Check if the user is an admin
+  // Check if the user is an administrator
   isAdmin() {
-    return this.connectedUser !== null && this.connectedUser.role > 0;
+    return this.authService.isAdmin();
   }
 
   // Logout
