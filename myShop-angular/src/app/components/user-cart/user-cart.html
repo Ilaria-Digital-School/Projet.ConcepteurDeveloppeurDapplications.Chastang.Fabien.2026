@@ -15,7 +15,7 @@
           </tr>
         </thead>
         <tbody class="table-group-divider">
-          @for (product of userCart.products; track product.id; let i = $index) {
+          @for (product of products; track product.id; let i = $index) {
             <tr>
               <td class="cell-product">
                 <div>
@@ -43,7 +43,7 @@
                     maxlength="2"
                     aria-label="Quantité pour ce produit"
                     autocomplete="off"
-                    [(ngModel)]="product.cartQuantity"
+                    [(ngModel)]="product.quantity"
                     readonly
                   />
                   <button
@@ -59,8 +59,8 @@
               </td>
               <td>
                 {{
-                  typeof product.cartQuantity === 'number'
-                    ? Common.numberToString(product.cartQuantity * product.price)
+                  typeof product.quantity === 'number'
+                    ? Common.numberToString(product.quantity * product.price)
                     : ''
                 }}
                 €
@@ -92,10 +92,15 @@
             <td>
               <div class="cell-total">
                 <div [style.white-space]="'nowrap'">
-                  {{ Common.numberToString(getTotalExcludingTax()) }} €<span id="info-tax">(HT)</span>
+                  {{ Common.numberToString(getTotalExcludingTax()) }} €<span id="info-tax"
+                    >(HT)</span
+                  >
                 </div>
                 <div [style.white-space]="'nowrap'">
-                  {{ Common.numberToString((1 + this.taxPercent / 100) * this.total) }} €<span id="info-tax">(TTC)</span>
+                  {{ Common.numberToString((1 + this.taxPercent / 100) * this.total) }} €<span
+                    id="info-tax"
+                    >(TTC)</span
+                  >
                 </div>
               </div>
             </td>

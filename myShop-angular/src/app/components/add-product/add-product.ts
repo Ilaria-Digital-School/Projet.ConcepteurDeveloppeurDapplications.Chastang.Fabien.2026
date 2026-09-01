@@ -103,7 +103,7 @@ export class AddProduct {
   // Initialize data
   init() {
     // Initialize optional product information
-    this.productInfo = typeof this.productIni.info === 'string' ? this.productIni.info : '';
+    this.productInfo = this.productIni.info;
 
     // Initialize the price and the stock
     this.initNumber();
@@ -115,8 +115,7 @@ export class AddProduct {
   // Initialize the price and the stock
   initNumber() {
     this.productPrice = Common.numberToString(this.productIni.price);
-    this.productStock =
-      typeof this.productIni.stock === 'number' ? this.productIni.stock.toString() : '0';
+    this.productStock = this.productIni.stock.toString();
   }
 
   // Initialize the types and the categories

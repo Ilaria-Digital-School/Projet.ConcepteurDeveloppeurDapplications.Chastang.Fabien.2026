@@ -1,18 +1,19 @@
 import { Common } from '../constants/common';
+import { OrderProduct } from './order-product';
 import { Cart } from './cart';
-import { Product } from './product';
 import { User } from './user';
 
 export type OrderExt = { order: Order; user: User | undefined };
 
 // Order class
 export class Order {
+  // Class properties
   id: string = '';
   reference: string = Common.getOrderRef();
   date: number = Date.now();
   userId: string = '';
-  products: Product[] = []; // List of products from the 'Cart' object, with their
-  promoCode: string = ''; // prices at the time of the order and their quantities
+  products: OrderProduct[] = [];
+  promoCode: string = '';
   taxPercent: number = 0;
   promoPercent: number = 0;
   totalExcludingTax: number = 0;
@@ -25,7 +26,7 @@ export class Order {
 
   constructor(
     userId: string | null = null,
-    products: Product[] | null = null,
+    products: OrderProduct[] | null = null,
     taxPercent: number | null = null,
     promoCode: string | null = null,
     promoPercent: number | null = null,
@@ -51,7 +52,7 @@ export class Order {
     return Math.round(POWER10 * value) / POWER10;
   }
 
-  // Initialize the object
+  // Initialize the object, called when adding an order
   initialize(
     cart: Cart,
     taxPercent: number,
@@ -83,6 +84,11 @@ export class Order {
     if (this.totalPromotion > 0) this.totalPromotion = this.round(this.totalPromotion);
   }
 
+  // Returns the list of product IDs for the order
+  getProductIDs(): string[] {
+    return this.products.map((product: OrderProduct) => product.id);
+  }
+
   // Retrieve the total invoiced price
   getTotalInvoiced() {
     return this.totalPromotion > 0 ? this.totalPromotion : this.totalIncludingTax;
@@ -94,11 +100,10 @@ export class Order {
   }
 
   // Remove these properties before saving the order
-  removeBeforeSaveOrder() {
+  removeBeforeSaveOrder(): Order {
     const ORDER = new Order();
     Object.assign(ORDER, this);
     delete ORDER.additional;
-    ORDER.products = ORDER.products.map((product: Product) => product.removeBeforeSaveOrder());
     return ORDER;
   }
 }

@@ -1,12 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CartService } from '../../services/cart-service';
-import { AuthService } from '../../services/auth-service';
 import { Common } from '../../constants/common';
 import { Cart } from '../../models/cart';
+import { OrderProduct } from '../../models/order-product';
 import { Product } from '../../models/product';
 import { User } from '../../models/user';
+import { CartService } from '../../services/cart-service';
+import { AuthService } from '../../services/auth-service';
+import { ProductService } from '../../services/product-service';
 
 @Component({
   selector: 'app-user-cart',
@@ -22,6 +24,7 @@ export class UserCart {
   private router = inject(Router);
   private cartService = inject(CartService);
   private authService = inject(AuthService);
+  private productService = inject(ProductService);
 
   // User messages
   private static msgDelProduct: string =
@@ -34,6 +37,7 @@ export class UserCart {
   taxPercent: number = 20;
   total: number = 0;
   userCart!: Cart;
+  products: Product[] | null = [];
   connectedUser: User | null = null;
 
   // Initialize the Cart object and the view (template) ///////////////////////
@@ -44,12 +48,30 @@ export class UserCart {
 
     const CART = localStorage.getItem('cart');
     if (CART) {
-      const USER_CART = JSON.parse(CART).map((item: any) => {
-        const PRODUCT = new Product();
-        Object.assign(PRODUCT, item);
-        return PRODUCT;
+      this.userCart = new Cart(JSON.parse(CART));
+
+      // Load the cart products
+      this.productService.getProductsByIDs(this.userCart.getProductIDs()).subscribe({
+        next: (res: Product[]) => {
+          this.products = res
+            .map((product: Product) => {
+              const PRODUCT = this.userCart.products.find(
+                (item: OrderProduct) => (item.id === product.id),
+              );
+              // Initialize ONLY the quantity
+              product.quantity = PRODUCT?.quantity;
+              return product;
+            })
+            .sort((p1: Product, p2: Product) => {
+              const COMPARE = p1.name.localeCompare(p2.name);
+              return COMPARE === 0 ? p1.description.localeCompare(p2.description) : COMPARE;
+            });
+        },
+        error: (err: any) => {
+          alert("Une erreur s'est produite lors de la récupération des données.");
+          console.log(err);
+        },
       });
-      this.userCart = new Cart(USER_CART);
     } else {
       this.userCart = new Cart();
     }
@@ -70,27 +92,27 @@ export class UserCart {
   // Increase the quantity of a product
   addOne(product: Product) {
     // Add an item to the cart via CartService (local storage)
-    this.cartService.add(product);
+    this.cartService.add(new OrderProduct(product));
 
     // Update the cart view
-    if (typeof product.cartQuantity === 'number') product.cartQuantity++;
+    if (typeof product.quantity === 'number') product.quantity++;
   }
 
   // Decrease the quantity of a product
   removeOne(product: Product) {
     // Confirmation message only if the quantity in the cart is equal to 1
-    if (product.cartQuantity === 1 && !confirm(UserCart.msgDelProduct)) return;
+    if (product.quantity === 1 && !confirm(UserCart.msgDelProduct)) return;
 
     // Remove an item from the cart via CartService (local storage)
-    this.cartService.remove(product);
+    this.cartService.remove(new OrderProduct(product));
 
     // Update the cart view
-    if (product.cartQuantity === 1) {
+    if (product.quantity === 1) {
       this.userCart.products = this.userCart.products.filter(
-        (item: Product) => item.id !== product.id,
+        (item: OrderProduct) => item.id !== product.id,
       );
-    } else if (typeof product.cartQuantity === 'number') {
-      product.cartQuantity--;
+    } else if (typeof product.quantity === 'number') {
+      product.quantity--;
     }
   }
 
@@ -103,7 +125,9 @@ export class UserCart {
     this.cartService.removeProduct(id);
 
     // Remove the product from the cart view
-    this.userCart.products = this.userCart.products.filter((product: Product) => product.id !== id);
+    this.userCart.products = this.userCart.products.filter(
+      (product: OrderProduct) => product.id !== id,
+    );
   }
 
   // Cart-related actions /////////////////////////////////////////////////////

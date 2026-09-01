@@ -107,11 +107,11 @@ export class DashboardProducts {
       this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredTextRef;
     } else if (this.dashboard.selectedValue >= 0) {
       this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredTextRef.filter(
-        (product: Product) => product.stock !== undefined && product.stock <= this.dashboard.selectedValue,
+        (product: Product) => product.stock <= this.dashboard.selectedValue,
       );
     } else {
       this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredTextRef.filter(
-        (product: Product) => product.stock !== undefined && product.stock > -this.dashboard.selectedValue,
+        (product: Product) => product.stock > -this.dashboard.selectedValue,
       );
     }
   }
@@ -169,16 +169,12 @@ export class DashboardProducts {
   sortByStock(array: Product[], up: boolean): Product[] {
     if (up) {
       return array.sort((item1: Product, item2: Product) => {
-        const COMPARE =
-          (typeof item1.stock === 'number' ? item1.stock : 0) -
-          (typeof item2.stock === 'number' ? item2.stock : 0);
+        const COMPARE = item1.stock - item2.stock;
         return COMPARE === 0 ? item1.name.localeCompare(item2.name) : COMPARE;
       });
     } else {
       return array.sort((item1: Product, item2: Product) => {
-        const COMPARE =
-          (typeof item2.stock === 'number' ? item2.stock : 0) -
-          (typeof item1.stock === 'number' ? item1.stock : 0);
+        const COMPARE = item2.stock - item1.stock;
         return COMPARE === 0 ? item2.name.localeCompare(item1.name) : COMPARE;
       });
     }

@@ -9,22 +9,14 @@
   }
   <div>
     <span
-      [class]="
-        typeof product.favorite === 'boolean' && product.favorite ? 'article-favorite' : 'inactive'
-      "
+      [class]="product.favorite ? 'article-favorite' : 'inactive'"
       title="Article favori"
       aria-label="Article favori"
     >
       <i class="fa-solid fa-heart"></i>
     </span>
-    <span
-      [class]="
-        typeof product.stock === 'number' && product.stock > 0
-          ? 'article-available'
-          : 'article-unavailable'
-      "
-    >
-      {{ typeof product.stock === 'number' && product.stock > 0 ? 'En stock' : 'Indisponible' }}
+    <span [class]="product.stock > 0 ? 'article-available' : 'article-unavailable'">
+      {{ product.stock > 0 ? 'En stock' : 'Indisponible' }}
     </span>
     <img [src]="product.img" [alt]="product.name" />
   </div>

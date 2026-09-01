@@ -43,6 +43,11 @@ export class ProductService {
     return this.httpClient.get<Product[]>(this.productURL).pipe(take(maxCount));
   }
 
+  // Response: array of objects (list of orders)
+  getProductsByIDs(IDs: string[]): Observable<Product[]> {
+    return this.httpClient.get<Product[]>(`${this.productURL}?id=${IDs.join('&id=')}`);
+  }
+
   // Response: product object or null
   getProductById(id: string | null): Observable<Product> {
     return this.httpClient.get<Product>(`${this.productURL}/${id}`);

@@ -1,42 +1,42 @@
-import { Product } from './product';
+import { OrderProduct } from './order-product';
 
 // 'Cart' object initialized from the list of products with a
 // quantity of 1 for each item; list stored in local storage
 export class Cart {
+  // Class properties
   id: string = '';
   userId: string = '';
-  products: Product[] = [];
+  products: OrderProduct[] = [];
 
-  constructor(products: Product[] | null = null, userId: string | null = null) {
+  constructor(products: OrderProduct[] | null = null, userId: string | null = null) {
     if (typeof userId === 'string') this.userId = userId;
 
     // Initializing the product list where each product appears
     // only once, but the quantity can be greater than 1
     if (Array.isArray(products)) {
-      products.forEach((product: Product) => {
-        const PRODUCT = this.products.find((item: Product) => item.id === product.id);
+      products.forEach((product: OrderProduct) => {
+        const PRODUCT = this.products.find((item: OrderProduct) => item.id === product.id);
         if (PRODUCT) {
-          if (typeof PRODUCT.cartQuantity === 'number') PRODUCT.cartQuantity++; // Increment the quantity
+          PRODUCT.quantity++;
         } else {
-          product.cartQuantity = 1; // Initialize the quantity
+          product.quantity = 1;
           this.products.push(product);
         }
-      });
-
-      // Sort the product array alphabetically by name
-      this.products = this.products.sort((p1: Product, p2: Product) => {
-        const COMPARE = p1.name.localeCompare(p2.name);
-        return COMPARE === 0 ? p1.description.localeCompare(p2.description) : COMPARE;
       });
     }
   }
 
+  // Returns the list of product IDs for the cart
+  getProductIDs(): string[] {
+    return this.products.map((product: OrderProduct) => product.id);
+  }
+
   // Retrieve the total cart amount excluding tax
   getTotalExcludingTax(): number {
-    const getTotal = (total: number, product: Product) => {
+    const getTotal = (total: number, product: OrderProduct) => {
       return (
         total +
-        (typeof product.cartQuantity === 'number' ? product.cartQuantity * product.price : 0)
+        (typeof product.quantity === 'number' ? product.quantity * product.price : 0)
       );
     };
     return this.products.reduce(getTotal, 0);

@@ -19,7 +19,7 @@
       </tr>
     </thead>
     <tbody class="table-group-divider">
-      @for (product of order.products; track product.id; let i = $index) {
+      @for (product of products; track product.id; let i = $index) {
         <tr>
           <th scope="row">{{ i + 1 }}</th>
           <td class="cell-product">
@@ -29,8 +29,15 @@
             <span>{{ product.name }}</span>
           </td>
           <td>{{ product.price }} €</td>
-          <td>{{ product.cartQuantity }}</td>
-          <td>{{ Common.numberToString(product.cartQuantity * product.price) }} €</td>
+          <td>{{ product.quantity }}</td>
+          <td>
+            {{
+              product.quantity !== undefined
+                ? Common.numberToString(product.quantity * product.price)
+                : 'ERREUR'
+            }}
+            €
+          </td>
           @if (i === 0) {
             <td class="status" [rowSpan]="order.products.length">
               {{ orderStatus.getByValue(order.status)?.name }}

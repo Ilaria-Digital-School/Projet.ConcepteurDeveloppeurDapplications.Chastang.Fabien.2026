@@ -14,17 +14,13 @@ export class Product {
   types: number[] = [];
   categories: number[] = [];
   fullDescription: string = '';
-
-  // Remove when ordering
-  stock: number | undefined = 0;
-  info: string | undefined = '';
-  favorite: boolean | undefined = false;
-  visible: boolean | undefined = true;
-
-  // Save only when ordering
-  cartQuantity: number | undefined = 0;
+  stock: number = 0;
+  info: string = '';
+  favorite: boolean = false;
+  visible: boolean = true;
 
   // Temporary properties, not saved
+  quantity: number | undefined = 0;
   additional: any = {}; // For additional properties (RxJS) while preserving the 'Product' type
 
   constructor(
@@ -55,27 +51,8 @@ export class Product {
   removeBeforeSaveProduct(): Product {
     const PRODUCT = new Product();
     Object.assign(PRODUCT, this);
-    delete PRODUCT.cartQuantity;
+    delete PRODUCT.quantity;
     delete PRODUCT.additional;
-    return PRODUCT;
-  }
-
-  // Remove these properties before saving the order
-  removeBeforeSaveOrder(): Product {
-    const PRODUCT = new Product();
-    Object.assign(PRODUCT, this);
-    delete PRODUCT.stock;
-    delete PRODUCT.info;
-    delete PRODUCT.favorite;
-    delete PRODUCT.visible;
-    delete PRODUCT.additional;
-    return PRODUCT;
-  }
-
-  // Remove these properties before saving the cart to local storage
-  removeBeforeSaveCart(): Product {
-    const PRODUCT = this.removeBeforeSaveOrder();
-    delete PRODUCT.cartQuantity;
     return PRODUCT;
   }
 }

@@ -4,6 +4,7 @@ import { Common } from '../../constants/common';
 import { Product, FullDesc } from '../../models/product';
 import { ProductService } from '../../services/product-service';
 import { CartService } from '../../services/cart-service';
+import { OrderProduct } from '../../models/order-product';
 
 @Component({
   selector: 'app-product-view',
@@ -105,11 +106,11 @@ export class ProductView {
 
   // Add the product to the user's cart
   addCart(product: Product) {
-    this.cartService.add(product);
+    this.cartService.add(new OrderProduct(product));
   }
 
   // Remove the product from the user's cart
   removeCart(product: Product) {
-    this.cartService.remove(product);
+    this.cartService.remove(new OrderProduct(product));
   }
 }

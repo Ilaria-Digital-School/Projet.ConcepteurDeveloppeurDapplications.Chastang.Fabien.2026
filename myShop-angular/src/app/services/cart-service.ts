@@ -1,12 +1,12 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { Product } from '../models/product';
+import { OrderProduct } from '../models/order-product';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
   // List of products in the cart
-  cart = signal<Product[]>([]);
+  cart = signal<OrderProduct[]>([]);
 
   constructor() {
     // Retrieve the user's cart
@@ -16,7 +16,7 @@ export class CartService {
       // Initialize the signal property 'cart' (array of products)
       this.cart.set(
         JSON.parse(CART).map((item: any) => {
-          const PRODUCT = new Product();
+          const PRODUCT = new OrderProduct();
           Object.assign(PRODUCT, item);
           return PRODUCT;
         }),
@@ -25,19 +25,19 @@ export class CartService {
   }
 
   // Add an item to the cart
-  add(product: Product): void {
-    this.cart.update((products: Product[]) => {
+  add(product: OrderProduct): void {
+    this.cart.update((products: OrderProduct[]) => {
       // Remove the properties that are not necessary for the shopping cart
-      const NEW_CART = [...products, product.removeBeforeSaveCart()];
+      const NEW_CART = [...products, product];
       localStorage.setItem('cart', JSON.stringify(NEW_CART));
       return NEW_CART;
     });
   }
 
   // Remove an item from the cart
-  remove(product: Product): void {
-    this.cart.update((products: Product[]) => {
-      const INDEX = products.findIndex((item: Product) => item.id === product.id);
+  remove(product: OrderProduct): void {
+    this.cart.update((products: OrderProduct[]) => {
+      const INDEX = products.findIndex((item: OrderProduct) => item.id === product.id);
       if (INDEX > -1) {
         products.splice(INDEX, 1);
         if (products.length === 0) {
@@ -56,8 +56,8 @@ export class CartService {
 
   // Remove a product from the cart
   removeProduct(id: string): void {
-    this.cart.update((products: Product[]) => {
-      const NEW_CART = products.filter((product: Product) => product.id !== id);
+    this.cart.update((products: OrderProduct[]) => {
+      const NEW_CART = products.filter((product: OrderProduct) => product.id !== id);
       if (NEW_CART.length > 0) {
         localStorage.setItem('cart', JSON.stringify(NEW_CART));
         return NEW_CART;
