@@ -70,16 +70,14 @@
               {{ orderExt.order.date | date: 'dd/MM/yyyy' }} à
               {{ orderExt.order.date | date: 'HH:mm' }}
             </td>
-            <td>{{ Common.numberToString(orderExt.order.totalExcludingTax) }} €</td>
             <td>
               {{
-                Common.numberToString(
-                  orderExt.order.totalPromotion > 0
-                    ? orderExt.order.totalPromotion
-                    : orderExt.order.totalIncludingTax
-                )
+                Common.numberToString(orderExt.order.round(orderExt.order.getTotalExcludingTax()))
               }}
               €
+            </td>
+            <td>
+              {{ Common.numberToString(orderExt.order.round(orderExt.order.getTotalInvoiced())) }} €
             </td>
             <td>{{ orderStatus.getByValue(orderExt.order.status)?.name }}</td>
           </tr>

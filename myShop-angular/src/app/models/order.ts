@@ -16,9 +16,6 @@ export class Order {
   promoCode: string = '';
   taxPercent: number = 0;
   promoPercent: number = 0;
-  totalExcludingTax: number = 0;
-  totalIncludingTax: number = 0;
-  totalPromotion: number = 0;
   status: number = 0;
 
   // Temporary property, not saved
@@ -30,9 +27,6 @@ export class Order {
     taxPercent: number | null = null,
     promoCode: string | null = null,
     promoPercent: number | null = null,
-    totalExcludingTax: number | null = null,
-    totalIncludingTax: number | null = null,
-    totalPromotion: number | null = null,
     status: number | null = null,
   ) {
     if (typeof userId === 'string') this.userId = userId;
@@ -40,9 +34,6 @@ export class Order {
     if (typeof taxPercent === 'number') this.taxPercent = taxPercent;
     if (typeof promoCode === 'string') this.promoCode = promoCode;
     if (typeof promoPercent === 'number') this.promoPercent = promoPercent;
-    if (typeof totalExcludingTax === 'number') this.totalExcludingTax = totalExcludingTax;
-    if (typeof totalIncludingTax === 'number') this.totalIncludingTax = totalIncludingTax;
-    if (typeof totalPromotion === 'number') this.totalPromotion = totalPromotion;
     if (typeof status === 'number') this.status = status;
   }
 
@@ -63,25 +54,10 @@ export class Order {
     this.products = cart.products;
     this.taxPercent = taxPercent;
 
-    // Calculate the total cart amount excluding tax
-    this.totalExcludingTax = cart.getTotalExcludingTax();
-    // Calculate the total cart amount including tax
-    this.totalIncludingTax = (1 + this.taxPercent / 100) * this.totalExcludingTax;
-
-    // Calculate the total amount after the promotion
     if (typeof promoCode === 'string') {
       this.promoCode = promoCode;
-
-      if (typeof promoPercent === 'number') {
-        this.promoPercent = promoPercent;
-        this.totalPromotion = (1 - this.promoPercent / 100) * this.totalIncludingTax;
-      }
+      if (typeof promoPercent === 'number') this.promoPercent = promoPercent;
     }
-
-    // Rounded to two decimal places
-    this.totalExcludingTax = this.round(this.totalExcludingTax);
-    this.totalIncludingTax = this.round(this.totalIncludingTax);
-    if (this.totalPromotion > 0) this.totalPromotion = this.round(this.totalPromotion);
   }
 
   // Returns the list of product IDs for the order
@@ -89,9 +65,27 @@ export class Order {
     return this.products.map((product: OrderProduct) => product.id);
   }
 
+  // Returns the total excluding tax
+  getTotalExcludingTax(): number {
+    const getTotal = (total: number, product: OrderProduct) => {
+      return total + (typeof product.quantity === 'number' ? product.quantity * product.price : 0);
+    };
+    return this.products.reduce(getTotal, 0);
+  }
+
+  // Returns the total including tax
+  getTotalIncludingTax(): number {
+    return (1 + this.taxPercent / 100) * this.getTotalExcludingTax();
+  }
+
+  // Returns the total including the promotion
+  getTotalPromotion() {
+    return (1 - this.promoPercent / 100) * this.getTotalIncludingTax();
+  }
+
   // Retrieve the total invoiced price
   getTotalInvoiced() {
-    return this.totalPromotion > 0 ? this.totalPromotion : this.totalIncludingTax;
+    return this.promoPercent > 0 ? this.getTotalPromotion() : this.getTotalIncludingTax();
   }
 
   // Update the status

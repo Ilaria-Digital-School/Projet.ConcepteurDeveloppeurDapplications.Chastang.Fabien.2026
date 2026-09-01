@@ -31,13 +31,16 @@ export class Cart {
     return this.products.map((product: OrderProduct) => product.id);
   }
 
+  // Rounded to two decimal places
+  round(value: number) {
+    const POWER10 = 10 ** 2;
+    return Math.round(POWER10 * value) / POWER10;
+  }
+
   // Retrieve the total cart amount excluding tax
   getTotalExcludingTax(): number {
     const getTotal = (total: number, product: OrderProduct) => {
-      return (
-        total +
-        (typeof product.quantity === 'number' ? product.quantity * product.price : 0)
-      );
+      return total + (typeof product.quantity === 'number' ? product.quantity * product.price : 0);
     };
     return this.products.reduce(getTotal, 0);
   }

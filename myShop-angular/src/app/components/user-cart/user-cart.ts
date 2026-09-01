@@ -56,7 +56,7 @@ export class UserCart {
           this.products = res
             .map((product: Product) => {
               const PRODUCT = this.userCart.products.find(
-                (item: OrderProduct) => (item.id === product.id),
+                (item: OrderProduct) => item.id === product.id,
               );
               // Initialize ONLY the quantity
               product.quantity = PRODUCT?.quantity;

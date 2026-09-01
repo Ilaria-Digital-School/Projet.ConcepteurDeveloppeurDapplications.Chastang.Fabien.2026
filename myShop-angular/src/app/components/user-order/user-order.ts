@@ -24,15 +24,15 @@ export class UserOrder {
   private productService = inject(ProductService);
 
   // Class properties
+  objOrder: Order = new Order();
   products: Product[] | null = [];
   orderStatus: StatusList = new StatusList();
 
   // Load the order products
   ngOnInit() {
-    const ORDER = new Order();
-    Object.assign(ORDER, this.order);
+    Object.assign(this.objOrder, this.order);
 
-    this.productService.getProductsByIDs(ORDER.getProductIDs()).subscribe({
+    this.productService.getProductsByIDs(this.objOrder.getProductIDs()).subscribe({
       next: (res: Product[]) => {
         this.products = res
           .map((product: Product) => {

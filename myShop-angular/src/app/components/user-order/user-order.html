@@ -1,9 +1,9 @@
 <h2 class="h2-info">
   <div>
     Commande du
-    <span>{{ order.date | date: 'dd/MM/yyyy' }} à {{ order.date | date: 'HH:mm' }}</span>
+    <span>{{ objOrder.date | date: 'dd/MM/yyyy' }} à {{ objOrder.date | date: 'HH:mm' }}</span>
   </div>
-  <div>Référence : {{ order.reference }}</div>
+  <div>Référence : {{ objOrder.reference }}</div>
 </h2>
 
 <div class="table-responsive">
@@ -39,8 +39,8 @@
             €
           </td>
           @if (i === 0) {
-            <td class="status" [rowSpan]="order.products.length">
-              {{ orderStatus.getByValue(order.status)?.name }}
+            <td class="status" [rowSpan]="objOrder.products.length">
+              {{ orderStatus.getByValue(objOrder.status)?.name }}
             </td>
           }
         </tr>
@@ -50,14 +50,17 @@
         <td colspan="3">
           <div class="cell-total">
             <div [style.white-space]="'nowrap'">
-              {{ Common.numberToString(order.totalExcludingTax) }} €<span id="info-tax">(HT)</span>
+              {{ Common.numberToString(objOrder.round(objOrder.getTotalExcludingTax())) }} €
+              <span id="info-tax">(HT)</span>
             </div>
             <div [style.white-space]="'nowrap'">
-              {{ Common.numberToString(order.totalIncludingTax) }} €<span id="info-tax">(TTC)</span>
+              {{ Common.numberToString(objOrder.round(objOrder.getTotalIncludingTax())) }} €
+              <span id="info-tax">(TTC)</span>
             </div>
-            @if (order.totalPromotion > 0) {
+            @if (objOrder.promoPercent > 0) {
               <div [style.white-space]="'nowrap'">
-                {{ Common.numberToString(order.totalPromotion) }} € Facturé (promotion)
+                {{ Common.numberToString(objOrder.round(objOrder.getTotalPromotion())) }} € Facturé
+                (promotion)
               </div>
             }
           </div>

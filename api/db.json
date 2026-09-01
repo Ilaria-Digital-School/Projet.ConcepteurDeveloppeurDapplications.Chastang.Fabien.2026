@@ -394,9 +394,6 @@
       "promoCode": "",
       "taxPercent": 20,
       "promoPercent": 0,
-      "totalExcludingTax": 110,
-      "totalIncludingTax": 132,
-      "totalPromotion": 0,
       "status": 3
     },
     {
@@ -419,9 +416,6 @@
       "promoCode": "",
       "taxPercent": 20,
       "promoPercent": 0,
-      "totalExcludingTax": 80,
-      "totalIncludingTax": 96,
-      "totalPromotion": 0,
       "status": 1
     },
     {
@@ -449,9 +443,6 @@
       "promoCode": "",
       "taxPercent": 20,
       "promoPercent": 0,
-      "totalExcludingTax": 140,
-      "totalIncludingTax": 168,
-      "totalPromotion": 0,
       "status": 0
     },
     {
@@ -481,9 +472,6 @@
       "promoCode": "",
       "taxPercent": 20,
       "promoPercent": 0,
-      "totalExcludingTax": 200,
-      "totalIncludingTax": 240,
-      "totalPromotion": 0,
       "status": 0
     },
     {
@@ -506,9 +494,6 @@
       "promoCode": "",
       "taxPercent": 20,
       "promoPercent": 0,
-      "totalExcludingTax": 110,
-      "totalIncludingTax": 132,
-      "totalPromotion": 0,
       "status": 0
     },
     {
@@ -531,9 +516,6 @@
       "promoCode": "",
       "taxPercent": 20,
       "promoPercent": 0,
-      "totalExcludingTax": 100,
-      "totalIncludingTax": 120,
-      "totalPromotion": 0,
       "status": 0
     }
   ],
