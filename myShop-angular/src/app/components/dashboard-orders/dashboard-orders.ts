@@ -106,13 +106,15 @@ export class DashboardOrders {
         // All orders associate with their users
         this.dashboard.arrays.unfiltered = orders
           .map((order: Order) => {
-            return { order: order, user: res.find((user: User) => user.id === order.userId) };
+            const ORDER = new Order();
+            Object.assign(ORDER, order);
+            return { order: ORDER, user: res.find((user: User) => user.id === order.userId) };
           })
-          .sort((item1: OrderExt, item2: OrderExt) => item2.order.date - item1.order.date);
-        this.dashboard.arrays.filteredText = structuredClone(this.dashboard.arrays.unfiltered);
-        this.dashboard.arrays.filteredRef = structuredClone(this.dashboard.arrays.unfiltered);
-        this.dashboard.arrays.filteredTextRef = structuredClone(this.dashboard.arrays.unfiltered);
-        this.dashboard.arrays.filteredItems = structuredClone(this.dashboard.arrays.unfiltered);
+          .sort((item1: OrderExt, item2: OrderExt) => item2.order.dateIns - item1.order.dateIns);
+        this.dashboard.arrays.filteredText = this.dashboard.arrays.unfiltered;
+        this.dashboard.arrays.filteredRef = this.dashboard.arrays.unfiltered;
+        this.dashboard.arrays.filteredTextRef = this.dashboard.arrays.unfiltered;
+        this.dashboard.arrays.filteredItems = this.dashboard.arrays.unfiltered;
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
@@ -157,12 +159,12 @@ export class DashboardOrders {
     ];
   }
 
-  // Sort orders by date (default)
+  // Sort orders by dateIns (default)
   sortByDate(array: OrderExt[], up: boolean): OrderExt[] {
     if (up) {
-      return array.sort((item1: OrderExt, item2: OrderExt) => item1.order.date - item2.order.date);
+      return array.sort((item1: OrderExt, item2: OrderExt) => item1.order.dateIns - item2.order.dateIns);
     } else {
-      return array.sort((item1: OrderExt, item2: OrderExt) => item2.order.date - item1.order.date);
+      return array.sort((item1: OrderExt, item2: OrderExt) => item2.order.dateIns - item1.order.dateIns);
     }
   }
 
@@ -174,7 +176,7 @@ export class DashboardOrders {
           item1.user !== undefined && item2.user !== undefined
             ? item1.user.email.localeCompare(item2.user.email)
             : 0;
-        return COMPARE === 0 ? item1.order.date - item2.order.date : COMPARE;
+        return COMPARE === 0 ? item1.order.dateIns - item2.order.dateIns : COMPARE;
       });
     } else {
       return array.sort((item1: OrderExt, item2: OrderExt) => {
@@ -182,7 +184,7 @@ export class DashboardOrders {
           item1.user !== undefined && item2.user !== undefined
             ? item2.user.email.localeCompare(item1.user.email)
             : 0;
-        return COMPARE === 0 ? item2.order.date - item1.order.date : COMPARE;
+        return COMPARE === 0 ? item2.order.dateIns - item1.order.dateIns : COMPARE;
       });
     }
   }
@@ -192,12 +194,12 @@ export class DashboardOrders {
     if (up) {
       return array.sort((item1: OrderExt, item2: OrderExt) => {
         const COMPARE = item1.order.status - item2.order.status;
-        return COMPARE === 0 ? item1.order.date - item2.order.date : COMPARE;
+        return COMPARE === 0 ? item1.order.dateIns - item2.order.dateIns : COMPARE;
       });
     } else {
       return array.sort((item1: OrderExt, item2: OrderExt) => {
         const COMPARE = item2.order.status - item1.order.status;
-        return COMPARE === 0 ? item2.order.date - item1.order.date : COMPARE;
+        return COMPARE === 0 ? item2.order.dateIns - item1.order.dateIns : COMPARE;
       });
     }
   }

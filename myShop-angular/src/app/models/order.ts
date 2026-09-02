@@ -3,6 +3,7 @@ import { OrderProduct } from './order-product';
 import { Cart } from './cart';
 import { User } from './user';
 
+// Type used by the dashboard order list
 export type OrderExt = { order: Order; user: User | undefined };
 
 // Order class
@@ -10,18 +11,22 @@ export class Order {
   // Class properties
   id: string = '';
   reference: string = Common.getOrderRef();
-  date: number = Date.now();
+  dateIns: number = Date.now();
+  dateMod: number | null = null;
   userId: string = '';
   products: OrderProduct[] = [];
   promoCode: string = '';
   taxPercent: number = 0;
   promoPercent: number = 0;
   status: number = 0;
+  visible: boolean = true;
 
   // Temporary property, not saved
   additional: any = {}; // For additional properties (RxJS) while preserving the 'Order' type
 
   constructor(
+    dateIns: number | null = null,
+    dateMod: number | null = null,
     userId: string | null = null,
     products: OrderProduct[] | null = null,
     taxPercent: number | null = null,
@@ -29,6 +34,8 @@ export class Order {
     promoPercent: number | null = null,
     status: number | null = null,
   ) {
+    if (typeof dateIns === 'number') this.dateIns = dateIns;
+    if (typeof dateMod === 'number') this.dateMod = dateMod;
     if (typeof userId === 'string') this.userId = userId;
     if (Array.isArray(products)) this.products = products;
     if (typeof taxPercent === 'number') this.taxPercent = taxPercent;
@@ -38,7 +45,7 @@ export class Order {
   }
 
   // Rounded to two decimal places
-  round(value: number) {
+  round(value: number): number {
     const POWER10 = 10 ** 2;
     return Math.round(POWER10 * value) / POWER10;
   }
@@ -68,7 +75,7 @@ export class Order {
   // Returns the total excluding tax
   getTotalExcludingTax(): number {
     const getTotal = (total: number, product: OrderProduct) => {
-      return total + (typeof product.quantity === 'number' ? product.quantity * product.price : 0);
+      return total + product.quantity * product.price;
     };
     return this.products.reduce(getTotal, 0);
   }
@@ -79,12 +86,12 @@ export class Order {
   }
 
   // Returns the total including the promotion
-  getTotalPromotion() {
+  getTotalPromotion(): number {
     return (1 - this.promoPercent / 100) * this.getTotalIncludingTax();
   }
 
   // Retrieve the total invoiced price
-  getTotalInvoiced() {
+  getTotalInvoiced(): number {
     return this.promoPercent > 0 ? this.getTotalPromotion() : this.getTotalIncludingTax();
   }
 

@@ -18,7 +18,7 @@ export class OrderService {
     return this.httpClient.get<Order[]>(this.orderURL).pipe(
       // Orders sorted from newest to oldest
       map((orders: Order[]) => {
-        return orders.sort((order1: Order, order2: Order) => order2.date - order1.date);
+        return orders.sort((order1: Order, order2: Order) => order2.dateIns - order1.dateIns);
       }),
     );
   }
@@ -28,7 +28,7 @@ export class OrderService {
     return this.httpClient.get<Order[]>(`${this.orderURL}?userId=${userId}`).pipe(
       // Orders sorted from newest to oldest
       map((orders: Order[]) => {
-        return orders.sort((order1: Order, order2: Order) => order2.date - order1.date);
+        return orders.sort((order1: Order, order2: Order) => order2.dateIns - order1.dateIns);
       }),
     );
   }
@@ -38,7 +38,7 @@ export class OrderService {
     return this.httpClient.get<Order[]>(`${this.orderURL}?userId=${userIDs.join('&userId=')}`).pipe(
       // Orders sorted from newest to oldest
       map((orders: Order[]) => {
-        return orders.sort((order1: Order, order2: Order) => order2.date - order1.date);
+        return orders.sort((order1: Order, order2: Order) => order2.dateIns - order1.dateIns);
       }),
     );
   }
@@ -51,12 +51,30 @@ export class OrderService {
   // Response: string, boolean, object + ID
   addOrder(order: Order): Observable<Order> {
     const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
+    ORDER.dateIns = Date.now();
     return this.httpClient.post<Order>(this.orderURL, ORDER);
   }
 
   // Response: string, boolean, object + ID
   updateOrder(order: Order): Observable<Order> {
     const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
+    ORDER.dateMod = Date.now();
+    return this.httpClient.put<Order>(`${this.orderURL}/${order.id}`, ORDER);
+  }
+
+  // Response: string, boolean, object + ID
+  showOrder(order: Order): Observable<Order> {
+    const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
+    ORDER.dateMod = Date.now();
+    ORDER.visible = true;
+    return this.httpClient.put<Order>(`${this.orderURL}/${order.id}`, ORDER);
+  }
+
+  // Response: string, boolean, object + ID
+  hideOrder(order: Order): Observable<Order> {
+    const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
+    ORDER.dateMod = Date.now();
+    ORDER.visible = false;
     return this.httpClient.put<Order>(`${this.orderURL}/${order.id}`, ORDER);
   }
 

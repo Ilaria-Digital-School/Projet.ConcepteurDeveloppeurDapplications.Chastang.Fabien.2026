@@ -34,19 +34,19 @@
           <th scope="col">#</th>
           <th scope="col">Référence</th>
           <th scope="col">
-            <a class="link" (click)="dashboard.sort('email')">
+            <a class="link no-select" (click)="dashboard.sort('email')">
               Client<i #sortEmail class="fa-solid fa-caret-up arrow hidden"></i>
             </a>
           </th>
           <th scope="col">
-            <a class="link" (click)="dashboard.sort('date')">
+            <a class="link no-select" (click)="dashboard.sort('date')">
               Date<i #sortDate class="fa-solid fa-caret-down arrow"></i>
             </a>
           </th>
           <th scope="col" [style.white-space]="'nowrap'">Total <span id="info-tax">(HT)</span></th>
           <th scope="col" [style.white-space]="'nowrap'">Total facturé</th>
           <th scope="col">
-            <a class="link" (click)="dashboard.sort('status')">
+            <a class="link no-select" (click)="dashboard.sort('status')">
               Statut<i #sortStatus class="fa-solid fa-caret-up arrow hidden"></i>
             </a>
           </th>
@@ -67,8 +67,8 @@
               </a>
             </td>
             <td>
-              {{ orderExt.order.date | date: 'dd/MM/yyyy' }} à
-              {{ orderExt.order.date | date: 'HH:mm' }}
+              {{ orderExt.order.dateIns | date: 'dd/MM/yyyy' }} à
+              {{ orderExt.order.dateIns | date: 'HH:mm' }}
             </td>
             <td>
               {{

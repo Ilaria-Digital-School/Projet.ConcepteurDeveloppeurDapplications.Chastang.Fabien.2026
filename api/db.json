@@ -395,7 +395,8 @@
     {
       "id": "1aOCLkASqBX",
       "reference": "YHHM-V0J7-3ETD-DLXO-T9QM",
-      "date": 1787307508412,
+      "dateIns": 1787307508412,
+      "dateMod": null,
       "userId": "tapQ6zz5B64",
       "products": [
         {
@@ -412,12 +413,14 @@
       "promoCode": "",
       "taxPercent": 20,
       "promoPercent": 0,
-      "status": 3
+      "status": 3,
+      "visible": true
     },
     {
       "id": "90JZsSLJbnc",
       "reference": "DI06-D0IU-N2R7-WM7K-83T7",
-      "date": 1787308167804,
+      "dateIns": 1787308167804,
+      "dateMod": null,
       "userId": "tapQ6zz5B64",
       "products": [
         {
@@ -434,12 +437,14 @@
       "promoCode": "",
       "taxPercent": 20,
       "promoPercent": 0,
-      "status": 1
+      "status": 1,
+      "visible": true
     },
     {
       "id": "qYZH9dA",
       "reference": "ER6V-1TEA-D4T6-F92V-U0AJ",
-      "date": 1787996706186,
+      "dateIns": 1787996706186,
+      "dateMod": null,
       "userId": "tapQ6zz5B64",
       "products": [
         {
@@ -461,12 +466,14 @@
       "promoCode": "",
       "taxPercent": 20,
       "promoPercent": 0,
-      "status": 0
+      "status": 0,
+      "visible": true
     },
     {
       "id": "RDfRDAo",
       "reference": "E7XM-PJ0O-XF3T-VV2R-ZLGN",
-      "date": 1788023288467,
+      "dateIns": 1788023288467,
+      "dateMod": null,
       "userId": "dYtBHw6xvkp",
       "products": [
         {
@@ -477,25 +484,25 @@
         {
           "id": "B5Np9Lj40Yg",
           "price": 40,
-          "img": "assets/img/clothing/men/jeans/cmj2.png",
           "quantity": 1
         },
         {
           "id": "WeHNcyId4xk",
           "price": 70,
-          "img": "assets/img/clothing/women/dresses/cwd2.png",
           "quantity": 2
         }
       ],
       "promoCode": "",
       "taxPercent": 20,
       "promoPercent": 0,
-      "status": 0
+      "status": 0,
+      "visible": true
     },
     {
       "id": "KRiH5tw",
       "reference": "YRL1-VVBE-6FMP-9S1R-QT0D",
-      "date": 1788023329987,
+      "dateIns": 1788023329987,
+      "dateMod": null,
       "userId": "dYtBHw6xvkp",
       "products": [
         {
@@ -512,12 +519,14 @@
       "promoCode": "",
       "taxPercent": 20,
       "promoPercent": 0,
-      "status": 0
+      "status": 0,
+      "visible": true
     },
     {
       "id": "IbL08X7",
       "reference": "0RF7-NUJ8-A3X1-QC8L-H88S",
-      "date": 1788024454231,
+      "dateIns": 1788024454231,
+      "dateMod": null,
       "userId": "dYtBHw6xvkp",
       "products": [
         {
@@ -534,7 +543,8 @@
       "promoCode": "",
       "taxPercent": 20,
       "promoPercent": 0,
-      "status": 0
+      "status": 0,
+      "visible": true
     }
   ],
   "messages": [

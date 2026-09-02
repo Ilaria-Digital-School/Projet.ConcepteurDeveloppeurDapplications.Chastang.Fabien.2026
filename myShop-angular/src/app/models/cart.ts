@@ -68,7 +68,7 @@ export class Cart {
   }
 
   // Rounded to two decimal places
-  round(value: number) {
+  round(value: number): number {
     const POWER10 = 10 ** 2;
     return Math.round(POWER10 * value) / POWER10;
   }
@@ -76,7 +76,7 @@ export class Cart {
   // Retrieve the total cart amount excluding tax
   getTotalExcludingTax(): number {
     const getTotal = (total: number, product: OrderProduct) => {
-      return total + (typeof product.quantity === 'number' ? product.quantity * product.price : 0);
+      return total + product.quantity * product.price;
     };
     return this.products.reduce(getTotal, 0);
   }

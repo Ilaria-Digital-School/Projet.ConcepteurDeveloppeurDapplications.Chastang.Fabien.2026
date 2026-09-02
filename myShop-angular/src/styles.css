@@ -103,6 +103,10 @@ main {
   cursor: pointer;
 }
 
+.no-select {
+  user-select: none;
+}
+
 section {
   background-color: white;
   border-radius: 10px;

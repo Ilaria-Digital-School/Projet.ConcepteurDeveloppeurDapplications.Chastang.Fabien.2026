@@ -34,20 +34,20 @@
           <th scope="col">#</th>
           <th scope="col">Référence</th>
           <th scope="col">
-            <a class="link" (click)="dashboard.sort('name')">
+            <a class="link no-select" (click)="dashboard.sort('name')">
               Nom<i #sortName class="fa-solid fa-caret-up arrow"></i>
             </a>
           </th>
           <th scope="col">Description</th>
           <th scope="col" [style.white-space]="'nowrap'">
-            <a class="link" (click)="dashboard.sort('price')">
+            <a class="link no-select" (click)="dashboard.sort('price')">
               Prix<span id="info-tax">(HT)</span>
               <i #sortPrice class="fa-solid fa-caret-up arrow hidden"></i>
             </a>
           </th>
           <th scope="col" [style.white-space]="'nowrap'">Prix<span id="info-tax">(TTC)</span></th>
           <th scope="col">
-            <a class="link" (click)="dashboard.sort('stock')">
+            <a class="link no-select" (click)="dashboard.sort('stock')">
               Stock<i #sortStock class="fa-solid fa-caret-up arrow hidden"></i>
             </a>
           </th>

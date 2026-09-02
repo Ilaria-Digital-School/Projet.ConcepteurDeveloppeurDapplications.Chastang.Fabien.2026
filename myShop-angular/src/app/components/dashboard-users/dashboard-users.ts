@@ -93,10 +93,10 @@ export class DashboardUsers {
           const COMPARE = item1.name.localeCompare(item2.name);
           return COMPARE === 0 ? item1.email.localeCompare(item2.email) : COMPARE;
         });
-        this.dashboard.arrays.filteredText = structuredClone(this.dashboard.arrays.unfiltered);
-        this.dashboard.arrays.filteredRef = structuredClone(this.dashboard.arrays.unfiltered);
-        this.dashboard.arrays.filteredTextRef = structuredClone(this.dashboard.arrays.unfiltered);
-        this.dashboard.arrays.filteredItems = structuredClone(this.dashboard.arrays.unfiltered);
+        this.dashboard.arrays.filteredText = this.dashboard.arrays.unfiltered;
+        this.dashboard.arrays.filteredRef = this.dashboard.arrays.unfiltered;
+        this.dashboard.arrays.filteredTextRef = this.dashboard.arrays.unfiltered;
+        this.dashboard.arrays.filteredItems = this.dashboard.arrays.unfiltered;
       },
       error: (err: any) => {
         alert("Une erreur s'est produite lors de la récupération des données.");
