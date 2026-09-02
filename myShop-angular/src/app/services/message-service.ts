@@ -13,19 +13,46 @@ export class MessageService {
   // Delivery
   private httpClient = inject(HttpClient);
 
-  // Response: product object or null
-  getMessageMessageById(id: string | null): Observable<Message> {
+  // Retrieve a message by its ID - Response: message object or null
+  getMessageById(id: string | null): Observable<Message> {
     return this.httpClient.get<Message>(`${this.messageURL}/${id}`);
   }
 
-  // Response: string, boolean, object + ID
-  addMessageMessage(message: Message): Observable<Message> {
+  // Retrieve a message by its user email - Response: message object or null
+  getMessageByEmail(email: string | null): Observable<Message> {
+    return this.httpClient.get<Message>(`${this.messageURL}?email=${email}`);
+  }
+
+  // Add a message - Response: string, boolean, object + ID
+  addMessage(message: Message): Observable<Message> {
     const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
+    MESSAGE.dateIns = Date.now();
     return this.httpClient.post<Message>(this.messageURL, MESSAGE);
   }
 
-  // Response: string, boolean
-  deleteMessageMessage(id: string | null): Observable<Message> {
+  // Reply to a message - Response: string, boolean, object + ID
+  replyMessage(message: Message): Observable<Message> {
+    const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
+    MESSAGE.dateRep = Date.now();
+    return this.httpClient.put<Message>(`${this.messageURL}/${message.id}`, MESSAGE);
+  }
+
+  // Show a message - Response: string, boolean, object + ID
+  showMessage(message: Message): Observable<Message> {
+    const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
+    MESSAGE.visible = true;
+    return this.httpClient.put<Message>(`${this.messageURL}/${message.id}`, MESSAGE);
+  }
+
+  // Hide a message - Response: string, boolean, object + ID
+  hideMessage(message: Message): Observable<Message> {
+    const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
+    MESSAGE.visible = false;
+    return this.httpClient.put<Message>(`${this.messageURL}/${message.id}`, MESSAGE);
+  }
+
+  // Delete a message - Response: string, boolean
+  deleteMessage(id: string | null): Observable<Message> {
     return this.httpClient.delete<Message>(`${this.messageURL}/${id}`);
   }
 }

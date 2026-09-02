@@ -29,6 +29,8 @@
     {
       "id": "BN4bdfCKWuf",
       "reference": "6XKSDQ-M9CBDP",
+      "dateIns": 0,
+      "dateMod": null,
       "name": "Chemise Homme",
       "description": "Chemise homme en coton bleu clair",
       "price": 20,
@@ -48,6 +50,8 @@
     {
       "id": "a1Fsngvgtdn",
       "reference": "DADKFY-XP9IOL",
+      "dateIns": 0,
+      "dateMod": null,
       "name": "Robe",
       "description": "Robe en jean denim indigo",
       "price": 40,
@@ -63,6 +67,8 @@
     {
       "id": "WeHNcyId4xk",
       "reference": "IASKOP-V4K5ID",
+      "dateIns": 0,
+      "dateMod": null,
       "name": "Robe",
       "description": "Robe en coton bleu nuit",
       "price": 70,
@@ -78,6 +84,8 @@
     {
       "id": "xVlVC7SoNAY",
       "reference": "ZZTYI5-I8ONMF",
+      "dateIns": 0,
+      "dateMod": null,
       "name": "Jean Homme",
       "description": "Jean homme gris",
       "price": 30,
@@ -93,6 +101,8 @@
     {
       "id": "B5Np9Lj40Yg",
       "reference": "0DDVBL-GF02RL",
+      "dateIns": 0,
+      "dateMod": null,
       "name": "Jean Homme",
       "description": "Jean homme bleu",
       "price": 40,
@@ -276,6 +286,8 @@
     {
       "id": "9yGc7G1khwe",
       "reference": "BNVNS5BS7F",
+      "dateIns": 0,
+      "dateMod": null,
       "name": "Fabien",
       "email": "admin.fabien@myshop.com",
       "pswd": "3kb!BWFe;dgXqV]",
@@ -288,6 +300,8 @@
     {
       "id": "Q47pLXwdKmv",
       "reference": "ZB9VKBOZ26",
+      "dateIns": 0,
+      "dateMod": null,
       "name": "Louis",
       "email": "louis.machin@domain.com",
       "pswd": "Ialj:75/A,~tmUt",
@@ -302,6 +316,8 @@
     {
       "id": "dYtBHw6xvkp",
       "reference": "DAY7DO3ZQI",
+      "dateIns": 0,
+      "dateMod": null,
       "name": "Janette",
       "email": "janette.bidule@domain.com",
       "pswd": "3Fx$Njqb6yeh4hj",
@@ -317,6 +333,8 @@
     {
       "id": "tapQ6zz5B64",
       "reference": "DAY7DO3ZQI",
+      "dateIns": 0,
+      "dateMod": null,
       "name": "Alfred",
       "email": "alfred.truc@domaine.fr",
       "pswd": "S66bbGaHPvAAAX!",
@@ -522,9 +540,12 @@
   "messages": [
     {
       "id": "fQbkvjaKRgy",
+      "dateIns": 0,
+      "dateRep": null,
       "name": "Fabien",
       "email": "mon@adresse.email",
-      "message": "Mon message"
+      "message": "Mon message",
+      "visible": true
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

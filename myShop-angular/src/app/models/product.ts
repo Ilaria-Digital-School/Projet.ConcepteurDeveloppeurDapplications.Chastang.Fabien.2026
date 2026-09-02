@@ -7,6 +7,8 @@ export type FullDesc = { title: string | undefined; description: Array<string> }
 export class Product {
   id: string = '';
   reference: string = Common.getProductRef();
+  dateIns: number = Date.now(); // Insertion date
+  dateMod: number | null = null; // Modification date
   name: string = '';
   description: string = '';
   price: number = 0;
@@ -24,6 +26,8 @@ export class Product {
   additional: any = {}; // For additional properties (RxJS) while preserving the 'Product' type
 
   constructor(
+    dateIns: number | null = null,
+    dateMod: number | null = null,
     name: string | null = null,
     description: string | null = null,
     price: number | null = null,
@@ -35,6 +39,8 @@ export class Product {
     info: string | null = null,
     favorite: boolean | null = null,
   ) {
+    if (typeof dateIns === 'number') this.dateIns = dateIns;
+    if (typeof dateMod === 'number') this.dateMod = dateMod;
     if (typeof name === 'string') this.name = name;
     if (typeof description === 'string') this.description = description;
     if (typeof price === 'number') this.price = price;

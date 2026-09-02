@@ -37,7 +37,7 @@ export class UserCart {
   taxPercent: number = 20;
   total: number = 0;
   userCart!: Cart;
-  products: Product[] | null = [];
+  products: Product[] = [];
   connectedUser: User | null = null;
 
   // Initialize the Cart object and the view (template) ///////////////////////
@@ -95,7 +95,7 @@ export class UserCart {
     this.cartService.add(new OrderProduct(product));
 
     // Update the cart view
-    if (typeof product.quantity === 'number') product.quantity++;
+    this.userCart.addOne(product);
   }
 
   // Decrease the quantity of a product
@@ -107,13 +107,8 @@ export class UserCart {
     this.cartService.remove(new OrderProduct(product));
 
     // Update the cart view
-    if (product.quantity === 1) {
-      this.userCart.products = this.userCart.products.filter(
-        (item: OrderProduct) => item.id !== product.id,
-      );
-    } else if (typeof product.quantity === 'number') {
-      product.quantity--;
-    }
+    this.userCart.removeOne(product);
+    if (product.quantity === 0) this.removeFromList(product.id);
   }
 
   // Remove a product
@@ -125,9 +120,13 @@ export class UserCart {
     this.cartService.removeProduct(id);
 
     // Remove the product from the cart view
-    this.userCart.products = this.userCart.products.filter(
-      (product: OrderProduct) => product.id !== id,
-    );
+    this.userCart.removeProduct(id);
+    this.removeFromList(id);
+  }
+
+  // Remove a product from the list
+  removeFromList(id: string) {
+    this.products = this.products.filter((item: Product) => item.id !== id);
   }
 
   // Cart-related actions /////////////////////////////////////////////////////

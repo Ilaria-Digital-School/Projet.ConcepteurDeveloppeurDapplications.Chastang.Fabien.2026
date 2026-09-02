@@ -1,4 +1,5 @@
 import { OrderProduct } from './order-product';
+import { Product } from './product';
 
 // 'Cart' object initialized from the list of products with a
 // quantity of 1 for each item; list stored in local storage
@@ -24,6 +25,41 @@ export class Cart {
         }
       });
     }
+  }
+
+  // Add a product
+  addOne(product: Product) {
+    let quantity;
+    const PRODUCT = this.products.find((item: OrderProduct) => item.id === product.id);
+    if (PRODUCT) {
+      PRODUCT.quantity++;
+      quantity = PRODUCT.quantity;
+    } else {
+      const NEW_PRODUCT = new OrderProduct(product);
+      quantity = NEW_PRODUCT.quantity = 1;
+      this.products.push(NEW_PRODUCT);
+    }
+    product.quantity = quantity;
+  }
+
+  // Remove a product
+  removeOne(product: Product) {
+    let quantity;
+    const INDEX = this.products.findIndex((item: OrderProduct) => item.id === product.id);
+    if (INDEX > -1) {
+      if (this.products[INDEX].quantity > 1) {
+        this.products[INDEX].quantity--;
+        quantity = this.products[INDEX].quantity;
+      } else {
+        this.products.splice(INDEX, 1);
+        quantity = 0;
+      }
+    }
+    product.quantity = quantity;
+  }
+
+  removeProduct(id: string) {
+    this.products = this.products.filter((orderProduct: OrderProduct) => orderProduct.id !== id);
   }
 
   // Returns the list of product IDs for the cart

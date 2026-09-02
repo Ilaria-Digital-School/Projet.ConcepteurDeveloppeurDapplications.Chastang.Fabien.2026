@@ -13,7 +13,7 @@ export class ProductService {
   // Delivery
   private httpClient = inject(HttpClient);
 
-  // Response: array of objects (list of products)
+  // Retrieve all products - Response: array of objects (list of products)
   getAllProducts(taxPercent: number = 20): Observable<Product[]> {
     return this.httpClient.get<Product[]>(this.productURL).pipe(
       map((products: Product[]) => {
@@ -38,34 +38,52 @@ export class ProductService {
     );
   }
 
-  // Response: array of objects (list of products), the first 'maxCount' products
+  // Retrieve the first 'maxCount' products - Response: array of objects (list of products)
   getFirstProducts(maxCount: number): Observable<Product[]> {
     return this.httpClient.get<Product[]>(this.productURL).pipe(take(maxCount));
   }
 
-  // Response: array of objects (list of orders)
+  // Retrieve a list of products based on their IDs - Response: array of objects (list of orders)
   getProductsByIDs(IDs: string[]): Observable<Product[]> {
     return this.httpClient.get<Product[]>(`${this.productURL}?id=${IDs.join('&id=')}`);
   }
 
-  // Response: product object or null
+  // Retrieve a product by its ID - Response: product object or null
   getProductById(id: string | null): Observable<Product> {
     return this.httpClient.get<Product>(`${this.productURL}/${id}`);
   }
 
-  // Response: string, boolean, object + ID
+  // Add a product - Response: string, boolean, object + ID
   addProduct(product: Product): Observable<Product> {
     const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
+    PRODUCT.dateIns = Date.now();
     return this.httpClient.post<Product>(this.productURL, PRODUCT);
   }
 
-  // Response: string, boolean, object + ID
+  // Update a product - Response: string, boolean, object + ID
   updateProduct(product: Product): Observable<Product> {
     const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
+    PRODUCT.dateMod = Date.now();
     return this.httpClient.put<Product>(`${this.productURL}/${product.id}`, PRODUCT);
   }
 
-  // Response: string, boolean
+  // Show a product - Response: string, boolean, object + ID
+  showProduct(product: Product): Observable<Product> {
+    const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
+    PRODUCT.dateMod = Date.now();
+    PRODUCT.visible = true;
+    return this.httpClient.put<Product>(`${this.productURL}/${product.id}`, PRODUCT);
+  }
+
+  // Hide a product - Response: string, boolean, object + ID
+  hideProduct(product: Product): Observable<Product> {
+    const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
+    PRODUCT.dateMod = Date.now();
+    PRODUCT.visible = false;
+    return this.httpClient.put<Product>(`${this.productURL}/${product.id}`, PRODUCT);
+  }
+
+  // Delete a product - Response: string, boolean
   deleteProduct(id: string | null): Observable<Product> {
     return this.httpClient.delete<Product>(`${this.productURL}/${id}`);
   }

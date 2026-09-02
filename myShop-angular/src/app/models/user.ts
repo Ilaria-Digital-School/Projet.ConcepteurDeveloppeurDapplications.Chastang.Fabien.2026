@@ -7,6 +7,8 @@ export type LoginData = { email: string; pswd: string };
 export class User {
   id: string = '';
   reference: string = Common.getUserRef();
+  dateIns: number = Date.now(); // Insertion date
+  dateMod: number | null = null; // Modification date
   name: string = '';
   email: string = '';
   pswd: string = '';
@@ -20,6 +22,8 @@ export class User {
   additional: any = {}; // For additional properties (RxJS) while preserving the 'User' type
 
   constructor(
+    dateIns: number | null = null,
+    dateMod: number | null = null,
     name: string | null = null,
     email: string | null = null,
     pswd: string | null = null,
@@ -27,6 +31,8 @@ export class User {
     interests: number[] | null = null,
     country: number | null = null,
   ) {
+    if (typeof dateIns === 'number') this.dateIns = dateIns;
+    if (typeof dateMod === 'number') this.dateMod = dateMod;
     if (typeof name === 'string') this.name = name;
     if (typeof email === 'string') this.email = email;
     if (typeof pswd === 'string') this.pswd = pswd;

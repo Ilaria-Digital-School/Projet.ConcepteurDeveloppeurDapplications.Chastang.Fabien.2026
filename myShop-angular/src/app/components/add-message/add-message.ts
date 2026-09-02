@@ -63,7 +63,7 @@ export class AddMessage {
     MESSAGE.text = FORM_VAL.userMessage.trim();
 
     // Add the product
-    this.messageService.addMessageMessage(MESSAGE).subscribe({
+    this.messageService.addMessage(MESSAGE).subscribe({
       next: (res: Message) => {
         alert('Le message est enregistré.');
         this.router.navigate(['/']); // Go to homepage
