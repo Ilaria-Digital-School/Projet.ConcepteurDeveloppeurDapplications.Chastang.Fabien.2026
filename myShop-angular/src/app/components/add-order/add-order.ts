@@ -34,6 +34,7 @@ export class AddOrder {
     const CART = localStorage.getItem('cart');
     if (CART) {
       const USER_CART = JSON.parse(CART).map((item: any) => {
+        // Initialize the Product object with its methods
         const PRODUCT = new Product();
         Object.assign(PRODUCT, item);
         return PRODUCT;

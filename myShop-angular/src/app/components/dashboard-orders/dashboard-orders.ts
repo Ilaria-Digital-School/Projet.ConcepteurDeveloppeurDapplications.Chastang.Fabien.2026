@@ -106,6 +106,7 @@ export class DashboardOrders {
         // All orders associate with their users
         this.dashboard.arrays.unfiltered = orders
           .map((order: Order) => {
+            // Initialize the Order object with its methods
             const ORDER = new Order();
             Object.assign(ORDER, order);
             return { order: ORDER, user: res.find((user: User) => user.id === order.userId) };
