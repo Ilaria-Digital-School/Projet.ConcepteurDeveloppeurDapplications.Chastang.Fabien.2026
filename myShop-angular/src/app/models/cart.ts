@@ -58,6 +58,7 @@ export class Cart {
     product.quantity = quantity;
   }
 
+  // Remove all occurrences of a product
   removeProduct(id: string) {
     this.products = this.products.filter((orderProduct: OrderProduct) => orderProduct.id !== id);
   }
