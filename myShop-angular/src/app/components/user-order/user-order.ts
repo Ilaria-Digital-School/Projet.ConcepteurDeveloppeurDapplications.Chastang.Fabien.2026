@@ -28,10 +28,12 @@ export class UserOrder {
   products: Product[] | null = [];
   orderStatus: StatusList = new StatusList();
 
-  // Load the order products
+  // Initialization
   ngOnInit() {
+    // Initialize the Order object with its methods
     Object.assign(this.objOrder, this.order);
 
+    // Load the order products
     this.productService.getProductsByIDs(this.objOrder.getProductIDs()).subscribe({
       next: (res: Product[]) => {
         this.products = res
