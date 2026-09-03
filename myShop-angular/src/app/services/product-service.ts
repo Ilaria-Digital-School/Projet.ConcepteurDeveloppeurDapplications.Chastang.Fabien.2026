@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, map, take } from 'rxjs';
+import { Resources } from '../api.config';
 import { Product } from '../models/product';
 
 @Injectable({
@@ -8,14 +9,14 @@ import { Product } from '../models/product';
 })
 export class ProductService {
   // Destination / Address
-  productURL: string = 'http://localhost:3000/products';
+  resourceURL: string = `${Resources.baseURL}/${Resources.products}`;
 
   // Delivery
   private httpClient = inject(HttpClient);
 
   // Retrieve all products - Response: array of objects (list of products)
   getAllProducts(taxPercent: number = 20): Observable<Product[]> {
-    return this.httpClient.get<Product[]>(this.productURL).pipe(
+    return this.httpClient.get<Product[]>(this.resourceURL).pipe(
       map((products: Product[]) => {
         return products.map((product: Product) => {
           //  // 1 - Directly modify the attribute value
@@ -40,49 +41,49 @@ export class ProductService {
 
   // Retrieve the first 'maxCount' products - Response: array of objects (list of products)
   getFirstProducts(maxCount: number): Observable<Product[]> {
-    return this.httpClient.get<Product[]>(this.productURL).pipe(take(maxCount));
+    return this.httpClient.get<Product[]>(this.resourceURL).pipe(take(maxCount));
   }
 
   // Retrieve a list of products based on their IDs - Response: array of objects (list of orders)
   getProductsByIDs(IDs: string[]): Observable<Product[]> {
-    return this.httpClient.get<Product[]>(`${this.productURL}?id=${IDs.join('&id=')}`);
+    return this.httpClient.get<Product[]>(`${this.resourceURL}?id=${IDs.join('&id=')}`);
   }
 
   // Retrieve a product by its ID - Response: product object or null
   getProductById(id: string | null): Observable<Product> {
-    return this.httpClient.get<Product>(`${this.productURL}/${id}`);
+    return this.httpClient.get<Product>(`${this.resourceURL}/${id}`);
   }
 
   // Add a product - Response: string, boolean, object + ID
   addProduct(product: Product): Observable<Product> {
     const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
     PRODUCT.dateIns = Date.now();
-    return this.httpClient.post<Product>(this.productURL, PRODUCT);
+    return this.httpClient.post<Product>(this.resourceURL, PRODUCT);
   }
 
   // Update a product - Response: string, boolean, object + ID
   updateProduct(product: Product): Observable<Product> {
     const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
     PRODUCT.dateMod = Date.now();
-    return this.httpClient.put<Product>(`${this.productURL}/${product.id}`, PRODUCT);
+    return this.httpClient.put<Product>(`${this.resourceURL}/${product.id}`, PRODUCT);
   }
 
   // Show a product - Response: string, boolean, object + ID
   showProduct(product: Product): Observable<Product> {
     const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
     PRODUCT.visible = true;
-    return this.httpClient.put<Product>(`${this.productURL}/${product.id}`, PRODUCT);
+    return this.httpClient.put<Product>(`${this.resourceURL}/${product.id}`, PRODUCT);
   }
 
   // Hide a product - Response: string, boolean, object + ID
   hideProduct(product: Product): Observable<Product> {
     const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
     PRODUCT.visible = false;
-    return this.httpClient.put<Product>(`${this.productURL}/${product.id}`, PRODUCT);
+    return this.httpClient.put<Product>(`${this.resourceURL}/${product.id}`, PRODUCT);
   }
 
   // Delete a product - Response: string, boolean
   deleteProduct(id: string | null): Observable<Product> {
-    return this.httpClient.delete<Product>(`${this.productURL}/${id}`);
+    return this.httpClient.delete<Product>(`${this.resourceURL}/${id}`);
   }
 }
