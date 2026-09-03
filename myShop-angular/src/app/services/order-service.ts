@@ -65,7 +65,6 @@ export class OrderService {
   // Response: string, boolean, object + ID
   showOrder(order: Order): Observable<Order> {
     const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
-    ORDER.dateMod = Date.now();
     ORDER.visible = true;
     return this.httpClient.put<Order>(`${this.orderURL}/${order.id}`, ORDER);
   }
@@ -73,7 +72,6 @@ export class OrderService {
   // Response: string, boolean, object + ID
   hideOrder(order: Order): Observable<Order> {
     const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
-    ORDER.dateMod = Date.now();
     ORDER.visible = false;
     return this.httpClient.put<Order>(`${this.orderURL}/${order.id}`, ORDER);
   }

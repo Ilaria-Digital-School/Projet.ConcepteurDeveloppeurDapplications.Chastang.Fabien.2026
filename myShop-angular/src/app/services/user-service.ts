@@ -40,7 +40,6 @@ export class UserService {
   // Show a user - Response: string, boolean, object + ID
   showUser(user: User): Observable<User> {
     const USER = user.removeBeforeSaveUser(); // Remove these properties before saving the user
-    USER.dateMod = Date.now();
     USER.visible = true;
     return this.httpClient.put<User>(`${this.userURL}/${user.id}`, USER);
   }
@@ -48,7 +47,6 @@ export class UserService {
   // Hide a user - Response: string, boolean, object + ID
   hideUser(user: User): Observable<User> {
     const USER = user.removeBeforeSaveUser(); // Remove these properties before saving the user
-    USER.dateMod = Date.now();
     USER.visible = false;
     return this.httpClient.put<User>(`${this.userURL}/${user.id}`, USER);
   }

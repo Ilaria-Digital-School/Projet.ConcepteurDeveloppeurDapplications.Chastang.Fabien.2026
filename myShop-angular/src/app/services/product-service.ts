@@ -70,7 +70,6 @@ export class ProductService {
   // Show a product - Response: string, boolean, object + ID
   showProduct(product: Product): Observable<Product> {
     const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
-    PRODUCT.dateMod = Date.now();
     PRODUCT.visible = true;
     return this.httpClient.put<Product>(`${this.productURL}/${product.id}`, PRODUCT);
   }
@@ -78,7 +77,6 @@ export class ProductService {
   // Hide a product - Response: string, boolean, object + ID
   hideProduct(product: Product): Observable<Product> {
     const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
-    PRODUCT.dateMod = Date.now();
     PRODUCT.visible = false;
     return this.httpClient.put<Product>(`${this.productURL}/${product.id}`, PRODUCT);
   }
