@@ -41,7 +41,7 @@ export class UserOrder {
             );
             if (PRODUCT) {
               // Initialize the price AND the quantity
-              product.quantity = PRODUCT.price;
+              product.price = PRODUCT.price;
               product.quantity = PRODUCT.quantity;
             }
             return product;
