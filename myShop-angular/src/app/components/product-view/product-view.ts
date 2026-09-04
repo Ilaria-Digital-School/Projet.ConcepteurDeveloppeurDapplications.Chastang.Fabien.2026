@@ -105,12 +105,12 @@ export class ProductView {
   // Actions //////////////////////////////////////////////////////////////////
 
   // Add the product to the user's cart
-  addCart(product: Product) {
-    this.cartService.add(new OrderProduct(product));
+  addOne(product: Product) {
+    this.cartService.addOne(new OrderProduct(product));
   }
 
   // Remove the product from the user's cart
-  removeCart(product: Product) {
-    this.cartService.remove(new OrderProduct(product));
+  removeOne(product: Product) {
+    this.cartService.removeOne(new OrderProduct(product));
   }
 }

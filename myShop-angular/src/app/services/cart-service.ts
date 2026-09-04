@@ -22,7 +22,7 @@ export class CartService {
   }
 
   // Add an item to the cart
-  add(product: OrderProduct): void {
+  addOne(product: OrderProduct): void {
     this.cart.update((products: OrderProduct[]) => {
       // Remove the properties that are not necessary for the shopping cart
       const NEW_CART = [...products, product];
@@ -32,7 +32,7 @@ export class CartService {
   }
 
   // Remove an item from the cart
-  remove(product: OrderProduct): void {
+  removeOne(product: OrderProduct): void {
     this.cart.update((products: OrderProduct[]) => {
       const INDEX = products.findIndex((item: OrderProduct) => item.id === product.id);
       if (INDEX > -1) {

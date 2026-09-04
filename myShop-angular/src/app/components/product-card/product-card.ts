@@ -28,12 +28,12 @@ export class ProductCard {
   }
 
   // Add to cart
-  addCart(product: Product) {
+  addOne(product: Product) {
     this.addEvent.emit(product);
   }
 
   // Add to cart
-  removeCart(product: Product) {
+  removeOne(product: Product) {
     this.removeEvent.emit(product);
   }
 }

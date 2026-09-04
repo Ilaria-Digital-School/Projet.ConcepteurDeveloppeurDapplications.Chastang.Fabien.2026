@@ -92,7 +92,7 @@ export class UserCart {
   // Increase the quantity of a product
   addOne(product: Product) {
     // Add an item to the cart via CartService (local storage)
-    this.cartService.add(new OrderProduct(product));
+    this.cartService.addOne(new OrderProduct(product));
 
     // Update the cart view
     this.cart.addOne(product);
@@ -104,7 +104,7 @@ export class UserCart {
     if (product.quantity === 1 && !confirm(UserCart.msgDelProduct)) return;
 
     // Remove an item from the cart via CartService (local storage)
-    this.cartService.remove(new OrderProduct(product));
+    this.cartService.removeOne(new OrderProduct(product));
 
     // Update the cart view
     this.cart.removeOne(product);

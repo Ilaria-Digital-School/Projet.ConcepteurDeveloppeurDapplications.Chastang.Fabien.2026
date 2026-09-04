@@ -51,7 +51,7 @@
       [class.btn-disabled]="product.stock === 0"
       title="Ajouter au panier"
       aria-label="Ajouter au panier"
-      (click)="addCart(product)"
+      (click)="addOne(product)"
     >
       <i class="fa-solid fa-cart-arrow-down"></i>
     </button>
@@ -62,7 +62,7 @@
       [class.btn-disabled]="product.stock === 0"
       title="Retirer du panier"
       aria-label="Retirer du panier"
-      (click)="removeCart(product)"
+      (click)="removeOne(product)"
     >
       <i class="fa-solid fa-xmark"></i>
     </button>
