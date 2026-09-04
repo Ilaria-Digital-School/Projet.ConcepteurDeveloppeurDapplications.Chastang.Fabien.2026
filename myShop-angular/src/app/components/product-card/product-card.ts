@@ -19,8 +19,8 @@ export class ProductCard {
 
   // To send an event to another component
   @Output() viewEvent = new EventEmitter();
-  @Output() addEvent = new EventEmitter();
-  @Output() removeEvent = new EventEmitter();
+  @Output() addOneEvent = new EventEmitter();
+  @Output() removeOneEvent = new EventEmitter();
 
   // View the carousel or the product details
   view(id: string) {
@@ -29,11 +29,11 @@ export class ProductCard {
 
   // Add to cart
   addOne(product: Product) {
-    this.addEvent.emit(product);
+    this.addOneEvent.emit(product);
   }
 
   // Add to cart
   removeOne(product: Product) {
-    this.removeEvent.emit(product);
+    this.removeOneEvent.emit(product);
   }
 }
