@@ -8,34 +8,29 @@ import { Gender } from '../models/gender';
   providedIn: 'root',
 })
 export class GenderService {
-  // Destination / Address
-  resourceURL: string = `${Resources.baseURL}/${Resources.genders}`;
-
-  // Delivery
+  // Performs HTTP requests
   private httpClient = inject(HttpClient);
 
-  // Response: array of objects (list of genders)
+  // Resources URL
+  gendersURL: string = `${Resources.baseURL}/${Resources.genders}`;
+
+  // Retrieve all genders
   getAllGenders(): Observable<Gender[]> {
-    return this.httpClient.get<Gender[]>(this.resourceURL);
+    return this.httpClient.get<Gender[]>(this.gendersURL);
   }
 
-  // Response: gender object or null
-  getGenderById(id: string | null): Observable<Gender> {
-    return this.httpClient.get<Gender>(`${this.resourceURL}/${id}`);
-  }
-
-  // Response: string, boolean, object + ID
+  // Add a gender
   addGender(gender: Gender): Observable<Gender> {
-    return this.httpClient.post<Gender>(this.resourceURL, gender);
+    return this.httpClient.post<Gender>(this.gendersURL, gender);
   }
 
-  // Response: string, boolean, object + ID
+  // Update a gender
   updateGender(gender: Gender): Observable<Gender> {
-    return this.httpClient.put<Gender>(`${this.resourceURL}/${gender.id}`, gender);
+    return this.httpClient.put<Gender>(`${this.gendersURL}/${gender.id}`, gender);
   }
 
-  // Response: string, boolean
+  // Delete a gender
   deleteGender(id: string | null): Observable<Gender> {
-    return this.httpClient.delete<Gender>(`${this.resourceURL}/${id}`);
+    return this.httpClient.delete<Gender>(`${this.gendersURL}/${id}`);
   }
 }

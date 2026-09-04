@@ -8,34 +8,29 @@ import { Interest } from '../models/interest';
   providedIn: 'root',
 })
 export class InterestService {
-  // Destination / Address
-  resourceURL: string = `${Resources.baseURL}/${Resources.interests}`;
-
-  // Delivery
+  // Performs HTTP requests
   private httpClient = inject(HttpClient);
 
-  // Response: array of objects (list of interests)
+  // Resources URL
+  interestsURL: string = `${Resources.baseURL}/${Resources.interests}`;
+
+  // Retrieve all user interests / product types
   getAllInterests(): Observable<Interest[]> {
-    return this.httpClient.get<Interest[]>(this.resourceURL);
+    return this.httpClient.get<Interest[]>(this.interestsURL);
   }
 
-  // Response: interest object or null
-  getInterestById(id: string | null): Observable<Interest> {
-    return this.httpClient.get<Interest>(`${this.resourceURL}/${id}`);
-  }
-
-  // Response: string, boolean, object + ID
+  // Add a user interest / product type
   addInterest(interest: Interest): Observable<Interest> {
-    return this.httpClient.post<Interest>(this.resourceURL, interest);
+    return this.httpClient.post<Interest>(this.interestsURL, interest);
   }
 
-  // Response: string, boolean, object + ID
+  // Update a user interest / product type
   updateInterest(interest: Interest): Observable<Interest> {
-    return this.httpClient.put<Interest>(`${this.resourceURL}/${interest.id}`, interest);
+    return this.httpClient.put<Interest>(`${this.interestsURL}/${interest.id}`, interest);
   }
 
-  // Response: string, boolean
+  // Delete a user interest / product type
   deleteInterest(id: string | null): Observable<Interest> {
-    return this.httpClient.delete<Interest>(`${this.resourceURL}/${id}`);
+    return this.httpClient.delete<Interest>(`${this.interestsURL}/${id}`);
   }
 }

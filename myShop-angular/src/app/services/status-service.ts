@@ -8,34 +8,29 @@ import { Status } from '../models/status';
   providedIn: 'root',
 })
 export class StatusService {
-  // Destination / Address
-  resourceURL: string = `${Resources.baseURL}/${Resources.status}`;
-
-  // Delivery
+  // Performs HTTP requests
   private httpClient = inject(HttpClient);
 
-  // Response: array of objects (list of status)
+  // Resources URL
+  statusURL: string = `${Resources.baseURL}/${Resources.status}`;
+
+  // Retrieve all status
   getAllStatus(): Observable<Status[]> {
-    return this.httpClient.get<Status[]>(this.resourceURL);
+    return this.httpClient.get<Status[]>(this.statusURL);
   }
 
-  // Response: status object or null
-  getStatusById(id: string | null): Observable<Status> {
-    return this.httpClient.get<Status>(`${this.resourceURL}/${id}`);
-  }
-
-  // Response: string, boolean, object + ID
+  // Add a status
   addStatus(status: Status): Observable<Status> {
-    return this.httpClient.post<Status>(this.resourceURL, status);
+    return this.httpClient.post<Status>(this.statusURL, status);
   }
 
-  // Response: string, boolean, object + ID
+  // Update a status
   updateStatus(status: Status): Observable<Status> {
-    return this.httpClient.put<Status>(`${this.resourceURL}/${status.id}`, status);
+    return this.httpClient.put<Status>(`${this.statusURL}/${status.id}`, status);
   }
 
-  // Response: string, boolean
+  // Delete a status
   deleteStatus(id: string | null): Observable<Status> {
-    return this.httpClient.delete<Status>(`${this.resourceURL}/${id}`);
+    return this.httpClient.delete<Status>(`${this.statusURL}/${id}`);
   }
 }

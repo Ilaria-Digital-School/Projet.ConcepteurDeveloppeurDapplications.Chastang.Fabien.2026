@@ -8,52 +8,52 @@ import { Message } from '../models/message';
   providedIn: 'root',
 })
 export class MessageService {
-  // Destination / Address
-  resourceURL: string = `${Resources.baseURL}/${Resources.messages}`;
-
-  // Delivery
+  // Performs HTTP requests
   private httpClient = inject(HttpClient);
 
-  // Retrieve a message by its ID - Response: message object or null
+  // Resources URL
+  messagesURL: string = `${Resources.baseURL}/${Resources.messages}`;
+
+  // Retrieve a message by its ID
   getMessageById(id: string | null): Observable<Message> {
-    return this.httpClient.get<Message>(`${this.resourceURL}/${id}`);
+    return this.httpClient.get<Message>(`${this.messagesURL}/${id}`);
   }
 
-  // Retrieve a message by its user email - Response: message object or null
+  // Retrieve a message by its user email
   getMessageByEmail(email: string | null): Observable<Message> {
-    return this.httpClient.get<Message>(`${this.resourceURL}?email=${email}`);
+    return this.httpClient.get<Message>(`${this.messagesURL}?email=${email}`);
   }
 
-  // Add a message - Response: string, boolean, object + ID
+  // Add a message
   addMessage(message: Message): Observable<Message> {
     const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
     MESSAGE.dateIns = Date.now();
-    return this.httpClient.post<Message>(this.resourceURL, MESSAGE);
+    return this.httpClient.post<Message>(this.messagesURL, MESSAGE);
   }
 
-  // Reply to a message - Response: string, boolean, object + ID
+  // Reply to a message
   replyMessage(message: Message): Observable<Message> {
     const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
     MESSAGE.dateRep = Date.now();
-    return this.httpClient.put<Message>(`${this.resourceURL}/${message.id}`, MESSAGE);
+    return this.httpClient.put<Message>(`${this.messagesURL}/${message.id}`, MESSAGE);
   }
 
-  // Show a message - Response: string, boolean, object + ID
+  // Show a message
   showMessage(message: Message): Observable<Message> {
     const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
     MESSAGE.visible = true;
-    return this.httpClient.put<Message>(`${this.resourceURL}/${message.id}`, MESSAGE);
+    return this.httpClient.put<Message>(`${this.messagesURL}/${message.id}`, MESSAGE);
   }
 
-  // Hide a message - Response: string, boolean, object + ID
+  // Hide a message
   hideMessage(message: Message): Observable<Message> {
     const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
     MESSAGE.visible = false;
-    return this.httpClient.put<Message>(`${this.resourceURL}/${message.id}`, MESSAGE);
+    return this.httpClient.put<Message>(`${this.messagesURL}/${message.id}`, MESSAGE);
   }
 
-  // Delete a message - Response: string, boolean
+  // Delete a message
   deleteMessage(id: string | null): Observable<Message> {
-    return this.httpClient.delete<Message>(`${this.resourceURL}/${id}`);
+    return this.httpClient.delete<Message>(`${this.messagesURL}/${id}`);
   }
 }

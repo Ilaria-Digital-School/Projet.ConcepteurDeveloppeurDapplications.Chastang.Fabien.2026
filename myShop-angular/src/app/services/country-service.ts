@@ -8,34 +8,29 @@ import { Country } from '../models/country';
   providedIn: 'root',
 })
 export class CountryService {
-  // Destination / Address
-  resourceURL: string = `${Resources.baseURL}/${Resources.countries}`;
-
-  // Delivery
+  // Performs HTTP requests
   private httpClient = inject(HttpClient);
 
-  // Response: array of objects (list of countries)
+  // Resources URL
+  countriesURL: string = `${Resources.baseURL}/${Resources.countries}`;
+
+  // Retrieve all genders
   getAllCountries(): Observable<Country[]> {
-    return this.httpClient.get<Country[]>(this.resourceURL);
+    return this.httpClient.get<Country[]>(this.countriesURL);
   }
 
-  // Response: country object or null
-  getCountryById(id: string | null): Observable<Country> {
-    return this.httpClient.get<Country>(`${this.resourceURL}/${id}`);
-  }
-
-  // Response: string, boolean, object + ID
+  // Add a country
   addCountry(country: Country): Observable<Country> {
-    return this.httpClient.post<Country>(this.resourceURL, country);
+    return this.httpClient.post<Country>(this.countriesURL, country);
   }
 
-  // Response: string, boolean, object + ID
+  // Update a country
   updateCountry(country: Country): Observable<Country> {
-    return this.httpClient.put<Country>(`${this.resourceURL}/${country.id}`, country);
+    return this.httpClient.put<Country>(`${this.countriesURL}/${country.id}`, country);
   }
 
-  // Response: string, boolean
+  // Delete a country
   deleteCountry(id: string | null): Observable<Country> {
-    return this.httpClient.delete<Country>(`${this.resourceURL}/${id}`);
+    return this.httpClient.delete<Country>(`${this.countriesURL}/${id}`);
   }
 }

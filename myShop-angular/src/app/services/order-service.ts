@@ -8,15 +8,15 @@ import { Order } from '../models/order';
   providedIn: 'root',
 })
 export class OrderService {
-  // Destination / Address
-  resourceURL: string = `${Resources.baseURL}/${Resources.orders}`;
-
-  // Delivery
+  // Performs HTTP requests
   private httpClient = inject(HttpClient);
 
-  // Response: array of objects (list of orders)
+  // Resources URL
+  ordersURL: string = `${Resources.baseURL}/${Resources.orders}`;
+
+  // Retrieve all orders
   getAllOrders() {
-    return this.httpClient.get<Order[]>(this.resourceURL).pipe(
+    return this.httpClient.get<Order[]>(this.ordersURL).pipe(
       // Orders sorted from newest to oldest
       map((orders: Order[]) => {
         return orders.sort((order1: Order, order2: Order) => order2.dateIns - order1.dateIns);
@@ -24,9 +24,9 @@ export class OrderService {
     );
   }
 
-  // Response: array of objects (list of orders)
+  // Retrieve a user's orders using his ID
   getOrdersByUserId(userId: string | undefined): Observable<Order[]> {
-    return this.httpClient.get<Order[]>(`${this.resourceURL}?userId=${userId}`).pipe(
+    return this.httpClient.get<Order[]>(`${this.ordersURL}?userId=${userId}`).pipe(
       // Orders sorted from newest to oldest
       map((orders: Order[]) => {
         return orders.sort((order1: Order, order2: Order) => order2.dateIns - order1.dateIns);
@@ -34,9 +34,9 @@ export class OrderService {
     );
   }
 
-  // Response: array of objects (list of orders)
+  // Retrieve a list of orders based on their IDs
   getOrdersByUserIDs(userIDs: string[]): Observable<Order[]> {
-    return this.httpClient.get<Order[]>(`${this.resourceURL}?userId=${userIDs.join('&userId=')}`).pipe(
+    return this.httpClient.get<Order[]>(`${this.ordersURL}?userId=${userIDs.join('&userId=')}`).pipe(
       // Orders sorted from newest to oldest
       map((orders: Order[]) => {
         return orders.sort((order1: Order, order2: Order) => order2.dateIns - order1.dateIns);
@@ -44,41 +44,41 @@ export class OrderService {
     );
   }
 
-  // Response: order object or null
+  // Retrieve an order by its ID
   getOrderById(id: string | null): Observable<Order> {
-    return this.httpClient.get<Order>(`${this.resourceURL}/${id}`);
+    return this.httpClient.get<Order>(`${this.ordersURL}/${id}`);
   }
 
-  // Response: string, boolean, object + ID
+  // Add an order
   addOrder(order: Order): Observable<Order> {
     const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
     ORDER.dateIns = Date.now();
-    return this.httpClient.post<Order>(this.resourceURL, ORDER);
+    return this.httpClient.post<Order>(this.ordersURL, ORDER);
   }
 
-  // Response: string, boolean, object + ID
+  // Update an order
   updateOrder(order: Order): Observable<Order> {
     const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
     ORDER.dateMod = Date.now();
-    return this.httpClient.put<Order>(`${this.resourceURL}/${order.id}`, ORDER);
+    return this.httpClient.put<Order>(`${this.ordersURL}/${order.id}`, ORDER);
   }
 
-  // Response: string, boolean, object + ID
+  // Show an order
   showOrder(order: Order): Observable<Order> {
     const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
     ORDER.visible = true;
-    return this.httpClient.put<Order>(`${this.resourceURL}/${order.id}`, ORDER);
+    return this.httpClient.put<Order>(`${this.ordersURL}/${order.id}`, ORDER);
   }
 
-  // Response: string, boolean, object + ID
+  // Hide an order
   hideOrder(order: Order): Observable<Order> {
     const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
     ORDER.visible = false;
-    return this.httpClient.put<Order>(`${this.resourceURL}/${order.id}`, ORDER);
+    return this.httpClient.put<Order>(`${this.ordersURL}/${order.id}`, ORDER);
   }
 
-  // Response: string, boolean
+  // Delete an order
   deleteOrder(id: string | null): Observable<Order> {
-    return this.httpClient.delete<Order>(`${this.resourceURL}/${id}`);
+    return this.httpClient.delete<Order>(`${this.ordersURL}/${id}`);
   }
 }

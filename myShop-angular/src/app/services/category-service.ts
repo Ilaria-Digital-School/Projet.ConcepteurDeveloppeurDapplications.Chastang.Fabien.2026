@@ -8,34 +8,29 @@ import { Category } from '../models/category';
   providedIn: 'root',
 })
 export class CategoryService {
-  // Destination / Address
-  resourceURL: string = `${Resources.baseURL}/${Resources.categories}`;
-
-  // Delivery
+  // Performs HTTP requests
   private httpClient = inject(HttpClient);
 
-  // Response: array of objects (list of categories)
+  // Resources URL
+  categoriesURL: string = `${Resources.baseURL}/${Resources.categories}`;
+
+  // Retrieve all categories
   getAllCategories(): Observable<Category[]> {
-    return this.httpClient.get<Category[]>(this.resourceURL);
+    return this.httpClient.get<Category[]>(this.categoriesURL);
   }
 
-  // Response: category object or null
-  getCategoryById(id: string | null): Observable<Category> {
-    return this.httpClient.get<Category>(`${this.resourceURL}/${id}`);
-  }
-
-  // Response: string, boolean, object + ID
+  // Add a category
   addCategory(category: Category): Observable<Category> {
-    return this.httpClient.post<Category>(this.resourceURL, category);
+    return this.httpClient.post<Category>(this.categoriesURL, category);
   }
 
-  // Response: string, boolean, object + ID
+  // Update a category
   updateCategory(category: Category): Observable<Category> {
-    return this.httpClient.put<Category>(`${this.resourceURL}/${category.id}`, category);
+    return this.httpClient.put<Category>(`${this.categoriesURL}/${category.id}`, category);
   }
 
-  // Response: string, boolean
+  // Delete a category
   deleteCategory(id: string | null): Observable<Category> {
-    return this.httpClient.delete<Category>(`${this.resourceURL}/${id}`);
+    return this.httpClient.delete<Category>(`${this.categoriesURL}/${id}`);
   }
 }

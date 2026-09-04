@@ -8,34 +8,29 @@ import { Role } from '../models/role';
   providedIn: 'root',
 })
 export class RoleService {
-  // Destination / Address
-  resourceURL: string = `${Resources.baseURL}/${Resources.roles}`;
-
-  // Delivery
+  // Performs HTTP requests
   private httpClient = inject(HttpClient);
 
-  // Response: array of objects (list of roles)
+  // Resources URL
+  rolesURL: string = `${Resources.baseURL}/${Resources.roles}`;
+
+  // Retrieve all roles
   getAllRoles(): Observable<Role[]> {
-    return this.httpClient.get<Role[]>(this.resourceURL);
+    return this.httpClient.get<Role[]>(this.rolesURL);
   }
 
-  // Response: role object or null
-  getRoleById(id: string | null): Observable<Role> {
-    return this.httpClient.get<Role>(`${this.resourceURL}/${id}`);
-  }
-
-  // Response: string, boolean, object + ID
+  // Add a role
   addRole(role: Role): Observable<Role> {
-    return this.httpClient.post<Role>(this.resourceURL, role);
+    return this.httpClient.post<Role>(this.rolesURL, role);
   }
 
-  // Response: string, boolean, object + ID
+  // Update a role
   updateRole(role: Role): Observable<Role> {
-    return this.httpClient.put<Role>(`${this.resourceURL}/${role.id}`, role);
+    return this.httpClient.put<Role>(`${this.rolesURL}/${role.id}`, role);
   }
 
-  // Response: string, boolean
+  // Delete a role
   deleteRole(id: string | null): Observable<Role> {
-    return this.httpClient.delete<Role>(`${this.resourceURL}/${id}`);
+    return this.httpClient.delete<Role>(`${this.rolesURL}/${id}`);
   }
 }
