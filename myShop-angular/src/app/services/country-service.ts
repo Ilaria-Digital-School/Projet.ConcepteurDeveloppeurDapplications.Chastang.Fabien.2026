@@ -11,26 +11,23 @@ export class CountryService {
   // Performs HTTP requests
   private httpClient = inject(HttpClient);
 
-  // Resources URL
-  countriesURL: string = `${Resources.baseURL}/${Resources.countries}`;
-
   // Retrieve all genders
   getAllCountries(): Observable<Country[]> {
-    return this.httpClient.get<Country[]>(this.countriesURL);
+    return this.httpClient.get<Country[]>(Resources.countriesURL);
   }
 
   // Add a country
   addCountry(country: Country): Observable<Country> {
-    return this.httpClient.post<Country>(this.countriesURL, country);
+    return this.httpClient.post<Country>(Resources.countriesURL, country);
   }
 
   // Update a country
   updateCountry(country: Country): Observable<Country> {
-    return this.httpClient.put<Country>(`${this.countriesURL}/${country.id}`, country);
+    return this.httpClient.put<Country>(`${Resources.countriesURL}/${country.id}`, country);
   }
 
   // Delete a country
   deleteCountry(id: string | null): Observable<Country> {
-    return this.httpClient.delete<Country>(`${this.countriesURL}/${id}`);
+    return this.httpClient.delete<Country>(`${Resources.countriesURL}/${id}`);
   }
 }

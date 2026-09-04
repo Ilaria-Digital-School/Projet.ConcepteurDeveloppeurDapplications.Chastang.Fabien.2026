@@ -11,26 +11,23 @@ export class RoleService {
   // Performs HTTP requests
   private httpClient = inject(HttpClient);
 
-  // Resources URL
-  rolesURL: string = `${Resources.baseURL}/${Resources.roles}`;
-
   // Retrieve all roles
   getAllRoles(): Observable<Role[]> {
-    return this.httpClient.get<Role[]>(this.rolesURL);
+    return this.httpClient.get<Role[]>(Resources.rolesURL);
   }
 
   // Add a role
   addRole(role: Role): Observable<Role> {
-    return this.httpClient.post<Role>(this.rolesURL, role);
+    return this.httpClient.post<Role>(Resources.rolesURL, role);
   }
 
   // Update a role
   updateRole(role: Role): Observable<Role> {
-    return this.httpClient.put<Role>(`${this.rolesURL}/${role.id}`, role);
+    return this.httpClient.put<Role>(`${Resources.rolesURL}/${role.id}`, role);
   }
 
   // Delete a role
   deleteRole(id: string | null): Observable<Role> {
-    return this.httpClient.delete<Role>(`${this.rolesURL}/${id}`);
+    return this.httpClient.delete<Role>(`${Resources.rolesURL}/${id}`);
   }
 }

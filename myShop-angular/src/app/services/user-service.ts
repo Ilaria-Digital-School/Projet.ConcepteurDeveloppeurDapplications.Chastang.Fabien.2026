@@ -11,58 +11,55 @@ export class UserService {
   // Performs HTTP requests
   private httpClient = inject(HttpClient);
 
-  // Resources URL
-  usersURL: string = `${Resources.baseURL}/${Resources.users}`;
-
   // Retrieve all users
   getAllUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>(this.usersURL);
+    return this.httpClient.get<User[]>(Resources.usersURL);
   }
 
   // Retrieve a user by his ID
   getUserById(id: string | null): Observable<User> {
-    return this.httpClient.get<User>(`${this.usersURL}/${id}`);
+    return this.httpClient.get<User>(`${Resources.usersURL}/${id}`);
   }
 
   // Add a user
   addUser(user: User): Observable<User> {
     const USER = user.removeBeforeSaveUser(); // Remove these properties before saving the user
     USER.dateIns = Date.now();
-    return this.httpClient.post<User>(this.usersURL, USER);
+    return this.httpClient.post<User>(Resources.usersURL, USER);
   }
 
   // Update a user
   updateUser(user: User): Observable<User> {
     const USER = user.removeBeforeSaveUser(); // Remove these properties before saving the user
     USER.dateMod = Date.now();
-    return this.httpClient.put<User>(`${this.usersURL}/${user.id}`, USER);
+    return this.httpClient.put<User>(`${Resources.usersURL}/${user.id}`, USER);
   }
 
   // Show a user
   showUser(user: User): Observable<User> {
     const USER = user.removeBeforeSaveUser(); // Remove these properties before saving the user
     USER.visible = true;
-    return this.httpClient.put<User>(`${this.usersURL}/${user.id}`, USER);
+    return this.httpClient.put<User>(`${Resources.usersURL}/${user.id}`, USER);
   }
 
   // Hide a user
   hideUser(user: User): Observable<User> {
     const USER = user.removeBeforeSaveUser(); // Remove these properties before saving the user
     USER.visible = false;
-    return this.httpClient.put<User>(`${this.usersURL}/${user.id}`, USER);
+    return this.httpClient.put<User>(`${Resources.usersURL}/${user.id}`, USER);
   }
 
   // Delete a user
   deleteUser(id: string | null): Observable<User> {
-    return this.httpClient.delete<User>(`${this.usersURL}/${id}`);
+    return this.httpClient.delete<User>(`${Resources.usersURL}/${id}`);
   }
 
   // User login
   login(data: LoginData): Observable<User[]> {
-    return this.httpClient.get<User[]>(`${this.usersURL}?email=${data.email}&pswd=${data.pswd}`);
+    return this.httpClient.get<User[]>(`${Resources.usersURL}?email=${data.email}&pswd=${data.pswd}`);
 
     // // IMPORTANT: method to use with a real backend
-    // return this.httpClient.post<User[]>(`${this.usersURL}/login`, data);
+    // return this.httpClient.post<User[]>(`${Resources.usersURL}/login`, data);
 
     // // Retrieving data from local storage
     // const USERS = JSON.parse(localStorage.getItem('users') || '[]');

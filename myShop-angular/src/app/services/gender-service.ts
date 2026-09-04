@@ -11,26 +11,23 @@ export class GenderService {
   // Performs HTTP requests
   private httpClient = inject(HttpClient);
 
-  // Resources URL
-  gendersURL: string = `${Resources.baseURL}/${Resources.genders}`;
-
   // Retrieve all genders
   getAllGenders(): Observable<Gender[]> {
-    return this.httpClient.get<Gender[]>(this.gendersURL);
+    return this.httpClient.get<Gender[]>(Resources.gendersURL);
   }
 
   // Add a gender
   addGender(gender: Gender): Observable<Gender> {
-    return this.httpClient.post<Gender>(this.gendersURL, gender);
+    return this.httpClient.post<Gender>(Resources.gendersURL, gender);
   }
 
   // Update a gender
   updateGender(gender: Gender): Observable<Gender> {
-    return this.httpClient.put<Gender>(`${this.gendersURL}/${gender.id}`, gender);
+    return this.httpClient.put<Gender>(`${Resources.gendersURL}/${gender.id}`, gender);
   }
 
   // Delete a gender
   deleteGender(id: string | null): Observable<Gender> {
-    return this.httpClient.delete<Gender>(`${this.gendersURL}/${id}`);
+    return this.httpClient.delete<Gender>(`${Resources.gendersURL}/${id}`);
   }
 }
