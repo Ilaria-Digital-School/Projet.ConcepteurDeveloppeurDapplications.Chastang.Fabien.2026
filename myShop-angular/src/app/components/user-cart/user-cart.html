@@ -1,5 +1,5 @@
 <!-- Shopping cart table -->
-@if (userCart.products.length > 0) {
+@if (products.length > 0) {
   <section>
     <h2 class="h2-info">Mon panier</h2>
 
@@ -92,12 +92,12 @@
             <td>
               <div class="cell-total">
                 <div [style.white-space]="'nowrap'">
-                  {{ Common.numberToString(userCart.round(getTotalExcludingTax())) }} €
+                  {{ Common.numberToString(cart.round(getTotalExcludingTax())) }} €
                   <span id="info-tax">(HT)</span>
                 </div>
                 <div [style.white-space]="'nowrap'">
                   {{
-                    Common.numberToString(userCart.round((1 + this.taxPercent / 100) * this.total))
+                    Common.numberToString(cart.round((1 + this.taxPercent / 100) * this.total))
                   }}
                   €
                   <span id="info-tax">(TTC)</span>

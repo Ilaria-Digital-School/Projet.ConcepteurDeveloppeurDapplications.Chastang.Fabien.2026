@@ -36,7 +36,7 @@ export class UserCart {
   // Class properties
   taxPercent: number = 20;
   total: number = 0;
-  userCart!: Cart;
+  cart!: Cart;
   products: Product[] = [];
   connectedUser: User | null = null;
 
@@ -48,14 +48,14 @@ export class UserCart {
 
     const CART = localStorage.getItem('cart');
     if (CART) {
-      this.userCart = new Cart(JSON.parse(CART));
+      this.cart = new Cart(JSON.parse(CART));
 
       // Load the cart products
-      this.productService.getProductsByIDs(this.userCart.getProductIDs()).subscribe({
+      this.productService.getProductsByIDs(this.cart.getProductIDs()).subscribe({
         next: (res: Product[]) => {
           this.products = res
             .map((product: Product) => {
-              const PRODUCT = this.userCart.products.find(
+              const PRODUCT = this.cart.products.find(
                 (item: OrderProduct) => item.id === product.id,
               );
               // Initialize ONLY the quantity
@@ -73,7 +73,7 @@ export class UserCart {
         },
       });
     } else {
-      this.userCart = new Cart();
+      this.cart = new Cart();
     }
   }
 
@@ -95,7 +95,7 @@ export class UserCart {
     this.cartService.add(new OrderProduct(product));
 
     // Update the cart view
-    this.userCart.addOne(product);
+    this.cart.addOne(product);
   }
 
   // Decrease the quantity of a product
@@ -107,7 +107,7 @@ export class UserCart {
     this.cartService.remove(new OrderProduct(product));
 
     // Update the cart view
-    this.userCart.removeOne(product);
+    this.cart.removeOne(product);
     if (product.quantity === 0) this.removeFromList(product.id);
   }
 
@@ -120,7 +120,7 @@ export class UserCart {
     this.cartService.removeProduct(id);
 
     // Remove the product from the cart view
-    this.userCart.removeProduct(id);
+    this.cart.removeProduct(id);
     this.removeFromList(id);
   }
 
@@ -133,7 +133,7 @@ export class UserCart {
 
   // Retrieve the total cart amount excluding tax
   getTotalExcludingTax() {
-    return (this.total = this.userCart.getTotalExcludingTax());
+    return (this.total = this.cart.getTotalExcludingTax());
   }
 
   // Delete the user's cart
@@ -145,7 +145,7 @@ export class UserCart {
     this.cartService.removeCart();
 
     // Remove the cart from the view
-    this.userCart.products = [];
+    this.cart.products = [];
   }
 
   // To order

@@ -8,20 +8,17 @@ export class CartService {
   // List of products in the cart
   cart = signal<OrderProduct[]>([]);
 
+  // Number of products in the cart
+  cartCount = computed(() => {
+    return this.cart().length;
+  });
+
   constructor() {
     // Retrieve the user's cart
     const CART = localStorage.getItem('cart');
 
-    if (CART) {
-      // Initialize the signal property 'cart' (array of products)
-      this.cart.set(
-        JSON.parse(CART).map((item: any) => {
-          const PRODUCT = new OrderProduct();
-          Object.assign(PRODUCT, item);
-          return PRODUCT;
-        }),
-      );
-    }
+    // Initialize the signal property 'cart' (array of products)
+    if (CART) this.cart.set(JSON.parse(CART));
   }
 
   // Add an item to the cart
@@ -73,9 +70,4 @@ export class CartService {
     localStorage.removeItem('cart');
     this.cart.set([]);
   }
-
-  // Number of products in the cart
-  cartCount = computed(() => {
-    return this.cart().length;
-  });
 }
