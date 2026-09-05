@@ -45,6 +45,7 @@
       "stock": 8,
       "info": "Cet article est fortement recommandé par nos clients",
       "favorite": true,
+      "dateHidden": null,
       "visible": true
     },
     {
@@ -62,6 +63,7 @@
       "stock": 0,
       "info": "",
       "favorite": true,
+      "dateHidden": null,
       "visible": true
     },
     {
@@ -79,6 +81,7 @@
       "stock": 22,
       "info": "",
       "favorite": false,
+      "dateHidden": null,
       "visible": true
     },
     {
@@ -96,6 +99,7 @@
       "stock": 63,
       "info": "",
       "favorite": false,
+      "dateHidden": null,
       "visible": true
     },
     {
@@ -117,6 +121,7 @@
       "stock": 14,
       "info": "",
       "favorite": false,
+      "dateHidden": null,
       "visible": true
     }
   ],
@@ -295,6 +300,7 @@
       "interests": [],
       "country": 0,
       "role": 1,
+      "dateHidden": null,
       "visible": true
     },
     {
@@ -311,6 +317,7 @@
       ],
       "country": 9,
       "role": 0,
+      "dateHidden": null,
       "visible": true
     },
     {
@@ -328,6 +335,7 @@
       ],
       "country": 22,
       "role": 0,
+      "dateHidden": null,
       "visible": true
     },
     {
@@ -344,6 +352,7 @@
       ],
       "country": 17,
       "role": 0,
+      "dateHidden": null,
       "visible": true
     }
   ],
@@ -414,6 +423,7 @@
       "taxPercent": 20,
       "promoPercent": 0,
       "status": 3,
+      "dateHidden": null,
       "visible": true
     },
     {
@@ -438,6 +448,7 @@
       "taxPercent": 20,
       "promoPercent": 0,
       "status": 1,
+      "dateHidden": null,
       "visible": true
     },
     {
@@ -467,6 +478,7 @@
       "taxPercent": 20,
       "promoPercent": 0,
       "status": 0,
+      "dateHidden": null,
       "visible": true
     },
     {
@@ -496,6 +508,7 @@
       "taxPercent": 20,
       "promoPercent": 0,
       "status": 0,
+      "dateHidden": null,
       "visible": true
     },
     {
@@ -520,6 +533,7 @@
       "taxPercent": 20,
       "promoPercent": 0,
       "status": 0,
+      "dateHidden": null,
       "visible": true
     },
     {
@@ -544,6 +558,7 @@
       "taxPercent": 20,
       "promoPercent": 0,
       "status": 0,
+      "dateHidden": null,
       "visible": true
     }
   ],
@@ -555,6 +570,7 @@
       "name": "Fabien",
       "email": "mon@adresse.email",
       "message": "Mon message",
+      "dateHidden": null,
       "visible": true
     }
   ],

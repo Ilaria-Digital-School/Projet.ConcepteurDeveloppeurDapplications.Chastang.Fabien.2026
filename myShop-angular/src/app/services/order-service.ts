@@ -64,6 +64,7 @@ export class OrderService {
   showOrder(order: Order): Observable<Order> {
     const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
     ORDER.visible = true;
+    ORDER.dateHidden = null;
     return this.httpClient.put<Order>(`${Resources.ordersURL}/${order.id}`, ORDER);
   }
 
@@ -71,6 +72,7 @@ export class OrderService {
   hideOrder(order: Order): Observable<Order> {
     const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
     ORDER.visible = false;
+    ORDER.dateHidden = Date.now();
     return this.httpClient.put<Order>(`${Resources.ordersURL}/${order.id}`, ORDER);
   }
 

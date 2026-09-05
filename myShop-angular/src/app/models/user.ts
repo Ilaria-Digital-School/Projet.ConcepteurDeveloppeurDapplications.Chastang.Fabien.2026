@@ -16,6 +16,7 @@ export class User {
   interests: number[] = [];
   country: number = 0;
   role: number = 0;
+  dateHidden: number | null = null; // Date on which the data was hidden
   visible: boolean = true;
 
   // Temporary property, not saved

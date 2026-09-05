@@ -19,6 +19,7 @@ export class Product {
   stock: number = 0;
   info: string = '';
   favorite: boolean = false;
+  dateHidden: number | null = null; // Date on which the data was hidden
   visible: boolean = true;
 
   // Temporary properties, not saved

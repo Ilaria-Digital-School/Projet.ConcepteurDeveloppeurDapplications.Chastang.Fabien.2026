@@ -19,6 +19,7 @@ export class Order {
   taxPercent: number = 0;
   promoPercent: number = 0;
   status: number = 0;
+  dateHidden: number | null = null; // Date on which the data was hidden
   visible: boolean = true;
 
   // Temporary property, not saved
