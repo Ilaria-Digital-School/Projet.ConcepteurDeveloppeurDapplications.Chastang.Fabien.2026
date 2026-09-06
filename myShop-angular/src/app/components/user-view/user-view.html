@@ -1,45 +1,59 @@
 <section>
-  <fieldset>
-    <legend>
-      <a [routerLink]="['/edit-user', userId]" title="Éditer" aria-label="Éditer">
-        Mes Informations
-      </a>
-    </legend>
-    @if (user.role > 0) {
+  @if (user.id.length > 0) {
+    <fieldset>
+      <legend>
+        <a [routerLink]="['/edit-user', user.id]" title="Éditer" aria-label="Éditer">
+          Mes Informations
+        </a>
+      </legend>
+      <button
+        id="remove-user"
+        type="button"
+        class="btn btn-danger"
+        title="Supprimer le compte"
+        aria-label="Supprimer le compte"
+        (click)="remove(user.id)"
+      >
+        <i class="fa-solid fa-user-xmark"></i>
+      </button>
+      @if (user.role > 0) {
+        <div>
+          <div>Role :</div>
+          <div>{{ roles.getByValue(user.role)?.name }}</div>
+        </div>
+      }
       <div>
-        <div>Role :</div>
-        <div>{{ roles.getByValue(user.role)?.name }}</div>
+        <div>Nom :</div>
+        <div>{{ user.name }}</div>
       </div>
-    }
-    <div>
-      <div>Nom :</div>
-      <div>{{ user.name }}</div>
-    </div>
-    <div>
-      <div>E-mail :</div>
-      <div>{{ user.email }}</div>
-    </div>
-    <div>
-      <div>Genre :</div>
-      <div>{{ user.gender > 0 ? genders.getByValue(user.gender)?.name : '—' }}</div>
-    </div>
-    <div>
-      <div>Centres d'intérêts :</div>
       <div>
-        @for (item of user.interests; track item; let i = $index) {
-          @if (i < user.interests.length - 1) {
-            <span>{{ interests.getByValue(item)?.name }}, </span>
-          } @else {
-            <span>{{ interests.getByValue(item)?.name }}</span>
+        <div>E-mail :</div>
+        <div>{{ user.email }}</div>
+      </div>
+      <div>
+        <div>Genre :</div>
+        <div>{{ user.gender > 0 ? genders.getByValue(user.gender)?.name : '—' }}</div>
+      </div>
+      <div>
+        <div>Centres d'intérêts :</div>
+        <div>
+          @for (item of user.interests; track item; let i = $index) {
+            @if (i < user.interests.length - 1) {
+              <span>{{ interests.getByValue(item)?.name }}, </span>
+            } @else {
+              <span>{{ interests.getByValue(item)?.name }}</span>
+            }
+          } @empty {
+            <span [style.font-style]="'italic'">—</span>
           }
-        } @empty {
-          <span [style.font-style]="'italic'">—</span>
-        }
+        </div>
       </div>
-    </div>
-    <div>
-      <div>Pays :</div>
-      <div>{{ user.country > 0 ? countries.getByValue(user.country)?.name : '—' }}</div>
-    </div>
-  </fieldset>
+      <div>
+        <div>Pays :</div>
+        <div>{{ user.country > 0 ? countries.getByValue(user.country)?.name : '—' }}</div>
+      </div>
+    </fieldset>
+  } @else {
+    <h2 class="h2-title">Ce compte n'existe pas</h2>
+  }
 </section>
