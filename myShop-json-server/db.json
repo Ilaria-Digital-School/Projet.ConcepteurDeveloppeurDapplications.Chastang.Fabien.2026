@@ -1,0 +1,578 @@
+{
+  "categories": [
+    {
+      "id": "yId4xkxVlVC",
+      "value": 1,
+      "field": "women",
+      "name": "Femme",
+      "description": "Mode Femme",
+      "img": "assets/img/clothing/women_s_fashion.png"
+    },
+    {
+      "id": "Np9L1khwej4",
+      "value": 2,
+      "field": "men",
+      "name": "Homme",
+      "description": "Mode Homme",
+      "img": "assets/img/clothing/men_s_fashion.png"
+    },
+    {
+      "id": "tBHwLkASq6x",
+      "value": 3,
+      "field": "children",
+      "name": "Enfant",
+      "description": "Mode Enfant",
+      "img": "assets/img/clothing/children_s_fashion.png"
+    }
+  ],
+  "products": [
+    {
+      "id": "BN4bdfCKWuf",
+      "reference": "6XKSDQ-M9CBDP",
+      "dateIns": 0,
+      "dateMod": null,
+      "name": "Chemise Homme",
+      "description": "Chemise homme en coton bleu clair",
+      "price": 20,
+      "img": "assets/img/clothing/men/shirts/cms1.png",
+      "types": [
+        1
+      ],
+      "categories": [
+        2
+      ],
+      "fullDescription": "$$Restez à l'aise même sous la chaleur\n\nConçue pour les journées ensoleillées, cette chemise d'été allie légèreté et respirabilité pour apporter une sensation de confort agréable lors de vos sorties.\n\nSa matière favorise une bonne circulation de l'air, aide à réguler l'humidité et rend le port plus agréable.\n\nProfitez pleinement de l'été en restant à votre aise.\n\n$$Un style naturel, chic avec simplicité\n\nAvec sa coupe ajustée et sa belle fluidité, cette chemise offre une allure élégante et décontractée. Inutile d'en faire trop, elle s'adapte facilement à toutes vos tenues.\n\nPortée ouverte ou fermée, avec un short ou un pantalon, elle conserve un style sobre et raffiné.\n\n$$Entretien facile pour un été sans tracas\n\nCette Chemise est conçue pour vous simplifier la vie : elle passe en machine et sèche simplement à l'air libre.\n\nMême légèrement froissée, elle garde son charme naturel. Son tissu offre une sensation de douceur et de confort agréable à chaque port.\n\nSon confort et sa douceur en font une pièce appropriée pour vous accompagner durant l'été.",
+      "stock": 8,
+      "info": "Cet article est fortement recommandé par nos clients",
+      "favorite": true,
+      "dateHidden": null,
+      "visible": true
+    },
+    {
+      "id": "a1Fsngvgtdn",
+      "reference": "DADKFY-XP9IOL",
+      "dateIns": 0,
+      "dateMod": null,
+      "name": "Robe",
+      "description": "Robe en jean denim indigo",
+      "price": 40,
+      "img": "assets/img/clothing/women/dresses/cwd1.png",
+      "types": [],
+      "categories": [],
+      "fullDescription": "",
+      "stock": 0,
+      "info": "",
+      "favorite": true,
+      "dateHidden": null,
+      "visible": true
+    },
+    {
+      "id": "WeHNcyId4xk",
+      "reference": "IASKOP-V4K5ID",
+      "dateIns": 0,
+      "dateMod": null,
+      "name": "Robe",
+      "description": "Robe en coton bleu nuit",
+      "price": 70,
+      "img": "assets/img/clothing/women/dresses/cwd2.png",
+      "types": [],
+      "categories": [],
+      "fullDescription": "",
+      "stock": 22,
+      "info": "",
+      "favorite": false,
+      "dateHidden": null,
+      "visible": true
+    },
+    {
+      "id": "xVlVC7SoNAY",
+      "reference": "ZZTYI5-I8ONMF",
+      "dateIns": 0,
+      "dateMod": null,
+      "name": "Jean Homme",
+      "description": "Jean homme gris",
+      "price": 30,
+      "img": "assets/img/clothing/men/jeans/cmj3.png",
+      "types": [],
+      "categories": [],
+      "fullDescription": "",
+      "stock": 63,
+      "info": "",
+      "favorite": false,
+      "dateHidden": null,
+      "visible": true
+    },
+    {
+      "id": "B5Np9Lj40Yg",
+      "reference": "0DDVBL-GF02RL",
+      "dateIns": 0,
+      "dateMod": null,
+      "name": "Jean Homme",
+      "description": "Jean homme bleu",
+      "price": 40,
+      "img": "assets/img/clothing/men/jeans/cmj2.png",
+      "types": [
+        1
+      ],
+      "categories": [
+        2
+      ],
+      "fullDescription": "",
+      "stock": 14,
+      "info": "",
+      "favorite": false,
+      "dateHidden": null,
+      "visible": true
+    }
+  ],
+  "roles": [
+    {
+      "id": "jwLk9Nh4p1e",
+      "value": 0,
+      "field": "user",
+      "name": "Utilisateur"
+    },
+    {
+      "id": "6AkSqxLBtHw",
+      "value": 1,
+      "field": "admin",
+      "name": "Administrateur"
+    },
+    {
+      "id": "BSxLtw6HqAk",
+      "value": 2,
+      "field": "superadmin",
+      "name": "Super Admin."
+    }
+  ],
+  "genders": [
+    {
+      "id": "kh4p1e9NjwL",
+      "value": 1,
+      "field": "female",
+      "name": "Femme"
+    },
+    {
+      "id": "t6AkBSxLHwq",
+      "value": 2,
+      "field": "male",
+      "name": "Homme"
+    }
+  ],
+  "interests": [
+    {
+      "id": "wL14pNekhj9",
+      "value": 1,
+      "field": "clothes",
+      "name": "Vêtements",
+      "type": "Vêtement"
+    },
+    {
+      "id": "kBHwq6txLAS",
+      "value": 2,
+      "field": "accessories",
+      "name": "Accessoires",
+      "type": "Accessoire"
+    }
+  ],
+  "countries": [
+    {
+      "id": "VSCxoVq6tNx",
+      "value": 1,
+      "name": "Allemagne"
+    },
+    {
+      "id": "6tSxNxVVoqC",
+      "value": 2,
+      "name": "Autriche"
+    },
+    {
+      "id": "lxoCL7StNxV",
+      "value": 3,
+      "name": "Belgique"
+    },
+    {
+      "id": "7SoNxVlCtxL",
+      "value": 4,
+      "name": "Brésil"
+    },
+    {
+      "id": "xVlVC7SoNAY",
+      "value": 5,
+      "name": "Canada"
+    },
+    {
+      "id": "SVoNxVC7AlY",
+      "value": 6,
+      "name": "Chine"
+    },
+    {
+      "id": "kSgwBLnxHFA",
+      "value": 7,
+      "name": "Espagne"
+    },
+    {
+      "id": "gFkBwxHLnSA",
+      "value": 8,
+      "name": "États-Unis"
+    },
+    {
+      "id": "HgFxLnSAkBw",
+      "value": 9,
+      "name": "France"
+    },
+    {
+      "id": "FxLAkBHgnSw",
+      "value": 10,
+      "name": "Grèce"
+    },
+    {
+      "id": "1gaSxLHtsnB",
+      "value": 11,
+      "name": "Inde"
+    },
+    {
+      "id": "BN4bufBxLHS",
+      "value": 12,
+      "name": "Italie"
+    },
+    {
+      "id": "ngatds1Fvgn",
+      "value": 13,
+      "name": "Japon"
+    },
+    {
+      "id": "Sk6tBHAwLqx",
+      "value": 14,
+      "name": "Luxembourg"
+    },
+    {
+      "id": "Bk6HtxLwqAS",
+      "value": 15,
+      "name": "Mauritanie"
+    },
+    {
+      "id": "xSkBHwqL6At",
+      "value": 16,
+      "name": "Mexique"
+    },
+    {
+      "id": "6tqkBSHLAwx",
+      "value": 17,
+      "name": "Portugal"
+    },
+    {
+      "id": "wLkBq6HtxAS",
+      "value": 18,
+      "name": "Royaume-Uni"
+    },
+    {
+      "id": "txkBq6HwLAS",
+      "value": 19,
+      "name": "Sénégal"
+    },
+    {
+      "id": "q6tkwxLABHS",
+      "value": 20,
+      "name": "Suisse"
+    },
+    {
+      "id": "kwBHq6tLASx",
+      "value": 21,
+      "name": "Taïwan"
+    },
+    {
+      "id": "kHBwq6tAxLS",
+      "value": 22,
+      "name": "Tunisie"
+    }
+  ],
+  "users": [
+    {
+      "id": "9yGc7G1khwe",
+      "reference": "BNVNS5BS7F",
+      "dateIns": 0,
+      "dateMod": null,
+      "name": "Fabien",
+      "email": "admin.fabien@myshop.com",
+      "pswd": "3kb!BWFe;dgXqV]",
+      "gender": 0,
+      "interests": [],
+      "country": 0,
+      "role": 1,
+      "dateHidden": null,
+      "visible": true
+    },
+    {
+      "id": "dYtBHw6xvkp",
+      "reference": "DAY7DO3ZQI",
+      "dateIns": 0,
+      "dateMod": null,
+      "name": "Janette",
+      "email": "janette.bidule@domain.com",
+      "pswd": "3Fx$Njqb6yeh4hj",
+      "gender": 1,
+      "interests": [
+        1,
+        2
+      ],
+      "country": 22,
+      "role": 0,
+      "dateHidden": null,
+      "visible": true
+    },
+    {
+      "id": "tapQ6zz5B64",
+      "reference": "DAY7DO3ZQI",
+      "dateIns": 0,
+      "dateMod": null,
+      "name": "Alfred",
+      "email": "alfred.truc@domaine.fr",
+      "pswd": "S66bbGaHPvAAAX!",
+      "gender": 2,
+      "interests": [
+        2
+      ],
+      "country": 17,
+      "role": 0,
+      "dateHidden": null,
+      "visible": true
+    },
+    {
+      "id": "PX6LDKx",
+      "reference": "82HZW03EIR",
+      "dateIns": 1788680116895,
+      "dateMod": null,
+      "name": "Louis",
+      "email": "louis.machin@domain.fr",
+      "pswd": "~m9f(3QP,$7r2sXX",
+      "gender": 2,
+      "interests": [
+        2
+      ],
+      "country": 18,
+      "role": 0,
+      "dateHidden": null,
+      "visible": true
+    }
+  ],
+  "status": [
+    {
+      "id": "X1aOCSqLkAB",
+      "value": 0,
+      "field": "pending",
+      "name": "En attente"
+    },
+    {
+      "id": "OkBX1AaCSqL",
+      "value": 1,
+      "field": "inprogress",
+      "name": "En cours"
+    },
+    {
+      "id": "1AOkBSLXaqC",
+      "value": 2,
+      "field": "delivered",
+      "name": "Livrée"
+    },
+    {
+      "id": "kBC1LqAOXaS",
+      "value": 3,
+      "field": "completed",
+      "name": "Terminée"
+    },
+    {
+      "id": "COXLaA1SkBq",
+      "value": 4,
+      "field": "cancelled",
+      "name": "Annulée"
+    },
+    {
+      "id": "aOCkSBXLAq1",
+      "value": 5,
+      "field": "suspended",
+      "name": "Suspendue"
+    },
+    {
+      "id": "1aALOkBSCqX",
+      "value": 6,
+      "field": "expired",
+      "name": "Expirée"
+    }
+  ],
+  "orders": [
+    {
+      "id": "1aOCLkASqBX",
+      "reference": "YHHM-V0J7-3ETD-DLXO-T9QM",
+      "dateIns": 1787307508412,
+      "dateMod": null,
+      "userId": "tapQ6zz5B64",
+      "products": [
+        {
+          "id": "BN4bdfCKWuf",
+          "price": 20,
+          "quantity": 2
+        },
+        {
+          "id": "WeHNcyId4xk",
+          "price": 70,
+          "quantity": 1
+        }
+      ],
+      "promoCode": "",
+      "taxPercent": 20,
+      "promoPercent": 0,
+      "status": 3,
+      "dateHidden": null,
+      "visible": true
+    },
+    {
+      "id": "90JZsSLJbnc",
+      "reference": "DI06-D0IU-N2R7-WM7K-83T7",
+      "dateIns": 1787308167804,
+      "dateMod": null,
+      "userId": "tapQ6zz5B64",
+      "products": [
+        {
+          "id": "xVlVC7SoNAY",
+          "price": 30,
+          "quantity": 2
+        },
+        {
+          "id": "BN4bdfCKWuf",
+          "price": 20,
+          "quantity": 1
+        }
+      ],
+      "promoCode": "",
+      "taxPercent": 20,
+      "promoPercent": 0,
+      "status": 1,
+      "dateHidden": null,
+      "visible": true
+    },
+    {
+      "id": "qYZH9dA",
+      "reference": "ER6V-1TEA-D4T6-F92V-U0AJ",
+      "dateIns": 1787996706186,
+      "dateMod": null,
+      "userId": "tapQ6zz5B64",
+      "products": [
+        {
+          "id": "BN4bdfCKWuf",
+          "price": 20,
+          "quantity": 2
+        },
+        {
+          "id": "xVlVC7SoNAY",
+          "price": 30,
+          "quantity": 1
+        },
+        {
+          "id": "WeHNcyId4xk",
+          "price": 70,
+          "quantity": 1
+        }
+      ],
+      "promoCode": "",
+      "taxPercent": 20,
+      "promoPercent": 0,
+      "status": 0,
+      "dateHidden": null,
+      "visible": true
+    },
+    {
+      "id": "RDfRDAo",
+      "reference": "E7XM-PJ0O-XF3T-VV2R-ZLGN",
+      "dateIns": 1788023288467,
+      "dateMod": null,
+      "userId": "dYtBHw6xvkp",
+      "products": [
+        {
+          "id": "BN4bdfCKWuf",
+          "price": 20,
+          "quantity": 1
+        },
+        {
+          "id": "B5Np9Lj40Yg",
+          "price": 40,
+          "quantity": 1
+        },
+        {
+          "id": "WeHNcyId4xk",
+          "price": 70,
+          "quantity": 2
+        }
+      ],
+      "promoCode": "",
+      "taxPercent": 20,
+      "promoPercent": 0,
+      "status": 0,
+      "dateHidden": null,
+      "visible": true
+    },
+    {
+      "id": "KRiH5tw",
+      "reference": "YRL1-VVBE-6FMP-9S1R-QT0D",
+      "dateIns": 1788023329987,
+      "dateMod": null,
+      "userId": "dYtBHw6xvkp",
+      "products": [
+        {
+          "id": "B5Np9Lj40Yg",
+          "price": 40,
+          "quantity": 1
+        },
+        {
+          "id": "WeHNcyId4xk",
+          "price": 70,
+          "quantity": 1
+        }
+      ],
+      "promoCode": "",
+      "taxPercent": 20,
+      "promoPercent": 0,
+      "status": 0,
+      "dateHidden": null,
+      "visible": true
+    },
+    {
+      "id": "IbL08X7",
+      "reference": "0RF7-NUJ8-A3X1-QC8L-H88S",
+      "dateIns": 1788024454231,
+      "dateMod": null,
+      "userId": "dYtBHw6xvkp",
+      "products": [
+        {
+          "id": "xVlVC7SoNAY",
+          "price": 30,
+          "quantity": 1
+        },
+        {
+          "id": "WeHNcyId4xk",
+          "price": 70,
+          "quantity": 1
+        }
+      ],
+      "promoCode": "",
+      "taxPercent": 20,
+      "promoPercent": 0,
+      "status": 0,
+      "dateHidden": null,
+      "visible": true
+    }
+  ],
+  "messages": [
+    {
+      "id": "fQbkvjaKRgy",
+      "dateIns": 0,
+      "dateRep": null,
+      "name": "Fabien",
+      "email": "mon@adresse.email",
+      "message": "Mon message",
+      "dateHidden": null,
+      "visible": true
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
