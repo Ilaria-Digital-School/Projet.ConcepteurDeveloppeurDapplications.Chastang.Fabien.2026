@@ -226,11 +226,11 @@ export class AddProduct {
     PRODUCT.name = FORM_VAL.productName.trim();
     PRODUCT.description = FORM_VAL.description.trim();
     PRODUCT.price = Number(FORM_VAL.price.replace(',', '.'));
+    PRODUCT.stock = Number(FORM_VAL.stock);
     PRODUCT.img = FORM_VAL.productImg.trim();
     PRODUCT.types = this.getTypes();
     PRODUCT.categories = this.getCategories();
     PRODUCT.fullDescription = FORM_VAL.fullDescription.trim();
-    PRODUCT.stock = Number(FORM_VAL.stock);
     PRODUCT.info = FORM_VAL.info.trim();
 
     if (this.isEditMode) {

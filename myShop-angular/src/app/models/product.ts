@@ -12,11 +12,11 @@ export class Product {
   name: string = '';
   description: string = '';
   price: number = 0;
+  stock: number = 0;
   img: string = '';
   types: number[] = [];
   categories: number[] = [];
   fullDescription: string = '';
-  stock: number = 0;
   info: string = '';
   favorite: boolean = false;
   dateHidden: number | null = null; // Date on which the data was hidden
@@ -32,11 +32,11 @@ export class Product {
     name: string | null = null,
     description: string | null = null,
     price: number | null = null,
+    stock: number | null = null,
     img: string | null = null,
     types: number[] | null = null,
     categories: number[] | null = null,
     fullDescription: string | null = null,
-    stock: number | null = null,
     info: string | null = null,
     favorite: boolean | null = null,
   ) {
@@ -45,11 +45,11 @@ export class Product {
     if (typeof name === 'string') this.name = name;
     if (typeof description === 'string') this.description = description;
     if (typeof price === 'number') this.price = price;
+    if (typeof stock === 'number') this.stock = stock;
     if (typeof img === 'string') this.img = img;
     if (Array.isArray(types)) this.types = types;
     if (Array.isArray(categories)) this.categories = categories;
     if (typeof fullDescription === 'string') this.fullDescription = fullDescription;
-    if (typeof stock === 'number') this.stock = stock;
     if (typeof info === 'string') this.info = info;
     if (typeof favorite === 'boolean') this.favorite = favorite;
   }
