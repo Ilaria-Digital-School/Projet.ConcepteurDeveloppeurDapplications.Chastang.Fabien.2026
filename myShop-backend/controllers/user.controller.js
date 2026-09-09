@@ -6,14 +6,14 @@ function isInt(value) {
 }
 
 // Check if a value follows the format of an email address
-function checkEmail(value) {
+function isEmail(value) {
   const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return typeof value === 'string' && EMAIL_PATTERN.test(value);
 }
 
 // Check if a value follows the format of a password
-function checkPassword(value) {
-  const SPECIAL_CHR = '&~"\'{([|_\\\\^@)\\]=+}€¨$£¤%*<>,?;.:/!§-';
+function isPassword(value) {
+  const SPECIAL_CHR = '&~#"\'{([|_\\\\^@)\\]=+}€¨$£¤%*<>,?;.:/!§-';
   const PSWD_PATTERN = new RegExp(
     '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[' + SPECIAL_CHR + '])[a-zA-Z\\d' + SPECIAL_CHR + ']{10,}$',
   );
@@ -129,7 +129,7 @@ export const updateUser = async (req, res) => {
 export const patchEmail = async (req, res) => {
   try {
     // Check the value before updating it
-    if (!checkEmail(req.body.email)) {
+    if (!isEmail(req.body.email)) {
       return res
         .status(400)
         .json({ message: 'The user email is invalid' });
@@ -167,7 +167,7 @@ export const patchEmail = async (req, res) => {
 export const patchPassword = async (req, res) => {
   try {
     // Check the value before updating it
-    if (!checkPassword(req.body.pswd)) {
+    if (!isPassword(req.body.pswd)) {
       return res
         .status(400)
         .json({ message: 'The user password is invalid' });

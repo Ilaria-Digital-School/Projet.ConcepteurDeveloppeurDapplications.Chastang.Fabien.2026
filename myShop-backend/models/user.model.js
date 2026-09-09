@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 
-const SPECIAL_CHR = '&~"\'{([|_\\\\^@)\\]=+}€¨$£¤%*<>,?;.:/!§-';
+const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+const SPECIAL_CHR = '&~#"\'{([|_\\\\^@)\\]=+}€¨$£¤%*<>,?;.:/!§-';
 const PSWD_PATTERN = new RegExp(
   '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[' + SPECIAL_CHR + '])[a-zA-Z\\d' + SPECIAL_CHR + ']{10,}$',
 );
@@ -27,7 +29,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'The email is mandatory'],
     unique: [true, 'The email must be unique'],
-    match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'The email address must be valid'],
+    match: [EMAIL_PATTERN, 'The email address must be valid'],
   },
   pswd: {
     type: String,
