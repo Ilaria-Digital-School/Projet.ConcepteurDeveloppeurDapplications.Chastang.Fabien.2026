@@ -4,7 +4,9 @@ import {
   getProductById,
   addProduct,
   updateProduct,
+  patchPrice,
   patchStock,
+  patchFavorite,
   patchVisible,
   deleteProduct,
 } from '../controllers/product.controller.js';
@@ -17,7 +19,9 @@ router.get('/products', getAllProducts);
 router.get('/products/:id', getProductById);
 router.post('/products', addProduct);
 router.put('/products/:id', updateProduct);
+router.patch('/products/:id/price', patchPrice);
 router.patch('/products/:id/stock', patchStock);
+router.patch('/products/:id/favorite', patchFavorite);
 router.patch('/products/:id/visible', patchVisible);
 router.delete('/products/:id', deleteProduct);
 

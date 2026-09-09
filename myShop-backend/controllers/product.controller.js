@@ -114,6 +114,42 @@ export const updateProduct = async (req, res) => {
 };
 
 // Patch the product stock ////////////////////////////////////////////////////
+export const patchPrice = async (req, res) => {
+  try {
+    // Check the value before updating it
+    if (typeof req.body.price !== 'number' || req.body.price < 0) {
+      return res.status(400).json({ message: 'The product price must be a number greater than 0' });
+    }
+
+    // Update the product in the database
+    const PRODUCT = await Product.findByIdAndUpdate(
+      req.params.id,
+      {
+        dateMod: Date.now(),
+        price: req.body.price,
+      },
+      { returnDocument: 'after' }, // The syntax { new: true } is depreciated
+    );
+
+    // Send a JSON response
+    if (!PRODUCT) {
+      res.status(404).json({ message: 'Product not found' });
+    } else {
+      res.status(200).json({
+        message: 'The product price has been updated',
+        product: PRODUCT,
+      });
+    }
+  } catch (err) {
+    // Server error
+    res.status(500).json({
+      message: 'Error updating the product price',
+      error: err.message,
+    });
+  }
+};
+
+// Patch the product stock ////////////////////////////////////////////////////
 export const patchStock = async (req, res) => {
   try {
     // Check the value before updating it
@@ -146,6 +182,44 @@ export const patchStock = async (req, res) => {
     // Server error
     res.status(500).json({
       message: 'Error updating the product stock',
+      error: err.message,
+    });
+  }
+};
+
+// Patch the 'favorite' attribut //////////////////////////////////////////////
+export const patchFavorite = async (req, res) => {
+  try {
+    // Check the value before updating it
+    if (typeof req.body.favorite !== 'boolean') {
+      return res
+        .status(400)
+        .json({ message: "The 'favorite' attribut must be defined and be a boolean" });
+    }
+
+    // Update the product in the database
+    const PRODUCT = await Product.findByIdAndUpdate(
+      req.params.id,
+      {
+        dateVisible: Date.now(),
+        favorite: req.body.favorite,
+      },
+      { returnDocument: 'after' }, // The syntax { new: true } is depreciated
+    );
+
+    // Send a JSON response
+    if (!PRODUCT) {
+      res.status(404).json({ message: 'Product not found' });
+    } else {
+      res.status(200).json({
+        message: "The 'favorite' attribut has been updated",
+        product: PRODUCT,
+      });
+    }
+  } catch (err) {
+    // Server error
+    res.status(500).json({
+      message: "Error updating the 'favorite' attribut",
       error: err.message,
     });
   }

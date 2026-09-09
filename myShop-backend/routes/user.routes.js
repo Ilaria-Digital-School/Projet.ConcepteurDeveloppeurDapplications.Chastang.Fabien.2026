@@ -4,8 +4,9 @@ import {
   getUserById,
   addUser,
   updateUser,
+  patchEmail,
+  patchPassword,
   patchRole,
-  patchCountry,
   patchVisible,
   deleteUser,
 } from '../controllers/user.controller.js';
@@ -18,8 +19,9 @@ router.get('/users', getAllUsers);
 router.get('/users/:id', getUserById);
 router.post('/users', addUser);
 router.put('/users/:id', updateUser);
+router.patch('/users/:id/email', patchEmail);
+router.patch('/users/:id/password', patchPassword);
 router.patch('/users/:id/role', patchRole);
-router.patch('/users/:id/country', patchCountry);
 router.patch('/users/:id/visible', patchVisible);
 router.delete('/users/:id', deleteUser);
 

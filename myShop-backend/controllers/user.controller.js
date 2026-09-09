@@ -5,6 +5,21 @@ function isInt(value) {
   return typeof value === 'number' && value === Math.floor(value);
 }
 
+// Check if a value follows the format of an email address
+function checkEmail(value) {
+  const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return typeof value === 'string' && EMAIL_PATTERN.test(value);
+}
+
+// Check if a value follows the format of a password
+function checkPassword(value) {
+  const SPECIAL_CHR = '&~"\'{([|_\\\\^@)\\]=+}€¨$£¤%*<>,?;.:/!§-';
+  const PSWD_PATTERN = new RegExp(
+    '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[' + SPECIAL_CHR + '])[a-zA-Z\\d' + SPECIAL_CHR + ']{10,}$',
+  );
+  return typeof value === 'string' && PSWD_PATTERN.test(value);
+}
+
 // Retrieve the user list /////////////////////////////////////////////////////
 export const getAllUsers = async (req, res) => {
   try {
@@ -110,6 +125,82 @@ export const updateUser = async (req, res) => {
   }
 };
 
+// Patch the user email ///////////////////////////////////////////////////////
+export const patchEmail = async (req, res) => {
+  try {
+    // Check the value before updating it
+    if (!checkEmail(req.body.email)) {
+      return res
+        .status(400)
+        .json({ message: 'The user email is invalid' });
+    }
+
+    // Update the user in the database
+    const USER = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        dateMod: Date.now(),
+        email: req.body.email,
+      },
+      { returnDocument: 'after' }, // The syntax { new: true } is depreciated
+    );
+
+    // Send a JSON response
+    if (!USER) {
+      res.status(404).json({ message: 'User not found' });
+    } else {
+      res.status(200).json({
+        message: 'The user email has been updated',
+        user: USER,
+      });
+    }
+  } catch (err) {
+    // Server error
+    res.status(500).json({
+      message: 'Error updating the user email',
+      error: err.message,
+    });
+  }
+};
+
+// Patch the user password ////////////////////////////////////////////////////
+export const patchPassword = async (req, res) => {
+  try {
+    // Check the value before updating it
+    if (!checkPassword(req.body.pswd)) {
+      return res
+        .status(400)
+        .json({ message: 'The user password is invalid' });
+    }
+
+    // Update the user in the database
+    const USER = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        dateMod: Date.now(),
+        pswd: req.body.pswd,
+      },
+      { returnDocument: 'after' }, // The syntax { new: true } is depreciated
+    );
+
+    // Send a JSON response
+    if (!USER) {
+      res.status(404).json({ message: 'User not found' });
+    } else {
+      res.status(200).json({
+        message: 'The user password has been updated',
+        user: USER,
+      });
+    }
+  } catch (err) {
+    // Server error
+    res.status(500).json({
+      message: 'Error updating the user password',
+      error: err.message,
+    });
+  }
+};
+
 // Patch the user role ////////////////////////////////////////////////////////
 export const patchRole = async (req, res) => {
   try {
@@ -143,44 +234,6 @@ export const patchRole = async (req, res) => {
     // Server error
     res.status(500).json({
       message: 'Error updating the user role',
-      error: err.message,
-    });
-  }
-};
-
-// Patch the user country ///////////////////////////////////////////////////////
-export const patchCountry = async (req, res) => {
-  try {
-    // Check the value before updating it
-    if (!isInt(req.body.country) || req.body.country < 0) {
-      return res
-        .status(400)
-        .json({ message: 'The user country must be an integer greater than or equal to 0' });
-    }
-
-    // Update the user in the database
-    const USER = await User.findByIdAndUpdate(
-      req.params.id,
-      {
-        dateMod: Date.now(),
-        country: req.body.country,
-      },
-      { returnDocument: 'after' }, // The syntax { new: true } is depreciated
-    );
-
-    // Send a JSON response
-    if (!USER) {
-      res.status(404).json({ message: 'User not found' });
-    } else {
-      res.status(200).json({
-        message: 'The user country has been updated',
-        user: USER,
-      });
-    }
-  } catch (err) {
-    // Server error
-    res.status(500).json({
-      message: 'Error updating the user country',
       error: err.message,
     });
   }
