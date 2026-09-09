@@ -53,7 +53,7 @@ const userSchema = new mongoose.Schema({
     enum: [0, 1, 2],
     default: 0,
   },
-  dateHidden: {
+  dateVisible: {
     type: Date,
     default: null,
   },

@@ -56,7 +56,7 @@ const productSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  dateHidden: {
+  dateVisible: {
     type: Date,
     default: null,
   },

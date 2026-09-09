@@ -73,7 +73,7 @@ export const addProduct = async (req, res) => {
     // Send a JSON message and the inserted product
     res.status(201).json({
       message: 'The product has been added',
-      PRODUCT,
+      product: PRODUCT,
     });
   } catch (err) {
     // Server error
@@ -88,7 +88,12 @@ export const addProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     // Update the product in the database
-    const PRODUCT = await Product.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
+    req.body.dateMod = Date.now();
+    const PRODUCT = await Product.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { returnDocument: 'after' }, // The syntax { new: true } is depreciated
+    );
 
     // Send a JSON response
     if (!PRODUCT) {
@@ -96,7 +101,7 @@ export const updateProduct = async (req, res) => {
     } else {
       res.status(200).json({
         message: 'The product has been updated',
-        PRODUCT,
+        product: PRODUCT,
       });
     }
   } catch (err) {
@@ -111,6 +116,7 @@ export const updateProduct = async (req, res) => {
 // Patch the product stock ////////////////////////////////////////////////////
 export const patchStock = async (req, res) => {
   try {
+    // Check the value before updating it
     if (!isInt(req.body.stock) || req.body.stock < 0) {
       return res
         .status(400)
@@ -120,8 +126,11 @@ export const patchStock = async (req, res) => {
     // Update the product in the database
     const PRODUCT = await Product.findByIdAndUpdate(
       req.params.id,
-      { stock: req.body.stock },
-      { returnDocument: 'after' },
+      {
+        dateMod: Date.now(),
+        stock: req.body.stock,
+      },
+      { returnDocument: 'after' }, // The syntax { new: true } is depreciated
     );
 
     // Send a JSON response
@@ -130,7 +139,7 @@ export const patchStock = async (req, res) => {
     } else {
       res.status(200).json({
         message: 'The product stock has been updated',
-        PRODUCT,
+        product: PRODUCT,
       });
     }
   } catch (err) {
@@ -145,6 +154,7 @@ export const patchStock = async (req, res) => {
 // Patch the product visibility ///////////////////////////////////////////////
 export const patchVisible = async (req, res) => {
   try {
+    // Check the value before updating it
     if (typeof req.body.visible !== 'boolean') {
       return res
         .status(400)
@@ -154,8 +164,11 @@ export const patchVisible = async (req, res) => {
     // Update the product in the database
     const PRODUCT = await Product.findByIdAndUpdate(
       req.params.id,
-      { visible: req.body.visible },
-      { returnDocument: 'after' },
+      {
+        dateVisible: Date.now(),
+        visible: req.body.visible,
+      },
+      { returnDocument: 'after' }, // The syntax { new: true } is depreciated
     );
 
     // Send a JSON response
@@ -164,7 +177,7 @@ export const patchVisible = async (req, res) => {
     } else {
       res.status(200).json({
         message: 'The product visibility has been updated',
-        PRODUCT,
+        product: PRODUCT,
       });
     }
   } catch (err) {
@@ -180,13 +193,19 @@ export const patchVisible = async (req, res) => {
 export const deleteProduct = async (req, res) => {
   try {
     // Delete the product from the database
-    const PRODUCT = await Product.findByIdAndDelete(req.params.id);
+    const PRODUCT = await Product.findByIdAndDelete(
+      req.params.id,
+      { returnDocument: 'after' }, // The syntax { new: true } is depreciated
+    );
 
     // Send a JSON response
     if (!PRODUCT) {
       res.status(404).json({ message: 'Product not found' });
     } else {
-      res.status(200).json({ message: 'The product has been deleted' });
+      res.status(200).json({
+        message: 'The product has been deleted',
+        product: PRODUCT,
+      });
     }
   } catch (err) {
     // Server error

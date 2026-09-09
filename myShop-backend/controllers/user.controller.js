@@ -70,7 +70,7 @@ export const addUser = async (req, res) => {
     // Send a JSON message and the inserted user
     res.status(201).json({
       message: 'The user has been added',
-      USER,
+      user: USER,
     });
   } catch (err) {
     // Server error
@@ -85,7 +85,12 @@ export const addUser = async (req, res) => {
 export const updateUser = async (req, res) => {
   try {
     // Update the user in the database
-    const USER = await User.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
+    req.body.dateMod = Date.now();
+    const USER = await User.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { returnDocument: 'after' }, // The syntax { new: true } is depreciated
+    );
 
     // Send a JSON response
     if (!USER) {
@@ -93,7 +98,7 @@ export const updateUser = async (req, res) => {
     } else {
       res.status(200).json({
         message: 'The user has been updated',
-        USER,
+        user: USER,
       });
     }
   } catch (err) {
@@ -108,6 +113,7 @@ export const updateUser = async (req, res) => {
 // Patch the user role ////////////////////////////////////////////////////////
 export const patchRole = async (req, res) => {
   try {
+    // Check the value before updating it
     if (!isInt(req.body.role) || req.body.role < 0 || req.body.role > 2) {
       return res
         .status(400)
@@ -117,8 +123,11 @@ export const patchRole = async (req, res) => {
     // Update the user in the database
     const USER = await User.findByIdAndUpdate(
       req.params.id,
-      { role: req.body.role },
-      { returnDocument: 'after' },
+      {
+        dateMod: Date.now(),
+        role: req.body.role,
+      },
+      { returnDocument: 'after' }, // The syntax { new: true } is depreciated
     );
 
     // Send a JSON response
@@ -127,7 +136,7 @@ export const patchRole = async (req, res) => {
     } else {
       res.status(200).json({
         message: 'The user role has been updated',
-        USER,
+        user: USER,
       });
     }
   } catch (err) {
@@ -142,6 +151,7 @@ export const patchRole = async (req, res) => {
 // Patch the user country ///////////////////////////////////////////////////////
 export const patchCountry = async (req, res) => {
   try {
+    // Check the value before updating it
     if (!isInt(req.body.country) || req.body.country < 0) {
       return res
         .status(400)
@@ -151,8 +161,11 @@ export const patchCountry = async (req, res) => {
     // Update the user in the database
     const USER = await User.findByIdAndUpdate(
       req.params.id,
-      { country: req.body.country },
-      { returnDocument: 'after' },
+      {
+        dateMod: Date.now(),
+        country: req.body.country,
+      },
+      { returnDocument: 'after' }, // The syntax { new: true } is depreciated
     );
 
     // Send a JSON response
@@ -161,7 +174,7 @@ export const patchCountry = async (req, res) => {
     } else {
       res.status(200).json({
         message: 'The user country has been updated',
-        USER,
+        user: USER,
       });
     }
   } catch (err) {
@@ -176,6 +189,7 @@ export const patchCountry = async (req, res) => {
 // Patch the user visibility //////////////////////////////////////////////////
 export const patchVisible = async (req, res) => {
   try {
+    // Check the value before updating it
     if (typeof req.body.visible !== 'boolean') {
       return res
         .status(400)
@@ -185,8 +199,11 @@ export const patchVisible = async (req, res) => {
     // Update the user in the database
     const USER = await User.findByIdAndUpdate(
       req.params.id,
-      { visible: req.body.visible },
-      { returnDocument: 'after' },
+      {
+        dateVisible: Date.now(),
+        visible: req.body.visible,
+      },
+      { returnDocument: 'after' }, // The syntax { new: true } is depreciated
     );
 
     // Send a JSON response
@@ -195,7 +212,7 @@ export const patchVisible = async (req, res) => {
     } else {
       res.status(200).json({
         message: 'The user visibility has been updated',
-        USER,
+        user: USER,
       });
     }
   } catch (err) {
@@ -211,13 +228,19 @@ export const patchVisible = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     // Delete the user from the database
-    const USER = await User.findByIdAndDelete(req.params.id);
+    const USER = await User.findByIdAndDelete(
+      req.params.id,
+      { returnDocument: 'after' }, // The syntax { new: true } is depreciated
+    );
 
     // Send a JSON response
     if (!USER) {
       res.status(404).json({ message: 'User not found' });
     } else {
-      res.status(200).json({ message: 'The user has been deleted' });
+      res.status(200).json({
+        message: 'The user has been deleted',
+        user: USER,
+      });
     }
   } catch (err) {
     // Server error
