@@ -1,4 +1,5 @@
 import express from 'express';
+import { validateAddUser, validateUpdUser } from '../middlewares/user.validation.js';
 import {
   getAllUsers,
   getUserById,
@@ -17,8 +18,8 @@ const router = express.Router();
 // http://localhost:3000/api/users
 router.get('/users', getAllUsers);
 router.get('/users/:id', getUserById);
-router.post('/users', addUser);
-router.put('/users/:id', updateUser);
+router.post('/users', validateAddUser, addUser);
+router.put('/users/:id', validateUpdUser, updateUser);
 router.patch('/users/:id/email', patchEmail);
 router.patch('/users/:id/password', patchPassword);
 router.patch('/users/:id/role', patchRole);
