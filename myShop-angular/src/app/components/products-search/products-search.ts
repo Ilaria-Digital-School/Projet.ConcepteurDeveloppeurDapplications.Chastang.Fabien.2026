@@ -2,7 +2,7 @@ import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { map, Subject } from 'rxjs';
 import { Product } from '../../models/product';
-import { Interest, InterestList } from '../../models/interest';
+import { InterestList } from '../../models/interest';
 import { CategoryList } from '../../models/category';
 import { ProductService } from '../../services/product-service';
 import { InterestService } from '../../services/interest-service';

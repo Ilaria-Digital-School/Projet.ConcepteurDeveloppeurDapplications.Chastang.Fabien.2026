@@ -56,7 +56,7 @@ export class DashboardOrders {
         this.dashboard.arrays.filteredTextRef = res.filter((orderExt: OrderExt) =>
           // Filter by order reference
           this.dashboard.arrays.filteredRef.some(
-            (item: OrderExt) => item.order.id === orderExt.order.id,
+            (item: OrderExt) => item.order._id === orderExt.order._id,
           ),
         );
         // Filter by order status
@@ -78,7 +78,7 @@ export class DashboardOrders {
         this.dashboard.arrays.filteredTextRef = res.filter((orderExt: OrderExt) =>
           // Filter by user email
           this.dashboard.arrays.filteredText.some(
-            (item: OrderExt) => item.order.id === orderExt.order.id,
+            (item: OrderExt) => item.order._id === orderExt.order._id,
           ),
         );
         // Filter by order status
@@ -109,7 +109,7 @@ export class DashboardOrders {
             // Initialize the Order object with its methods
             const ORDER = new Order();
             Object.assign(ORDER, order);
-            return { order: ORDER, user: res.find((user: User) => user.id === order.userId) };
+            return { order: ORDER, user: res.find((user: User) => user._id === order.userId) };
           })
           .sort((item1: OrderExt, item2: OrderExt) => item2.order.dateIns - item1.order.dateIns);
         this.dashboard.arrays.filteredText = this.dashboard.arrays.unfiltered;

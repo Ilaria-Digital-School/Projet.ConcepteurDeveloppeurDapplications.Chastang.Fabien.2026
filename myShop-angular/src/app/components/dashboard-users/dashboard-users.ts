@@ -57,7 +57,7 @@ export class DashboardUsers {
         this.dashboard.arrays.filteredText = res;
         this.dashboard.arrays.filteredTextRef = res.filter((user: User) =>
           // Filter by user reference
-          this.dashboard.arrays.filteredRef.some((item: User) => item.id === user.id),
+          this.dashboard.arrays.filteredRef.some((item: User) => item._id === user._id),
         );
         // Filter by user role
         this.filterRole();
@@ -77,7 +77,7 @@ export class DashboardUsers {
         this.dashboard.arrays.filteredRef = res;
         this.dashboard.arrays.filteredTextRef = res.filter((user: User) =>
           // Filter by user email
-          this.dashboard.arrays.filteredText.some((item: User) => item.id === user.id),
+          this.dashboard.arrays.filteredText.some((item: User) => item._id === user._id),
         );
         // Filter by user role
         this.filterRole();
@@ -216,7 +216,7 @@ export class DashboardUsers {
   // Edit a user using the form
   gotoForm(user: User) {
     // Redirect to the edit form
-    this.router.navigate(['/edit-user-table', user.id]);
+    this.router.navigate(['/edit-user-table', user._id]);
   }
 
   // Delete a user
@@ -228,13 +228,13 @@ export class DashboardUsers {
         next: (res: User) => {
           // Refresh the user list without calling the server
           this.dashboard.arrays.unfiltered = this.dashboard.arrays.unfiltered.filter(
-            (item: User) => item.id !== id,
+            (item: User) => item._id !== id,
           );
           this.dashboard.arrays.filteredTextRef = this.dashboard.arrays.filteredTextRef.filter(
-            (item: User) => item.id !== id,
+            (item: User) => item._id !== id,
           );
           this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredItems.filter(
-            (item: User) => item.id !== id,
+            (item: User) => item._id !== id,
           );
 
           // Disable inline editing if necessary

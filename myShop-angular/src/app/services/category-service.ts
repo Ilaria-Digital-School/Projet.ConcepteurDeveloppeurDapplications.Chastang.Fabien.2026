@@ -23,7 +23,7 @@ export class CategoryService {
 
   // Update a category
   updateCategory(category: Category): Observable<Category> {
-    return this.httpClient.put<Category>(`${Resources.categoriesURL}/${category.id}`, category);
+    return this.httpClient.put<Category>(`${Resources.categoriesURL}/${category._id}`, category);
   }
 
   // Delete a category

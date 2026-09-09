@@ -1,6 +1,6 @@
 export class Resources {
   // Base URL for resources: protocol://subdomain.domain.tld:port
-  static baseURL: string = 'http://localhost:3000';
+  static baseURL: string = 'http://localhost:3000/api';
 
   // Resources
   static categories: string = 'categories';

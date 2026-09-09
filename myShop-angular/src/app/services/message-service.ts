@@ -32,7 +32,7 @@ export class MessageService {
   replyMessage(message: Message): Observable<Message> {
     const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
     MESSAGE.dateRep = Date.now();
-    return this.httpClient.put<Message>(`${Resources.messagesURL}/${message.id}`, MESSAGE);
+    return this.httpClient.put<Message>(`${Resources.messagesURL}/${message._id}`, MESSAGE);
   }
 
   // Show a message
@@ -40,7 +40,7 @@ export class MessageService {
     const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
     MESSAGE.visible = true;
     MESSAGE.dateVisible = Date.now();
-    return this.httpClient.put<Message>(`${Resources.messagesURL}/${message.id}`, MESSAGE);
+    return this.httpClient.put<Message>(`${Resources.messagesURL}/${message._id}`, MESSAGE);
   }
 
   // Hide a message
@@ -48,7 +48,7 @@ export class MessageService {
     const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
     MESSAGE.visible = false;
     MESSAGE.dateVisible = Date.now();
-    return this.httpClient.put<Message>(`${Resources.messagesURL}/${message.id}`, MESSAGE);
+    return this.httpClient.put<Message>(`${Resources.messagesURL}/${message._id}`, MESSAGE);
   }
 
   // Delete a message

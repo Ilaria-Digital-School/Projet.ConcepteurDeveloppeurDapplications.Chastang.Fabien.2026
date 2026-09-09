@@ -2,7 +2,7 @@
   <h2 class="h2-title">Nos Articles</h2>
 
   <div class="product-container">
-    @for (product of products; track product.id; let i = $index) {
+    @for (product of products; track product._id; let i = $index) {
       <app-product-card
         [product]="product"
         [isList]="1"

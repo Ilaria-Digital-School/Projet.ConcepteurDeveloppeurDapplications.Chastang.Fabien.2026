@@ -62,7 +62,7 @@ export class ProductService {
   updateProduct(product: Product): Observable<Product> {
     const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
     PRODUCT.dateMod = Date.now();
-    return this.httpClient.put<Product>(`${Resources.productsURL}/${product.id}`, PRODUCT);
+    return this.httpClient.put<Product>(`${Resources.productsURL}/${product._id}`, PRODUCT);
   }
 
   // Show a product
@@ -70,7 +70,7 @@ export class ProductService {
     const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
     PRODUCT.visible = true;
     PRODUCT.dateVisible = Date.now();
-    return this.httpClient.put<Product>(`${Resources.productsURL}/${product.id}`, PRODUCT);
+    return this.httpClient.put<Product>(`${Resources.productsURL}/${product._id}`, PRODUCT);
   }
 
   // Hide a product
@@ -78,7 +78,7 @@ export class ProductService {
     const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
     PRODUCT.visible = false;
     PRODUCT.dateVisible = Date.now();
-    return this.httpClient.put<Product>(`${Resources.productsURL}/${product.id}`, PRODUCT);
+    return this.httpClient.put<Product>(`${Resources.productsURL}/${product._id}`, PRODUCT);
   }
 
   // Delete a product

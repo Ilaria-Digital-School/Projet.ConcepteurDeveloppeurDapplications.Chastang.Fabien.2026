@@ -3,7 +3,7 @@ import { CountryService } from '../services/country-service';
 
 // Country class
 export class Country {
-  id: string = '';
+  _id: string = '';
   value: number = 0;
   name: string = '';
 
@@ -12,7 +12,7 @@ export class Country {
     value: number | null = null,
     name: string | null = null,
   ) {
-    if (typeof id === 'string') this.id = id;
+    if (typeof id === 'string') this._id = id;
     if (typeof value === 'number') this.value = value;
     if (typeof name === 'string') this.name = name;
   }

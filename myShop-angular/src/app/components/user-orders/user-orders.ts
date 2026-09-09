@@ -31,7 +31,7 @@ export class UserOrders {
     if (USER_ID === null) {
       // If the parameter does not exist, get the user if he is logged in
       this.getConnectedUser();
-      userId = this.connectedUser?.id;
+      userId = this.connectedUser?._id;
     } else {
       userId = USER_ID;
     }

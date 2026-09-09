@@ -3,7 +3,7 @@ import { GenderService } from '../services/gender-service';
 
 // Gender class
 export class Gender {
-  id: string = '';
+  _id: string = '';
   value: number = 0;
   field: string = '';
   name: string = '';
@@ -14,7 +14,7 @@ export class Gender {
     field: string | null = null,
     name: string | null = null,
   ) {
-    if (typeof id === 'string') this.id = id;
+    if (typeof id === 'string') this._id = id;
     if (typeof value === 'number') this.value = value;
     if (typeof field === 'string') this.field = field;
     if (typeof name === 'string') this.name = name;

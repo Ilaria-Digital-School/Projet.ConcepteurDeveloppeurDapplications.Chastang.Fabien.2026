@@ -1,4 +1,4 @@
-@for (order of orders; track order.id; let i = $index) {
+@for (order of orders; track order._id; let i = $index) {
   <section>
     <app-user-order [order]="order"></app-user-order>
   </section>

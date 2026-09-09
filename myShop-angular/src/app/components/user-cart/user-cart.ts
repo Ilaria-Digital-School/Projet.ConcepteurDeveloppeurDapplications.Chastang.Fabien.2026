@@ -56,7 +56,7 @@ export class UserCart {
           this.products = res
             .map((product: Product) => {
               const PRODUCT = this.cart.products.find(
-                (item: OrderProduct) => item.id === product.id,
+                (item: OrderProduct) => item._id === product._id,
               );
               // Initialize ONLY the quantity
               product.quantity = PRODUCT?.quantity;
@@ -108,7 +108,7 @@ export class UserCart {
 
     // Update the cart view
     this.cart.removeOne(product);
-    if (product.quantity === 0) this.removeFromList(product.id);
+    if (product.quantity === 0) this.removeFromList(product._id);
   }
 
   // Remove a product
@@ -126,7 +126,7 @@ export class UserCart {
 
   // Remove a product from the list
   removeFromList(id: string) {
-    this.products = this.products.filter((item: Product) => item.id !== id);
+    this.products = this.products.filter((item: Product) => item._id !== id);
   }
 
   // Cart-related actions /////////////////////////////////////////////////////
@@ -151,7 +151,7 @@ export class UserCart {
   // To order
   addOrder() {
     if (this.connectedUser) {
-      this.router.navigate(['/add-order', this.connectedUser.id]);
+      this.router.navigate(['/add-order', this.connectedUser._id]);
     } else if (confirm(UserCart.msgConnectToOrder)) {
       this.router.navigate(['/user-login-cart']);
     }

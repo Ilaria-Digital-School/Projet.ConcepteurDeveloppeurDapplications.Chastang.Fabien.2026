@@ -34,7 +34,7 @@
     <option value="0">Non précisé</option>
   </select>
   <div class="product-container">
-    @for (product of filteredItems; track product.id; let i = $index) {
+    @for (product of filteredItems; track product._id; let i = $index) {
       <app-product-card
         [product]="product"
         [isList]="1"

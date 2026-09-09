@@ -57,7 +57,7 @@ export class OrderService {
   updateOrder(order: Order): Observable<Order> {
     const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
     ORDER.dateMod = Date.now();
-    return this.httpClient.put<Order>(`${Resources.ordersURL}/${order.id}`, ORDER);
+    return this.httpClient.put<Order>(`${Resources.ordersURL}/${order._id}`, ORDER);
   }
 
   // Show an order
@@ -65,7 +65,7 @@ export class OrderService {
     const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
     ORDER.visible = true;
     ORDER.dateVisible = Date.now();
-    return this.httpClient.put<Order>(`${Resources.ordersURL}/${order.id}`, ORDER);
+    return this.httpClient.put<Order>(`${Resources.ordersURL}/${order._id}`, ORDER);
   }
 
   // Hide an order
@@ -73,7 +73,7 @@ export class OrderService {
     const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
     ORDER.visible = false;
     ORDER.dateVisible = Date.now();
-    return this.httpClient.put<Order>(`${Resources.ordersURL}/${order.id}`, ORDER);
+    return this.httpClient.put<Order>(`${Resources.ordersURL}/${order._id}`, ORDER);
   }
 
   // Delete an order

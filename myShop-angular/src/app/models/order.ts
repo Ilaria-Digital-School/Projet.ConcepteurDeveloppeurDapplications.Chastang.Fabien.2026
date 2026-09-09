@@ -9,7 +9,7 @@ export type OrderExt = { order: Order; user: User | undefined };
 // Order class
 export class Order {
   // Class properties
-  id: string = '';
+  _id: string = '';
   reference: string = Common.getOrderRef();
   dateIns: number = Date.now();
   dateMod: number | null = null;
@@ -70,7 +70,7 @@ export class Order {
 
   // Returns the list of product IDs for the order
   getProductIDs(): string[] {
-    return this.products.map((product: OrderProduct) => product.id);
+    return this.products.map((product: OrderProduct) => product._id);
   }
 
   // Returns the total excluding tax

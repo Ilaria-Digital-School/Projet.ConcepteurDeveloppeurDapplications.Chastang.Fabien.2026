@@ -166,6 +166,12 @@ export class AddProduct {
     return ERROR;
   }
 
+  // Check the URL
+  errorURL(): boolean {
+    const URL_PATTERN = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+    return URL_PATTERN.test(this.product.img.trim());
+  }
+
   // IMPORTANT: this method is called whenever the page (component) is modified, not just the form
   // Used only by edit mode: to manage enabling or disabling the form's 'edit' button, prefer a
   // Reactive form over a Template-Driven Form (TDF)
@@ -250,7 +256,7 @@ export class AddProduct {
 
       this.productService.addProduct(PRODUCT).subscribe({
         next: (res: Product) => {
-          this.router.navigate(['/product-view', res.id]);
+          this.router.navigate(['/product-view', res._id]);
         },
         error: (err: any) => {
           alert("Une erreur s'est produite lors de l'ajout.");

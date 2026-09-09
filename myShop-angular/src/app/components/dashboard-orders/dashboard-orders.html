@@ -53,13 +53,13 @@
         </tr>
       </thead>
       <tbody class="table-group-divider">
-        @for (orderExt of dashboard.arrays.filteredItems; track orderExt.order.id; let i = $index) {
+        @for (orderExt of dashboard.arrays.filteredItems; track orderExt.order._id; let i = $index) {
           <tr>
             <th scope="row">{{ i + 1 }}</th>
             <td>{{ orderExt.order.reference }}</td>
             <td>
               <a
-                [routerLink]="['/user-orders', orderExt.user?.id]"
+                [routerLink]="['/user-orders', orderExt.user?._id]"
                 title="Visualiez les commandes de ce client"
                 aria-label="Visualiez les commandes de ce client"
               >

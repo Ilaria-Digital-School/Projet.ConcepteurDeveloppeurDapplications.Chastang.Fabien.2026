@@ -53,7 +53,7 @@ export class DashboardProducts {
         this.dashboard.arrays.filteredText = res;
         this.dashboard.arrays.filteredTextRef = res.filter((product: Product) =>
           // Filter by product reference
-          this.dashboard.arrays.filteredRef.some((item: Product) => item.id === product.id),
+          this.dashboard.arrays.filteredRef.some((item: Product) => item._id === product._id),
         );
         // Filter by product stock
         this.filterStock();
@@ -73,7 +73,7 @@ export class DashboardProducts {
         this.dashboard.arrays.filteredRef = res;
         this.dashboard.arrays.filteredTextRef = res.filter((product: Product) =>
           // Filter by product name
-          this.dashboard.arrays.filteredText.some((item: Product) => item.id === product.id),
+          this.dashboard.arrays.filteredText.some((item: Product) => item._id === product._id),
         );
         // Filter by product stock
         this.filterStock();
@@ -201,13 +201,13 @@ export class DashboardProducts {
         next: (res: Product) => {
           // Refresh the product list without calling the server
           this.dashboard.arrays.unfiltered = this.dashboard.arrays.unfiltered.filter(
-            (item: Product) => item.id !== id,
+            (item: Product) => item._id !== id,
           );
           this.dashboard.arrays.filteredTextRef = this.dashboard.arrays.filteredTextRef.filter(
-            (item: Product) => item.id !== id,
+            (item: Product) => item._id !== id,
           );
           this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredItems.filter(
-            (item: Product) => item.id !== id,
+            (item: Product) => item._id !== id,
           );
         },
         error: (err: any) => {

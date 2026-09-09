@@ -39,7 +39,7 @@ export class UserOrder {
         this.products = res
           .map((product: Product) => {
             const PRODUCT = this.order.products.find(
-              (item: OrderProduct) => item.id === product.id,
+              (item: OrderProduct) => item._id === product._id,
             );
             if (PRODUCT) {
               // Initialize the price AND the quantity

@@ -23,7 +23,7 @@ export class RoleService {
 
   // Update a role
   updateRole(role: Role): Observable<Role> {
-    return this.httpClient.put<Role>(`${Resources.rolesURL}/${role.id}`, role);
+    return this.httpClient.put<Role>(`${Resources.rolesURL}/${role._id}`, role);
   }
 
   // Delete a role

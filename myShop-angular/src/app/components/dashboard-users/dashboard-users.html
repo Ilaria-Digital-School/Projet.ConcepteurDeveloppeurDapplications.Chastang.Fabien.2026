@@ -53,12 +53,12 @@
         </tr>
       </thead>
       <tbody class="table-group-divider">
-        @for (user of dashboard.arrays.filteredItems; track user.id; let i = $index) {
+        @for (user of dashboard.arrays.filteredItems; track user._id; let i = $index) {
           <tr [class]="user.role !== 0 ? 'admin-row' : ''">
             <th scope="row">{{ i + 1 }}</th>
             <td [class]="user.role !== 0 ? 'admin-cell' : ''">{{ user.reference }}</td>
             <td>{{ user.gender > 0 ? genders.getByValue(user.gender)?.name : '—' }}</td>
-            @if (user.id === editUser?.id) {
+            @if (user._id === editUser?._id) {
               <td class="inline">
                 <input
                   type="text"
@@ -86,7 +86,7 @@
               {{ roles.getByValue(user.role)?.name }}
             </td>
             <td [style.white-space]="'nowrap'">
-              @if (user.id === editUser?.id) {
+              @if (user._id === editUser?._id) {
                 <button
                   type="button"
                   class="btn btn-warning"
@@ -121,7 +121,7 @@
                 class="btn btn-danger"
                 title="Supprimer l'utilisateur"
                 aria-label="Supprimer l'utilisateur"
-                (click)="remove(user.id)"
+                (click)="remove(user._id)"
               >
                 <i class="fa-solid fa-user-xmark"></i>
               </button>

@@ -23,7 +23,7 @@ export class CountryService {
 
   // Update a country
   updateCountry(country: Country): Observable<Country> {
-    return this.httpClient.put<Country>(`${Resources.countriesURL}/${country.id}`, country);
+    return this.httpClient.put<Country>(`${Resources.countriesURL}/${country._id}`, country);
   }
 
   // Delete a country

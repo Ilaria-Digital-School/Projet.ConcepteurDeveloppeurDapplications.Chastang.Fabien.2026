@@ -5,7 +5,7 @@ export type FullDesc = { title: string | undefined; description: Array<string> }
 
 // Product class
 export class Product {
-  id: string = '';
+  _id: string = '';
   reference: string = Common.getProductRef();
   dateIns: number = Date.now(); // Insertion date
   dateMod: number | null = null; // Modification date

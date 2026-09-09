@@ -5,7 +5,7 @@ export type LoginData = { email: string; pswd: string };
 
 // User class
 export class User {
-  id: string = '';
+  _id: string = '';
   reference: string = Common.getUserRef();
   dateIns: number = Date.now(); // Insertion date
   dateMod: number | null = null; // Modification date

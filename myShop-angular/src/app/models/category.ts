@@ -3,7 +3,7 @@ import { CategoryService } from '../services/category-service';
 
 // Category class
 export class Category {
-  id: string = '';
+  _id: string = '';
   value: number = 0;
   field: string = '';
   name: string = '';
@@ -18,7 +18,7 @@ export class Category {
     description: string | null = null,
     img: string | null = null,
   ) {
-    if (typeof id === 'string') this.id = id;
+    if (typeof id === 'string') this._id = id;
     if (typeof value === 'number') this.value = value;
     if (typeof field === 'string') this.field = field;
     if (typeof name === 'string') this.name = name;

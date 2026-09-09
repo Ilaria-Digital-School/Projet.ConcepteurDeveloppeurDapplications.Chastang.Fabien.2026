@@ -23,7 +23,7 @@ export class StatusService {
 
   // Update a status
   updateStatus(status: Status): Observable<Status> {
-    return this.httpClient.put<Status>(`${Resources.statusURL}/${status.id}`, status);
+    return this.httpClient.put<Status>(`${Resources.statusURL}/${status._id}`, status);
   }
 
   // Delete a status

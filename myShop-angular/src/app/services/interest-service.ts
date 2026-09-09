@@ -23,7 +23,7 @@ export class InterestService {
 
   // Update a user interest / product type
   updateInterest(interest: Interest): Observable<Interest> {
-    return this.httpClient.put<Interest>(`${Resources.interestsURL}/${interest.id}`, interest);
+    return this.httpClient.put<Interest>(`${Resources.interestsURL}/${interest._id}`, interest);
   }
 
   // Delete a user interest / product type

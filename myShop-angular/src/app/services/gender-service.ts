@@ -23,7 +23,7 @@ export class GenderService {
 
   // Update a gender
   updateGender(gender: Gender): Observable<Gender> {
-    return this.httpClient.put<Gender>(`${Resources.gendersURL}/${gender.id}`, gender);
+    return this.httpClient.put<Gender>(`${Resources.gendersURL}/${gender._id}`, gender);
   }
 
   // Delete a gender

@@ -1,5 +1,5 @@
-  @if (products.length > 0) {
-<section>
+@if (products.length > 0) {
+  <section>
     <h2 class="h2-title">Nos Articles</h2>
 
     <div class="carousel-container">
@@ -9,10 +9,10 @@
         (slid.bs.carousel)="onSlid($event)"
       >
         <div class="carousel-inner">
-          @for (product of products; track product.id; let i = $index) {
+          @for (product of products; track product._id; let i = $index) {
             <div
-              [id]="product.id"
-              [class]="'carousel-item' + (isActive(product.id, i) ? ' active' : '')"
+              [id]="product._id"
+              [class]="'carousel-item' + (isActive(product._id, i) ? ' active' : '')"
               #productCarousel
             >
               <img
@@ -44,10 +44,10 @@
       </div>
 
       <div id="products-card">
-        @for (product of products; track product.id; let i = $index) {
+        @for (product of products; track product._id; let i = $index) {
           <div
-            [id]="'card_' + product.id"
-            [class]="isActive(product.id, i) ? 'active' : ''"
+            [id]="'card_' + product._id"
+            [class]="isActive(product._id, i) ? 'active' : ''"
             #productCard
           >
             <app-product-card
@@ -62,9 +62,9 @@
         }
       </div>
     </div>
-</section>
-  } @else {
-<section class="empty">
+  </section>
+} @else {
+  <section class="empty">
     <h2 class="h2-title">Aucun article n'est référencé</h2>
-</section>
-  }
+  </section>
+}

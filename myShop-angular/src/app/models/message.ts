@@ -1,6 +1,6 @@
 // Message class
 export class Message {
-  id: string = '';
+  _id: string = '';
   dateIns: number = Date.now(); // Insertion date
   dateRep: number | null = null; // Response date
   name: string = '';

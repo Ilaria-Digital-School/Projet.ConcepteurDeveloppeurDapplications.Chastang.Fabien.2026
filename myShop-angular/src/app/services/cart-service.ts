@@ -34,7 +34,7 @@ export class CartService {
   // Remove an item from the cart
   removeOne(product: OrderProduct): void {
     this.cart.update((products: OrderProduct[]) => {
-      const INDEX = products.findIndex((item: OrderProduct) => item.id === product.id);
+      const INDEX = products.findIndex((item: OrderProduct) => item._id === product._id);
       if (INDEX > -1) {
         products.splice(INDEX, 1);
         if (products.length === 0) {
@@ -54,7 +54,7 @@ export class CartService {
   // Remove a product from the cart
   removeProduct(id: string): void {
     this.cart.update((products: OrderProduct[]) => {
-      const NEW_CART = products.filter((product: OrderProduct) => product.id !== id);
+      const NEW_CART = products.filter((product: OrderProduct) => product._id !== id);
       if (NEW_CART.length > 0) {
         localStorage.setItem('cart', JSON.stringify(NEW_CART));
         return NEW_CART;

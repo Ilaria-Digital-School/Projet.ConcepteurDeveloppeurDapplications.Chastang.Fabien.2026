@@ -122,9 +122,11 @@
         required
         #productImg="ngModel"
       />
-      @if (productImg?.invalid && (productImg?.touched || productImg?.dirty)) {
+      @if ((productImg?.invalid || errorURL()) && (productImg?.touched || productImg?.dirty)) {
         @if (productImg?.errors?.['required']) {
           <div class="error">Ce champ est obligatoire</div>
+        } @else {
+          <div class="error">Ce champ doit être une URL</div> 
         }
       }
     </div>
