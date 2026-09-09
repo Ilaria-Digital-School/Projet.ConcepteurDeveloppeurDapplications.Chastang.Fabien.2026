@@ -39,7 +39,7 @@ export class MessageService {
   showMessage(message: Message): Observable<Message> {
     const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
     MESSAGE.visible = true;
-    MESSAGE.dateHidden = null;
+    MESSAGE.dateVisible = Date.now();
     return this.httpClient.put<Message>(`${Resources.messagesURL}/${message.id}`, MESSAGE);
   }
 
@@ -47,7 +47,7 @@ export class MessageService {
   hideMessage(message: Message): Observable<Message> {
     const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
     MESSAGE.visible = false;
-    MESSAGE.dateHidden = Date.now();
+    MESSAGE.dateVisible = Date.now();
     return this.httpClient.put<Message>(`${Resources.messagesURL}/${message.id}`, MESSAGE);
   }
 

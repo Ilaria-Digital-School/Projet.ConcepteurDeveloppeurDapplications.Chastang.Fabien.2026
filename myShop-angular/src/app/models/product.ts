@@ -19,7 +19,7 @@ export class Product {
   fullDescription: string = '';
   info: string = '';
   favorite: boolean = false;
-  dateHidden: number | null = null; // Date on which the data was hidden
+  dateVisible: number | null = null; // Date on which the data was show or hidden
   visible: boolean = true;
 
   // Temporary properties, not saved

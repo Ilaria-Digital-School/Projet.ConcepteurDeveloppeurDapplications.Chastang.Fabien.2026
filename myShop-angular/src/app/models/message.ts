@@ -6,7 +6,7 @@ export class Message {
   name: string = '';
   email: string = '';
   text: string = '';
-  dateHidden: number | null = null; // Date on which the data was hidden
+  dateVisible: number | null = null; // Date on which the data was show or hidden
   visible: boolean = true;
 
   // Temporary properties, not saved
