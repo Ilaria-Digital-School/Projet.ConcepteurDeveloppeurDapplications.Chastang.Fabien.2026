@@ -2,6 +2,8 @@ import express from 'express';
 import { corsMiddleware } from './cors/cors.js';
 import userRoutes from './routes/user.routes.js';
 import productRoutes from './routes/product.routes.js';
+import { successHandler } from './middlewares/success.handler.js';
+import { errorHandler } from './middlewares/error.handler.js';
 
 // Creates an Express application
 // The express() function is a top-level function exported by the express module
@@ -11,8 +13,15 @@ app.use(express.json());
 // `app.use(cors())` allows everything, which is not sufficiently secure
 app.use(corsMiddleware);
 
+// Before adding the routes
+// Otherwise, an error occurs: `res.success is not a function`
+app.use(successHandler);
+
 // Adding routes
 app.use('/api', userRoutes);
 app.use('/api', productRoutes);
+
+// Always at the end of the process to catch errors
+app.use(errorHandler);
 
 export default app;

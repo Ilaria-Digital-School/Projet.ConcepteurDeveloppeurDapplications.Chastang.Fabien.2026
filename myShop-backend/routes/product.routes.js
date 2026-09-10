@@ -1,4 +1,5 @@
 import express from 'express';
+import { transformProduct } from '../middlewares/transform.middleware.js';
 import { validateAddProd, validateUpdProd } from '../middlewares/product.validation.js';
 import {
   getAllProducts,
@@ -18,7 +19,7 @@ const router = express.Router();
 // http://localhost:3000/api/products
 router.get('/products', getAllProducts);
 router.get('/products/:id', getProductById);
-router.post('/products', validateAddProd, addProduct);
+router.post('/products', transformProduct, validateAddProd, addProduct);
 router.put('/products/:id', validateUpdProd, updateProduct);
 router.patch('/products/:id/price', patchPrice);
 router.patch('/products/:id/stock', patchStock);

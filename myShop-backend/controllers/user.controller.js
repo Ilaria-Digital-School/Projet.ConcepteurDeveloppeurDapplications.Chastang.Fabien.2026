@@ -15,59 +15,61 @@ function isEmail(value) {
 function isPassword(value) {
   const SPECIAL_CHR = '&~#"\'{([|_\\\\^@)\\]=+}€¨$£¤%*<>,?;.:/!§-';
   const PSWD_PATTERN = new RegExp(
-    '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[' + SPECIAL_CHR + '])[a-zA-Z\\d' + SPECIAL_CHR + ']{10,}$',
+    '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[' +
+      SPECIAL_CHR +
+      '])[a-zA-Z\\d' +
+      SPECIAL_CHR +
+      ']{10,}$',
   );
   return typeof value === 'string' && PSWD_PATTERN.test(value);
 }
 
 // Retrieve the user list /////////////////////////////////////////////////////
-export const getAllUsers = async (req, res) => {
+export const getAllUsers = async (req, res, next) => {
   try {
     // Retrieve the user list from the database
     const USERS = await User.find();
 
-    // Send the list
-    res.status(200).json(USERS);
+    // Success handler call
+    res.success(USERS, 200, 'User list successfully retrieved');
   } catch (err) {
-    // Server error
-    res.status(500).json({
-      message: 'Error retrieving the user list',
-      error: err.message,
-    });
+    // Error handler call
+    if (!err.message) err.message = 'Error retrieving the user list';
+    next(err);
   }
 };
 
 // Retrieve a user by its ID //////////////////////////////////////////////////
-export const getUserById = async (req, res) => {
+export const getUserById = async (req, res, next) => {
   try {
     // Retrieve the user from the database
     const USER = await User.findById(req.params.id);
 
     if (!USER) {
-      // Send a JSON response
-      res.status(404).json({ message: 'User not found' });
-    } else {
-      // Send the user
-      res.status(200).json(USER);
+      // Throw an error
+      const ERR = new Error('User not found');
+      ERR.statusCode = 404;
+      throw ERR;
     }
+
+    // Success handler call
+    res.success(USER, 200, 'User successfully retrieved');
   } catch (err) {
-    // Server error
-    res.status(500).json({
-      message: 'Error retrieving the user',
-      error: err.message,
-    });
+    // Error handler call
+    if (!err.message) err.message = 'Error retrieving the user';
+    next(err);
   }
 };
 
 // Add a user /////////////////////////////////////////////////////////////////
-export const addUser = async (req, res) => {
+export const addUser = async (req, res, next) => {
   try {
     // Retrieve the request data and instantiate the User model (object)
     // Better practice than 'const USER = new User(req.body)';
     const USER = new User({
       reference: req.body.reference,
-      dateIns: req.body.dateIns,
-      dateMod: req.body.dateMod,
+      dateIns: Date.now(),
+      dateMod: null,
       name: req.body.name,
       email: req.body.email,
       pswd: req.body.pswd,
@@ -75,29 +77,24 @@ export const addUser = async (req, res) => {
       interests: req.body.interests,
       country: req.body.country,
       role: req.body.role,
-      dateHidden: req.body.dateHidden,
+      dateVisible: null,
       visible: req.body.visible,
     });
 
     // Save the user to the database
     await USER.save();
 
-    // Send a JSON message and the inserted user
-    res.status(201).json({
-      message: 'The user has been added',
-      user: USER,
-    });
+    // Success handler call
+    res.success(USER, 201, 'The user has been inserted');
   } catch (err) {
-    // Server error
-    res.status(500).json({
-      message: 'Error adding the user',
-      error: err.message,
-    });
+    // Error handler call
+    if (!err.message) err.message = 'Error adding the user';
+    next(err);
   }
 };
 
 // Update a user //////////////////////////////////////////////////////////////
-export const updateUser = async (req, res) => {
+export const updateUser = async (req, res, next) => {
   try {
     // Update the user in the database
     req.body.dateMod = Date.now();
@@ -107,32 +104,31 @@ export const updateUser = async (req, res) => {
       { returnDocument: 'after' }, // The syntax { new: true } is depreciated
     );
 
-    // Send a JSON response
     if (!USER) {
-      res.status(404).json({ message: 'User not found' });
-    } else {
-      res.status(200).json({
-        message: 'The user has been updated',
-        user: USER,
-      });
+      // Throw an error
+      const ERR = new Error('User not found');
+      ERR.statusCode = 404;
+      throw ERR;
     }
+
+    // Success handler call
+    res.success(USER, 200, 'The user has been updated');
   } catch (err) {
-    // Server error
-    res.status(500).json({
-      message: 'Error updating the user',
-      error: err.message,
-    });
+    // Error handler call
+    if (!err.message) err.message = 'Error updating the user';
+    next(err);
   }
 };
 
 // Patch the user email ///////////////////////////////////////////////////////
-export const patchEmail = async (req, res) => {
+export const patchEmail = async (req, res, next) => {
   try {
     // Check the value before updating it
     if (!isEmail(req.body.email)) {
-      return res
-        .status(400)
-        .json({ message: 'The user email is invalid' });
+      // Throw an error
+      const ERR = new Error('The user email is invalid');
+      ERR.statusCode = 400;
+      throw ERR;
     }
 
     // Update the user in the database
@@ -145,32 +141,31 @@ export const patchEmail = async (req, res) => {
       { returnDocument: 'after' }, // The syntax { new: true } is depreciated
     );
 
-    // Send a JSON response
     if (!USER) {
-      res.status(404).json({ message: 'User not found' });
-    } else {
-      res.status(200).json({
-        message: 'The user email has been updated',
-        user: USER,
-      });
+      // Throw an error
+      const ERR = new Error('User not found');
+      ERR.statusCode = 404;
+      throw ERR;
     }
+
+    // Success handler call
+    res.success(USER, 200, 'The user email has been updated');
   } catch (err) {
-    // Server error
-    res.status(500).json({
-      message: 'Error updating the user email',
-      error: err.message,
-    });
+    // Error handler call
+    if (!err.message) err.message = 'Error updating the user email';
+    next(err);
   }
 };
 
 // Patch the user password ////////////////////////////////////////////////////
-export const patchPassword = async (req, res) => {
+export const patchPassword = async (req, res, next) => {
   try {
     // Check the value before updating it
     if (!isPassword(req.body.pswd)) {
-      return res
-        .status(400)
-        .json({ message: 'The user password is invalid' });
+      // Throw an error
+      const ERR = new Error('The user password is invalid');
+      ERR.statusCode = 400;
+      throw ERR;
     }
 
     // Update the user in the database
@@ -183,32 +178,31 @@ export const patchPassword = async (req, res) => {
       { returnDocument: 'after' }, // The syntax { new: true } is depreciated
     );
 
-    // Send a JSON response
     if (!USER) {
-      res.status(404).json({ message: 'User not found' });
-    } else {
-      res.status(200).json({
-        message: 'The user password has been updated',
-        user: USER,
-      });
+      // Throw an error
+      const ERR = new Error('User not found');
+      ERR.statusCode = 404;
+      throw ERR;
     }
+
+    // Success handler call
+    res.success(USER, 200, 'The user password has been updated');
   } catch (err) {
-    // Server error
-    res.status(500).json({
-      message: 'Error updating the user password',
-      error: err.message,
-    });
+    // Error handler call
+    if (!err.message) err.message = 'Error updating the user password';
+    next(err);
   }
 };
 
 // Patch the user role ////////////////////////////////////////////////////////
-export const patchRole = async (req, res) => {
+export const patchRole = async (req, res, next) => {
   try {
     // Check the value before updating it
     if (!isInt(req.body.role) || req.body.role < 0 || req.body.role > 2) {
-      return res
-        .status(400)
-        .json({ message: 'The user role must be an integer chosen from 0, 1, or 2' });
+      // Throw an error
+      const ERR = new Error('The user role must be an integer chosen from 0, 1, or 2');
+      ERR.statusCode = 400;
+      throw ERR;
     }
 
     // Update the user in the database
@@ -221,32 +215,31 @@ export const patchRole = async (req, res) => {
       { returnDocument: 'after' }, // The syntax { new: true } is depreciated
     );
 
-    // Send a JSON response
     if (!USER) {
-      res.status(404).json({ message: 'User not found' });
-    } else {
-      res.status(200).json({
-        message: 'The user role has been updated',
-        user: USER,
-      });
+      // Throw an error
+      const ERR = new Error('User not found');
+      ERR.statusCode = 404;
+      throw ERR;
     }
+
+    // Success handler call
+    res.success(USER, 200, 'The user role has been updated');
   } catch (err) {
-    // Server error
-    res.status(500).json({
-      message: 'Error updating the user role',
-      error: err.message,
-    });
+    // Error handler call
+    if (!err.message) err.message = 'Error updating the user role';
+    next(err);
   }
 };
 
 // Patch the user visibility //////////////////////////////////////////////////
-export const patchVisible = async (req, res) => {
+export const patchVisible = async (req, res, next) => {
   try {
     // Check the value before updating it
     if (typeof req.body.visible !== 'boolean') {
-      return res
-        .status(400)
-        .json({ message: 'The user visibility must be defined and be a boolean' });
+      // Throw an error
+      const ERR = new Error('The user visibility must be defined and be a boolean');
+      ERR.statusCode = 400;
+      throw ERR;
     }
 
     // Update the user in the database
@@ -259,26 +252,24 @@ export const patchVisible = async (req, res) => {
       { returnDocument: 'after' }, // The syntax { new: true } is depreciated
     );
 
-    // Send a JSON response
     if (!USER) {
-      res.status(404).json({ message: 'User not found' });
-    } else {
-      res.status(200).json({
-        message: 'The user visibility has been updated',
-        user: USER,
-      });
+      // Throw an error
+      const ERR = new Error('User not found');
+      ERR.statusCode = 404;
+      throw ERR;
     }
+
+    // Success handler call
+    res.success(USER, 200, 'The user visibility has been updated');
   } catch (err) {
-    // Server error
-    res.status(500).json({
-      message: 'Error updating the user visibility',
-      error: err.message,
-    });
+    // Error handler call
+    if (!err.message) err.message = 'Error updating the user visibility';
+    next(err);
   }
 };
 
 // Delete a user //////////////////////////////////////////////////////////////
-export const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res, next) => {
   try {
     // Delete the user from the database
     const USER = await User.findByIdAndDelete(
@@ -286,20 +277,18 @@ export const deleteUser = async (req, res) => {
       { returnDocument: 'after' }, // The syntax { new: true } is depreciated
     );
 
-    // Send a JSON response
     if (!USER) {
-      res.status(404).json({ message: 'User not found' });
-    } else {
-      res.status(200).json({
-        message: 'The user has been deleted',
-        user: USER,
-      });
+      // Throw an error
+      const ERR = new Error('User not found');
+      ERR.statusCode = 404;
+      throw ERR;
     }
+
+    // Success handler call
+    res.success(USER, 200, 'The user has been deleted');
   } catch (err) {
-    // Server error
-    res.status(500).json({
-      message: 'Error deleting the user',
-      error: err.message,
-    });
+    // Error handler call
+    if (!err.message) err.message = 'Error deleting the user';
+    next(err);
   }
 };
