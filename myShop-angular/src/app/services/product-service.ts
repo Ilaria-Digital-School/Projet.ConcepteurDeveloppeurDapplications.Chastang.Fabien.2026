@@ -43,7 +43,7 @@ export class ProductService {
 
   // Retrieve a list of products based on their IDs
   getProductsByIDs(IDs: string[]): Observable<Product[]> {
-    return this.httpClient.get<Product[]>(`${Resources.productsURL}?id=${IDs.join('&id=')}`);
+    return this.httpClient.get<Product[]>(`${Resources.productsURL}?_id=${IDs.join('&_id=')}`);
   }
 
   // Retrieve a product by its ID

@@ -32,8 +32,8 @@ export class OrderService {
   }
 
   // Retrieve a list of orders based on their IDs
-  getOrdersByUserIDs(userIDs: string[]): Observable<Order[]> {
-    return this.httpClient.get<Order[]>(`${Resources.ordersURL}?userId=${userIDs.join('&userId=')}`).pipe(
+  getOrdersByIDs(IDs: string): Observable<Order[]> {
+    return this.httpClient.get<Order[]>(`${Resources.ordersURL}?IDs=${IDs}`).pipe(
       // Orders sorted from newest to oldest
       map((orders: Order[]) => {
         return orders.sort((order1: Order, order2: Order) => order2.dateIns - order1.dateIns);

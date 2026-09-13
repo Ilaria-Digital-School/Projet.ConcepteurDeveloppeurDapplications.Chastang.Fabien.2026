@@ -11,14 +11,14 @@ export class MessageService {
   // Performs HTTP requests
   private httpClient = inject(HttpClient);
 
+  // Retrieve a message by its user email
+  getMessagesByEmail(email: string | null): Observable<Message> {
+    return this.httpClient.get<Message>(`${Resources.messagesURL}?email=${email}`);
+  }
+
   // Retrieve a message by its ID
   getMessageById(id: string | null): Observable<Message> {
     return this.httpClient.get<Message>(`${Resources.messagesURL}/${id}`);
-  }
-
-  // Retrieve a message by its user email
-  getMessageByEmail(email: string | null): Observable<Message> {
-    return this.httpClient.get<Message>(`${Resources.messagesURL}?email=${email}`);
   }
 
   // Add a message
@@ -29,7 +29,7 @@ export class MessageService {
   }
 
   // Reply to a message
-  replyMessage(message: Message): Observable<Message> {
+  replyOnMessage(message: Message): Observable<Message> {
     const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
     MESSAGE.dateRep = Date.now();
     return this.httpClient.put<Message>(`${Resources.messagesURL}/${message._id}`, MESSAGE);

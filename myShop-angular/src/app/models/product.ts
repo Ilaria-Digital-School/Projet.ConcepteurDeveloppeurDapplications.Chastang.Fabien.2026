@@ -9,6 +9,7 @@ export class Product {
   reference: string = Common.getProductRef();
   dateIns: number = Date.now(); // Insertion date
   dateMod: number | null = null; // Modification date
+  userId: string | undefined = '';
   name: string = '';
   description: string = '';
   price: number = 0;
@@ -29,6 +30,7 @@ export class Product {
   constructor(
     dateIns: number | null = null,
     dateMod: number | null = null,
+    userId: string | null = null,
     name: string | null = null,
     description: string | null = null,
     price: number | null = null,
@@ -42,6 +44,7 @@ export class Product {
   ) {
     if (typeof dateIns === 'number') this.dateIns = dateIns;
     if (typeof dateMod === 'number') this.dateMod = dateMod;
+    if (typeof userId === 'string') this.userId = userId;
     if (typeof name === 'string') this.name = name;
     if (typeof description === 'string') this.description = description;
     if (typeof price === 'number') this.price = price;
