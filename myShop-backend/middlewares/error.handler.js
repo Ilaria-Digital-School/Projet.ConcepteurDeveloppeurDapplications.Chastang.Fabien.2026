@@ -1,3 +1,4 @@
+// Called when an error occurs
 export const errorHandler = (err, req, res, next) => {
   // Display the detailed error in the console
   console.error(err);

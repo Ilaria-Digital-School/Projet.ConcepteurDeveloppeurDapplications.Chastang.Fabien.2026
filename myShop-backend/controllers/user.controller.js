@@ -31,7 +31,7 @@ export const getAllUsers = async (req, res, next) => {
     const USERS = await User.find();
 
     // Success handler call
-    res.success(USERS, 200, 'User list successfully retrieved');
+    res.success(USERS, 200, 'User list successfully retrieved', true);
   } catch (err) {
     // Error handler call
     if (!err.message) err.message = 'Error retrieving the user list';
@@ -53,7 +53,7 @@ export const getUserById = async (req, res, next) => {
     }
 
     // Success handler call
-    res.success(USER, 200, 'User successfully retrieved');
+    res.success(USER, 200, 'User successfully retrieved', true);
   } catch (err) {
     // Error handler call
     if (!err.message) err.message = 'Error retrieving the user';

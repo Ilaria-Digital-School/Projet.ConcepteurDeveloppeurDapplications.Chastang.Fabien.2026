@@ -16,9 +16,9 @@ const PSWD_PATTERN = new RegExp(
 const userSchema = new mongoose.Schema({
   reference: {
     type: String,
-    required: [true, "The 'reference' field is mandatory"],
-    match: [REF_PATTERN, 'Invalid reference'],
-    unique: [true, 'The reference must be unique'],
+    match: [REF_PATTERN, 'Invalid "reference" attribut'],
+    required: [true, 'The "reference" attribut is mandatory'],
+    unique: [true, 'The "reference" attribut must be unique'],
   },
   dateIns: {
     type: Date,
@@ -30,25 +30,28 @@ const userSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    required: [true, 'The name is mandatory'],
-    minlength: [3, 'The name must contain at least 3 characters'],
-    maxlength: [50, 'The name must contain no more than 50 characters'],
+    minlength: [3, 'The "name" attribut must contain at least 3 characters'],
+    maxlength: [50, 'The "name" attribut must contain no more than 50 characters'],
+    required: [true, 'The "name" attribut is mandatory'],
     trim: true,
   },
   email: {
     type: String,
-    required: [true, 'The email is mandatory'],
-    unique: [true, 'The email must be unique'],
-    match: [EMAIL_PATTERN, 'Invalid email address'],
+    match: [EMAIL_PATTERN, 'Invalid "email" attribut, it must be an email address'],
+    required: [true, 'The "email" attribut is mandatory'],
+    unique: [true, 'The "email" attribut must be unique'],
   },
   pswd: {
     type: String,
     required: true,
-    match: [PSWD_PATTERN, 'Invalid password'],
+    match: [PSWD_PATTERN, 'Invalid "pswd" attribut, it must be a valid password'],
   },
   gender: {
     type: Number,
-    enum: [0, 1, 2],
+    enum: {
+      values: [0, 1, 2],
+      message: '{VALUE} is not supported for the "gender" attribut'
+    },
     default: 0,
   },
   interests: {
@@ -57,12 +60,15 @@ const userSchema = new mongoose.Schema({
   },
   country: {
     type: Number,
+    min: [0, 'The "country" attribut must be an integer greater than or equal to 0'],
     default: 0,
-    min: [0, 'The country must be an integer greater than or equal to 0'],
   },
   role: {
     type: Number,
-    enum: [0, 1, 2],
+    enum: {
+      values: [0, 1, 2],
+      message: '{VALUE} is not supported for the "role" attribut'
+    },
     default: 0,
   },
   dateVisible: {

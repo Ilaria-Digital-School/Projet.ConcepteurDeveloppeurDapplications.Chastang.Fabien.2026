@@ -11,9 +11,9 @@ const URL_PATTERN = /^((https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6}))?([\/\w \.-]*
 const productSchema = new mongoose.Schema({
   reference: {
     type: String,
-    required: [true, "The 'reference' field is mandatory"],
-    match: [REF_PATTERN, 'Invalid reference'],
-    unique: [true, 'The reference must be unique'],
+    match: [REF_PATTERN, 'Invalid "reference" attribut'],
+    required: [true, 'The "reference" attribut is mandatory'],
+    unique: [true, 'The "reference" attribut must be unique'],
   },
   dateIns: {
     type: Date,
@@ -23,36 +23,40 @@ const productSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
+  userId: {
+    type: mongoose.ObjectId,
+    required: [true, 'The "userId" attribut is mandatory'],
+  },
   name: {
     type: String,
-    required: [true, "The 'name' field is mandatory"],
-    minlength: [3, 'The name must contain at least 3 characters'],
-    maxlength: [50, 'The name must contain no more than 50 characters'],
+    minlength: [3, 'The "name" attribut must contain at least 3 characters'],
+    maxlength: [50, 'The "name" attribut must contain no more than 50 characters'],
+    required: [true, 'The "name" attribut is mandatory'],
     trim: true,
   },
   description: {
     type: String,
-    required: [true, 'The description is mandatory'],
-    minlength: [10, 'The name must contain at least 10 characters'],
-    maxlength: [50, 'The name must contain no more than 50 characters'],
+    minlength: [10, 'The "description" attribut must contain at least 10 characters'],
+    maxlength: [50, 'The "description" attribut must contain no more than 50 characters'],
+    required: [true, 'The "description" attribut is mandatory'],
     trim: true,
   },
   price: {
     type: Number,
-    required: [true, 'The price is mandatory'],
-    min: [0.01, 'The price must be a number greater than 0'],
-    max: [9999.99, 'The price must be a number less than 10000'],
+    min: [0.01, 'The "price" attribut must be a number greater than 0'],
+    max: [9999.99, 'The "price" attribut must be a number less than 10000'],
+    required: [true, 'The "price" attribut is mandatory'],
   },
   stock: {
     type: Number,
+    min: [0, 'The "stock" attribut must be an integer greater than or equal to 0'],
+    max: [100000, 'The "stock" attribut must be a number less than 10000'],
     required: true,
-    min: [0, 'The stock must be an integer greater than or equal to 0'],
-    max: [100000, 'The stock must be a number less than 10000'],
   },
   img: {
     type: String,
-    required: [true, 'The image URL is mandatory'],
-    match: [URL_PATTERN, 'Invalid URL'],
+    match: [URL_PATTERN, 'Invalid "img" attribut, it must be an URL'],
+    required: [true, 'The "img" attribut is mandatory'],
     trim: true,
   },
   types: {
@@ -70,8 +74,8 @@ const productSchema = new mongoose.Schema({
   },
   info: {
     type: String,
+    maxlength: [100, 'The "info" attribut must contain no more than 100 characters'],
     default: '',
-    maxlength: [100, 'The additionnal information must contain no more than 100 characters'],
     trim: true,
   },
   favorite: {

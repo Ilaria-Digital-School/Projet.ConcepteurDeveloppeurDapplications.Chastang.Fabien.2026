@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { validateSchema } from './validation.js';
 
 // Check if a value follows the format of a user reference
 const REF_PATTERN = /^[A-Z0-9]{6}-[A-Z0-9]{6}$/;
@@ -8,157 +9,170 @@ const REF_PATTERN = /^[A-Z0-9]{6}-[A-Z0-9]{6}$/;
 const URL_PATTERN = /^((https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6}))?([\/\w \.-]*)*\/?$/;
 
 // Validation middleware for insertion ////////////////////////////////////////
-export const validateAddProd = (req, res, next) => {
+export const validateAddProduct = (req, res, next) => {
   const Schema = Joi.object({
     reference: Joi.string().pattern(REF_PATTERN).required().messages({
-      'string.base': 'The {{#label}} field must be a string.',
-      'any.required': 'The {{#label}} field is mandatory.',
-      'string.pattern.base': 'Invalid {{#label}}.',
+      'string.base': 'The {{#label}} attribut must be a string',
+      'string.pattern.base': 'Invalid {{#label}}',
+      'any.required': 'The {{#label}} attribut is mandatory',
     }),
     dateIns: Joi.date().optional().messages({
-      'date.base': 'The {{#label}} field must be a date.',
+      'date.base': 'The {{#label}} attribut must be a date',
     }),
     dateMod: Joi.date().optional().messages({
-      'date.base': 'The {{#label}} field must be a date.',
+      'date.base': 'The {{#label}} attribut must be a date',
+    }),
+    userId: Joi.string().hex().length(24).required().messages({
+      'string.base': 'The {{#label}} attribute must be a MongoDB identifier, a 24-character hexadecimal string',
+      'string.hex': 'The {{#label}} attribute must be a MongoDB identifier, a 24-character hexadecimal string',
+      'string.length': 'The {{#label}} attribute must be a MongoDB identifier, a 24-character hexadecimal string',
+      'any.required': 'The {{#label}} attribut is mandatory',
     }),
     name: Joi.string().min(3).max(50).required().messages({
-      'string.base': 'The {{#label}} field must be a string.',
-      'any.required': 'The {{#label}} field is mandatory.',
-      'string.min': 'The {{#label}} field must contain at least 3 characters.',
-      'string.max': 'The {{#label}} field must contain no more than 50 characters.',
+      'string.base': 'The {{#label}} attribut must be a string',
+      'string.min': 'The {{#label}} attribut must contain at least 3 characters',
+      'string.max': 'The {{#label}} attribut must contain no more than 50 characters',
+      'any.required': 'The {{#label}} attribut is mandatory',
     }),
     description: Joi.string().min(10).max(50).required().messages({
-      'string.base': 'The {{#label}} field must be a string.',
-      'any.required': 'The {{#label}} field is mandatory.',
-      'string.min': 'The {{#label}} field must contain at least 10 characters.',
-      'string.max': 'The {{#label}} field must contain no more than 50 characters.',
+      'string.base': 'The {{#label}} attribut must be a string',
+      'string.min': 'The {{#label}} attribut must contain at least 10 characters',
+      'string.max': 'The {{#label}} attribut must contain no more than 50 characters',
+      'any.required': 'The {{#label}} attribut is mandatory',
     }),
     price: Joi.number().min(0.01).max(9999.99).required().messages({
-      'number.base': 'The {{#label}} field must be a number.',
-      'any.required': 'The {{#label}} field is mandatory.',
-      'number.min': 'The {{#label}} field must be a number greater than 0.',
-      'number.max': 'The {{#label}} field must be a number less than 10000.',
+      'number.base': 'The {{#label}} attribut must be a number',
+      'number.min': 'The {{#label}} attribut must be a number greater than 0',
+      'number.max': 'The {{#label}} attribut must be a number less than 10000',
+      'any.required': 'The {{#label}} attribut is mandatory',
     }),
-    stock: Joi.number().min(0).max(10000).required().messages({
-      'number.base': 'The {{#label}} field must be a number.',
-      'any.required': 'The {{#label}} field is mandatory.',
-      'number.min': 'The {{#label}} field must be a number greater than or equal to 0.',
-      'number.max': 'The {{#label}} field must be a number less than 10000.',
+    stock: Joi.number().integer().min(0).max(10000).required().messages({
+      'number.base': 'The {{#label}} attribut must be an integer',
+      'number.integer': 'The {{#label}} attribut must be an integer',
+      'number.min': 'The {{#label}} attribut must be an integer greater than or equal to 0',
+      'number.max': 'The {{#label}} attribut must be an integer less than 10000',
+      'any.required': 'The {{#label}} attribut is mandatory',
     }),
     img: Joi.string().pattern(URL_PATTERN).required().messages({
-      'string.base': 'The {{#label}} field must be a string.',
-      'any.required': 'The {{#label}} field is mandatory.',
-      'string.pattern.base': 'Invalid URL.',
+      'string.base': 'The {{#label}} attribut must be a string',
+      'string.pattern.base': 'Invalid {{#label}} attribut, it must be an URL',
+      'any.required': 'The {{#label}} attribut is mandatory',
     }),
-    types: Joi.array().optional().messages({
-      'array.base': 'The {{#label}} field must be an array.',
+    types: Joi.array().items(
+      Joi.number().integer().min(1).optional().messages({
+        'number.base': 'The {{#label}} attribut must be an integer',
+        'number.integer': 'The {{#label}} attribut must be an integer',
+        'number.min': 'The {{#label}} attribut must be an integer greater than 0',
+      })).optional().messages({
+      'array.base': 'The {{#label}} attribut must be an array',
     }),
-    categories: Joi.array().optional().messages({
-      'array.base': 'The {{#label}} field must be an array.',
+    categories: Joi.array().items(
+      Joi.number().integer().min(1).optional().messages({
+        'number.base': 'The {{#label}} attribut must be an integer',
+        'number.integer': 'The {{#label}} attribut must be an integer',
+        'number.min': 'The {{#label}} attribut must be an integer greater than 0',
+      })).optional().messages({
+      'array.base': 'The {{#label}} attribut must be an array',
     }),
-    fullDescription: Joi.string().optional().messages({
-      'string.base': 'The {{#label}} field must be a string.',
+    fullDescription: Joi.string().min(0).optional().messages({
+      'string.base': 'The {{#label}} attribut must be a string',
     }),
-    info: Joi.string().max(100).optional().messages({
-      'string.base': 'The {{#label}} field must be a string.',
-      'string.max': 'The {{#label}} field must contain no more than 100 characters.',
+    info: Joi.string().min(0).max(100).optional().messages({
+      'string.base': 'The {{#label}} attribut must be a string',
+      'string.max': 'The {{#label}} attribut must contain no more than 100 characters',
     }),
     favorite: Joi.boolean().optional().messages({
-      'boolean.base': 'The {{#label}} field must be a boolean.',
+      'boolean.base': 'The {{#label}} attribut must be a boolean',
     }),
     dateVisible: Joi.date().optional().messages({
-      'date.base': 'The {{#label}} field date must be a date.',
+      'date.base': 'The {{#label}} attribut date must be a date',
     }),
     visible: Joi.boolean().optional().messages({
-      'boolean.base': 'The {{#label}} field must be a boolean.',
+      'boolean.base': 'The {{#label}} attribut must be a boolean',
     }),
   });
 
-  // `abortEarly: false` to avoid stopping at the first error, allowing all errors to be reported
-  const { error } = Schema.validate(req.body, { abortEarly: false });
-
-  if (error) {
-    return res.status(400).json({
-      message: 'Validation errors',
-      errors: error.details.map((err) => err.message),
-    });
-  }
-
-  // Validation successful: proceed to the next middleware or the controller
-  next();
+  // Validate the Joi schema
+  validateSchema(Schema, req, res, next);
 };
 
 // Validation middleware for full or partial updates //////////////////////////
-export const validateUpdProd = (req, res, next) => {
+export const validateUpdProduct = (req, res, next) => {
   const Schema = Joi.object({
-    reference: Joi.string().pattern(REF_PATTERN).messages({
-      'string.base': 'The {{#label}} field must be a string.',
-      'string.pattern.base': 'Invalid {{#label}}.',
+    reference: Joi.string().pattern(REF_PATTERN).optional().messages({
+      'string.base': 'The {{#label}} attribut must be a string',
+      'string.pattern.base': 'Invalid {{#label}} attribut',
     }),
     dateIns: Joi.date().optional().messages({
-      'date.base': 'The {{#label}} field must be a date.',
+      'date.base': 'The {{#label}} attribut must be a date',
     }),
     dateMod: Joi.date().optional().messages({
-      'date.base': 'The {{#label}} field must be a date.',
+      'date.base': 'The {{#label}} attribut must be a date',
     }),
-    name: Joi.string().min(3).max(50).messages({
-      'string.base': 'The {{#label}} field must be a string.',
-      'string.min': 'The {{#label}} field must contain at least 3 characters.',
-      'string.max': 'The {{#label}} field must contain no more than 50 characters.',
+    userId: Joi.string().hex().length(24).optional().messages({
+      'string.base': 'The {{#label}} attribute must be a MongoDB identifier, a 24-character hexadecimal string',
+      'string.hex': 'The {{#label}} attribute must be a MongoDB identifier, a 24-character hexadecimal string',
+      'string.length': 'The {{#label}} attribute must be a MongoDB identifier, a 24-character hexadecimal string',
     }),
-    description: Joi.string().min(10).max(50).messages({
-      'string.base': 'The {{#label}} field must be a string.',
-      'string.min': 'The {{#label}} field must contain at least 10 characters.',
-      'string.max': 'The {{#label}} field must contain no more than 50 characters.',
+    name: Joi.string().min(3).max(50).optional().messages({
+      'string.base': 'The {{#label}} attribut must be a string',
+      'string.min': 'The {{#label}} attribut must contain at least 3 characters',
+      'string.max': 'The {{#label}} attribut must contain no more than 50 characters',
     }),
-    price: Joi.number().min(0.01).max(9999.99).messages({
-      'number.base': 'The {{#label}} field must be a number.',
-      'number.min': 'The {{#label}} field must be a number greater than 0.',
-      'number.max': 'The {{#label}} field must be a number less than 10000.',
+    description: Joi.string().min(10).max(50).optional().messages({
+      'string.base': 'The {{#label}} attribut must be a string',
+      'string.min': 'The {{#label}} attribut must contain at least 10 characters',
+      'string.max': 'The {{#label}} attribut must contain no more than 50 characters',
     }),
-    stock: Joi.number().min(0).max(10000).messages({
-      'number.base': 'The {{#label}} field must be a number.',
-      'number.min': 'The {{#label}} field must be a number greater than or equal to 0.',
-      'number.max': 'The {{#label}} field must be a number less than 10000.',
+    price: Joi.number().min(0.01).max(9999.99).optional().messages({
+      'number.base': 'The {{#label}} attribut must be a number',
+      'number.min': 'The {{#label}} attribut must be a number greater than or equal to 0.01',
+      'number.max': 'The {{#label}} attribut must be a number less than 10000',
     }),
-    img: Joi.string().pattern(URL_PATTERN).messages({
-      'string.base': 'The {{#label}} field must be a string.',
-      'string.pattern.base': 'Invalid URL.',
+    stock: Joi.number().integer().min(0).max(10000).optional().messages({
+      'number.base': 'The {{#label}} attribut must be an integer',
+      'number.integer': 'The {{#label}} attribut must be an integer',
+      'number.min': 'The {{#label}} attribut must be an integer greater than or equal to 0',
+      'number.max': 'The {{#label}} attribut must be an integer less than 10000',
     }),
-    types: Joi.array().optional().messages({
-      'array.base': 'The {{#label}} field must be an array.',
+    img: Joi.string().pattern(URL_PATTERN).optional().messages({
+      'string.base': 'The {{#label}} attribut must be a string',
+      'string.pattern.base': 'Invalid {{#label}} attribut, it must be an URL',
     }),
-    categories: Joi.array().optional().messages({
-      'array.base': 'The {{#label}} field must be an array.',
+    types: Joi.array().items(
+      Joi.number().integer().min(1).optional().messages({
+        'number.base': 'The {{#label}} attribut must be an integer',
+        'number.integer': 'The {{#label}} attribut must be an integer',
+        'number.min': 'The {{#label}} attribut must be an integer greater than 0',
+      })).optional().messages({
+      'array.base': 'The {{#label}} attribut must be an array',
     }),
-    fullDescription: Joi.string().optional().messages({
-      'string.base': 'The {{#label}} field must be a string.',
+    categories: Joi.array().items(
+      Joi.number().integer().min(1).optional().messages({
+        'number.base': 'The {{#label}} attribut must be an integer',
+        'number.integer': 'The {{#label}} attribut must be an integer',
+        'number.min': 'The {{#label}} attribut must be an integer greater than 0',
+      })).optional().messages({
+      'array.base': 'The {{#label}} attribut must be an array',
     }),
-    info: Joi.string().max(100).optional().messages({
-      'string.base': 'The {{#label}} field must be a string.',
-      'string.max': 'The {{#label}} field must contain no more than 100 characters.',
+    fullDescription: Joi.string().min(0).optional().messages({
+      'string.base': 'The {{#label}} attribut must be a string',
+    }),
+    info: Joi.string().min(0).max(100).optional().messages({
+      'string.base': 'The {{#label}} attribut must be a string',
+      'string.max': 'The {{#label}} attribut must contain no more than 100 characters',
     }),
     favorite: Joi.boolean().optional().messages({
-      'boolean.base': 'The {{#label}} field must be a boolean.',
+      'boolean.base': 'The {{#label}} attribut must be a boolean',
     }),
     dateVisible: Joi.date().optional().messages({
-      'date.base': 'The {{#label}} field date must be a date.',
+      'date.base': 'The {{#label}} attribut date must be a date',
     }),
     visible: Joi.boolean().optional().messages({
-      'boolean.base': 'The {{#label}} field must be a boolean.',
+      'boolean.base': 'The {{#label}} attribut must be a boolean',
     }),
   });
 
-  // `abortEarly: false` to avoid stopping at the first error, allowing all errors to be reported
-  const { error } = Schema.validate(req.body, { abortEarly: false });
-
-  if (error) {
-    return res.status(400).json({
-      message: 'Validation errors',
-      errors: error.details.map((err) => err.message),
-    });
-  }
-
-  // Validation successful: proceed to the next middleware or the controller
-  next();
+  // Validate the Joi schema
+  validateSchema(Schema, req, res, next);
 };

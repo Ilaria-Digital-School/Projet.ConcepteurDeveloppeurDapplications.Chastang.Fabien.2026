@@ -20,11 +20,11 @@ const router = express.Router();
 router.get('/users', getAllUsers);
 router.get('/users/:id', getUserById);
 router.post('/users', transformUser, validateAddUser, addUser);
-router.put('/users/:id', validateUpdUser, updateUser);
-router.patch('/users/:id/email', patchEmail);
-router.patch('/users/:id/password', patchPassword);
-router.patch('/users/:id/role', patchRole);
-router.patch('/users/:id/visible', patchVisible);
+router.put('/users/:id', transformUser, validateUpdUser, updateUser);
+router.patch('/users/:id/email', transformUser, validateUpdUser, patchEmail);
+router.patch('/users/:id/password', transformUser, validateUpdUser, patchPassword);
+router.patch('/users/:id/role', transformUser, validateUpdUser, patchRole);
+router.patch('/users/:id/visible', transformUser, validateUpdUser, patchVisible);
 router.delete('/users/:id', deleteUser);
 
 export default router;

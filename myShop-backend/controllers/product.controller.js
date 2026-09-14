@@ -12,10 +12,69 @@ export const getAllProducts = async (req, res, next) => {
     const PRODUCTS = await Product.find();
 
     // Success handler call
-    res.success(PRODUCTS, 200, 'Product list successfully retrieved');
+    res.success(PRODUCTS, 200, 'Product list successfully retrieved', true);
   } catch (err) {
     // Error handler call
     if (!err.message) err.message = 'Error retrieving the product list';
+    next(err);
+  }
+};
+
+//  Retrieve the first 'maxCount' products ////////////////////////////////////
+export const getFirstProducts = async (req, res, next) => {
+  try {
+    // Retrieve the product list from the database
+    const PRODUCTS = await Product.find().limit(req.params.maxCount).exec();
+
+    // Success handler call
+    res.success(PRODUCTS, 200, 'Product list successfully retrieved', true);
+  } catch (err) {
+    // Error handler call
+    if (!err.message) err.message = 'Error retrieving the product list';
+    next(err);
+  }
+};
+
+// Retrieve a user's products using his ID ////////////////////////////////////
+export const getProductsByUserId = async (req, res, next) => {
+  try {
+    // Retrieve the order from the database
+    const PRODUCTS = await Product.find({ userId: req.params.userId }).exec();
+
+    if (!PRODUCTS) {
+      // Throw an error
+      const ERR = new Error('Product not found');
+      ERR.statusCode = 404;
+      throw ERR;
+    }
+
+    // Success handler call
+    res.success(PRODUCTS, 200, 'Product list successfully retrieved', true);
+  } catch (err) {
+    // Error handler call
+    if (!err.message) err.message = 'Error retrieving the order';
+    next(err);
+  }
+};
+
+// Retrieve a list of products based on their IDs /////////////////////////////
+export const getProductsByIDs = async (req, res, next) => {
+  try {
+    // Retrieve the order from the database
+    const PRODUCTS = await Product.find({ _id: { $in: req.params.IDs.split(',') } }).exec();
+
+    if (!PRODUCTS) {
+      // Throw an error
+      const ERR = new Error('Product not found');
+      ERR.statusCode = 404;
+      throw ERR;
+    }
+
+    // Success handler call
+    res.success(PRODUCTS, 200, 'Product list successfully retrieved', true);
+  } catch (err) {
+    // Error handler call
+    if (!err.message) err.message = 'Error retrieving the order';
     next(err);
   }
 };
@@ -34,7 +93,7 @@ export const getProductById = async (req, res, next) => {
     }
 
     // Success handler call
-    res.success(PRODUCT, 200, 'Product successfully retrieved');
+    res.success(PRODUCT, 200, 'Product successfully retrieved', true);
   } catch (err) {
     // Error handler call
     if (!err.message) err.message = 'Error retrieving the product';
@@ -51,6 +110,7 @@ export const addProduct = async (req, res, next) => {
       reference: req.body.reference,
       dateIns: Date.now(),
       dateMod: null,
+      userId: req.body.userId,
       name: req.body.name,
       description: req.body.description,
       price: req.body.price,
