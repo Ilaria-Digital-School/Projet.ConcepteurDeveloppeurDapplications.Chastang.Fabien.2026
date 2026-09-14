@@ -38,12 +38,12 @@ export class ProductService {
 
   // Retrieve the first 'maxCount' products
   getFirstProducts(maxCount: number): Observable<Product[]> {
-    return this.httpClient.get<Product[]>(Resources.productsURL).pipe(take(maxCount));
+    return this.httpClient.get<Product[]>(`${Resources.productsURL}/${maxCount}/first`);
   }
 
   // Retrieve a list of products based on their IDs
   getProductsByIDs(IDs: string[]): Observable<Product[]> {
-    return this.httpClient.get<Product[]>(`${Resources.productsURL}?_id=${IDs.join('&_id=')}`);
+    return this.httpClient.get<Product[]>(`${Resources.productsURL}/${IDs.join(',')}/list`);
   }
 
   // Retrieve a product by its ID
@@ -70,7 +70,7 @@ export class ProductService {
     const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
     PRODUCT.visible = true;
     PRODUCT.dateVisible = Date.now();
-    return this.httpClient.put<Product>(`${Resources.productsURL}/${product._id}`, PRODUCT);
+    return this.httpClient.patch<Product>(`${Resources.productsURL}/${product._id}/visible`, PRODUCT);
   }
 
   // Hide a product
@@ -78,7 +78,7 @@ export class ProductService {
     const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
     PRODUCT.visible = false;
     PRODUCT.dateVisible = Date.now();
-    return this.httpClient.put<Product>(`${Resources.productsURL}/${product._id}`, PRODUCT);
+    return this.httpClient.patch<Product>(`${Resources.productsURL}/${product._id}/visible`, PRODUCT);
   }
 
   // Delete a product

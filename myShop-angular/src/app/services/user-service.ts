@@ -40,7 +40,7 @@ export class UserService {
     const USER = user.removeBeforeSaveUser(); // Remove these properties before saving the user
     USER.visible = true;
     USER.dateVisible = Date.now();
-    return this.httpClient.put<User>(`${Resources.usersURL}/${user._id}`, USER);
+    return this.httpClient.patch<User>(`${Resources.usersURL}/${user._id}/visible`, USER);
   }
 
   // Hide a user
@@ -48,7 +48,7 @@ export class UserService {
     const USER = user.removeBeforeSaveUser(); // Remove these properties before saving the user
     USER.visible = false;
     USER.dateVisible = Date.now();
-    return this.httpClient.put<User>(`${Resources.usersURL}/${user._id}`, USER);
+    return this.httpClient.patch<User>(`${Resources.usersURL}/${user._id}/visible`, USER);
   }
 
   // Delete a user

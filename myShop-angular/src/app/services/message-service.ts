@@ -13,7 +13,7 @@ export class MessageService {
 
   // Retrieve a message by its user email
   getMessagesByEmail(email: string | null): Observable<Message> {
-    return this.httpClient.get<Message>(`${Resources.messagesURL}?email=${email}`);
+    return this.httpClient.get<Message>(`${Resources.messagesURL}/${email}/email`);
   }
 
   // Retrieve a message by its ID
@@ -32,7 +32,7 @@ export class MessageService {
   replyOnMessage(message: Message): Observable<Message> {
     const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
     MESSAGE.dateRep = Date.now();
-    return this.httpClient.put<Message>(`${Resources.messagesURL}/${message._id}`, MESSAGE);
+    return this.httpClient.patch<Message>(`${Resources.messagesURL}/${message._id}/daterep`, MESSAGE);
   }
 
   // Show a message
@@ -40,7 +40,7 @@ export class MessageService {
     const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
     MESSAGE.visible = true;
     MESSAGE.dateVisible = Date.now();
-    return this.httpClient.put<Message>(`${Resources.messagesURL}/${message._id}`, MESSAGE);
+    return this.httpClient.patch<Message>(`${Resources.messagesURL}/${message._id}/visible`, MESSAGE);
   }
 
   // Hide a message
@@ -48,7 +48,7 @@ export class MessageService {
     const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
     MESSAGE.visible = false;
     MESSAGE.dateVisible = Date.now();
-    return this.httpClient.put<Message>(`${Resources.messagesURL}/${message._id}`, MESSAGE);
+    return this.httpClient.patch<Message>(`${Resources.messagesURL}/${message._id}/visible`, MESSAGE);
   }
 
   // Delete a message

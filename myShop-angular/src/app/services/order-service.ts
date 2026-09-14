@@ -23,7 +23,7 @@ export class OrderService {
 
   // Retrieve a user's orders using his ID
   getOrdersByUserId(userId: string | undefined): Observable<Order[]> {
-    return this.httpClient.get<Order[]>(`${Resources.ordersURL}?userId=${userId}`).pipe(
+    return this.httpClient.get<Order[]>(`${Resources.ordersURL}/${userId}/user`).pipe(
       // Orders sorted from newest to oldest
       map((orders: Order[]) => {
         return orders.sort((order1: Order, order2: Order) => order2.dateIns - order1.dateIns);
@@ -32,8 +32,8 @@ export class OrderService {
   }
 
   // Retrieve a list of orders based on their IDs
-  getOrdersByIDs(IDs: string): Observable<Order[]> {
-    return this.httpClient.get<Order[]>(`${Resources.ordersURL}?IDs=${IDs}`).pipe(
+  getOrdersByIDs(IDs: string[]): Observable<Order[]> {
+    return this.httpClient.get<Order[]>(`${Resources.ordersURL}/${IDs.join(',')}/list`).pipe(
       // Orders sorted from newest to oldest
       map((orders: Order[]) => {
         return orders.sort((order1: Order, order2: Order) => order2.dateIns - order1.dateIns);
@@ -65,7 +65,7 @@ export class OrderService {
     const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
     ORDER.visible = true;
     ORDER.dateVisible = Date.now();
-    return this.httpClient.put<Order>(`${Resources.ordersURL}/${order._id}`, ORDER);
+    return this.httpClient.patch<Order>(`${Resources.ordersURL}/${order._id}/visible`, ORDER);
   }
 
   // Hide an order
@@ -73,7 +73,7 @@ export class OrderService {
     const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
     ORDER.visible = false;
     ORDER.dateVisible = Date.now();
-    return this.httpClient.put<Order>(`${Resources.ordersURL}/${order._id}`, ORDER);
+    return this.httpClient.patch<Order>(`${Resources.ordersURL}/${order._id}/visible`, ORDER);
   }
 
   // Delete an order
