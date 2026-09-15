@@ -93,16 +93,16 @@ export const addOrder = async (req, res, next) => {
     // Better practice than 'const ORDER = new Order(req.body)';
     const ORDER = new Order({
       reference: req.body.reference,
-      dateIns: Date.now(),
+      dateIns: new Date(Date.now()),
       dateMod: null,
-      userId: req.body.userId,
+      userId: req.userId, // Attribute initialized in the 'verifyToken' function
       products: req.body.products,
       promoCode: req.body.promoCode,
       taxPercent: req.body.taxPercent,
       promoPercent: req.body.promoPercent,
       status: req.body.status,
       dateVisible: null,
-      visible: req.body.visible,
+      visible: true,
     });
 
     // Save the order to the database
@@ -121,7 +121,7 @@ export const addOrder = async (req, res, next) => {
 export const updateOrder = async (req, res, next) => {
   try {
     // Update the order in the database
-    req.body.dateMod = Date.now();
+    req.body.dateMod = new Date(Date.now());
     const ORDER = await Order.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -161,7 +161,7 @@ export const patchStatus = async (req, res, next) => {
     const ORDER = await Order.findByIdAndUpdate(
       req.params.id,
       {
-        dateMod: Date.now(),
+        dateMod: new Date(Date.now()),
         stock: req.body.stock,
       },
       { returnDocument: 'after' }, // The syntax { new: true } is depreciated
@@ -198,7 +198,7 @@ export const patchVisible = async (req, res, next) => {
     const ORDER = await Order.findByIdAndUpdate(
       req.params.id,
       {
-        dateVisible: Date.now(),
+        dateVisible: new Date(Date.now()),
         visible: req.body.visible,
       },
       { returnDocument: 'after' }, // The syntax { new: true } is depreciated

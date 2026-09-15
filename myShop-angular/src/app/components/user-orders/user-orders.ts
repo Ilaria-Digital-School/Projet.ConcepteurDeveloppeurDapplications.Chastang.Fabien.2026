@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { User } from '../../models/user';
+import { TokenPayload } from '../../models/user';
 import { Order } from '../../models/order';
 import { AuthService } from '../../services/auth-service';
 import { OrderService } from '../../services/order-service';
@@ -19,7 +19,7 @@ export class UserOrders {
   private orderService = inject(OrderService);
 
   // Class properties
-  connectedUser!: User | null;
+  connectedUser!: TokenPayload | null;
   orders: Order[] = [];
 
   // Initialize the properties to display the view
@@ -31,7 +31,7 @@ export class UserOrders {
     if (USER_ID === null) {
       // If the parameter does not exist, get the user if he is logged in
       this.getConnectedUser();
-      userId = this.connectedUser?._id;
+      userId = this.connectedUser?.id;
     } else {
       userId = USER_ID;
     }

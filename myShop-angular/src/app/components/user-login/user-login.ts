@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User, LoginData } from '../../models/user';
+import { Common } from '../../constants/common';
+import { LoginData, Token } from '../../models/user';
 import { FormTooltip } from '../form-tooltip/form-tooltip';
 import { UserService } from '../../services/user-service';
 
@@ -54,17 +55,16 @@ export class UserLogin {
 
     // Retrieve the user's data from DB
     this.userService.login(DATA).subscribe({
-      next: (res: User[]) => {
-        if (res.length > 0) {
-          const USER = res[0];
+      next: (res: Token) => {
+        // Store the token in local storage for a persistent session, or otherwise in session storage
+        if (FORM_VAL.permanent) localStorage.setItem('token', res.token);
+        else sessionStorage.setItem('token', res.token);
 
-          // Store the logged-in user's data in local storage for a persistent session, or otherwise in session storage
-          if (FORM_VAL.permanent) localStorage.setItem('connectedUser', JSON.stringify(USER));
-          else sessionStorage.setItem('connectedUser', JSON.stringify(USER));
-
+        const TOKEN_PAYLOAD = Common.decodeToken(res.token);
+        if (TOKEN_PAYLOAD) {
           // Redirect to the home page for the user and to the dashboard for the administrator
           this.router.navigate([
-            USER.role === 0 ? (this.fromCart ? '/user-cart' : '/') : '/dashboard',
+            TOKEN_PAYLOAD.role === 0 ? (this.fromCart ? '/user-cart' : '/') : '/dashboard',
           ]);
         } else {
           this.errorMsg = 'E-mail ou mot de passe incorrect !';
@@ -74,6 +74,27 @@ export class UserLogin {
         alert("Une erreur s'est produite lors de la récupération des données.");
         console.log(err);
       },
+
+      // next: (res: User[]) => {
+      //   if (res.length > 0) {
+      //     const USER = res[0];
+
+      //     // Store the logged-in user's data in local storage for a persistent session, or otherwise in session storage
+      //     if (FORM_VAL.permanent) localStorage.setItem('connectedUser', JSON.stringify(USER));
+      //     else sessionStorage.setItem('connectedUser', JSON.stringify(USER));
+
+      //     // Redirect to the home page for the user and to the dashboard for the administrator
+      //     this.router.navigate([
+      //       USER.role === 0 ? (this.fromCart ? '/user-cart' : '/') : '/dashboard',
+      //     ]);
+      //   } else {
+      //     this.errorMsg = 'E-mail ou mot de passe incorrect !';
+      //   }
+      // },
+      // error: (err: any) => {
+      //   alert("Une erreur s'est produite lors de la récupération des données.");
+      //   console.log(err);
+      // },
     });
   }
 

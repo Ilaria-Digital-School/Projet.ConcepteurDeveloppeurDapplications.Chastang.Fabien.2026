@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
-import { User } from '../models/user';
+import { TokenPayload } from '../models/user';
+import { Common } from '../constants/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  connectedUser: User | null = null;
+  connectedUser: TokenPayload | null = null;
 
-  getConnectedUser(): User | null {
-    let user = JSON.parse(sessionStorage.getItem('connectedUser') || 'null');
-    if (!user) user = JSON.parse(localStorage.getItem('connectedUser') || 'null');
-    if (user) {
-      this.connectedUser = new User();
-      Object.assign(this.connectedUser, user);
+  getConnectedUser(): TokenPayload | null {
+    const TOKEN = sessionStorage.getItem('token') || localStorage.getItem('token');
+    if (TOKEN) {
+      this.connectedUser = Common.decodeToken(TOKEN);
     } else {
       this.connectedUser = null;
     }
@@ -25,8 +24,8 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('connectedUser');
-    sessionStorage.removeItem('connectedUser');
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     this.connectedUser = null;
   }
 }

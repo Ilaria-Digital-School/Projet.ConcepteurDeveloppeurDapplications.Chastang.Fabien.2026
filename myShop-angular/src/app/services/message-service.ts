@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Resources } from '../api.config';
 import { Message } from '../models/message';
+import { Common } from '../constants/common';
 
 @Injectable({
   providedIn: 'root',
@@ -13,46 +14,60 @@ export class MessageService {
 
   // Retrieve a message by its user email
   getMessagesByEmail(email: string | null): Observable<Message> {
-    return this.httpClient.get<Message>(`${Resources.messagesURL}/${email}/email`);
+    return this.httpClient.get<Message>(
+      `${Resources.messagesURL}/${email}/email`,
+      Common.getHttpHeaders(),
+    );
   }
 
   // Retrieve a message by its ID
   getMessageById(id: string | null): Observable<Message> {
-    return this.httpClient.get<Message>(`${Resources.messagesURL}/${id}`);
+    return this.httpClient.get<Message>(`${Resources.messagesURL}/${id}`, Common.getHttpHeaders());
   }
 
   // Add a message
   addMessage(message: Message): Observable<Message> {
     const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
-    MESSAGE.dateIns = Date.now();
-    return this.httpClient.post<Message>(Resources.messagesURL, MESSAGE);
+    return this.httpClient.post<Message>(Resources.messagesURL, MESSAGE, Common.getHttpHeaders());
   }
 
   // Reply to a message
   replyOnMessage(message: Message): Observable<Message> {
     const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
-    MESSAGE.dateRep = Date.now();
-    return this.httpClient.patch<Message>(`${Resources.messagesURL}/${message._id}/daterep`, MESSAGE);
+    return this.httpClient.patch<Message>(
+      `${Resources.messagesURL}/${message._id}/daterep`,
+      MESSAGE,
+      Common.getHttpHeaders(),
+    );
   }
 
   // Show a message
   showMessage(message: Message): Observable<Message> {
     const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
     MESSAGE.visible = true;
-    MESSAGE.dateVisible = Date.now();
-    return this.httpClient.patch<Message>(`${Resources.messagesURL}/${message._id}/visible`, MESSAGE);
+    return this.httpClient.patch<Message>(
+      `${Resources.messagesURL}/${message._id}/visible`,
+      MESSAGE,
+      Common.getHttpHeaders(),
+    );
   }
 
   // Hide a message
   hideMessage(message: Message): Observable<Message> {
     const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
     MESSAGE.visible = false;
-    MESSAGE.dateVisible = Date.now();
-    return this.httpClient.patch<Message>(`${Resources.messagesURL}/${message._id}/visible`, MESSAGE);
+    return this.httpClient.patch<Message>(
+      `${Resources.messagesURL}/${message._id}/visible`,
+      MESSAGE,
+      Common.getHttpHeaders(),
+    );
   }
 
   // Delete a message
   deleteMessage(id: string | null): Observable<Message> {
-    return this.httpClient.delete<Message>(`${Resources.messagesURL}/${id}`);
+    return this.httpClient.delete<Message>(
+      `${Resources.messagesURL}/${id}`,
+      Common.getHttpHeaders(),
+    );
   }
 }

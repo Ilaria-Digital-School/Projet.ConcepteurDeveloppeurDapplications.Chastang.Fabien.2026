@@ -56,13 +56,13 @@ export const addMessage = async (req, res, next) => {
     // Retrieve the request data and instantiate the Message model (object)
     // Better practice than 'const MESSAGE = new Message(req.body)';
     const MESSAGE = new Message({
-      dateIns: Date.now(),
+      dateIns: new Date(Date.now()),
       dateReq: null,
       name: req.body.name,
       email: req.body.email,
       message: req.body.message,
       dateVisible: null,
-      visible: req.body.visible,
+      visible: true,
     });
 
     // Save the message to the database
@@ -81,7 +81,7 @@ export const addMessage = async (req, res, next) => {
 export const updateMessage = async (req, res, next) => {
   try {
     // Update the message in the database
-    req.body.dateMod = Date.now();
+    req.body.dateMod = new Date(Date.now());
     const MESSAGE = await Message.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -107,18 +107,10 @@ export const updateMessage = async (req, res, next) => {
 // Patch the message password ////////////////////////////////////////////////////
 export const patchDateRep = async (req, res, next) => {
   try {
-    // Check the value before updating it
-    if (req.body.dateReq instanceof Date) {
-      // Throw an error
-      const ERR = new Error('The message reply date must be a valid date');
-      ERR.statusCode = 400;
-      throw ERR;
-    }
-
     // Update the message in the database
     const MESSAGE = await Message.findByIdAndUpdate(
       req.params.id,
-      { dateReq: req.body.dateReq },
+      { dateReq: new Date(Date.now()) },
       { returnDocument: 'after' }, // The syntax { new: true } is depreciated
     );
 
@@ -153,7 +145,7 @@ export const patchVisible = async (req, res, next) => {
     const MESSAGE = await Message.findByIdAndUpdate(
       req.params.id,
       {
-        dateVisible: Date.now(),
+        dateVisible: new Date(Date.now()),
         visible: req.body.visible,
       },
       { returnDocument: 'after' }, // The syntax { new: true } is depreciated

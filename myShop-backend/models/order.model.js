@@ -13,20 +13,21 @@ const orderSchema = new mongoose.Schema({
   },
   dateIns: {
     type: Date,
-    default: Date.now(),
+    default: new Date(Date.now()),
   },
   dateMod: {
     type: Date,
     default: null,
   },
   userId: {
-    type: mongoose.ObjectId,
-    required: [true, 'The "userId" attribut is mandatory'],
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // User model
   },
   products: {
     type: [{
       id: {
-        type: mongoose.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product', // Product model
         required: [true, 'The "product.id" attribut is mandatory'],
       },
       price: {

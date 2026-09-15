@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Resources } from '../api.config';
 import { Interest } from '../models/interest';
+import { Common } from '../constants/common';
 
 @Injectable({
   providedIn: 'root',
@@ -11,23 +12,34 @@ export class InterestService {
   // Performs HTTP requests
   private httpClient = inject(HttpClient);
 
-  // Retrieve all user interests / product types
+  // NO TOKEN - Retrieve all user interests / product types
   getAllInterests(): Observable<Interest[]> {
     return this.httpClient.get<Interest[]>(Resources.interestsURL);
   }
 
   // Add a user interest / product type
   addInterest(interest: Interest): Observable<Interest> {
-    return this.httpClient.post<Interest>(Resources.interestsURL, interest);
+    return this.httpClient.post<Interest>(
+      Resources.interestsURL,
+      interest,
+      Common.getHttpHeaders(),
+    );
   }
 
   // Update a user interest / product type
   updateInterest(interest: Interest): Observable<Interest> {
-    return this.httpClient.put<Interest>(`${Resources.interestsURL}/${interest._id}`, interest);
+    return this.httpClient.put<Interest>(
+      `${Resources.interestsURL}/${interest._id}`,
+      interest,
+      Common.getHttpHeaders(),
+    );
   }
 
   // Delete a user interest / product type
   deleteInterest(id: string | null): Observable<Interest> {
-    return this.httpClient.delete<Interest>(`${Resources.interestsURL}/${id}`);
+    return this.httpClient.delete<Interest>(
+      `${Resources.interestsURL}/${id}`,
+      Common.getHttpHeaders(),
+    );
   }
 }

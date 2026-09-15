@@ -5,7 +5,7 @@ import { Common } from '../../constants/common';
 import { Cart } from '../../models/cart';
 import { OrderProduct } from '../../models/order-product';
 import { Product } from '../../models/product';
-import { User } from '../../models/user';
+import { TokenPayload } from '../../models/user';
 import { CartService } from '../../services/cart-service';
 import { AuthService } from '../../services/auth-service';
 import { ProductService } from '../../services/product-service';
@@ -38,7 +38,7 @@ export class UserCart {
   total: number = 0;
   cart!: Cart;
   products: Product[] = [];
-  connectedUser: User | null = null;
+  connectedUser: TokenPayload | null = null;
 
   // Initialize the Cart object and the view (template) ///////////////////////
 
@@ -151,7 +151,7 @@ export class UserCart {
   // To order
   addOrder() {
     if (this.connectedUser) {
-      this.router.navigate(['/add-order', this.connectedUser._id]);
+      this.router.navigate(['/add-order']);
     } else if (confirm(UserCart.msgConnectToOrder)) {
       this.router.navigate(['/user-login-cart']);
     }

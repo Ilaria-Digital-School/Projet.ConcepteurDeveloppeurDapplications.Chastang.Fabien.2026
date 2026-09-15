@@ -1,11 +1,10 @@
-import { Component, ElementRef, inject, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, inject, QueryList, ViewChildren } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Common } from '../../constants/common';
 import { Product } from '../../models/product';
 import { InterestList } from '../../models/interest';
 import { CategoryList } from '../../models/category';
-import { User } from '../../models/user';
 import { ProductService } from '../../services/product-service';
 import { AuthService } from '../../services/auth-service';
 import { FormTooltip } from '../form-tooltip/form-tooltip';
@@ -61,7 +60,6 @@ export class AddProduct {
   isEditMode!: boolean;
   title!: string;
   btnAction!: string;
-  connectedUser: User | null = null;
   product: Product = new Product();
   productIni: Product = new Product();
   valuesChange: boolean = false;
@@ -135,11 +133,6 @@ export class AddProduct {
         Number(item.nativeElement.value),
       );
     });
-  }
-
-  // Method to retrieve the logged-in user
-  getConnectedUser(): User | null {
-    return (this.connectedUser = this.authService.getConnectedUser());
   }
 
   // Form verification ////////////////////////////////////////////////////////
@@ -262,9 +255,6 @@ export class AddProduct {
       });
     } else {
       // Add the product //////////////////////////////////
-
-      // Initialize the user ID
-      PRODUCT.userId = this.connectedUser?._id;
 
       this.productService.addProduct(PRODUCT).subscribe({
         next: (res: Product) => {

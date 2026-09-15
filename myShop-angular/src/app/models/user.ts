@@ -3,12 +3,23 @@ import { Common } from '../constants/common';
 // Object containing the data allowing a user to log in
 export type LoginData = { email: string; pswd: string };
 
+// Token returned by the backend
+export type Token = { token: string };
+
+// Token payload after decoding
+export class TokenPayload {
+  // User informations
+  id: string = '';
+  name: string = '';
+  role: number = 0;
+}
+
 // User class
 export class User {
   _id: string = '';
   reference: string = Common.getUserRef();
-  dateIns: number = Date.now(); // Insertion date
-  dateMod: number | null = null; // Modification date
+  dateIns: Date = new Date(Date.now()); // Insertion date
+  dateMod: Date | null = null; // Modification date
   name: string = '';
   email: string = '';
   pswd: string = '';
@@ -16,15 +27,15 @@ export class User {
   interests: number[] = [];
   country: number = 0;
   role: number = 0;
-  dateVisible: number | null = null; // Date on which the data was show or hidden
+  dateVisible: Date | null = null; // Date on which the data was show or hidden
   visible: boolean = true;
 
   // Temporary property, not saved
   additional: any = {}; // For additional properties (RxJS) while preserving the 'User' type
 
   constructor(
-    dateIns: number | null = null,
-    dateMod: number | null = null,
+    dateIns: Date | null = null,
+    dateMod: Date | null = null,
     name: string | null = null,
     email: string | null = null,
     pswd: string | null = null,
@@ -32,8 +43,8 @@ export class User {
     interests: number[] | null = null,
     country: number | null = null,
   ) {
-    if (typeof dateIns === 'number') this.dateIns = dateIns;
-    if (typeof dateMod === 'number') this.dateMod = dateMod;
+    if (dateIns instanceof Date) this.dateIns = dateIns;
+    if (dateMod instanceof Date) this.dateMod = dateMod;
     if (typeof name === 'string') this.name = name;
     if (typeof email === 'string') this.email = email;
     if (typeof pswd === 'string') this.pswd = pswd;

@@ -9,7 +9,7 @@ function isInt(value) {
 export const getAllProducts = async (req, res, next) => {
   try {
     // Retrieve the product list from the database
-    const PRODUCTS = await Product.find();
+    const PRODUCTS = await Product.find().populate('userId', 'name email');
 
     // Success handler call
     res.success(PRODUCTS, 200, 'Product list successfully retrieved', true);
@@ -31,28 +31,6 @@ export const getFirstProducts = async (req, res, next) => {
   } catch (err) {
     // Error handler call
     if (!err.message) err.message = 'Error retrieving the product list';
-    next(err);
-  }
-};
-
-// Retrieve a user's products using his ID ////////////////////////////////////
-export const getProductsByUserId = async (req, res, next) => {
-  try {
-    // Retrieve the order from the database
-    const PRODUCTS = await Product.find({ userId: req.params.userId }).exec();
-
-    if (!PRODUCTS) {
-      // Throw an error
-      const ERR = new Error('Product not found');
-      ERR.statusCode = 404;
-      throw ERR;
-    }
-
-    // Success handler call
-    res.success(PRODUCTS, 200, 'Product list successfully retrieved', true);
-  } catch (err) {
-    // Error handler call
-    if (!err.message) err.message = 'Error retrieving the order';
     next(err);
   }
 };
@@ -101,6 +79,28 @@ export const getProductById = async (req, res, next) => {
   }
 };
 
+// Retrieve a user's products using his ID ////////////////////////////////////
+export const getProductsByUserId = async (req, res, next) => {
+  try {
+    // Retrieve the order from the database
+    const PRODUCTS = await Product.find({ userId: req.params.userId }).exec();
+
+    if (!PRODUCTS) {
+      // Throw an error
+      const ERR = new Error('Product not found');
+      ERR.statusCode = 404;
+      throw ERR;
+    }
+
+    // Success handler call
+    res.success(PRODUCTS, 200, 'Product list successfully retrieved', true);
+  } catch (err) {
+    // Error handler call
+    if (!err.message) err.message = 'Error retrieving the order';
+    next(err);
+  }
+};
+
 // Add a product //////////////////////////////////////////////////////////////
 export const addProduct = async (req, res, next) => {
   try {
@@ -108,9 +108,9 @@ export const addProduct = async (req, res, next) => {
     // Better practice than 'const PRODUCT = new Product(req.body)';
     const PRODUCT = new Product({
       reference: req.body.reference,
-      dateIns: Date.now(),
+      dateIns: new Date(Date.now()),
       dateMod: null,
-      userId: req.body.userId,
+      userId: req.userId, // Attribute initialized in the 'verifyToken' function
       name: req.body.name,
       description: req.body.description,
       price: req.body.price,
@@ -122,7 +122,7 @@ export const addProduct = async (req, res, next) => {
       info: req.body.info,
       favorite: req.body.favorite,
       dateVisible: null,
-      visible: req.body.visible,
+      visible: true,
     });
 
     // Save the product to the database
@@ -141,7 +141,7 @@ export const addProduct = async (req, res, next) => {
 export const updateProduct = async (req, res, next) => {
   try {
     // Update the product in the database
-    req.body.dateMod = Date.now();
+    req.body.dateMod = new Date(Date.now());
     const PRODUCT = await Product.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -179,7 +179,7 @@ export const patchPrice = async (req, res, next) => {
     const PRODUCT = await Product.findByIdAndUpdate(
       req.params.id,
       {
-        dateMod: Date.now(),
+        dateMod: new Date(Date.now()),
         price: req.body.price,
       },
       { returnDocument: 'after' }, // The syntax { new: true } is depreciated
@@ -216,7 +216,7 @@ export const patchStock = async (req, res, next) => {
     const PRODUCT = await Product.findByIdAndUpdate(
       req.params.id,
       {
-        dateMod: Date.now(),
+        dateMod: new Date(Date.now()),
         stock: req.body.stock,
       },
       { returnDocument: 'after' }, // The syntax { new: true } is depreciated
@@ -253,7 +253,7 @@ export const patchFavorite = async (req, res, next) => {
     const PRODUCT = await Product.findByIdAndUpdate(
       req.params.id,
       {
-        dateMod: Date.now(),
+        dateMod: new Date(Date.now()),
         favorite: req.body.favorite,
       },
       { returnDocument: 'after' }, // The syntax { new: true } is depreciated
@@ -290,7 +290,7 @@ export const patchVisible = async (req, res, next) => {
     const PRODUCT = await Product.findByIdAndUpdate(
       req.params.id,
       {
-        dateVisible: Date.now(),
+        dateVisible: new Date(Date.now()),
         visible: req.body.visible,
       },
       { returnDocument: 'after' }, // The syntax { new: true } is depreciated

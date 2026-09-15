@@ -1,4 +1,5 @@
 import express from 'express';
+import { verifyToken } from '../middlewares/verify.token.js';
 import { transformCategory } from '../middlewares/transform.middleware.js';
 import { validateAddCategory, validateUpdCategory } from '../middlewares/category.validation.js';
 import {
@@ -12,9 +13,9 @@ import {
 const router = express.Router();
 
 // http://localhost:3000/api/categories
-router.get('/categories', getAllCategories);
-router.post('/categories', validateAddCategory, addCategory);
-router.put('/categories/:id', transformCategory, validateUpdCategory, updateCategory);
-router.delete('/categories/:id', deleteCategory);
+router.get('/categories', getAllCategories); // No token verification
+router.post('/categories', verifyToken, validateAddCategory, addCategory);
+router.put('/categories/:id', verifyToken, transformCategory, validateUpdCategory, updateCategory);
+router.delete('/categories/:id', verifyToken, deleteCategory);
 
 export default router;

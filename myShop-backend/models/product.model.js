@@ -17,15 +17,15 @@ const productSchema = new mongoose.Schema({
   },
   dateIns: {
     type: Date,
-    default: Date.now(),
+    default: new Date(Date.now()),
   },
   dateMod: {
     type: Date,
     default: null,
   },
   userId: {
-    type: mongoose.ObjectId,
-    required: [true, 'The "userId" attribut is mandatory'],
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // User model
   },
   name: {
     type: String,

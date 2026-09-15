@@ -7,8 +7,8 @@ export type FullDesc = { title: string | undefined; description: Array<string> }
 export class Product {
   _id: string = '';
   reference: string = Common.getProductRef();
-  dateIns: number = Date.now(); // Insertion date
-  dateMod: number | null = null; // Modification date
+  dateIns: Date = new Date(Date.now()); // Insertion date
+  dateMod: Date | null = null; // Modification date
   userId: string | undefined = '';
   name: string = '';
   description: string = '';
@@ -20,7 +20,7 @@ export class Product {
   fullDescription: string = '';
   info: string = '';
   favorite: boolean = false;
-  dateVisible: number | null = null; // Date on which the data was show or hidden
+  dateVisible: Date | null = null; // Date on which the data was show or hidden
   visible: boolean = true;
 
   // Temporary properties, not saved
@@ -28,8 +28,8 @@ export class Product {
   additional: any = {}; // For additional properties (RxJS) while preserving the 'Product' type
 
   constructor(
-    dateIns: number | null = null,
-    dateMod: number | null = null,
+    dateIns: Date | null = null,
+    dateMod: Date | null = null,
     userId: string | null = null,
     name: string | null = null,
     description: string | null = null,
@@ -42,8 +42,8 @@ export class Product {
     info: string | null = null,
     favorite: boolean | null = null,
   ) {
-    if (typeof dateIns === 'number') this.dateIns = dateIns;
-    if (typeof dateMod === 'number') this.dateMod = dateMod;
+    if (dateIns instanceof Date) this.dateIns = dateIns;
+    if (dateMod instanceof Date) this.dateMod = dateMod;
     if (typeof userId === 'string') this.userId = userId;
     if (typeof name === 'string') this.name = name;
     if (typeof description === 'string') this.description = description;

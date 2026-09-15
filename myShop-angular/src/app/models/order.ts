@@ -11,23 +11,23 @@ export class Order {
   // Class properties
   _id: string = '';
   reference: string = Common.getOrderRef();
-  dateIns: number = Date.now();
-  dateMod: number | null = null;
+  dateIns: Date = new Date(Date.now()); // Insertion date
+  dateMod: Date | null = null; // Modification date
   userId: string = '';
   products: OrderProduct[] = [];
   promoCode: string = '';
   taxPercent: number = 0;
   promoPercent: number = 0;
   status: number = 0;
-  dateVisible: number | null = null; // Date on which the data was show or hidden
+  dateVisible: Date | null = null; // Date on which the data was show or hidden
   visible: boolean = true;
 
   // Temporary property, not saved
   additional: any = {}; // For additional properties (RxJS) while preserving the 'Order' type
 
   constructor(
-    dateIns: number | null = null,
-    dateMod: number | null = null,
+    dateIns: Date | null = null,
+    dateMod: Date | null = null,
     userId: string | null = null,
     products: OrderProduct[] | null = null,
     taxPercent: number | null = null,
@@ -35,8 +35,8 @@ export class Order {
     promoPercent: number | null = null,
     status: number | null = null,
   ) {
-    if (typeof dateIns === 'number') this.dateIns = dateIns;
-    if (typeof dateMod === 'number') this.dateMod = dateMod;
+    if (dateIns instanceof Date) this.dateIns = dateIns;
+    if (dateMod instanceof Date) this.dateMod = dateMod;
     if (typeof userId === 'string') this.userId = userId;
     if (Array.isArray(products)) this.products = products;
     if (typeof taxPercent === 'number') this.taxPercent = taxPercent;
@@ -58,7 +58,6 @@ export class Order {
     promoCode: string | null = null,
     promoPercent: number | null = null,
   ) {
-    this.userId = cart.userId;
     this.products = cart.products;
     this.taxPercent = taxPercent;
 

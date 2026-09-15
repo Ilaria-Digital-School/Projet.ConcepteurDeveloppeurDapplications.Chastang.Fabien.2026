@@ -1,5 +1,9 @@
 // Static class grouping general purpose functionalities
 
+import { jwtDecode } from 'jwt-decode';
+import { HttpHeaders } from '@angular/common/http';
+import { TokenPayload } from '../models/user';
+
 export class Common {
   // Pseudorandom string generation function //////////////////////////////////
 
@@ -12,7 +16,7 @@ export class Common {
   //    5 == Alphanumeric characters only (no underscores)
   //    0 == Printable ASCII characters (character codes 33–126)
   //
-  static randomString(length: number, type: number = 5, additionalChars: string[] = []) {
+  static randomString(length: number, type: number = 5, additionalChars: string[] = []): string {
     const randChar = (start: number, interval: number) =>
       String.fromCharCode(start + Math.floor(interval * Math.random()));
 
@@ -85,7 +89,7 @@ export class Common {
 
   // Returns a 10-character alphanumeric identifier ///////////////////////////
 
-  static getID() {
+  static getID(): string {
     return this.randomString(10);
   }
 
@@ -94,28 +98,39 @@ export class Common {
   static digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
   // Returns the reference of a product
-  static getProductRef() {
+  static getProductRef(): string {
     let reference = '';
     for (let i = 0; i < 2; i++) reference += this.randomString(6, 1, this.digits) + '-';
     return reference.slice(0, -1);
   }
 
   // Returns the reference of a product
-  static getUserRef() {
+  static getUserRef(): string {
     return this.randomString(10, 1, this.digits);
   }
 
   // Returns the reference of an order
-  static getOrderRef() {
+  static getOrderRef(): string {
     let reference = '';
     for (let i = 0; i < 5; i++) reference += this.randomString(4, 1, this.digits) + '-';
     return reference.slice(0, -1);
   }
 
-  // String-to-number and number-to-string conversion functions ///////////////
+  // Conversion functions /////////////////////////////////////////////////////
+
+  // Round to two decimal places
+  static round(value: number | string): number {
+    const VALUE = typeof value === 'string' ? parseFloat(value) : value;
+    if (!isNaN(VALUE)) {
+      const POWER10 = 10 ** 2;
+      return Math.round(POWER10 * VALUE) / POWER10;
+    } else {
+      return NaN;
+    }
+  }
 
   // Converts a string to a number by using the current or specified locale settings
-  static stringToNumber(value: string, locale: string = 'fr-FR') {
+  static stringToNumber(value: string, locale: string = 'fr-FR'): number {
     const FRAC_SEPARATOR = (1)
       .toLocaleString(locale, { minimumFractionDigits: 1 })
       .replace(/\d/g, '');
@@ -127,9 +142,40 @@ export class Common {
   }
 
   // Converts a number to a string by using the current or specified locale settings
-  static numberToString(value: number, locale: string = 'fr-FR', numberDigits: number = 2) {
+  static numberToString(value: number, locale: string = 'fr-FR', numberDigits: number = 2): string {
     const POWER10 = 10 ** numberDigits;
     const VALUE = Math.round(value * POWER10) / POWER10;
     return VALUE.toLocaleString(locale, { minimumFractionDigits: numberDigits });
+  }
+
+  // Retrieve the timestamp from a date
+  static timestamp(date: string | number | Date): number {
+    return new Date(date).valueOf();
+  }
+
+  // Token management /////////////////////////////////////////////////////////
+
+  // Decode the token
+  static decodeToken(token: string): TokenPayload | null {
+    const DECODED = jwtDecode(token);
+    if (DECODED) {
+      const TOKEN_PAYLOAD = new TokenPayload();
+      Object.assign(TOKEN_PAYLOAD, DECODED);
+      return TOKEN_PAYLOAD;
+    }
+    return null;
+  }
+
+  // Instantiate the HTTP headers with the token
+  static getHttpHeaders(): { headers: HttpHeaders } | undefined {
+    const TOKEN = sessionStorage.getItem('token') || localStorage.getItem('token');
+
+    if (TOKEN) {
+      const HTTP_HEADERS = new HttpHeaders({
+        Authorization: `Bearer ${TOKEN}`,
+      });
+      return { headers: HTTP_HEADERS };
+    }
+    return;
   }
 }

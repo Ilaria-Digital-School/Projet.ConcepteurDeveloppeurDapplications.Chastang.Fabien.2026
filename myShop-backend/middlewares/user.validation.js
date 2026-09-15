@@ -95,9 +95,8 @@ export const validateUpdUser = (req, res, next) => {
       'string.base': 'The {{#label}} attribut must be a string',
       'string.email': 'Invalid {{#label}} attribut, it must be an email address',
     }),
-    pswd: Joi.string().pattern(PSWD_PATTERN).optional().messages({
+    pswd: Joi.string().min(0).optional().messages({
       'string.base': 'The {{#label}} attribut must be a string',
-      'string.pattern.base': 'Invalid {{#label}} attribut, it must be a valid password',
     }),
     gender: Joi.number().valid(0, 1, 2).optional().messages({
       'number.base': 'The {{#label}} attribut must be a number',

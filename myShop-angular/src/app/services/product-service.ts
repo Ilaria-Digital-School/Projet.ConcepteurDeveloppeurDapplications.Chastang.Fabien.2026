@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, map, take } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Resources } from '../api.config';
 import { Product } from '../models/product';
+import { Common } from '../constants/common';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class ProductService {
   // Performs HTTP requests
   private httpClient = inject(HttpClient);
 
-  // Retrieve all products
+  // NO TOKEN - Retrieve all products
   getAllProducts(taxPercent: number = 20): Observable<Product[]> {
     return this.httpClient.get<Product[]>(Resources.productsURL).pipe(
       map((products: Product[]) => {
@@ -36,17 +37,18 @@ export class ProductService {
     );
   }
 
-  // Retrieve the first 'maxCount' products
+  // NO TOKEN - Retrieve the first 'maxCount' products
   getFirstProducts(maxCount: number): Observable<Product[]> {
+    // Without cookie
     return this.httpClient.get<Product[]>(`${Resources.productsURL}/${maxCount}/first`);
   }
 
-  // Retrieve a list of products based on their IDs
+  // NO TOKEN - Retrieve a list of products based on their IDs
   getProductsByIDs(IDs: string[]): Observable<Product[]> {
     return this.httpClient.get<Product[]>(`${Resources.productsURL}/${IDs.join(',')}/list`);
   }
 
-  // Retrieve a product by its ID
+  // NO TOKEN - Retrieve a product by its ID
   getProductById(id: string | null): Observable<Product> {
     return this.httpClient.get<Product>(`${Resources.productsURL}/${id}`);
   }
@@ -54,35 +56,51 @@ export class ProductService {
   // Add a product
   addProduct(product: Product): Observable<Product> {
     const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
-    PRODUCT.dateIns = Date.now();
-    return this.httpClient.post<Product>(Resources.productsURL, PRODUCT);
+    return this.httpClient.post<Product>(Resources.productsURL, PRODUCT, Common.getHttpHeaders());
+
+    // With cookie
+    return this.httpClient.post<Product>(Resources.productsURL, PRODUCT, {
+      withCredentials: true,
+    });
   }
 
   // Update a product
   updateProduct(product: Product): Observable<Product> {
     const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
-    PRODUCT.dateMod = Date.now();
-    return this.httpClient.put<Product>(`${Resources.productsURL}/${product._id}`, PRODUCT);
+    return this.httpClient.put<Product>(
+      `${Resources.productsURL}/${product._id}`,
+      PRODUCT,
+      Common.getHttpHeaders(),
+    );
   }
 
   // Show a product
   showProduct(product: Product): Observable<Product> {
     const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
     PRODUCT.visible = true;
-    PRODUCT.dateVisible = Date.now();
-    return this.httpClient.patch<Product>(`${Resources.productsURL}/${product._id}/visible`, PRODUCT);
+    return this.httpClient.patch<Product>(
+      `${Resources.productsURL}/${product._id}/visible`,
+      PRODUCT,
+      Common.getHttpHeaders(),
+    );
   }
 
   // Hide a product
   hideProduct(product: Product): Observable<Product> {
     const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
     PRODUCT.visible = false;
-    PRODUCT.dateVisible = Date.now();
-    return this.httpClient.patch<Product>(`${Resources.productsURL}/${product._id}/visible`, PRODUCT);
+    return this.httpClient.patch<Product>(
+      `${Resources.productsURL}/${product._id}/visible`,
+      PRODUCT,
+      Common.getHttpHeaders(),
+    );
   }
 
   // Delete a product
   deleteProduct(id: string | null): Observable<Product> {
-    return this.httpClient.delete<Product>(`${Resources.productsURL}/${id}`);
+    return this.httpClient.delete<Product>(
+      `${Resources.productsURL}/${id}`,
+      Common.getHttpHeaders(),
+    );
   }
 }

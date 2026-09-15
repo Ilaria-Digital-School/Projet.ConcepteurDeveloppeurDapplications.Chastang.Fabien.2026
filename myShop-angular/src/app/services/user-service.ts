@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Resources } from '../api.config';
-import { User, LoginData } from '../models/user';
+import { User, LoginData, Token } from '../models/user';
+import { Common } from '../constants/common';
 
 @Injectable({
   providedIn: 'root',
@@ -13,58 +14,59 @@ export class UserService {
 
   // Retrieve all users
   getAllUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>(Resources.usersURL);
+    return this.httpClient.get<User[]>(Resources.usersURL, Common.getHttpHeaders());
   }
 
   // Retrieve a user by his ID
   getUserById(id: string | null): Observable<User> {
-    return this.httpClient.get<User>(`${Resources.usersURL}/${id}`);
+    return this.httpClient.get<User>(`${Resources.usersURL}/${id}`, Common.getHttpHeaders());
   }
 
-  // Add a user
+  // NO TOKEN - Add a user
   addUser(user: User): Observable<User> {
     const USER = user.removeBeforeSaveUser(); // Remove these properties before saving the user
-    USER.dateIns = Date.now();
     return this.httpClient.post<User>(Resources.usersURL, USER);
   }
 
   // Update a user
   updateUser(user: User): Observable<User> {
     const USER = user.removeBeforeSaveUser(); // Remove these properties before saving the user
-    USER.dateMod = Date.now();
-    return this.httpClient.put<User>(`${Resources.usersURL}/${user._id}`, USER);
+    return this.httpClient.put<User>(
+      `${Resources.usersURL}/${user._id}`,
+      USER,
+      Common.getHttpHeaders(),
+    );
   }
 
   // Show a user
   showUser(user: User): Observable<User> {
     const USER = user.removeBeforeSaveUser(); // Remove these properties before saving the user
     USER.visible = true;
-    USER.dateVisible = Date.now();
-    return this.httpClient.patch<User>(`${Resources.usersURL}/${user._id}/visible`, USER);
+    return this.httpClient.patch<User>(
+      `${Resources.usersURL}/${user._id}/visible`,
+      USER,
+      Common.getHttpHeaders(),
+    );
   }
 
   // Hide a user
   hideUser(user: User): Observable<User> {
     const USER = user.removeBeforeSaveUser(); // Remove these properties before saving the user
     USER.visible = false;
-    USER.dateVisible = Date.now();
-    return this.httpClient.patch<User>(`${Resources.usersURL}/${user._id}/visible`, USER);
+    return this.httpClient.patch<User>(
+      `${Resources.usersURL}/${user._id}/visible`,
+      USER,
+      Common.getHttpHeaders(),
+    );
   }
 
   // Delete a user
   deleteUser(id: string | null): Observable<User> {
-    return this.httpClient.delete<User>(`${Resources.usersURL}/${id}`);
+    return this.httpClient.delete<User>(`${Resources.usersURL}/${id}`, Common.getHttpHeaders());
   }
 
-  // User login
-  login(data: LoginData): Observable<User[]> {
-    return this.httpClient.get<User[]>(`${Resources.usersURL}?email=${data.email}&pswd=${data.pswd}`);
-
-    // // IMPORTANT: method to use with a real backend
-    // return this.httpClient.post<User[]>(`${Resources.usersURL}/login`, data);
-
-    // // Retrieving data from local storage
-    // const USERS = JSON.parse(localStorage.getItem('users') || '[]');
-    // return USERS.find((user: any) => user.email == data.email && user.pswd == data.pswd);
+  // NO TOKEN - User login
+  login(data: LoginData): Observable<Token> {
+    return this.httpClient.post<Token>(`${Resources.usersURL}/login`, data);
   }
 }

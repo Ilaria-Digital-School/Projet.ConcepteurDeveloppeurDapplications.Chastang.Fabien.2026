@@ -22,12 +22,6 @@ export const validateAddProduct = (req, res, next) => {
     dateMod: Joi.date().optional().messages({
       'date.base': 'The {{#label}} attribut must be a date',
     }),
-    userId: Joi.string().hex().length(24).required().messages({
-      'string.base': 'The {{#label}} attribute must be a MongoDB identifier, a 24-character hexadecimal string',
-      'string.hex': 'The {{#label}} attribute must be a MongoDB identifier, a 24-character hexadecimal string',
-      'string.length': 'The {{#label}} attribute must be a MongoDB identifier, a 24-character hexadecimal string',
-      'any.required': 'The {{#label}} attribut is mandatory',
-    }),
     name: Joi.string().min(3).max(50).required().messages({
       'string.base': 'The {{#label}} attribut must be a string',
       'string.min': 'The {{#label}} attribut must contain at least 3 characters',
@@ -108,11 +102,6 @@ export const validateUpdProduct = (req, res, next) => {
     }),
     dateMod: Joi.date().optional().messages({
       'date.base': 'The {{#label}} attribut must be a date',
-    }),
-    userId: Joi.string().hex().length(24).optional().messages({
-      'string.base': 'The {{#label}} attribute must be a MongoDB identifier, a 24-character hexadecimal string',
-      'string.hex': 'The {{#label}} attribute must be a MongoDB identifier, a 24-character hexadecimal string',
-      'string.length': 'The {{#label}} attribute must be a MongoDB identifier, a 24-character hexadecimal string',
     }),
     name: Joi.string().min(3).max(50).optional().messages({
       'string.base': 'The {{#label}} attribut must be a string',

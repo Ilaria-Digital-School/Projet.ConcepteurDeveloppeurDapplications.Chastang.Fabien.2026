@@ -6,12 +6,6 @@ const REF_PATTERN = /^[A-Z0-9]{10}$/;
 // Check if a value follows the format of an email address
 const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-// Check if a value follows the format of a password
-const SPECIAL_CHR = '&~#"\'{([|_\\\\^@)\\]=+}€¨$£¤%*<>,?;.:/!§-';
-const PSWD_PATTERN = new RegExp(
-  '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[' + SPECIAL_CHR + '])[a-zA-Z\\d' + SPECIAL_CHR + ']{10,}$',
-);
-
 // Define the user model with validations
 const userSchema = new mongoose.Schema({
   reference: {
@@ -22,7 +16,7 @@ const userSchema = new mongoose.Schema({
   },
   dateIns: {
     type: Date,
-    default: Date.now(),
+    default: new Date(Date.now()),
   },
   dateMod: {
     type: Date,
@@ -43,14 +37,12 @@ const userSchema = new mongoose.Schema({
   },
   pswd: {
     type: String,
-    required: true,
-    match: [PSWD_PATTERN, 'Invalid "pswd" attribut, it must be a valid password'],
   },
   gender: {
     type: Number,
     enum: {
       values: [0, 1, 2],
-      message: '{VALUE} is not supported for the "gender" attribut'
+      message: '{VALUE} is not supported for the "gender" attribut',
     },
     default: 0,
   },
@@ -67,7 +59,7 @@ const userSchema = new mongoose.Schema({
     type: Number,
     enum: {
       values: [0, 1, 2],
-      message: '{VALUE} is not supported for the "role" attribut'
+      message: '{VALUE} is not supported for the "role" attribut',
     },
     default: 0,
   },

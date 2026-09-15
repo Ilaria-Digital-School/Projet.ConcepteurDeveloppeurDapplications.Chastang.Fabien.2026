@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 
 // Check if a value is an integer
@@ -61,14 +63,62 @@ export const getUserById = async (req, res, next) => {
   }
 };
 
+// Login //////////////////////////////////////////////////////////////////////
+export const login = async (req, res, next) => {
+  try {
+    const DATA = {
+      email: req.body.email,
+      pswd: req.body.pswd,
+    };
+
+    // Function to throw an error
+    const throwError = () => {
+      const ERR = new Error('The email or password is incorrect');
+      ERR.statusCode = 404;
+      throw ERR;
+    };
+
+    // Verify that the user does not exist
+    const EXISTED_USER = await User.findOne({ email: DATA.email }).exec();
+    if (!EXISTED_USER) throwError(); // Throw an error
+
+    // Comparison of hashed passwords
+    const IS_MATCH = bcrypt.compare(DATA.pswd, EXISTED_USER.pswd);
+    if (!IS_MATCH) throwError(); // Throw an error
+
+    // Generate the JWT token
+    const TOKEN = jwt.sign(
+      {
+        // User informations
+        id: EXISTED_USER._id,
+        name: EXISTED_USER.name,
+        role: EXISTED_USER.role,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' },
+    );
+
+    // res.cookie('token', TOKEN, {
+    //   HttpOnly: true,
+    //   Secure: false,
+    // });
+
+    // Success handler call
+    res.success({ token: TOKEN }, 201, 'The user is logged in', true);
+  } catch (err) {
+    // Error handler call
+    if (!err.message) err.message = 'Error retrieving the user';
+    next(err);
+  }
+};
+
 // Add a user /////////////////////////////////////////////////////////////////
 export const addUser = async (req, res, next) => {
   try {
-    // Retrieve the request data and instantiate the User model (object)
-    // Better practice than 'const USER = new User(req.body)';
-    const USER = new User({
+    // Retrieve the request data
+    const DATA = {
       reference: req.body.reference,
-      dateIns: Date.now(),
+      dateIns: new Date(Date.now()),
       dateMod: null,
       name: req.body.name,
       email: req.body.email,
@@ -78,8 +128,24 @@ export const addUser = async (req, res, next) => {
       country: req.body.country,
       role: req.body.role,
       dateVisible: null,
-      visible: req.body.visible,
-    });
+      visible: true,
+    };
+
+    // Verify that the user does not exist
+    const EXISTED_USER = await User.findOne({ email: DATA.email }).exec();
+    if (EXISTED_USER) {
+      // Throw an error
+      const ERR = new Error('The user already exists');
+      ERR.statusCode = 400;
+      throw ERR;
+    }
+
+    // Password hashing
+    const HASHED_PSWD = await bcrypt.hash(DATA.pswd, 10);
+
+    // Instantiate the User model (object)
+    DATA.pswd = HASHED_PSWD;
+    const USER = new User(DATA);
 
     // Save the user to the database
     await USER.save();
@@ -93,11 +159,29 @@ export const addUser = async (req, res, next) => {
   }
 };
 
+// Add multiple users, useful for a back-office application ///////////////////
+export const addUsers = async (req, res, next) => {
+  try {
+    // req.body: array of user objects
+    const USERS = await User.insertMany(req.body);
+
+    // Save the users to the database
+    await USERS.save();
+
+    // Success handler call
+    res.success(USERS, 201, 'The users have been inserted');
+  } catch (err) {
+    // Error handler call
+    if (!err.message) err.message = 'Error adding the users';
+    next(err);
+  }
+};
+
 // Update a user //////////////////////////////////////////////////////////////
 export const updateUser = async (req, res, next) => {
   try {
     // Update the user in the database
-    req.body.dateMod = Date.now();
+    req.body.dateMod = new Date(Date.now());
     const USER = await User.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -135,7 +219,7 @@ export const patchEmail = async (req, res, next) => {
     const USER = await User.findByIdAndUpdate(
       req.params.id,
       {
-        dateMod: Date.now(),
+        dateMod: new Date(Date.now()),
         email: req.body.email,
       },
       { returnDocument: 'after' }, // The syntax { new: true } is depreciated
@@ -172,7 +256,7 @@ export const patchPassword = async (req, res, next) => {
     const USER = await User.findByIdAndUpdate(
       req.params.id,
       {
-        dateMod: Date.now(),
+        dateMod: new Date(Date.now()),
         pswd: req.body.pswd,
       },
       { returnDocument: 'after' }, // The syntax { new: true } is depreciated
@@ -209,7 +293,7 @@ export const patchRole = async (req, res, next) => {
     const USER = await User.findByIdAndUpdate(
       req.params.id,
       {
-        dateMod: Date.now(),
+        dateMod: new Date(Date.now()),
         role: req.body.role,
       },
       { returnDocument: 'after' }, // The syntax { new: true } is depreciated
@@ -246,7 +330,7 @@ export const patchVisible = async (req, res, next) => {
     const USER = await User.findByIdAndUpdate(
       req.params.id,
       {
-        dateVisible: Date.now(),
+        dateVisible: new Date(Date.now()),
         visible: req.body.visible,
       },
       { returnDocument: 'after' }, // The syntax { new: true } is depreciated

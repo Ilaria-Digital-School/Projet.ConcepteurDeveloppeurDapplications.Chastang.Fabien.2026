@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
-import { User } from '../../models/user';
+import { TokenPayload } from '../../models/user';
 import { RoleList } from '../../models/role';
 import { AuthService } from '../../services/auth-service';
 import { CartService } from '../../services/cart-service';
@@ -19,11 +19,11 @@ export class PageHeader {
 
   // Class properties
   title: string = 'My Shop';
-  connectedUser: User | null = null;
+  connectedUser: TokenPayload | null = null;
   roles: RoleList = new RoleList();
 
   // Method to retrieve the logged-in user
-  getConnectedUser(): User | null {
+  getConnectedUser(): TokenPayload | null {
     return (this.connectedUser = this.authService.getConnectedUser());
   }
 

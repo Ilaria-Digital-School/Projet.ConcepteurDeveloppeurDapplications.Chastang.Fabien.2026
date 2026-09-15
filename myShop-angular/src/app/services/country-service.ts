@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Resources } from '../api.config';
 import { Country } from '../models/country';
+import { Common } from '../constants/common';
 
 @Injectable({
   providedIn: 'root',
@@ -11,23 +12,30 @@ export class CountryService {
   // Performs HTTP requests
   private httpClient = inject(HttpClient);
 
-  // Retrieve all genders
+  // NO TOKEN - Retrieve all genders
   getAllCountries(): Observable<Country[]> {
     return this.httpClient.get<Country[]>(Resources.countriesURL);
   }
 
   // Add a country
   addCountry(country: Country): Observable<Country> {
-    return this.httpClient.post<Country>(Resources.countriesURL, country);
+    return this.httpClient.post<Country>(Resources.countriesURL, country, Common.getHttpHeaders());
   }
 
   // Update a country
   updateCountry(country: Country): Observable<Country> {
-    return this.httpClient.put<Country>(`${Resources.countriesURL}/${country._id}`, country);
+    return this.httpClient.put<Country>(
+      `${Resources.countriesURL}/${country._id}`,
+      country,
+      Common.getHttpHeaders(),
+    );
   }
 
   // Delete a country
   deleteCountry(id: string | null): Observable<Country> {
-    return this.httpClient.delete<Country>(`${Resources.countriesURL}/${id}`);
+    return this.httpClient.delete<Country>(
+      `${Resources.countriesURL}/${id}`,
+      Common.getHttpHeaders(),
+    );
   }
 }

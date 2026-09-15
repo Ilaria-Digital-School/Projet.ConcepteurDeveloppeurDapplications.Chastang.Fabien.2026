@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Resources } from '../api.config';
 import { Category } from '../models/category';
+import { Common } from '../constants/common';
 
 @Injectable({
   providedIn: 'root',
@@ -11,23 +12,34 @@ export class CategoryService {
   // Performs HTTP requests
   private httpClient = inject(HttpClient);
 
-  // Retrieve all categories
+  // NO TOKEN - Retrieve all categories
   getAllCategories(): Observable<Category[]> {
     return this.httpClient.get<Category[]>(Resources.categoriesURL);
   }
 
   // Add a category
   addCategory(category: Category): Observable<Category> {
-    return this.httpClient.post<Category>(Resources.categoriesURL, category);
+    return this.httpClient.post<Category>(
+      Resources.categoriesURL,
+      category,
+      Common.getHttpHeaders(),
+    );
   }
 
   // Update a category
   updateCategory(category: Category): Observable<Category> {
-    return this.httpClient.put<Category>(`${Resources.categoriesURL}/${category._id}`, category);
+    return this.httpClient.put<Category>(
+      `${Resources.categoriesURL}/${category._id}`,
+      category,
+      Common.getHttpHeaders(),
+    );
   }
 
   // Delete a category
   deleteCategory(id: string | null): Observable<Category> {
-    return this.httpClient.delete<Category>(`${Resources.categoriesURL}/${id}`);
+    return this.httpClient.delete<Category>(
+      `${Resources.categoriesURL}/${id}`,
+      Common.getHttpHeaders(),
+    );
   }
 }

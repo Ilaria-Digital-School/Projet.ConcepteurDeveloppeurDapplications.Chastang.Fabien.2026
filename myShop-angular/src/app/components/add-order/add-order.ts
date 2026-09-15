@@ -21,15 +21,11 @@ export class AddOrder {
 
   // Class properties
   taxPercent: number = 20;
-  userId!: string | null;
   userCart!: Cart;
 
   // Initialization ///////////////////////////////////////////////////////////
 
   ngOnInit() {
-    // Get the user ID parameter
-    this.userId = this.activatedRoute.snapshot.paramMap.get('id');
-
     // Retrieve the user's cart
     const CART = localStorage.getItem('cart');
     if (CART) {
@@ -43,9 +39,6 @@ export class AddOrder {
     } else {
       this.userCart = new Cart();
     }
-
-    // Initialize the user ID
-    if (this.userId !== null) this.userCart.userId = this.userId;
   }
 
   // Actions //////////////////////////////////////////////////////////////////

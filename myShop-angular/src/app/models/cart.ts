@@ -5,13 +5,9 @@ import { Product } from './product';
 // quantity of 1 for each item; list stored in local storage
 export class Cart {
   // Class properties
-  _id: string = '';
-  userId: string = '';
   products: OrderProduct[] = [];
 
-  constructor(products: OrderProduct[] | null = null, userId: string | null = null) {
-    if (typeof userId === 'string') this.userId = userId;
-
+  constructor(products: OrderProduct[] | null = null) {
     // Initializing the product list where each product appears
     // only once, but the quantity can be greater than 1
     if (Array.isArray(products)) {

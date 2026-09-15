@@ -34,7 +34,7 @@ export const routes: Routes = [
   { path: 'add-user-cart', component: AddUser },
   { path: 'edit-user/:id', component: AddUser },
   { path: 'edit-user-table/:id', component: AddUser },
-  { path: 'add-order/:id', component: AddOrder },
+  { path: 'add-order', component: AddOrder },
   { path: 'user-orders/:id', component: UserOrders },
   { path: 'add-message', component: AddMessage },
   { path: 'about', component: About },

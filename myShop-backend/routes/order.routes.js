@@ -1,4 +1,5 @@
 import express from 'express';
+import { verifyToken } from '../middlewares/verify.token.js';
 import { transformOrder } from '../middlewares/transform.middleware.js';
 import { validateAddOrder, validateUpdOrder } from '../middlewares/order.validation.js';
 import {
@@ -17,14 +18,14 @@ import {
 const router = express.Router();
 
 // http://localhost:3000/api/orders
-router.get('/orders', getAllOrders);
-router.get('/orders/:userId/user', getOrdersByUserId);
-router.get('/orders/:IDs/list', getOrdersByIDs);
-router.get('/orders/:id', getOrderById);
-router.post('/orders', transformOrder, validateAddOrder, addOrder);
-router.put('/orders/:id', transformOrder, validateUpdOrder, updateOrder);
-router.patch('/orders/:id/status', transformOrder, validateUpdOrder, patchStatus);
-router.patch('/orders/:id/visible', transformOrder, validateUpdOrder, patchVisible);
-router.delete('/orders/:id', deleteOrder);
+router.get('/orders', verifyToken, getAllOrders);
+router.get('/orders/:userId/user', verifyToken, getOrdersByUserId);
+router.get('/orders/:IDs/list', verifyToken, getOrdersByIDs);
+router.get('/orders/:id', verifyToken, getOrderById);
+router.post('/orders', verifyToken, transformOrder, validateAddOrder, addOrder);
+router.put('/orders/:id', verifyToken, transformOrder, validateUpdOrder, updateOrder);
+router.patch('/orders/:id/status', verifyToken, transformOrder, validateUpdOrder, patchStatus);
+router.patch('/orders/:id/visible', verifyToken, transformOrder, validateUpdOrder, patchVisible);
+router.delete('/orders/:id', verifyToken, deleteOrder);
 
 export default router;
