@@ -144,14 +144,14 @@ export class DashboardProducts {
   // Sort products by name (default)
   sortByName(array: Product[], up: boolean): Product[] {
     if (up) {
-      return array.sort((item1: Product, item2: Product) => {
-        const COMPARE = item1.name.localeCompare(item2.name);
-        return COMPARE === 0 ? item1.description.localeCompare(item2.description) : COMPARE;
+      return array.sort((p1: Product, p2: Product) => {
+        const COMPARE = p1.name.localeCompare(p2.name);
+        return COMPARE === 0 ? p1.description.localeCompare(p2.description) : COMPARE;
       });
     } else {
-      return array.sort((item1: Product, item2: Product) => {
-        const COMPARE = item2.name.localeCompare(item1.name);
-        return COMPARE === 0 ? item2.description.localeCompare(item1.description) : COMPARE;
+      return array.sort((p1: Product, p2: Product) => {
+        const COMPARE = p2.name.localeCompare(p1.name);
+        return COMPARE === 0 ? p2.description.localeCompare(p1.description) : COMPARE;
       });
     }
   }
@@ -159,23 +159,23 @@ export class DashboardProducts {
   // Sort products by price
   sortByPrice(array: Product[], up: boolean): Product[] {
     if (up) {
-      return array.sort((item1: Product, item2: Product) => item1.price - item2.price);
+      return array.sort((p1: Product, p2: Product) => p1.price - p2.price);
     } else {
-      return array.sort((item1: Product, item2: Product) => item2.price - item1.price);
+      return array.sort((p1: Product, p2: Product) => p2.price - p1.price);
     }
   }
 
   // Sort products by stock
   sortByStock(array: Product[], up: boolean): Product[] {
     if (up) {
-      return array.sort((item1: Product, item2: Product) => {
-        const COMPARE = item1.stock - item2.stock;
-        return COMPARE === 0 ? item1.name.localeCompare(item2.name) : COMPARE;
+      return array.sort((p1: Product, p2: Product) => {
+        const COMPARE = p1.stock - p2.stock;
+        return COMPARE === 0 ? p1.name.localeCompare(p2.name) : COMPARE;
       });
     } else {
-      return array.sort((item1: Product, item2: Product) => {
-        const COMPARE = item2.stock - item1.stock;
-        return COMPARE === 0 ? item2.name.localeCompare(item1.name) : COMPARE;
+      return array.sort((p1: Product, p2: Product) => {
+        const COMPARE = p2.stock - p1.stock;
+        return COMPARE === 0 ? p2.name.localeCompare(p1.name) : COMPARE;
       });
     }
   }

@@ -93,8 +93,7 @@ export class DashboardOrders {
             return ORDER;
           })
           .sort(
-            (item1: Order, item2: Order) =>
-              Common.timestamp(item2.dateIns) - Common.timestamp(item1.dateIns),
+            (o1: Order, o2: Order) => Common.timestamp(o2.dateIns) - Common.timestamp(o1.dateIns),
           );
         this.dashboard.arrays.filteredText = this.dashboard.arrays.unfiltered;
         this.dashboard.arrays.filteredRef = this.dashboard.arrays.unfiltered;
@@ -148,13 +147,11 @@ export class DashboardOrders {
   sortByDate(array: Order[], up: boolean): Order[] {
     if (up) {
       return array.sort(
-        (item1: Order, item2: Order) =>
-          Common.timestamp(item1.dateIns) - Common.timestamp(item2.dateIns),
+        (o1: Order, o2: Order) => Common.timestamp(o1.dateIns) - Common.timestamp(o2.dateIns),
       );
     } else {
       return array.sort(
-        (item1: Order, item2: Order) =>
-          Common.timestamp(item2.dateIns) - Common.timestamp(item1.dateIns),
+        (o1: Order, o2: Order) => Common.timestamp(o2.dateIns) - Common.timestamp(o1.dateIns),
       );
     }
   }
@@ -162,17 +159,17 @@ export class DashboardOrders {
   // Sort user orders by email
   sortByEmail(array: Order[], up: boolean): Order[] {
     if (up) {
-      return array.sort((item1: Order, item2: Order) => {
-        const COMPARE = item1.userId.email.localeCompare(item2.userId.email);
+      return array.sort((o1: Order, o2: Order) => {
+        const COMPARE = o1.userId.email.localeCompare(o2.userId.email);
         return COMPARE === 0
-          ? Common.timestamp(item1.dateIns) - Common.timestamp(item2.dateIns)
+          ? Common.timestamp(o1.dateIns) - Common.timestamp(o2.dateIns)
           : COMPARE;
       });
     } else {
-      return array.sort((item1: Order, item2: Order) => {
-        const COMPARE = item2.userId.email.localeCompare(item1.userId.email);
+      return array.sort((o1: Order, o2: Order) => {
+        const COMPARE = o2.userId.email.localeCompare(o1.userId.email);
         return COMPARE === 0
-          ? Common.timestamp(item2.dateIns) - Common.timestamp(item1.dateIns)
+          ? Common.timestamp(o2.dateIns) - Common.timestamp(o1.dateIns)
           : COMPARE;
       });
     }
@@ -181,17 +178,17 @@ export class DashboardOrders {
   // Sort orders by status
   sortByStatus(array: Order[], up: boolean): Order[] {
     if (up) {
-      return array.sort((item1: Order, item2: Order) => {
-        const COMPARE = item1.status - item2.status;
+      return array.sort((o1: Order, o2: Order) => {
+        const COMPARE = o1.status - o2.status;
         return COMPARE === 0
-          ? Common.timestamp(item1.dateIns) - Common.timestamp(item2.dateIns)
+          ? Common.timestamp(o1.dateIns) - Common.timestamp(o2.dateIns)
           : COMPARE;
       });
     } else {
-      return array.sort((item1: Order, item2: Order) => {
-        const COMPARE = item2.status - item1.status;
+      return array.sort((o1: Order, o2: Order) => {
+        const COMPARE = o2.status - o1.status;
         return COMPARE === 0
-          ? Common.timestamp(item2.dateIns) - Common.timestamp(item1.dateIns)
+          ? Common.timestamp(o2.dateIns) - Common.timestamp(o1.dateIns)
           : COMPARE;
       });
     }

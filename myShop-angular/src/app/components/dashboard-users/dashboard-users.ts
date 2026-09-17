@@ -89,9 +89,9 @@ export class DashboardUsers {
     this.userService.getAllUsers().subscribe({
       next: (res: User[]) => {
         // All users
-        this.dashboard.arrays.unfiltered = res.sort((item1: User, item2: User) => {
-          const COMPARE = item1.name.localeCompare(item2.name);
-          return COMPARE === 0 ? item1.email.localeCompare(item2.email) : COMPARE;
+        this.dashboard.arrays.unfiltered = res.sort((u1: User, u2: User) => {
+          const COMPARE = u1.name.localeCompare(u2.name);
+          return COMPARE === 0 ? u1.email.localeCompare(u2.email) : COMPARE;
         });
         this.dashboard.arrays.filteredText = this.dashboard.arrays.unfiltered;
         this.dashboard.arrays.filteredRef = this.dashboard.arrays.unfiltered;
@@ -144,14 +144,14 @@ export class DashboardUsers {
   // Sort users by name (default)
   sortByName(array: User[], up: boolean): User[] {
     if (up) {
-      return array.sort((item1: User, item2: User) => {
-        const COMPARE = item1.name.localeCompare(item2.name);
-        return COMPARE === 0 ? item1.email.localeCompare(item2.email) : COMPARE;
+      return array.sort((u1: User, u2: User) => {
+        const COMPARE = u1.name.localeCompare(u2.name);
+        return COMPARE === 0 ? u1.email.localeCompare(u2.email) : COMPARE;
       });
     } else {
-      return array.sort((item1: User, item2: User) => {
-        const COMPARE = item2.name.localeCompare(item1.name);
-        return COMPARE === 0 ? item2.email.localeCompare(item1.email) : COMPARE;
+      return array.sort((u1: User, u2: User) => {
+        const COMPARE = u2.name.localeCompare(u1.name);
+        return COMPARE === 0 ? u2.email.localeCompare(u1.email) : COMPARE;
       });
     }
   }
@@ -159,23 +159,23 @@ export class DashboardUsers {
   // Sort users by email
   sortByEmail(array: User[], up: boolean): User[] {
     if (up) {
-      return array.sort((item1: User, item2: User) => item1.email.localeCompare(item2.email));
+      return array.sort((u1: User, u2: User) => u1.email.localeCompare(u2.email));
     } else {
-      return array.sort((item1: User, item2: User) => item2.email.localeCompare(item1.email));
+      return array.sort((u1: User, u2: User) => u2.email.localeCompare(u1.email));
     }
   }
 
   // Sort users by role
   sortByRole(array: User[], up: boolean): User[] {
     if (up) {
-      return array.sort((item1: User, item2: User) => {
-        const COMPARE = item1.role - item2.role;
-        return COMPARE === 0 ? item1.email.localeCompare(item2.email) : COMPARE;
+      return array.sort((u1: User, u2: User) => {
+        const COMPARE = u1.role - u2.role;
+        return COMPARE === 0 ? u1.email.localeCompare(u2.email) : COMPARE;
       });
     } else {
-      return array.sort((item1: User, item2: User) => {
-        const COMPARE = item2.role - item1.role;
-        return COMPARE === 0 ? item2.email.localeCompare(item1.email) : COMPARE;
+      return array.sort((u1: User, u2: User) => {
+        const COMPARE = u2.role - u1.role;
+        return COMPARE === 0 ? u2.email.localeCompare(u1.email) : COMPARE;
       });
     }
   }
