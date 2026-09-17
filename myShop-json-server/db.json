@@ -414,12 +414,12 @@
       "userId": "tapQ6zz5B64",
       "products": [
         {
-          "id": "BN4bdfCKWuf",
+          "productId": "BN4bdfCKWuf",
           "price": 20,
           "quantity": 2
         },
         {
-          "id": "WeHNcyId4xk",
+          "productId": "WeHNcyId4xk",
           "price": 70,
           "quantity": 1
         }

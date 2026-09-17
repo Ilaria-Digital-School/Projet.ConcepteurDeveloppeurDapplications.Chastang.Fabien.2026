@@ -19,14 +19,16 @@ export class StatusService {
 
   // Add a status
   addStatus(status: Status): Observable<Status> {
-    return this.httpClient.post<Status>(Resources.statusURL, status, Common.getHttpHeaders());
+    const STATUS = status.removeBeforeSave(); // Remove the _id before saving the Status
+    return this.httpClient.post<Status>(Resources.statusURL, STATUS, Common.getHttpHeaders());
   }
 
   // Update a status
   updateStatus(status: Status): Observable<Status> {
+    const STATUS = status.removeBeforeSave(); // Remove the _id before saving the Status
     return this.httpClient.put<Status>(
       `${Resources.statusURL}/${status._id}`,
-      status,
+      STATUS,
       Common.getHttpHeaders(),
     );
   }

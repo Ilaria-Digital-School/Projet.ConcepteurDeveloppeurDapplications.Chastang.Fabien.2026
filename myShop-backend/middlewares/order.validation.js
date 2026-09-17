@@ -19,21 +19,23 @@ export const validateAddOrder = (req, res, next) => {
       'date.base': 'The {{#label}} attribut must be a date',
     }),
     products: Joi.array().items({
-      id: Joi.string().hex().length(24).required().messages({
+      productId: Joi.string().hex().length(24).required().messages({
         'string.base': 'The {{#label}} attribute must be a MongoDB identifier, a 24-character hexadecimal string',
         'string.hex': 'The {{#label}} attribute must be a MongoDB identifier, a 24-character hexadecimal string',
         'string.length': 'The {{#label}} attribute must be a MongoDB identifier, a 24-character hexadecimal string',
         'any.required': 'The {{#label}} attribut is mandatory',
       }),
-      price: Joi.number().min(0.01).required().messages({
+      price: Joi.number().min(0.01).max(9999.99).required().messages({
         'number.base': 'The {{#label}} attribut must be a number',
-        'number.min': 'The {{#label}} attribut must be a number greater than 0',
+        'number.min': 'The {{#label}} attribut must be a number greater than or equal to 0.01',
+        'number.max': 'The {{#label}} attribut must be a number less than or equal to 9999.99',
         'any.required': 'The {{#label}} attribut is mandatory',
       }),
-      quantity: Joi.number().min(1).integer().required().messages({
+      quantity: Joi.number().min(1).max(99).integer().required().messages({
         'number.base': 'The {{#label}} attribut must be an integer',
         'number.integer': 'The {{#label}} attribut must be an integer',
-        'number.min': 'The {{#label}} attribut must be an integer greater than 0',
+        'number.min': 'The {{#label}} attribut must be an integer greater than or equal to 0.01',
+        'number.max': 'The {{#label}} attribut must be a number less than or equal to 99',
         'any.required': 'The {{#label}} attribut is mandatory',
       }),
     }).min(1).required().messages({
@@ -81,21 +83,23 @@ export const validateUpdOrder = (req, res, next) => {
       'date.base': 'The {{#label}} attribut must be a date',
     }),
     products: Joi.array().items({
-      id: Joi.string().required().messages({
+      productId: Joi.string().hex().length(24).required().messages({
         'string.base': 'The {{#label}} attribute must be a MongoDB identifier, a 24-character hexadecimal string',
         'string.hex': 'The {{#label}} attribute must be a MongoDB identifier, a 24-character hexadecimal string',
         'string.length': 'The {{#label}} attribute must be a MongoDB identifier, a 24-character hexadecimal string',
         'any.required': 'The {{#label}} attribut is mandatory',
       }),
-      price: Joi.number().min(0.01).required().messages({
+      price: Joi.number().min(0.01).max(9999.99).required().messages({
         'number.base': 'The {{#label}} attribut must be a number',
-        'number.min': 'The {{#label}} attribut must be a number greater than 0',
+        'number.min': 'The {{#label}} attribut must be a number greater than or equal to 0.01',
+        'number.max': 'The {{#label}} attribut must be a number less than or equal to 9999.99',
         'any.required': 'The {{#label}} attribut is mandatory',
       }),
-      quantity: Joi.number().min(1).integer().required().messages({
+      quantity: Joi.number().min(1).max(99).integer().required().messages({
         'number.base': 'The {{#label}} attribut must be an integer',
         'number.integer': 'The {{#label}} attribut must be an integer',
         'number.min': 'The {{#label}} attribut must be an integer greater than 0',
+        'number.max': 'The {{#label}} attribut must be a number less than or equal to 99',
         'any.required': 'The {{#label}} attribut is mandatory',
       }),
     }).min(1).optional().messages({

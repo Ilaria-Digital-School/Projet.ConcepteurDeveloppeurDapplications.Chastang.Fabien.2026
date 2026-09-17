@@ -19,14 +19,16 @@ export class RoleService {
 
   // Add a role
   addRole(role: Role): Observable<Role> {
-    return this.httpClient.post<Role>(Resources.rolesURL, role, Common.getHttpHeaders());
+    const ROLE = role.removeBeforeSave(); // Remove the _id before saving the Role
+    return this.httpClient.post<Role>(Resources.rolesURL, ROLE, Common.getHttpHeaders());
   }
 
   // Update a role
   updateRole(role: Role): Observable<Role> {
+    const ROLE = role.removeBeforeSave(); // Remove the _id before saving the Role
     return this.httpClient.put<Role>(
       `${Resources.rolesURL}/${role._id}`,
-      role,
+      ROLE,
       Common.getHttpHeaders(),
     );
   }

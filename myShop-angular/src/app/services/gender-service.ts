@@ -19,14 +19,16 @@ export class GenderService {
 
   // Add a gender
   addGender(gender: Gender): Observable<Gender> {
-    return this.httpClient.post<Gender>(Resources.gendersURL, gender, Common.getHttpHeaders());
+    const GENDER = gender.removeBeforeSave(); // Remove the _id before saving the Gender
+    return this.httpClient.post<Gender>(Resources.gendersURL, GENDER, Common.getHttpHeaders());
   }
 
   // Update a gender
   updateGender(gender: Gender): Observable<Gender> {
+    const GENDER = gender.removeBeforeSave(); // Remove the _id before saving the Gender
     return this.httpClient.put<Gender>(
       `${Resources.gendersURL}/${gender._id}`,
-      gender,
+      GENDER,
       Common.getHttpHeaders(),
     );
   }

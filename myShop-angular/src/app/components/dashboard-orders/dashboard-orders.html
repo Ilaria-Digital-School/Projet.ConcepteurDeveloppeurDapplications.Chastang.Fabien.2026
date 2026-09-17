@@ -53,33 +53,33 @@
         </tr>
       </thead>
       <tbody class="table-group-divider">
-        @for (orderExt of dashboard.arrays.filteredItems; track orderExt.order._id; let i = $index) {
+        @for (order of dashboard.arrays.filteredItems; track order._id; let i = $index) {
           <tr>
             <th scope="row">{{ i + 1 }}</th>
-            <td>{{ orderExt.order.reference }}</td>
+            <td>{{ order.reference }}</td>
             <td>
               <a
-                [routerLink]="['/user-orders', orderExt.user?._id]"
+                [routerLink]="['/user-orders', order.userId._id]"
                 title="Visualiez les commandes de ce client"
                 aria-label="Visualiez les commandes de ce client"
               >
-                {{ orderExt.user?.email }}
+                {{ order.userId.email }}
               </a>
             </td>
             <td>
-              {{ orderExt.order.dateIns | date: 'dd/MM/yyyy' }} à
-              {{ orderExt.order.dateIns | date: 'HH:mm' }}
+              {{ order.dateIns | date: 'dd/MM/yyyy' }} à
+              {{ order.dateIns | date: 'HH:mm' }}
             </td>
             <td>
               {{
-                Common.numberToString(orderExt.order.round(orderExt.order.getTotalExcludingTax()))
+                Common.numberToString(Common.round(order.getTotalExcludingTax()))
               }}
               €
             </td>
             <td>
-              {{ Common.numberToString(orderExt.order.round(orderExt.order.getTotalInvoiced())) }} €
+              {{ Common.numberToString(Common.round(order.getTotalInvoiced())) }} €
             </td>
-            <td>{{ orderStatus.getByValue(orderExt.order.status)?.name }}</td>
+            <td>{{ orderStatus.getByValue(order.status)?.name }}</td>
           </tr>
         } @empty {
           <tr>

@@ -80,7 +80,7 @@ export class ProductsCarousel {
   }
 
   // Used to activate the first product
-  isActive(id: string, index: number) {
+  isActive(id: string | undefined, index: number) {
     return (
       (this.productId !== null && id === this.productId) || (this.productId === null && index === 0)
     );
@@ -89,7 +89,7 @@ export class ProductsCarousel {
   // Actions //////////////////////////////////////////////////////////////////
 
   // View a product
-  view(id: string) {
+  view(id: string | undefined) {
     this.router.navigate(['/product-view', id]);
   }
 

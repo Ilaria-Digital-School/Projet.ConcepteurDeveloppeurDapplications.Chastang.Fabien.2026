@@ -56,7 +56,7 @@ export class UserCart {
           this.products = res
             .map((product: Product) => {
               const PRODUCT = this.cart.products.find(
-                (item: OrderProduct) => item._id === product._id,
+                (item: OrderProduct) => item.productId === product._id,
               );
               // Initialize ONLY the quantity
               product.quantity = PRODUCT?.quantity;
@@ -85,7 +85,7 @@ export class UserCart {
   // Product-related actions //////////////////////////////////////////////////
 
   // View a product
-  view(id: string) {
+  view(id: string | undefined) {
     this.router.navigate(['/product-view', id]);
   }
 
@@ -112,7 +112,7 @@ export class UserCart {
   }
 
   // Remove a product
-  removeProduct(id: string) {
+  removeProduct(id: string | undefined) {
     // Confirmation message to remove a product
     if (!confirm(UserCart.msgDelProduct)) return;
 
@@ -125,7 +125,7 @@ export class UserCart {
   }
 
   // Remove a product from the list
-  removeFromList(id: string) {
+  removeFromList(id: string | undefined) {
     this.products = this.products.filter((item: Product) => item._id !== id);
   }
 

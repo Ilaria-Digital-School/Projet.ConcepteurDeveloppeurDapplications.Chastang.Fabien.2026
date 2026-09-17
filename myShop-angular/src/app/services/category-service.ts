@@ -19,18 +19,20 @@ export class CategoryService {
 
   // Add a category
   addCategory(category: Category): Observable<Category> {
+    const CATEGORY = category.removeBeforeSave(); // Remove the _id before saving the Category
     return this.httpClient.post<Category>(
       Resources.categoriesURL,
-      category,
+      CATEGORY,
       Common.getHttpHeaders(),
     );
   }
 
   // Update a category
   updateCategory(category: Category): Observable<Category> {
+    const CATEGORY = category.removeBeforeSave(); // Remove the _id before saving the Category
     return this.httpClient.put<Category>(
       `${Resources.categoriesURL}/${category._id}`,
-      category,
+      CATEGORY,
       Common.getHttpHeaders(),
     );
   }

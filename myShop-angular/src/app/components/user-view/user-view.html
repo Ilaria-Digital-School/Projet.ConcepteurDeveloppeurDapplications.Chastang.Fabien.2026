@@ -1,5 +1,5 @@
 <section>
-  @if (user._id.length > 0) {
+  @if (user) {
     <fieldset>
       <legend>
         <a [routerLink]="['/edit-user', user._id]" title="Éditer" aria-label="Éditer">

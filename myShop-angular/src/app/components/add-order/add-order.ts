@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Cart } from '../../models/cart';
 import { Order } from '../../models/order';
-import { Product } from '../../models/product';
 import { OrderService } from '../../services/order-service';
 import { CartService } from '../../services/cart-service';
 
@@ -14,7 +13,6 @@ import { CartService } from '../../services/cart-service';
 })
 export class AddOrder {
   // Native classes / Application services
-  private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
   private orderService = inject(OrderService);
   private cartService = inject(CartService);
@@ -29,13 +27,7 @@ export class AddOrder {
     // Retrieve the user's cart
     const CART = localStorage.getItem('cart');
     if (CART) {
-      const USER_CART = JSON.parse(CART).map((item: any) => {
-        // Initialize the Product object with its methods
-        const PRODUCT = new Product();
-        Object.assign(PRODUCT, item);
-        return PRODUCT;
-      });
-      this.userCart = new Cart(USER_CART);
+      this.userCart = new Cart(JSON.parse(CART));
     } else {
       this.userCart = new Cart();
     }
@@ -43,11 +35,13 @@ export class AddOrder {
 
   // Actions //////////////////////////////////////////////////////////////////
 
-  addOrder() {
+  submit() {
     if (this.userCart.products.length > 0) {
       // Instantiate and initialize the 'Order' object
       const ORDER = new Order();
       ORDER.initialize(this.userCart, this.taxPercent);
+
+      console.log(ORDER);
 
       // Save the order
       this.orderService.addOrder(ORDER).subscribe({

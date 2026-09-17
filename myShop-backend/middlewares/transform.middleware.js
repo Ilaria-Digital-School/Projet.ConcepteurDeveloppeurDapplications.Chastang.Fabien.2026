@@ -132,14 +132,10 @@ export const transformOrder = (req, res, next) => {
     // Clear the reference
     req.body.reference = req.body.reference.trim().toUpperCase();
   }
-  if (req.body.userId) {
-    // Clear the userId
-    req.body.userId = req.body.userId.trim().toLowerCase();
-  }
   if (Array.isArray(req.body.products) && req.body.products.length > 0) {
     // Clear the product array
     req.body.products.forEach((product) => {
-      product.id = product.id.trim();
+      product.productId = product.productId.trim();
 
       // Converting values
       if (product.price) {

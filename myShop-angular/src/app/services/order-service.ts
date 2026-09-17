@@ -60,19 +60,19 @@ export class OrderService {
   }
 
   // Retrieve an order by its ID
-  getOrderById(id: string | null): Observable<Order> {
+  getOrderById(id: string | undefined | null): Observable<Order> {
     return this.httpClient.get<Order>(`${Resources.ordersURL}/${id}`, Common.getHttpHeaders());
   }
 
   // Add an order
   addOrder(order: Order): Observable<Order> {
-    const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
+    const ORDER = order.removeBeforeSave(); // Remove these properties before saving the Order
     return this.httpClient.post<Order>(Resources.ordersURL, ORDER, Common.getHttpHeaders());
   }
 
   // Update an order
   updateOrder(order: Order): Observable<Order> {
-    const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
+    const ORDER = order.removeBeforeSave(); // Remove these properties before saving the Order
     return this.httpClient.put<Order>(
       `${Resources.ordersURL}/${order._id}`,
       ORDER,
@@ -82,7 +82,7 @@ export class OrderService {
 
   // Show an order
   showOrder(order: Order): Observable<Order> {
-    const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
+    const ORDER = order.removeBeforeSave(); // Remove these properties before saving the Order
     ORDER.visible = true;
     return this.httpClient.patch<Order>(
       `${Resources.ordersURL}/${order._id}/visible`,
@@ -93,7 +93,7 @@ export class OrderService {
 
   // Hide an order
   hideOrder(order: Order): Observable<Order> {
-    const ORDER = order.removeBeforeSaveOrder(); // Remove these properties before saving the order
+    const ORDER = order.removeBeforeSave(); // Remove these properties before saving the Order
     ORDER.visible = false;
     return this.httpClient.patch<Order>(
       `${Resources.ordersURL}/${order._id}/visible`,
@@ -103,7 +103,7 @@ export class OrderService {
   }
 
   // Delete an order
-  deleteOrder(id: string | null): Observable<Order> {
+  deleteOrder(id: string | undefined | null): Observable<Order> {
     return this.httpClient.delete<Order>(`${Resources.ordersURL}/${id}`, Common.getHttpHeaders());
   }
 }

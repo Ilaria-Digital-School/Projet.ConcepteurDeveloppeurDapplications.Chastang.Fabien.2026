@@ -36,15 +36,15 @@ export const validateAddProduct = (req, res, next) => {
     }),
     price: Joi.number().min(0.01).max(9999.99).required().messages({
       'number.base': 'The {{#label}} attribut must be a number',
-      'number.min': 'The {{#label}} attribut must be a number greater than 0',
-      'number.max': 'The {{#label}} attribut must be a number less than 10000',
+      'number.min': 'The {{#label}} attribut must be a number greater than or equal to 0.01',
+      'number.max': 'The {{#label}} attribut must be a number less than or equal to 9999.99',
       'any.required': 'The {{#label}} attribut is mandatory',
     }),
     stock: Joi.number().integer().min(0).max(10000).required().messages({
       'number.base': 'The {{#label}} attribut must be an integer',
       'number.integer': 'The {{#label}} attribut must be an integer',
       'number.min': 'The {{#label}} attribut must be an integer greater than or equal to 0',
-      'number.max': 'The {{#label}} attribut must be an integer less than 10000',
+      'number.max': 'The {{#label}} attribut must be an integer less than or equal to 10000',
       'any.required': 'The {{#label}} attribut is mandatory',
     }),
     img: Joi.string().pattern(URL_PATTERN).required().messages({
@@ -116,13 +116,13 @@ export const validateUpdProduct = (req, res, next) => {
     price: Joi.number().min(0.01).max(9999.99).optional().messages({
       'number.base': 'The {{#label}} attribut must be a number',
       'number.min': 'The {{#label}} attribut must be a number greater than or equal to 0.01',
-      'number.max': 'The {{#label}} attribut must be a number less than 10000',
+      'number.max': 'The {{#label}} attribut must be a number less than or equal to 9999.99',
     }),
     stock: Joi.number().integer().min(0).max(10000).optional().messages({
       'number.base': 'The {{#label}} attribut must be an integer',
       'number.integer': 'The {{#label}} attribut must be an integer',
       'number.min': 'The {{#label}} attribut must be an integer greater than or equal to 0',
-      'number.max': 'The {{#label}} attribut must be an integer less than 10000',
+      'number.max': 'The {{#label}} attribut must be an integer less than or equal to 10000',
     }),
     img: Joi.string().pattern(URL_PATTERN).optional().messages({
       'string.base': 'The {{#label}} attribut must be a string',

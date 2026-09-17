@@ -19,14 +19,16 @@ export class CountryService {
 
   // Add a country
   addCountry(country: Country): Observable<Country> {
-    return this.httpClient.post<Country>(Resources.countriesURL, country, Common.getHttpHeaders());
+    const COUNTRY = country.removeBeforeSave(); // Remove the _id before saving the Country
+    return this.httpClient.post<Country>(Resources.countriesURL, COUNTRY, Common.getHttpHeaders());
   }
 
   // Update a country
   updateCountry(country: Country): Observable<Country> {
+    const COUNTRY = country.removeBeforeSave(); // Remove the _id before saving the Country
     return this.httpClient.put<Country>(
       `${Resources.countriesURL}/${country._id}`,
-      country,
+      COUNTRY,
       Common.getHttpHeaders(),
     );
   }

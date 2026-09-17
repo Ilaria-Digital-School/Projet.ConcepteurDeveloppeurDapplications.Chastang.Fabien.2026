@@ -3,8 +3,7 @@ import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { Common } from '../../constants/common';
-import { Order, OrderExt } from '../../models/order';
-import { User } from '../../models/user';
+import { Order } from '../../models/order';
 import { StatusList } from '../../models/status';
 import { DashboardHandle } from '../../models/dashboard';
 import { OrderService } from '../../services/order-service';
@@ -31,7 +30,7 @@ export class DashboardOrders {
   private orderService = inject(OrderService);
 
   // Class properties grouped in the 'DashboardHandle' class
-  dashboard: DashboardHandle<OrderExt> = new DashboardHandle<OrderExt>();
+  dashboard: DashboardHandle<Order> = new DashboardHandle<Order>();
   orderStatus: StatusList = new StatusList();
 
   // Load and search //////////////////////////////////////////////////////////
@@ -47,17 +46,15 @@ export class DashboardOrders {
         map((email: string) => {
           const EMAIL = email.toLocaleLowerCase();
           return this.dashboard.arrays.unfiltered.filter(
-            (orderExt: OrderExt) => orderExt.user?.email.toLowerCase().indexOf(EMAIL) === 0,
+            (order: Order) => order.userId.email.toLowerCase().indexOf(EMAIL) === 0,
           );
         }),
       )
-      .subscribe((res: OrderExt[]) => {
+      .subscribe((res: Order[]) => {
         this.dashboard.arrays.filteredText = res;
-        this.dashboard.arrays.filteredTextRef = res.filter((orderExt: OrderExt) =>
+        this.dashboard.arrays.filteredTextRef = res.filter((order: Order) =>
           // Filter by order reference
-          this.dashboard.arrays.filteredRef.some(
-            (item: OrderExt) => item.order._id === orderExt.order._id,
-          ),
+          this.dashboard.arrays.filteredRef.some((item: Order) => item._id === order._id),
         );
         // Filter by order status
         this.filterStatus();
@@ -69,49 +66,36 @@ export class DashboardOrders {
         map((reference: string) => {
           const REFERENCE = reference.toLocaleUpperCase();
           return this.dashboard.arrays.unfiltered.filter(
-            (orderExt: OrderExt) => orderExt.order.reference.indexOf(REFERENCE) === 0,
+            (order: Order) => order.reference.indexOf(REFERENCE) === 0,
           );
         }),
       )
-      .subscribe((res: OrderExt[]) => {
+      .subscribe((res: Order[]) => {
         this.dashboard.arrays.filteredRef = res;
-        this.dashboard.arrays.filteredTextRef = res.filter((orderExt: OrderExt) =>
+        this.dashboard.arrays.filteredTextRef = res.filter((order: Order) =>
           // Filter by user email
-          this.dashboard.arrays.filteredText.some(
-            (item: OrderExt) => item.order._id === orderExt.order._id,
-          ),
+          this.dashboard.arrays.filteredText.some((item: Order) => item._id === order._id),
         );
         // Filter by order status
         this.filterStatus();
       });
   }
 
-  // Retrieve all orders before loading the users
+  // Retrieve all orders
   load() {
     this.orderService.getAllOrders().subscribe({
       next: (res: Order[]) => {
-        this.loadUsers(res); // Retrieve all users and associate all orders with their users
-      },
-      error: (err: any) => {
-        alert("Une erreur s'est produite lors de la récupération des données.");
-        console.log(err);
-      },
-    });
-  }
-
-  // Retrieve all users and associate all orders with their users
-  loadUsers(orders: Order[]) {
-    this.userService.getAllUsers().subscribe({
-      next: (res: User[]) => {
-        // All orders associate with their users
-        this.dashboard.arrays.unfiltered = orders
+        // All orders
+        this.dashboard.arrays.unfiltered = res
           .map((order: Order) => {
-            // Initialize the Order object with its methods
             const ORDER = new Order();
             Object.assign(ORDER, order);
-            return { order: ORDER, user: res.find((user: User) => user._id === order.userId) };
+            return ORDER;
           })
-          .sort((item1: OrderExt, item2: OrderExt) => Common.timestamp(item2.order.dateIns) - Common.timestamp(item1.order.dateIns));
+          .sort(
+            (item1: Order, item2: Order) =>
+              Common.timestamp(item2.dateIns) - Common.timestamp(item1.dateIns),
+          );
         this.dashboard.arrays.filteredText = this.dashboard.arrays.unfiltered;
         this.dashboard.arrays.filteredRef = this.dashboard.arrays.unfiltered;
         this.dashboard.arrays.filteredTextRef = this.dashboard.arrays.unfiltered;
@@ -130,7 +114,7 @@ export class DashboardOrders {
       this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredTextRef;
     } else {
       this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredTextRef.filter(
-        (orderExt: OrderExt) => orderExt.order.status === this.dashboard.selectedValue,
+        (order: Order) => order.status === this.dashboard.selectedValue,
       );
     }
   }
@@ -161,46 +145,54 @@ export class DashboardOrders {
   }
 
   // Sort orders by dateIns (default)
-  sortByDate(array: OrderExt[], up: boolean): OrderExt[] {
+  sortByDate(array: Order[], up: boolean): Order[] {
     if (up) {
-      return array.sort((item1: OrderExt, item2: OrderExt) => Common.timestamp(item1.order.dateIns) - Common.timestamp(item2.order.dateIns));
+      return array.sort(
+        (item1: Order, item2: Order) =>
+          Common.timestamp(item1.dateIns) - Common.timestamp(item2.dateIns),
+      );
     } else {
-      return array.sort((item1: OrderExt, item2: OrderExt) => Common.timestamp(item2.order.dateIns) - Common.timestamp(item1.order.dateIns));
+      return array.sort(
+        (item1: Order, item2: Order) =>
+          Common.timestamp(item2.dateIns) - Common.timestamp(item1.dateIns),
+      );
     }
   }
 
   // Sort user orders by email
-  sortByEmail(array: OrderExt[], up: boolean): OrderExt[] {
+  sortByEmail(array: Order[], up: boolean): Order[] {
     if (up) {
-      return array.sort((item1: OrderExt, item2: OrderExt) => {
-        const COMPARE =
-          item1.user !== undefined && item2.user !== undefined
-            ? item1.user.email.localeCompare(item2.user.email)
-            : 0;
-        return COMPARE === 0 ? Common.timestamp(item1.order.dateIns) - Common.timestamp(item2.order.dateIns) : COMPARE;
+      return array.sort((item1: Order, item2: Order) => {
+        const COMPARE = item1.userId.email.localeCompare(item2.userId.email);
+        return COMPARE === 0
+          ? Common.timestamp(item1.dateIns) - Common.timestamp(item2.dateIns)
+          : COMPARE;
       });
     } else {
-      return array.sort((item1: OrderExt, item2: OrderExt) => {
-        const COMPARE =
-          item1.user !== undefined && item2.user !== undefined
-            ? item2.user.email.localeCompare(item1.user.email)
-            : 0;
-        return COMPARE === 0 ? Common.timestamp(item2.order.dateIns) - Common.timestamp(item1.order.dateIns) : COMPARE;
+      return array.sort((item1: Order, item2: Order) => {
+        const COMPARE = item2.userId.email.localeCompare(item1.userId.email);
+        return COMPARE === 0
+          ? Common.timestamp(item2.dateIns) - Common.timestamp(item1.dateIns)
+          : COMPARE;
       });
     }
   }
 
   // Sort orders by status
-  sortByStatus(array: OrderExt[], up: boolean): OrderExt[] {
+  sortByStatus(array: Order[], up: boolean): Order[] {
     if (up) {
-      return array.sort((item1: OrderExt, item2: OrderExt) => {
-        const COMPARE = item1.order.status - item2.order.status;
-        return COMPARE === 0 ? Common.timestamp(item1.order.dateIns) - Common.timestamp(item2.order.dateIns) : COMPARE;
+      return array.sort((item1: Order, item2: Order) => {
+        const COMPARE = item1.status - item2.status;
+        return COMPARE === 0
+          ? Common.timestamp(item1.dateIns) - Common.timestamp(item2.dateIns)
+          : COMPARE;
       });
     } else {
-      return array.sort((item1: OrderExt, item2: OrderExt) => {
-        const COMPARE = item2.order.status - item1.order.status;
-        return COMPARE === 0 ? Common.timestamp(item2.order.dateIns) - Common.timestamp(item1.order.dateIns) : COMPARE;
+      return array.sort((item1: Order, item2: Order) => {
+        const COMPARE = item2.status - item1.status;
+        return COMPARE === 0
+          ? Common.timestamp(item2.dateIns) - Common.timestamp(item1.dateIns)
+          : COMPARE;
       });
     }
   }

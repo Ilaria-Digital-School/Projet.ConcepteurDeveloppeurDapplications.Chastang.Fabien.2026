@@ -49,13 +49,13 @@ export class ProductService {
   }
 
   // NO TOKEN - Retrieve a product by its ID
-  getProductById(id: string | null): Observable<Product> {
+  getProductById(id: string | undefined | null): Observable<Product> {
     return this.httpClient.get<Product>(`${Resources.productsURL}/${id}`);
   }
 
   // Add a product
   addProduct(product: Product): Observable<Product> {
-    const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
+    const PRODUCT = product.removeBeforeSave(); // Remove these properties before saving the Product
     return this.httpClient.post<Product>(Resources.productsURL, PRODUCT, Common.getHttpHeaders());
 
     // With cookie
@@ -66,7 +66,7 @@ export class ProductService {
 
   // Update a product
   updateProduct(product: Product): Observable<Product> {
-    const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
+    const PRODUCT = product.removeBeforeSave(); // Remove these properties before saving the Product
     return this.httpClient.put<Product>(
       `${Resources.productsURL}/${product._id}`,
       PRODUCT,
@@ -76,7 +76,7 @@ export class ProductService {
 
   // Show a product
   showProduct(product: Product): Observable<Product> {
-    const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
+    const PRODUCT = product.removeBeforeSave(); // Remove these properties before saving the Product
     PRODUCT.visible = true;
     return this.httpClient.patch<Product>(
       `${Resources.productsURL}/${product._id}/visible`,
@@ -87,7 +87,7 @@ export class ProductService {
 
   // Hide a product
   hideProduct(product: Product): Observable<Product> {
-    const PRODUCT = product.removeBeforeSaveProduct(); // Remove these properties before saving the product
+    const PRODUCT = product.removeBeforeSave(); // Remove these properties before saving the Product
     PRODUCT.visible = false;
     return this.httpClient.patch<Product>(
       `${Resources.productsURL}/${product._id}/visible`,
@@ -97,7 +97,7 @@ export class ProductService {
   }
 
   // Delete a product
-  deleteProduct(id: string | null): Observable<Product> {
+  deleteProduct(id: string | undefined | null): Observable<Product> {
     return this.httpClient.delete<Product>(
       `${Resources.productsURL}/${id}`,
       Common.getHttpHeaders(),

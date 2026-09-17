@@ -9,7 +9,7 @@ function isInt(value) {
 export const getAllProducts = async (req, res, next) => {
   try {
     // Retrieve the product list from the database
-    const PRODUCTS = await Product.find().populate('userId', 'name email');
+    const PRODUCTS = await Product.find();
 
     // Success handler call
     res.success(PRODUCTS, 200, 'Product list successfully retrieved', true);

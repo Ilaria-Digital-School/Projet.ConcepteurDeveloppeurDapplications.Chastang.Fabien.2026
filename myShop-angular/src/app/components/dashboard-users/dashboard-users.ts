@@ -220,7 +220,7 @@ export class DashboardUsers {
   }
 
   // Delete a user
-  remove(id: string) {
+  remove(id: string | undefined) {
     // Confirmaton message to delete the user
     if (confirm(DashboardUsers.msgDelUser)) {
       // Remove the user

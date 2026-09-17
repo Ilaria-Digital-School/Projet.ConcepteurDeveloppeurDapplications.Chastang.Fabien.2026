@@ -25,8 +25,8 @@ export class UserView {
   private static msgDelUser: string = 'Êtes-vous sûr de vouloir supprimer votre compte ?';
 
   // Class properties
-  userId!: string | null;
-  user: User = new User();
+  userId!: string | undefined | null;
+  user!: User;
   roles: RoleList = new RoleList();
   genders: GenderList = new GenderList();
   interests: InterestList = new InterestList();
@@ -38,6 +38,7 @@ export class UserView {
     this.userId = this.activatedRoute.snapshot.paramMap.get('id');
     this.userService.getUserById(this.userId).subscribe({
       next: (res: User) => {
+        this.user = new User();
         this.user = res;
       },
       error: (err: any) => {
@@ -53,7 +54,7 @@ export class UserView {
   }
 
   // Delete a user
-  remove(id: string) {
+  remove(id: string | undefined) {
     // Confirmaton message to delete the user
     if (confirm(UserView.msgDelUser)) {
       // Remove the user

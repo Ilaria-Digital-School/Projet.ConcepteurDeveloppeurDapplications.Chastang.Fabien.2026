@@ -183,17 +183,17 @@ export class DashboardProducts {
   // Actions //////////////////////////////////////////////////////////////////
 
   // View a product
-  view(id: string) {
+  view(id: string | undefined) {
     this.router.navigate(['/product-view', id]);
   }
 
   // Edit a product
-  edit(id: string) {
+  edit(id: string | undefined) {
     this.router.navigate(['/edit-product', id]);
   }
 
   // Delete a product
-  remove(id: string) {
+  remove(id: string | undefined) {
     // Confirmaton message to delete the product
     if (confirm(DashboardProducts.msgDelProduct)) {
       // Remove the product

@@ -149,8 +149,8 @@ export class Common {
   }
 
   // Retrieve the timestamp from a date
-  static timestamp(date: string | number | Date): number {
-    return new Date(date).valueOf();
+  static timestamp(date: string | number | Date | undefined): number {
+    return date === undefined ? 0 : new Date(date).valueOf();
   }
 
   // Token management /////////////////////////////////////////////////////////

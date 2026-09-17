@@ -25,7 +25,7 @@ const orderSchema = new mongoose.Schema({
   },
   products: {
     type: [{
-      id: {
+      productId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product', // Product model
         required: [true, 'The "product.id" attribut is mandatory'],
@@ -44,6 +44,7 @@ const orderSchema = new mongoose.Schema({
   promoCode: {
     type: String,
     default: '',
+    trim: true,
   },
   taxPercent: {
     type: Number,

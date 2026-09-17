@@ -19,18 +19,20 @@ export class InterestService {
 
   // Add a user interest / product type
   addInterest(interest: Interest): Observable<Interest> {
+    const INTEREST = interest.removeBeforeSave(); // Remove the _id before saving the Interest
     return this.httpClient.post<Interest>(
       Resources.interestsURL,
-      interest,
+      INTEREST,
       Common.getHttpHeaders(),
     );
   }
 
   // Update a user interest / product type
   updateInterest(interest: Interest): Observable<Interest> {
+    const INTEREST = interest.removeBeforeSave(); // Remove the _id before saving the Interest
     return this.httpClient.put<Interest>(
       `${Resources.interestsURL}/${interest._id}`,
-      interest,
+      INTEREST,
       Common.getHttpHeaders(),
     );
   }

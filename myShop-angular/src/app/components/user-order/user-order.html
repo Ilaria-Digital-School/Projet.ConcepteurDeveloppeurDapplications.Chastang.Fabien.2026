@@ -50,16 +50,16 @@
         <td colspan="3">
           <div class="cell-total">
             <div [style.white-space]="'nowrap'">
-              {{ Common.numberToString(objOrder.round(objOrder.getTotalExcludingTax())) }} €
+              {{ Common.numberToString(Common.round(objOrder.getTotalExcludingTax())) }} €
               <span id="info-tax">(HT)</span>
             </div>
             <div [style.white-space]="'nowrap'">
-              {{ Common.numberToString(objOrder.round(objOrder.getTotalIncludingTax())) }} €
+              {{ Common.numberToString(Common.round(objOrder.getTotalIncludingTax())) }} €
               <span id="info-tax">(TTC)</span>
             </div>
             @if (objOrder.promoPercent > 0) {
               <div [style.white-space]="'nowrap'">
-                {{ Common.numberToString(objOrder.round(objOrder.getTotalPromotion())) }} € Facturé
+                {{ Common.numberToString(Common.round(objOrder.getTotalPromotion())) }} € Facturé
                 (promotion)
               </div>
             }

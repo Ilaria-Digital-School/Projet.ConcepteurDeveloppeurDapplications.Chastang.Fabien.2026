@@ -21,19 +21,19 @@ export class MessageService {
   }
 
   // Retrieve a message by its ID
-  getMessageById(id: string | null): Observable<Message> {
+  getMessageById(id: string | undefined | null): Observable<Message> {
     return this.httpClient.get<Message>(`${Resources.messagesURL}/${id}`, Common.getHttpHeaders());
   }
 
   // Add a message
   addMessage(message: Message): Observable<Message> {
-    const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
+    const MESSAGE = message.removeBeforeSave(); // Remove these properties before saving the Message
     return this.httpClient.post<Message>(Resources.messagesURL, MESSAGE, Common.getHttpHeaders());
   }
 
   // Reply to a message
   replyOnMessage(message: Message): Observable<Message> {
-    const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
+    const MESSAGE = message.removeBeforeSave(); // Remove these properties before saving the Message
     return this.httpClient.patch<Message>(
       `${Resources.messagesURL}/${message._id}/daterep`,
       MESSAGE,
@@ -43,7 +43,7 @@ export class MessageService {
 
   // Show a message
   showMessage(message: Message): Observable<Message> {
-    const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
+    const MESSAGE = message.removeBeforeSave(); // Remove these properties before saving the Message
     MESSAGE.visible = true;
     return this.httpClient.patch<Message>(
       `${Resources.messagesURL}/${message._id}/visible`,
@@ -54,7 +54,7 @@ export class MessageService {
 
   // Hide a message
   hideMessage(message: Message): Observable<Message> {
-    const MESSAGE = message.removeBeforeSaveMessage(); // Remove these properties before saving the message
+    const MESSAGE = message.removeBeforeSave(); // Remove these properties before saving the Message
     MESSAGE.visible = false;
     return this.httpClient.patch<Message>(
       `${Resources.messagesURL}/${message._id}/visible`,
@@ -64,7 +64,7 @@ export class MessageService {
   }
 
   // Delete a message
-  deleteMessage(id: string | null): Observable<Message> {
+  deleteMessage(id: string | undefined | null): Observable<Message> {
     return this.httpClient.delete<Message>(
       `${Resources.messagesURL}/${id}`,
       Common.getHttpHeaders(),
