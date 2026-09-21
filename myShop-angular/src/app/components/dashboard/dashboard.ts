@@ -22,25 +22,25 @@ export class Dashboard {
   // Class properties
   from: number = 0; // User tab
 
-  ngOnInit() {
+  ngOnInit(): void {
     // Origin of the page request
     if (this.router.url.includes('dashboard-product')) this.from = 1; // Product tab
     if (this.router.url.includes('dashboard-order')) this.from = 2; // Order tab
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.usersFocus();
   }
 
-  usersFocus() {
+  usersFocus(): void {
     this.usersTable.emailUsers.nativeElement.focus();
   }
 
-  productsFocus() {
+  productsFocus(): void {
     this.productsTable.nameProducts.nativeElement.focus();
   }
 
-  ordersFocus() {
+  ordersFocus(): void {
     this.ordersTable.emailOrders.nativeElement.focus();
   }
 }

@@ -42,24 +42,24 @@ export class DashboardHandle<T> {
   // Search methods ///////////////////////////////////////////////////////////
 
   // Search by email (User and Order) or name (Product)
-  searchTextItems(text: string) {
+  searchTextItems(text: string): void {
     this.searchTextSubject.next(text);
   }
 
   // Search by reference (User, Product and Order)
-  searchRefItems(reference: string) {
+  searchRefItems(reference: string): void {
     this.searchRefSubject.next(reference);
   }
 
   // Sort method //////////////////////////////////////////////////////////////
 
-  private handleArrow(HTMLCol: HTMLElement, up: boolean) {
+  private handleArrow(HTMLCol: HTMLElement, up: boolean): void {
     const [TO_REP, REP_BY] = up ? ['down', 'up'] : ['up', 'down'];
     HTMLCol.classList.replace(`fa-caret-${TO_REP}`, `fa-caret-${REP_BY}`);
   }
 
   // Sort all arrays
-  sort(column: string) {
+  sort(column: string): void {
     const SORTED = this.sortVariables.find((item: SortVariables) => item.sort);
     if (SORTED !== undefined) {
       for (const ELT_SORT of this.sortElements)

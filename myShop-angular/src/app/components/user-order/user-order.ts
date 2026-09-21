@@ -29,7 +29,7 @@ export class UserOrder {
   orderStatus: StatusList = new StatusList();
 
   // Initialization
-  ngOnInit() {
+  ngOnInit(): void {
     // Initialize the Order object with its methods
     Object.assign(this.objOrder, this.order);
 

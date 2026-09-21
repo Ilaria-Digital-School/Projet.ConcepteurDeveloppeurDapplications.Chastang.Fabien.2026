@@ -36,7 +36,7 @@ export class DashboardOrders {
   // Load and search //////////////////////////////////////////////////////////
 
   // Initialize order lists and search functions
-  ngOnInit() {
+  ngOnInit(): void {
     // Load all orders
     this.load();
 
@@ -82,7 +82,7 @@ export class DashboardOrders {
   }
 
   // Retrieve all orders
-  load() {
+  load(): void {
     this.orderService.getAllOrders().subscribe({
       next: (res: Order[]) => {
         // All orders
@@ -108,7 +108,7 @@ export class DashboardOrders {
   }
 
   // Filter by order status
-  filterStatus() {
+  filterStatus(): void {
     if (this.dashboard.selectedValue === -1) {
       this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredTextRef;
     } else {
@@ -119,7 +119,7 @@ export class DashboardOrders {
   }
 
   // Search by order status
-  selectStatus(select: any) {
+  selectStatus(select: any): void {
     this.dashboard.selectedValue = Number(select.options[select.selectedIndex].value);
     this.filterStatus();
   }
@@ -127,7 +127,7 @@ export class DashboardOrders {
   // Sort /////////////////////////////////////////////////////////////////////
 
   // Initialize sorting
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     // Defines the sorting elements: here, all attributes are fixed
     this.dashboard.sortElements = [
       { col: 'email', up: true, func: this.sortByEmail, HTMLCol: this.sortEmail.nativeElement },

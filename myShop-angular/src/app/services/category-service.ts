@@ -3,45 +3,40 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Resources } from '../api.config';
 import { Category } from '../models/category';
-import { Common } from '../constants/common';
+import { HTTPHeaders, Common } from '../constants/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoryService {
   // Performs HTTP requests
-  private httpClient = inject(HttpClient);
+  private httpClient: HttpClient = inject(HttpClient);
+  private url: string = Resources.categoriesURL;
+  // HTTP headers for transmitting the token: using an HttpOnly, Secure,
+  // and SameSite=Strict cookie is a much better practice
+  private httpHeaders: HTTPHeaders = Common.getHttpHeaders();
 
   // NO TOKEN - Retrieve all categories
   getAllCategories(): Observable<Category[]> {
-    return this.httpClient.get<Category[]>(Resources.categoriesURL);
+    return this.httpClient.get<Category[]>(this.url);
   }
 
   // Add a category
   addCategory(category: Category): Observable<Category> {
-    const CATEGORY = category.removeBeforeSave(); // Remove the _id before saving the Category
-    return this.httpClient.post<Category>(
-      Resources.categoriesURL,
-      CATEGORY,
-      Common.getHttpHeaders(),
-    );
+    // Remove the _id before saving the Category
+    const CATEGORY = category.removeBeforeSave();
+    return this.httpClient.post<Category>(this.url, CATEGORY, this.httpHeaders);
   }
 
   // Update a category
   updateCategory(category: Category): Observable<Category> {
-    const CATEGORY = category.removeBeforeSave(); // Remove the _id before saving the Category
-    return this.httpClient.put<Category>(
-      `${Resources.categoriesURL}/${category._id}`,
-      CATEGORY,
-      Common.getHttpHeaders(),
-    );
+    // Remove the _id before saving the Category
+    const CATEGORY = category.removeBeforeSave();
+    return this.httpClient.put<Category>(`${this.url}/${category._id}`, CATEGORY, this.httpHeaders);
   }
 
   // Delete a category
   deleteCategory(id: string | null): Observable<Category> {
-    return this.httpClient.delete<Category>(
-      `${Resources.categoriesURL}/${id}`,
-      Common.getHttpHeaders(),
-    );
+    return this.httpClient.delete<Category>(`${this.url}/${id}`, this.httpHeaders);
   }
 }

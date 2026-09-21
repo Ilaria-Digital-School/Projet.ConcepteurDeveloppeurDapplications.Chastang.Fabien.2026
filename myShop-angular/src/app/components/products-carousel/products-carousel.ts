@@ -37,7 +37,7 @@ export class ProductsCarousel {
   // Initialization ///////////////////////////////////////////////////////////
 
   // Retrieving the products and the product specified by the ID passed in the URL
-  ngOnInit() {
+  ngOnInit(): void {
     // Get the product ID
     this.productId = this.activatedRoute.snapshot.paramMap.get('id');
 
@@ -60,7 +60,7 @@ export class ProductsCarousel {
 
   // Handle the slide change and show the active product card
   @HostListener('slid.bs.carousel', ['$event'])
-  onSlid(event: any) {
+  onSlid(event: any): void {
     // Retrieve the active product ID
     const ID = this.productsCarousel.find((item: ElementRef<HTMLDivElement>) =>
       item.nativeElement.className.includes('active'),
@@ -80,7 +80,7 @@ export class ProductsCarousel {
   }
 
   // Used to activate the first product
-  isActive(id: string | undefined, index: number) {
+  isActive(id: string | undefined, index: number): boolean {
     return (
       (this.productId !== null && id === this.productId) || (this.productId === null && index === 0)
     );
@@ -89,17 +89,17 @@ export class ProductsCarousel {
   // Actions //////////////////////////////////////////////////////////////////
 
   // View a product
-  view(id: string | undefined) {
+  view(id: string | undefined): void {
     this.router.navigate(['/product-view', id]);
   }
 
   // Add the product to the user's cart
-  addOne(product: Product) {
+  addOne(product: Product): void {
     this.cartService.addOne(new OrderProduct(product));
   }
 
   // Remove the product from the user's cart
-  removeOne(product: Product) {
+  removeOne(product: Product): void {
     this.cartService.removeOne(new OrderProduct(product));
   }
 }

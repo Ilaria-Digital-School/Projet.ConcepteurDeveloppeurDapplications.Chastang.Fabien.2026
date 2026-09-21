@@ -49,7 +49,7 @@ export class InterestList {
   }
 
   // Initialize the object containing the values ​​of interest
-  private initValues() {
+  private initValues(): void {
     const CLOTHES = this.interests.find((i: Interest) => i.field === 'clothes');
     const ACCESSORIES = this.interests.find((i: Interest) => i.field === 'accessories');
     if (CLOTHES !== undefined && ACCESSORIES !== undefined) {

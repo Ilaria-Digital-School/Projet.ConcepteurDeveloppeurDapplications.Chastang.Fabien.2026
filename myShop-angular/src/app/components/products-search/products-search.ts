@@ -36,7 +36,7 @@ export class ProductsSearch {
   // Load the data and initialize the search function /////////////////////////
 
   // Initialize the product lists and the search function
-  ngOnInit() {
+  ngOnInit(): void {
     // Retrieve the products
     this.load();
 
@@ -57,7 +57,7 @@ export class ProductsSearch {
   }
 
   // Retrieve all products
-  load() {
+  load(): void {
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
         this.products = res.sort((p1: Product, p2: Product) => {
@@ -75,31 +75,31 @@ export class ProductsSearch {
   }
 
   // Set the focus in the product name search field
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.nameProducts?.nativeElement.focus();
   }
 
   // Search ///////////////////////////////////////////////////////////////////
 
   // Search for products by name
-  searchNameItems(name: string) {
+  searchNameItems(name: string): void {
     this.searchNameSubject.next(name);
   }
 
   // Search for products by type
-  selectTypeItems(select: any) {
+  selectTypeItems(select: any): void {
     this.selectedType = Number(select.options[select.selectedIndex].value);
     this.filterSelect();
   }
 
   // Search for products by category
-  selectCategoryItems(select: any) {
+  selectCategoryItems(select: any): void {
     this.selectedCategory = Number(select.options[select.selectedIndex].value);
     this.filterSelect();
   }
 
   // Filter by product type and category
-  filterSelect() {
+  filterSelect(): void {
     switch (this.selectedType) {
       case -1:
         switch (this.selectedCategory) {
@@ -162,7 +162,7 @@ export class ProductsSearch {
   // Actions //////////////////////////////////////////////////////////////////
 
   // View a product
-  view(id: string) {
+  view(id: string): void {
     this.router.navigate(['/product-view', id]);
   }
 }

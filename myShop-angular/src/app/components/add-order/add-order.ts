@@ -23,7 +23,7 @@ export class AddOrder {
 
   // Initialization ///////////////////////////////////////////////////////////
 
-  ngOnInit() {
+  ngOnInit(): void {
     // Retrieve the user's cart
     const CART = localStorage.getItem('cart');
     if (CART) {
@@ -35,7 +35,7 @@ export class AddOrder {
 
   // Actions //////////////////////////////////////////////////////////////////
 
-  submit() {
+  submit(): void {
     if (this.userCart.products.length > 0) {
       // Instantiate and initialize the 'Order' object
       const ORDER = new Order();

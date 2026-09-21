@@ -27,7 +27,7 @@ export class Order {
     taxPercent: number,
     promoCode: string | null = null,
     promoPercent: number | null = null,
-  ) {
+  ): void {
     this.products = cart.products;
     this.taxPercent = taxPercent;
 
@@ -66,7 +66,7 @@ export class Order {
   }
 
   // Update the status
-  changeStatus(status: number) {
+  changeStatus(status: number): void {
     this.status = status;
   }
 

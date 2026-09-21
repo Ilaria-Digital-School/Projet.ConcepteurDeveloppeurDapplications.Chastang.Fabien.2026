@@ -14,7 +14,7 @@ export class FormTooltip {
   @Input() isSimple: any;
   @Input() helpHTML: any;
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.infoText.nativeElement.innerHTML = this.helpHTML;
   }
 }

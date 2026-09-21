@@ -35,7 +35,7 @@ export class DashboardProducts {
   // Load and search //////////////////////////////////////////////////////////
 
   // Initialize product lists and search functions
-  ngOnInit() {
+  ngOnInit(): void {
     // Load all products
     this.load();
 
@@ -81,7 +81,7 @@ export class DashboardProducts {
   }
 
   // Retrieve all products
-  load() {
+  load(): void {
     this.productService.getAllProducts().subscribe({
       next: (res: Product[]) => {
         // All products
@@ -102,7 +102,7 @@ export class DashboardProducts {
   }
 
   // Filter by product stock
-  filterStock() {
+  filterStock(): void {
     if (this.dashboard.selectedValue === -1) {
       this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredTextRef;
     } else if (this.dashboard.selectedValue >= 0) {
@@ -117,7 +117,7 @@ export class DashboardProducts {
   }
 
   // Search by product stock
-  selectStock(select: any) {
+  selectStock(select: any): void {
     this.dashboard.selectedValue = Number(select.options[select.selectedIndex].value);
     this.filterStock();
   }
@@ -125,7 +125,7 @@ export class DashboardProducts {
   // Sort /////////////////////////////////////////////////////////////////////
 
   // Initialize sorting
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     // Defines the sorting elements: here, all attributes are fixed
     this.dashboard.sortElements = [
       { col: 'name', up: true, func: this.sortByName, HTMLCol: this.sortName.nativeElement },
@@ -183,17 +183,17 @@ export class DashboardProducts {
   // Actions //////////////////////////////////////////////////////////////////
 
   // View a product
-  view(id: string | undefined) {
+  view(id: string | undefined): void {
     this.router.navigate(['/product-view', id]);
   }
 
   // Edit a product
-  edit(id: string | undefined) {
+  edit(id: string | undefined): void {
     this.router.navigate(['/edit-product', id]);
   }
 
   // Delete a product
-  remove(id: string | undefined) {
+  remove(id: string | undefined): void {
     // Confirmaton message to delete the product
     if (confirm(DashboardProducts.msgDelProduct)) {
       // Remove the product

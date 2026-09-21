@@ -24,7 +24,7 @@ export class Cart {
   }
 
   // Add a product
-  addOne(product: Product) {
+  addOne(product: Product): void {
     let quantity;
     const PRODUCT = this.products.find((item: OrderProduct) => item.productId === product._id);
     if (PRODUCT) {
@@ -39,7 +39,7 @@ export class Cart {
   }
 
   // Remove a product
-  removeOne(product: Product) {
+  removeOne(product: Product): void {
     let quantity;
     const INDEX = this.products.findIndex((item: OrderProduct) => item.productId === product._id);
     if (INDEX > -1) {
@@ -55,7 +55,7 @@ export class Cart {
   }
 
   // Remove all occurrences of a product
-  removeProduct(id: string | undefined) {
+  removeProduct(id: string | undefined): void {
     this.products = this.products.filter((orderProduct: OrderProduct) => orderProduct.productId !== id);
   }
 

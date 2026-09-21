@@ -73,7 +73,7 @@ export class AddProduct {
 
   // Initialize the form //////////////////////////////////////////////////////
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.productId = this.activatedRoute.snapshot.paramMap.get('id');
     this.isEditMode = this.productId ? true : false;
 
@@ -103,7 +103,7 @@ export class AddProduct {
   }
 
   // Initialize data
-  init() {
+  init(): void {
     // Initialize optional product information
     this.productInfo = this.productIni.info;
 
@@ -115,13 +115,13 @@ export class AddProduct {
   }
 
   // Initialize the price and the stock
-  initNumber() {
+  initNumber(): void {
     this.productPrice = Common.numberToString(this.productIni.price);
     this.productStock = this.productIni.stock.toString();
   }
 
   // Initialize the types and the categories
-  initCheckbox() {
+  initCheckbox(): void {
     // Initialize the types
     this.productTypes.forEach((item: ElementRef<HTMLInputElement>) => {
       item.nativeElement.checked = this.productIni.types.includes(Number(item.nativeElement.value));
@@ -156,7 +156,7 @@ export class AddProduct {
     return ERROR;
   }
 
-  formatPrice() {
+  formatPrice(): void {
     if (!this.errorPrice()) this.productPrice = Common.numberToString(this.product.price);
   }
 
@@ -177,7 +177,7 @@ export class AddProduct {
   // IMPORTANT: this method is called whenever the page (component) is modified, not just the form
   // Used only by edit mode: to manage enabling or disabling the form's 'edit' button, prefer a
   // Reactive form over a Template-Driven Form (TDF)
-  ngDoCheck() {
+  ngDoCheck(): void {
     if (this.isEditMode && !this.errorPrice()) {
       this.valuesChange =
         this.product.name.trim() !== this.productIni.name ||
@@ -226,7 +226,7 @@ export class AddProduct {
   }
 
   // Add or update the product
-  submit(productForm: NgForm) {
+  submit(productForm: NgForm): void {
     const PRODUCT = new Product();
     Object.assign(PRODUCT, this.product);
 
@@ -269,7 +269,7 @@ export class AddProduct {
   }
 
   // Reset the form
-  reset(productForm: NgForm) {
+  reset(productForm: NgForm): void {
     if (this.isEditMode) {
       Object.assign(this.product, this.productIni);
       this.init(); // Initialize data

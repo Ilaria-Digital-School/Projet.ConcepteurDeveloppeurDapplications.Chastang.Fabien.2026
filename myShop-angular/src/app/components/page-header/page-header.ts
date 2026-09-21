@@ -28,12 +28,12 @@ export class PageHeader {
   }
 
   // Check if the user is an administrator
-  isAdmin() {
+  isAdmin(): boolean {
     return this.authService.isAdmin();
   }
 
   // Logout
-  logout() {
+  logout(): void {
     this.authService.logout();
     this.connectedUser = null;
     this.router.navigate(['/']);

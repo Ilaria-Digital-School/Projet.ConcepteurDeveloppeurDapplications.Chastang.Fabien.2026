@@ -54,7 +54,7 @@ export class AddMessage {
   // Submit the form //////////////////////////////////////////////////////////
 
   // Save the message
-  submit(messageForm: NgForm) {
+  submit(messageForm: NgForm): void {
     const MESSAGE = new Message();
 
     const FORM_VAL = messageForm.value;

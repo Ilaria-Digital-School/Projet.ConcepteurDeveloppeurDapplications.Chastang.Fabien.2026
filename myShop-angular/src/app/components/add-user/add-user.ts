@@ -66,7 +66,7 @@ export class AddUser {
   // Initialization ///////////////////////////////////////////////////////////
 
   // Form definition and validation, and data initialization
-  ngOnInit() {
+  ngOnInit(): void {
     // Origin of the page request
     this.fromCart = this.router.url.includes('add-user-cart');
     this.fromTable = this.router.url.includes('edit-user-table');
@@ -153,7 +153,7 @@ export class AddUser {
   }
 
   // Initializing form values
-  initFormValues() {
+  initFormValues(): void {
     this.userForm.patchValue({
       userName: this.userIni.name,
       userEmail: this.userIni.email,
@@ -177,7 +177,7 @@ export class AddUser {
   // Actions //////////////////////////////////////////////////////////////////
 
   // Retrieve all users to check if the email does not exist
-  checkNewEmail(email: string) {
+  checkNewEmail(email: string): void {
     this.userService.getAllUsers().subscribe({
       next: (res: User[]) => {
         if (res.some((user: User) => user.email === email)) {
@@ -196,7 +196,7 @@ export class AddUser {
   }
 
   // To submit the form
-  submit() {
+  submit(): void {
     const FORM_VAL = this.userForm.value;
 
     // Check if the email does not exist
@@ -286,13 +286,13 @@ export class AddUser {
   }
 
   // Reset the form
-  reset() {
+  reset(): void {
     this.userForm.reset();
     this.initFormValues();
   }
 
   // Go to the login form
-  gotoLogin() {
+  gotoLogin(): void {
     this.router.navigate([this.fromCart ? '/user-login-cart' : '/user-login']);
   }
 }

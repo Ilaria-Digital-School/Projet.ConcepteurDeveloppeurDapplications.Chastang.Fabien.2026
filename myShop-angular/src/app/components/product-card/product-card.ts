@@ -23,17 +23,17 @@ export class ProductCard {
   @Output() removeOneEvent = new EventEmitter();
 
   // View the carousel or the product details
-  view(id: string) {
+  view(id: string): void {
     this.viewEvent.emit(id);
   }
 
   // Add to cart
-  addOne(product: Product) {
+  addOne(product: Product): void {
     this.addOneEvent.emit(product);
   }
 
   // Add to cart
-  removeOne(product: Product) {
+  removeOne(product: Product): void {
     this.removeOneEvent.emit(product);
   }
 }

@@ -20,7 +20,7 @@ export class HomeProducts {
   products: Product[] = [];
 
   // Initialize the product list
-  ngOnInit() {
+  ngOnInit(): void {
     this.productService.getFirstProducts(this.maxCount).subscribe({
       next: (res: Product[]) => {
         this.products = res.sort((p1: Product, p2: Product) => {
@@ -36,7 +36,7 @@ export class HomeProducts {
   }
 
   // View a product
-  view(id: string) {
+  view(id: string): void {
     this.router.navigate(['/products-carousel', id]);
   }
 }

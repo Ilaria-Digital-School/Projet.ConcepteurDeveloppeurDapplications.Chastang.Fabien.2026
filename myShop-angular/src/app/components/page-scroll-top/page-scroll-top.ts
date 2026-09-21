@@ -12,12 +12,12 @@ export class PageScrollTop {
 
   // Decorator that declares a DOM event to listen for
   @HostListener('window:scroll', [])
-  onWindowScroll() {
+  onWindowScroll(): void {
     // Displays the button as soon as the user scrolls down the page
     this.isVisible = window.scrollY > 0;
   }
 
-  scrollToTop() {
+  scrollToTop(): void {
     window.scrollTo({
       top: 0,
       behavior: 'smooth', // Smooth animation

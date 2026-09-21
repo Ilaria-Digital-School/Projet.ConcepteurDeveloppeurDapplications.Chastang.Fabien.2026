@@ -15,34 +15,34 @@ export class Resources {
   static users: string = 'users';
 
   // Getters returning resource URLs
-  static get categoriesURL() {
+  static get categoriesURL(): string {
     return `${this.baseURL}/${this.categories}`;
   }
-  static get countriesURL() {
+  static get countriesURL(): string {
     return `${this.baseURL}/${this.countries}`;
   }
-  static get gendersURL() {
+  static get gendersURL(): string {
     return `${this.baseURL}/${this.genders}`;
   }
-  static get interestsURL() {
+  static get interestsURL(): string {
     return `${this.baseURL}/${this.interests}`;
   }
-  static get messagesURL() {
+  static get messagesURL(): string {
     return `${this.baseURL}/${this.messages}`;
   }
-  static get ordersURL() {
+  static get ordersURL(): string {
     return `${this.baseURL}/${this.orders}`;
   }
-  static get productsURL() {
+  static get productsURL(): string {
     return `${this.baseURL}/${this.products}`;
   }
-  static get rolesURL() {
+  static get rolesURL(): string {
     return `${this.baseURL}/${this.roles}`;
   }
-  static get statusURL() {
+  static get statusURL(): string {
     return `${this.baseURL}/${this.status}`;
   }
-  static get usersURL() {
+  static get usersURL(): string {
     return `${this.baseURL}/${this.users}`;
   }
 }

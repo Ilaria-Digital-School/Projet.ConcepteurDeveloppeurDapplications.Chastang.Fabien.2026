@@ -39,7 +39,7 @@ export class DashboardUsers {
   // Load and search //////////////////////////////////////////////////////////
 
   // Initialize user lists and search functions
-  ngOnInit() {
+  ngOnInit(): void {
     // Load all users
     this.load();
 
@@ -85,7 +85,7 @@ export class DashboardUsers {
   }
 
   // Retrieve all users
-  load() {
+  load(): void {
     this.userService.getAllUsers().subscribe({
       next: (res: User[]) => {
         // All users
@@ -106,7 +106,7 @@ export class DashboardUsers {
   }
 
   // Filter by user role
-  filterRole() {
+  filterRole(): void {
     if (this.dashboard.selectedValue === -1) {
       this.dashboard.arrays.filteredItems = this.dashboard.arrays.filteredTextRef;
     } else {
@@ -117,7 +117,7 @@ export class DashboardUsers {
   }
 
   // Search by user role
-  selectRole(select: any) {
+  selectRole(select: any): void {
     this.dashboard.selectedValue = Number(select.options[select.selectedIndex].value);
     this.filterRole();
   }
@@ -125,7 +125,7 @@ export class DashboardUsers {
   // Sort /////////////////////////////////////////////////////////////////////
 
   // Initialize sorting
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     // Defines the sorting elements: here, all attributes are fixed
     this.dashboard.sortElements = [
       { col: 'name', up: true, func: this.sortByName, HTMLCol: this.sortName.nativeElement },
@@ -183,14 +183,14 @@ export class DashboardUsers {
   // Actions //////////////////////////////////////////////////////////////////
 
   // Edit a user inline
-  editInline(user: User) {
+  editInline(user: User): void {
     // Enable inline editing
     this.editUser = new User();
     Object.assign(this.editUser, user);
   }
 
   // Save changes after inline editing
-  saveInline(user: User) {
+  saveInline(user: User): void {
     if (user.name !== this.editUser?.name || user.email !== this.editUser?.email) {
       const USER = new User();
       Object.assign(USER, user);
@@ -214,13 +214,13 @@ export class DashboardUsers {
   }
 
   // Edit a user using the form
-  gotoForm(user: User) {
+  gotoForm(user: User): void {
     // Redirect to the edit form
     this.router.navigate(['/edit-user-table', user._id]);
   }
 
   // Delete a user
-  remove(id: string | undefined) {
+  remove(id: string | undefined): void {
     // Confirmaton message to delete the user
     if (confirm(DashboardUsers.msgDelUser)) {
       // Remove the user

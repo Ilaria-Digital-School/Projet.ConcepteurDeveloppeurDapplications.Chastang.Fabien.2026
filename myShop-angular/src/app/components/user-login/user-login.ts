@@ -28,7 +28,7 @@ export class UserLogin {
   `;
 
   // Form initialization and field validation setup
-  ngOnInit() {
+  ngOnInit(): void {
     // Origin of the page request
     this.fromCart = this.router.url.includes('user-login-cart');
 
@@ -46,7 +46,7 @@ export class UserLogin {
   }
 
   // Login method
-  login() {
+  login(): void {
     const FORM_VAL = this.loginForm.value;
     const DATA: LoginData = {
       email: FORM_VAL.userEmail,
@@ -99,7 +99,7 @@ export class UserLogin {
   }
 
   // Go to the add user form
-  gotoAddUser() {
+  gotoAddUser(): void {
     this.router.navigate([this.fromCart ? '/add-user-cart' : '/add-user']);
   }
 }

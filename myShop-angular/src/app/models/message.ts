@@ -13,7 +13,7 @@ export class Message {
   additional: any; // For additional properties (RxJS)
 
   // Remove these properties before saving the Message
-  removeBeforeSave() {
+  removeBeforeSave(): Message {
     const ITEM = new Message();
     Object.assign(ITEM, this);
     delete ITEM._id;

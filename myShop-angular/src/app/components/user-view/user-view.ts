@@ -33,7 +33,7 @@ export class UserView {
   countries: CountryList = new CountryList();
 
   // Initialize the view
-  ngOnInit() {
+  ngOnInit(): void {
     // Retrieve the product
     this.userId = this.activatedRoute.snapshot.paramMap.get('id');
     this.userService.getUserById(this.userId).subscribe({
@@ -48,13 +48,13 @@ export class UserView {
   }
 
   // Logout
-  logout() {
+  logout(): void {
     this.authService.logout();
     this.router.navigate(['/']);
   }
 
   // Delete a user
-  remove(id: string | undefined) {
+  remove(id: string | undefined): void {
     // Confirmaton message to delete the user
     if (confirm(UserView.msgDelUser)) {
       // Remove the user

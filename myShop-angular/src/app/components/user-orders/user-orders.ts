@@ -23,7 +23,7 @@ export class UserOrders {
   orders: Order[] = [];
 
   // Initialize the properties to display the view
-  ngOnInit() {
+  ngOnInit(): void {
     // Retrieve the URL parameter if it exists
     const USER_ID = this.activatedRoute.snapshot.paramMap.get('id');
 
@@ -49,7 +49,7 @@ export class UserOrders {
   }
 
   // Method to retrieve the logged-in user
-  getConnectedUser() {
+  getConnectedUser(): void {
     this.connectedUser = this.authService.getConnectedUser();
   }
 }

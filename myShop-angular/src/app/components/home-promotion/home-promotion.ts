@@ -10,7 +10,7 @@ export class HomePromotion {
   // Class properties
   datePromo!: string;
 
-  ngOnInit() {
+  ngOnInit(): void {
     let date = new Date();
     date = new Date(date.setMonth(date.getMonth() + 1));
     date = new Date(date.getFullYear(), date.getMonth(), 0);

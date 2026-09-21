@@ -4,6 +4,10 @@ import { jwtDecode } from 'jwt-decode';
 import { HttpHeaders } from '@angular/common/http';
 import { TokenPayload } from '../models/user';
 
+// HTTP headers for transmitting the token: using an HttpOnly, Secure,
+// and SameSite=Strict cookie is a much better practice
+export type HTTPHeaders = { headers: HttpHeaders } | undefined;
+
 export class Common {
   // Pseudorandom string generation function //////////////////////////////////
 
@@ -167,7 +171,8 @@ export class Common {
   }
 
   // Instantiate the HTTP headers with the token
-  static getHttpHeaders(): { headers: HttpHeaders } | undefined {
+  // Using an HttpOnly, Secure, and SameSite=Strict cookie is a much better practice
+  static getHttpHeaders(): HTTPHeaders {
     const TOKEN = sessionStorage.getItem('token') || localStorage.getItem('token');
 
     if (TOKEN) {

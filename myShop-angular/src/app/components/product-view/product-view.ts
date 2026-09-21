@@ -29,7 +29,7 @@ export class ProductView {
   // Initialization ///////////////////////////////////////////////////////////
 
   // Initialize the view
-  ngOnInit() {
+  ngOnInit(): void {
     // Retrieve the product ID
     this.productId = this.activatedRoute.snapshot.paramMap.get('id');
 
@@ -105,12 +105,12 @@ export class ProductView {
   // Actions //////////////////////////////////////////////////////////////////
 
   // Add the product to the user's cart
-  addOne(product: Product) {
+  addOne(product: Product): void {
     this.cartService.addOne(new OrderProduct(product));
   }
 
   // Remove the product from the user's cart
-  removeOne(product: Product) {
+  removeOne(product: Product): void {
     this.cartService.removeOne(new OrderProduct(product));
   }
 }

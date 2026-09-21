@@ -3,41 +3,40 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Resources } from '../api.config';
 import { Country } from '../models/country';
-import { Common } from '../constants/common';
+import { HTTPHeaders, Common } from '../constants/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CountryService {
   // Performs HTTP requests
-  private httpClient = inject(HttpClient);
+  private httpClient: HttpClient = inject(HttpClient);
+  private url: string = Resources.countriesURL;
+  // HTTP headers for transmitting the token: using an HttpOnly, Secure,
+  // and SameSite=Strict cookie is a much better practice
+  private httpHeaders: HTTPHeaders = Common.getHttpHeaders();
 
   // NO TOKEN - Retrieve all genders
   getAllCountries(): Observable<Country[]> {
-    return this.httpClient.get<Country[]>(Resources.countriesURL);
+    return this.httpClient.get<Country[]>(this.url);
   }
 
   // Add a country
   addCountry(country: Country): Observable<Country> {
-    const COUNTRY = country.removeBeforeSave(); // Remove the _id before saving the Country
-    return this.httpClient.post<Country>(Resources.countriesURL, COUNTRY, Common.getHttpHeaders());
+    // Remove the _id before saving the Country
+    const COUNTRY = country.removeBeforeSave();
+    return this.httpClient.post<Country>(this.url, COUNTRY, this.httpHeaders);
   }
 
   // Update a country
   updateCountry(country: Country): Observable<Country> {
-    const COUNTRY = country.removeBeforeSave(); // Remove the _id before saving the Country
-    return this.httpClient.put<Country>(
-      `${Resources.countriesURL}/${country._id}`,
-      COUNTRY,
-      Common.getHttpHeaders(),
-    );
+    // Remove the _id before saving the Country
+    const COUNTRY = country.removeBeforeSave();
+    return this.httpClient.put<Country>(`${this.url}/${country._id}`, COUNTRY, this.httpHeaders);
   }
 
   // Delete a country
   deleteCountry(id: string | null): Observable<Country> {
-    return this.httpClient.delete<Country>(
-      `${Resources.countriesURL}/${id}`,
-      Common.getHttpHeaders(),
-    );
+    return this.httpClient.delete<Country>(`${this.url}/${id}`, this.httpHeaders);
   }
 }

@@ -10,12 +10,7 @@ export class AuthService {
 
   getConnectedUser(): TokenPayload | null {
     const TOKEN = sessionStorage.getItem('token') || localStorage.getItem('token');
-    if (TOKEN) {
-      this.connectedUser = Common.decodeToken(TOKEN);
-    } else {
-      this.connectedUser = null;
-    }
-    return this.connectedUser;
+    return (this.connectedUser = TOKEN ? Common.decodeToken(TOKEN) : null);
   }
 
   isAdmin(): boolean {

@@ -42,7 +42,7 @@ export class UserCart {
 
   // Initialize the Cart object and the view (template) ///////////////////////
 
-  ngOnInit() {
+  ngOnInit(): void {
     // Get the user if he is logged in
     this.getConnectedUser();
 
@@ -78,19 +78,19 @@ export class UserCart {
   }
 
   // Method to retrieve the logged-in user
-  getConnectedUser() {
+  getConnectedUser(): void {
     this.connectedUser = this.authService.getConnectedUser();
   }
 
   // Product-related actions //////////////////////////////////////////////////
 
   // View a product
-  view(id: string | undefined) {
+  view(id: string | undefined): void {
     this.router.navigate(['/product-view', id]);
   }
 
   // Increase the quantity of a product
-  addOne(product: Product) {
+  addOne(product: Product): void {
     // Add an item to the cart via CartService (local storage)
     this.cartService.addOne(new OrderProduct(product));
 
@@ -99,7 +99,7 @@ export class UserCart {
   }
 
   // Decrease the quantity of a product
-  removeOne(product: Product) {
+  removeOne(product: Product): void {
     // Confirmation message only if the quantity in the cart is equal to 1
     if (product.quantity === 1 && !confirm(UserCart.msgDelProduct)) return;
 
@@ -112,7 +112,7 @@ export class UserCart {
   }
 
   // Remove a product
-  removeProduct(id: string | undefined) {
+  removeProduct(id: string | undefined): void {
     // Confirmation message to remove a product
     if (!confirm(UserCart.msgDelProduct)) return;
 
@@ -125,19 +125,19 @@ export class UserCart {
   }
 
   // Remove a product from the list
-  removeFromList(id: string | undefined) {
+  removeFromList(id: string | undefined): void {
     this.products = this.products.filter((item: Product) => item._id !== id);
   }
 
   // Cart-related actions /////////////////////////////////////////////////////
 
   // Retrieve the total cart amount excluding tax
-  getTotalExcludingTax() {
+  getTotalExcludingTax(): number {
     return (this.total = this.cart.getTotalExcludingTax());
   }
 
   // Delete the user's cart
-  removeCart() {
+  removeCart(): void {
     // Confirmation message to delete the user's cart
     if (!confirm(UserCart.msgDelCart)) return;
 
@@ -149,7 +149,7 @@ export class UserCart {
   }
 
   // To order
-  addOrder() {
+  addOrder(): void {
     if (this.connectedUser) {
       this.router.navigate(['/add-order']);
     } else if (confirm(UserCart.msgConnectToOrder)) {
