@@ -391,13 +391,6 @@ function setFooter() {
   CONTAINER.appendChild(FOOTER);
 }
 
-// Window resizing management ////////////////////////////////////////////
-function resizeWindow() {
-  // Show the back-to-top button
-  document.getElementById('scroll-top').style.display =
-    window.innerHeight >= document.body.scrollHeight ? 'none' : 'block';
-}
-
 //////////////////////////////////////////////////////////////////////////
 // Initialize the pages
 //////////////////////////////////////////////////////////////////////////
@@ -695,9 +688,11 @@ function init() {
   // Show or hide the number of products in the cart
   displayCartNbProducts();
 
-  // Window resizing management
-  resizeWindow();
-  window.addEventListener('resize', resizeWindow); // BAD WAY: uses the "resize" event to handle page resizing
+  // Show/Hide the back-to-top button
+  window.addEventListener("scroll", () => {
+    document.getElementById("scroll-top").style.display =
+      window.scrollY > 0 ? "block" : "none";
+  });
 
   // Add an event to return to the top of the page
   document.getElementById('scroll-top').addEventListener('click', () => {
