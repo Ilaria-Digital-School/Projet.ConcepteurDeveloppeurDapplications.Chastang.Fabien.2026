@@ -24,9 +24,7 @@
 
 <body>
     <div class="wrapper">
-        <header>
-            <h1>Contact Notebook</h1>
-        </header>
+        <header></header>
 
         <main>
             <section>

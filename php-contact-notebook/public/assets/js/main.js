@@ -1,3 +1,5 @@
+// Manage contacts ////////////////////////////////////////////////////////////
+
 // Edit contact
 function edit(id) {
   window.location.href = "/contacts/edit?id=" + id;
@@ -8,6 +10,22 @@ function remove(id) {
   if (confirm("Are you sure you want to delete this contact?")) {
     document.getElementById("destroy_" + id).requestSubmit();
   }
+}
+
+// Page initialization ////////////////////////////////////////////////////////
+
+const H1_TITLE = 'Contact Notebook';
+
+// Display the page header
+function setHeader() {
+  // Retrieve the 'header' DOM object
+  const HEADER = document.querySelector('header');
+
+  // Display the title
+  const H1 = document.createElement('h1');
+  H1.textContent = H1_TITLE;
+  HEADER.appendChild(H1);
+
 }
 
 // Data for displaying the back-to-top button and the footer
@@ -45,6 +63,9 @@ function setFooter() {
 
 // Page initialization
 function init() {
+  // Display the page header
+  setHeader();
+
   // Display the back-to-top button and the footer
   setFooter();
 
