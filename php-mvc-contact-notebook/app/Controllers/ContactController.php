@@ -3,11 +3,30 @@
 namespace App\Controllers;
 
 use App\Core\Validator;
+use App\Models\Contact;
 use App\Repository\ContactRepository;
 
 class ContactController
 {
     // Tools: private methods ///////////////////
+
+    // Display the view
+    private function displayView(string $page, array $params = []): void
+    {
+        // Variable for the list
+        $contacts = $params['contacts'] ?? null;
+
+        // Variable for the edit form
+        $id = $params['id'] ?? 0;
+        $contact = $params['contact'] ?? null;
+
+        // Display the view
+        ob_start();
+        require __DIR__ . "/../Views/contacts/$page.php";
+        $view = ob_get_clean();
+
+        require __DIR__ . '/../Views/layouts/app.php';
+    }
 
     // Redirection function: by default, redirect to the contact list
     private function redirect(string $location = ""): void
@@ -114,22 +133,14 @@ class ContactController
         $contacts = ContactRepository::getAll();
 
         // Display the list
-        ob_start();
-        require __DIR__ . '/../Views/contacts/list.php';
-        $view = ob_get_clean();
-
-        require __DIR__ . '/../Views/layouts/app.php';
+        $this->displayView('list', ['contacts' => $contacts]);
     }
 
     // Display the registration form
     public function getCreateForm(): void
     {
-        // Display the form
-        ob_start();
-        require __DIR__ . '/../Views/contacts/create.php';
-        $view = ob_get_clean();
-
-        require __DIR__ . '/../Views/layouts/app.php';
+        // Display the registration form
+        $this->displayView('create');
     }
 
     // Save a contact to the database
@@ -171,12 +182,8 @@ class ContactController
         $contact = ContactRepository::findById($id);
         if (!$contact) $this->redirect(); // Error: redirect to the list
 
-        // Display the form
-        ob_start();
-        require __DIR__ . '/../Views/contacts/edit.php';
-        $view = ob_get_clean();
-
-        require __DIR__ . '/../Views/layouts/app.php';
+        // Display the edit form
+        $this->displayView('edit', ['id' => $id, 'contact' => $contact]);
     }
 
     // Update a contact in the database
