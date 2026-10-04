@@ -23,7 +23,7 @@ $errPhone = htmlspecialchars($_SESSION["errors"]["userPhone"] ?? "");
 
     <!--Registration/Modification form -->
     <form class="form" action="/contacts/<?= $action ?>" method="POST">
-        <?php if (isset($id)) { ?>
+        <?php if (isset($id) && $id > 0) { ?>
             <input type="hidden" name="id" value="<?= $id ?>">
         <?php } ?>
         <h2><?= $titleForm ?></h2>
