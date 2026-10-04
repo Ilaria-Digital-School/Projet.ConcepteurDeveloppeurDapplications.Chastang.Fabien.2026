@@ -67,24 +67,36 @@ class ContactController
     // Verify the uniqueness of email addresses and phone numbers
     private function isUnique(string $location, int $id = 0): bool
     {
+        $fails = 0;
+        $errors = [];
+
         $contact = ContactRepository::findByEmail($_POST['userEmail']);
         if (!is_null($contact) && $contact->id !== $id) {
             // Error: this email address already exists
-            $_SESSION["alert"] = [
-                "type" => "danger",
-                "message" => "This email address already exists."
-            ];
-
-            // Redirect to the form
-            $this->redirect($location);
+            $fails |= 1;
+            $errors["userEmail"] = "This email address already exists.";
         }
 
         $contact = ContactRepository::findByPhone($_POST['userPhone']);
         if (!is_null($contact) && $contact->id !== $id) {
             // Error: this phone number already exists
+            $fails |= 2;
+            $errors["userPhone"] = "This phone number already exists.";
+        }
+
+        if ($fails !== 0) {
+            // Retrieves errors and raw values
+            $_SESSION["errors"] = $errors;
+            $_SESSION["values"] = $_POST;
+
+            // Overall message
             $_SESSION["alert"] = [
                 "type" => "danger",
-                "message" => "This phone number already exists."
+                "message" => match ($fails) {
+                    1 => "The email address already exists.",
+                    2 => "The phone number already exists.",
+                    default => "The email address and the phone number already exist.",
+                }
             ];
 
             // Redirect to the form
@@ -94,7 +106,7 @@ class ContactController
         return true;
     }
 
-    // Controller methods ///////////////////////
+    // Public methods of the controller /////////
 
     // Display the list
     public function getAll(): void

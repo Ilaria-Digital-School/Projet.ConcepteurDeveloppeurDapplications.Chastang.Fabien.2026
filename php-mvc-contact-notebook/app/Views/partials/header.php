@@ -12,7 +12,7 @@ $appDebug = filter_var($_ENV['APP_DEBUG'], FILTER_VALIDATE_BOOLEAN);
     <h1>
         Contact Notebook
         <?php if ($appDebug) { ?>
-            <span id="dev">Dev.</span>
+            <span id="dev">Dev</span>
         <?php } ?>
     </h1>
 </header>
