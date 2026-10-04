@@ -138,10 +138,10 @@ class ContactController
         // Validate the use of the HTTP POST method
         $this->validatePostMethod("/create");
 
-        if (
-            $this->validateData("/create")
-            && $this->isUnique('/create')
-        ) {
+        // Form URL
+        $location = '/create';
+
+        if ($this->validateData($location) && $this->isUnique($location)) {
             // Success: insert the contact
             $id = ContactRepository::create($_POST);
 
@@ -188,10 +188,10 @@ class ContactController
         // Retrieves the contact ID
         $id = $this->getId(INPUT_POST);
 
-        if (
-            $this->validateData('/edit?id=' . $id)
-            && $this->isUnique('/edit?id=' . $id, $id)
-        ) {
+        // Form URL
+        $location = '/edit?id=' . $id;
+
+        if ($this->validateData($location) && $this->isUnique($location, $id)) {
             // Success: insert the contact
             $rowCount = ContactRepository::update($_POST, $id);
 
@@ -216,6 +216,7 @@ class ContactController
 
         // Retrieves the contact ID
         $id = $this->getId(INPUT_POST);
+
         if ($id) {
             $rowCount = ContactRepository::destroy($id);
 
