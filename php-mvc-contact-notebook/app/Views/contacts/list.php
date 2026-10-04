@@ -1,8 +1,9 @@
 <?php
 
 /** @var array $contacts */
-$description = "Page displaying the list of contacts";
+
 $title = "Contact list";
+$description = "Page displaying the list of contacts";
 $alertClass = "center";
 ?>
 
@@ -10,6 +11,7 @@ $alertClass = "center";
     <?php if (count($contacts) === 0) { ?>
         <h2 class="h2-title">No contact</h2>
     <?php } else { ?>
+
         <!-- Alert message: success/error -->
         <?php require __DIR__ . '/alert.php'; ?>
 

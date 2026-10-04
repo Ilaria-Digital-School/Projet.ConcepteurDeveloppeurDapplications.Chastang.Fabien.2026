@@ -1,12 +1,16 @@
 <?php
 
-/** @var \App\Models\Contact $contact */
 /** @var int $titleForm */
 /** @var int $buttonSave */
+/** @var string $action */
 /** @var string $name */
 /** @var string $email */
 /** @var string $phone */
+
 $alertClass = "inline-block";
+$errName = htmlspecialchars($_SESSION["errors"]["userName"] ?? "");
+$errEmail = htmlspecialchars($_SESSION["errors"]["userEmail"] ?? "");
+$errPhone = htmlspecialchars($_SESSION["errors"]["userPhone"] ?? "");
 ?>
 
 <section class="center">
@@ -18,7 +22,7 @@ $alertClass = "inline-block";
     <?php require __DIR__ . '/alert.php'; ?>
 
     <!--Registration/Modification form -->
-    <form class="form" action="/contacts/update" method="POST">
+    <form class="form" action="/contacts/<?= $action ?>" method="POST">
         <?php if (isset($id)) { ?>
             <input type="hidden" name="id" value="<?= $id ?>">
         <?php } ?>
@@ -30,39 +34,39 @@ $alertClass = "inline-block";
                 <label for="userName">Name:</label>
                 <input
                     type="text"
-                    class="<?= isset($_SESSION["errors"]["userName"]) ? 'form-control is-invalid' : '' ?>"
+                    class="<?= $errName !== "" ? 'form-control is-invalid' : '' ?>"
                     name="userName"
                     id="userName"
                     placeholder="Contact name"
-                    value="<?= htmlspecialchars($_SESSION["values"]["userName"] ?? $name) ?>" />
-                <?php if (isset($_SESSION["errors"]["userName"])) { ?>
-                    <div class="error"><?= htmlspecialchars($_SESSION["errors"]["userName"]) ?></div>
+                    value="<?= $name ?>" />
+                <?php if ($errName !== "") { ?>
+                    <div class="error"><?= $errName ?></div>
                 <?php } ?>
             </div>
             <div>
                 <label for="userEmail">Email:</label>
                 <input
                     type="text"
-                    class="<?= isset($_SESSION["errors"]["userEmail"]) ? 'form-control is-invalid' : '' ?>"
+                    class="<?= $errEmail !== "" ? 'form-control is-invalid' : '' ?>"
                     name="userEmail"
                     id="userEmail"
                     placeholder="email@address.xyz"
-                    value="<?= htmlspecialchars($_SESSION["values"]["userEmail"] ?? $email) ?>" />
-                <?php if (isset($_SESSION["errors"]["userEmail"])) { ?>
-                    <div class="error"><?= htmlspecialchars($_SESSION["errors"]["userEmail"]) ?></div>
+                    value="<?= $email ?>" />
+                <?php if ($errEmail !== "") { ?>
+                    <div class="error"><?= $errEmail ?></div>
                 <?php } ?>
             </div>
             <div>
                 <label for="userPhone">Phone:</label>
                 <input
                     type="text"
-                    class="<?= isset($_SESSION["errors"]["userPhone"]) ? 'form-control is-invalid' : '' ?>"
+                    class="<?= $errPhone !== "" ? 'form-control is-invalid' : '' ?>"
                     name="userPhone"
                     id="userPhone"
                     placeholder="01 23 45 67 89"
-                    value="<?= htmlspecialchars($_SESSION["values"]["userPhone"] ?? $phone) ?>" />
-                <?php if (isset($_SESSION["errors"]["userPhone"])) { ?>
-                    <div class="error"><?= htmlspecialchars($_SESSION["errors"]["userPhone"]) ?></div>
+                    value="<?= $phone ?>" />
+                <?php if ($errPhone !== "") { ?>
+                    <div class="error"><?= $errPhone ?></div>
                 <?php } ?>
             </div>
         </fieldset>
