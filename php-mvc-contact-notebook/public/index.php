@@ -30,16 +30,16 @@ try {
         throw new NotFoundException("Page Not Found");
     }
 } catch (NotFoundException $e) {
-    // 404 Resource Not Found
+    // Status: 404 Resource Not Found
     $e->display();
 } catch (DatabaseException $e) {
-    // Database exception -> 500 Internal Server Error
+    // Database exception -> Status: 500 Internal Server Error
     $e->display();
 } catch (ServerErrorException $e) {
-    // 500 Internal Server Error
+    // Status: 500 Internal Server Error
     $e->display();
 } catch (Throwable $e) {
-    // Other exceptions and errors -> 500 Internal Server Error
+    // Other exceptions and errors -> Status: 500 Internal Server Error
     http_response_code(500);
     require __DIR__ . '/../app/Views/errors/500.php';
 }
