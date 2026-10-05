@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Core\Validator;
-use App\Repository\ContactRepository;
+use App\Repositories\ContactRepository;
 
 class ContactController
 {
