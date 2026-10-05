@@ -13,6 +13,6 @@ class DatabaseException extends AppException
 
     public function display(): void
     {
-        parent::displayInfo(500);
+        parent::page($this, 500);
     }
 }

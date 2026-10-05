@@ -13,6 +13,6 @@ class ServerErrorException extends AppException
 
     public function display(): void
     {
-        parent::displayInfo(404);
+        parent::page($this, 500);
     }
 }

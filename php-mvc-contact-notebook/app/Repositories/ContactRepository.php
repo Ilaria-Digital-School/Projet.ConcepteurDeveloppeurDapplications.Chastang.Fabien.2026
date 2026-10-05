@@ -8,7 +8,7 @@ use App\Models\Contact;
 
 final class ContactRepository
 {
-    // Tools: private methods ///////////////////
+    // Tools: private methods /////////////////////////////////////////////////
 
     // Returns the connection to the database
     private static function db(): PDO
@@ -24,7 +24,7 @@ final class ContactRepository
         return preg_replace($patterns, $remplacements, trim($value));
     }
 
-    // To retrieve a contact list ///////////////
+    // To retrieve a contact list /////////////////////////////////////////////
 
     // Retrieves all contacts: array of Contact objects
     public static function getAll(): array
@@ -67,7 +67,7 @@ final class ContactRepository
             : [];
     }
 
-    // To find a contact ////////////////////////
+    // To find a contact //////////////////////////////////////////////////////
 
     // Retrieves a contact by its ID
     public static function findById(int $id): Contact | null
@@ -120,7 +120,7 @@ final class ContactRepository
             : null;
     }
 
-    // To manage a contact //////////////////////
+    // To manage a contact ////////////////////////////////////////////////////
 
     // Inserts a contact and returns its ID
     public static function create(array $data): int

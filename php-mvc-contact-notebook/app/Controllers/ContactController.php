@@ -7,15 +7,14 @@ use App\Repositories\ContactRepository;
 
 class ContactController
 {
-    // Tools: private methods ///////////////////
+    // Tools: private methods /////////////////////////////////////////////////
 
     // Display the view
     private function displayView(string $page, array $params = []): void
     {
         // Variable for the list
         $contacts = $params['contacts'] ?? null;
-
-        // Variable for the edit form
+        // Variables for the edit form
         $id = $params['id'] ?? 0;
         $contact = $params['contact'] ?? null;
 
@@ -38,8 +37,7 @@ class ContactController
     private function validatePostMethod(string $location = ""): void
     {
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-            // Error: redirect to the form
-            $this->redirect($location);
+            $this->redirect($location); // Error: redirect to the form
         }
     }
 
@@ -90,15 +88,13 @@ class ContactController
 
         $contact = ContactRepository::findByEmail($_POST['userEmail']);
         if (!is_null($contact) && $contact->id !== $id) {
-            // Error: this email address already exists
-            $fails |= 1;
+            $fails |= 1; // Error
             $errors["userEmail"] = "This email address already exists.";
         }
 
         $contact = ContactRepository::findByPhone($_POST['userPhone']);
         if (!is_null($contact) && $contact->id !== $id) {
-            // Error: this phone number already exists
-            $fails |= 2;
+            $fails |= 2; // Error
             $errors["userPhone"] = "This phone number already exists.";
         }
 
@@ -124,11 +120,12 @@ class ContactController
         return true;
     }
 
-    // Public methods of the controller /////////
+    // Public methods of the controller ///////////////////////////////////////
 
     // Display the list
     public function getAll(): void
     {
+        // Retrieve the contact list
         $contacts = ContactRepository::getAll();
 
         // Display the list
@@ -138,7 +135,6 @@ class ContactController
     // Display the registration form
     public function getCreateForm(): void
     {
-        // Display the registration form
         $this->displayView('create');
     }
 
@@ -148,7 +144,7 @@ class ContactController
         // Validate the use of the HTTP POST method
         $this->validatePostMethod("/create");
 
-        // Form URL
+        // Redirect to the form in case of an error
         $location = '/create';
 
         if ($this->validateData($location) && $this->isUnique($location)) {
@@ -179,7 +175,17 @@ class ContactController
 
         // Retrieves a contact by its ID
         $contact = ContactRepository::findById($id);
-        if (!$contact) $this->redirect(); // Error: redirect to the list
+
+        if (!$contact) {
+            // Error: the contact was not found
+            $_SESSION["alert"] = [
+                "type" => "danger",
+                "message" => "This contact was not found."
+            ];
+
+            // Redirect to the list
+            $this->redirect();
+        }
 
         // Display the edit form
         $this->displayView('edit', ['id' => $id, 'contact' => $contact]);
@@ -194,7 +200,7 @@ class ContactController
         // Retrieves the contact ID
         $id = $this->getId(INPUT_POST);
 
-        // Form URL
+        // Redirect to the form in case of an error
         $location = '/edit?id=' . $id;
 
         if ($this->validateData($location) && $this->isUnique($location, $id)) {

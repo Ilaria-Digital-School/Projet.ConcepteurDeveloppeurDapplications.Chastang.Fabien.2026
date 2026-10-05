@@ -3,6 +3,8 @@
 /** @var string $description */
 /** @var string $title */
 /** @var string $view */
+
+$baseUrl = $_ENV['BASE_URL'];
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +23,7 @@
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
-    <link rel="stylesheet" href="http://localhost:8000/assets/css/style.css" />
+    <link rel="stylesheet" href="<?= $baseUrl ?>/assets/css/style.css" />
 </head>
 
 <body>
@@ -35,7 +37,7 @@
         <?php require __DIR__ . '/../partials/footer.php'; ?>
 
         <!-- JavaScript files -->
-        <script src="http://localhost:8000/assets/js/main.js"></script>
+        <script src="<?= $baseUrl ?>/assets/js/main.js"></script>
     </div>
 </body>
 

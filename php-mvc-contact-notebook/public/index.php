@@ -3,11 +3,19 @@ session_start();
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+// Load the .env file
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(__DIR__ . "/../");
+$dotenv->load();
+
 use App\Controllers\ContactController;
+use App\Core\Exceptions\AppException;
 use App\Core\Exceptions\NotFoundException;
 use App\Core\Exceptions\DatabaseException;
 use App\Core\Exceptions\ServerErrorException;
 
+// Parse the URI
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = rtrim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/') ?: '/';
 
@@ -40,6 +48,5 @@ try {
     $e->display();
 } catch (Throwable $e) {
     // Other exceptions and errors -> Status: 500 Internal Server Error
-    http_response_code(500);
-    require __DIR__ . '/../app/Views/errors/500.php';
+    AppException::page($e, 500);
 }

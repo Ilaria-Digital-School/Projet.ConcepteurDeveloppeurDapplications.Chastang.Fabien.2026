@@ -26,6 +26,7 @@ $errPhone = htmlspecialchars($_SESSION["errors"]["userPhone"] ?? "");
         <?php if (isset($id) && $id > 0) { ?>
             <input type="hidden" name="id" value="<?= $id ?>">
         <?php } ?>
+
         <h2><?= $titleForm ?></h2>
 
         <fieldset>
