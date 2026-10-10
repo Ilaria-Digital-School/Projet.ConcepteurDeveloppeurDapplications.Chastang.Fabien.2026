@@ -2,13 +2,14 @@
 
 namespace App\Core\Exceptions;
 
+use Liopoos\HttpCode\Http;
 use Throwable;
 
 class ServerErrorException extends AppException
 {
     public function __construct(
         string $message = "Internal Server Error",
-        int $code = 0,
+        int $code = Http::HTTP_INTERNAL_SERVER_ERROR,
         ?Throwable $previous = null
     ) {
         return parent::__construct($message, $code, $previous);
@@ -16,6 +17,6 @@ class ServerErrorException extends AppException
 
     public function display(): void
     {
-        parent::page($this, 500);
+        parent::page($this, Http::HTTP_INTERNAL_SERVER_ERROR);
     }
 }

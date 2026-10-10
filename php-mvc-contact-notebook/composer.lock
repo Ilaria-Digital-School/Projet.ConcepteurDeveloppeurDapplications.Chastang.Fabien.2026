@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9b0e9f9d9bc395b54a6a1c51980ed792",
+    "content-hash": "6982fd3866b67135d8139a1026acbe41",
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -67,6 +67,49 @@
                 }
             ],
             "time": "2026-08-24T09:06:52+00:00"
+        },
+        {
+            "name": "liopoos/http-code",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/liopoos/http-code.git",
+                "reference": "07fadf6d374e3328c0dbc09b46a6a436589145f2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/liopoos/http-code/zipball/07fadf6d374e3328c0dbc09b46a6a436589145f2",
+                "reference": "07fadf6d374e3328c0dbc09b46a6a436589145f2",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Liopoos\\HttpCode\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "hades",
+                    "email": "hades_dev@foxmail.com"
+                }
+            ],
+            "description": "Simple HTTP status codes",
+            "support": {
+                "issues": "https://github.com/liopoos/http-code/issues",
+                "source": "https://github.com/liopoos/http-code/tree/1.0.3"
+            },
+            "time": "2025-11-15T09:46:17+00:00"
         },
         {
             "name": "phpoption/phpoption",

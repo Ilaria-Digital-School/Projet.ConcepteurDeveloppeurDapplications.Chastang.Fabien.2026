@@ -3,21 +3,24 @@
 namespace App\Core\Exceptions;
 
 use Exception;
+use Liopoos\HttpCode\Http;
 use Throwable;
 
 class AppException extends Exception
 {
     public function __construct(
         string $message = "Internal Server Error",
-        int $code = 0,
+        int $code = Http::HTTP_INTERNAL_SERVER_ERROR,
         ?Throwable $previous = null
     ) {
         return parent::__construct($message, $code, $previous);
     }
 
-    public static function page(Throwable $e, int $statusCode = 500): void
-    {
-        http_response_code($statusCode);
+    public static function page(
+        Throwable $e,
+        int $httpCode = Http::HTTP_INTERNAL_SERVER_ERROR
+    ): void {
+        http_response_code($httpCode);
 
         if (filter_var($_ENV['APP_DEBUG'], FILTER_VALIDATE_BOOLEAN)) {
             // Displaying the exception in debug mode
@@ -30,7 +33,7 @@ class AppException extends Exception
             $exceptionMessage = $e->getMessage();
             if ($exceptionMessage === '') $exceptionMessage = null;
 
-            require __DIR__ . "/../../Views/errors/$statusCode.php";
+            require __DIR__ . "/../../Views/errors/$httpCode.php";
         }
     }
 }
