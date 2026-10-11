@@ -48,5 +48,5 @@ try {
     $e->display();
 } catch (Throwable $e) {
     // Other exceptions and errors -> Status: 500 Internal Server Error
-    AppException::page($e, 500);
+    AppException::page($e);
 }
