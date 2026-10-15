@@ -14,7 +14,7 @@ class TaskController extends Controller
     public function index(): JsonResponse
     {
         return $this->jsonResponse(TaskResource::collection(
-            Task::with('projects.status')->latest()->get()
+            Task::with('projects')->latest()->get()
         ));
     }
 
@@ -36,7 +36,7 @@ class TaskController extends Controller
     public function show(Task $task): JsonResponse
     {
         return $this->jsonResponse(
-            ['data' => TaskResource::make($task->load('projects.status'))]
+            ['data' => TaskResource::make($task->load('projects'))]
         );
     }
 
@@ -48,7 +48,7 @@ class TaskController extends Controller
         return $this->jsonResponse(
             [
                 'message' => __('messages.task_updated', ['id' => $task->id]),
-                'data' => TaskResource::make($task->load('projects.status'))
+                'data' => TaskResource::make($task->load('projects'))
             ]
         );
     }
@@ -56,7 +56,7 @@ class TaskController extends Controller
     // Remove the specified resource from storage
     public function destroy(Task $task): JsonResponse
     {
-        $data = TaskResource::make($task->load('projects.status'));
+        $data = TaskResource::make($task->load('projects'));
         $task->deleteOrFail();
 
         return $this->jsonResponse(

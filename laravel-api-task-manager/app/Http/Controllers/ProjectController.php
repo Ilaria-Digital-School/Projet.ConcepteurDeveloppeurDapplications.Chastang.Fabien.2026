@@ -36,7 +36,7 @@ class ProjectController extends Controller
     public function show(Project $project): JsonResponse
     {
         return $this->jsonResponse(
-            ['data' => ProjectResource::make($project->load('tasks.status'))]
+            ['data' => ProjectResource::make($project->load('tasks'))]
         );
     }
 
@@ -48,7 +48,7 @@ class ProjectController extends Controller
         return $this->jsonResponse(
             [
                 'message' => __('messages.project_updated', ['id' => $project->id]),
-                'data' => ProjectResource::make($project->load('tasks.status'))
+                'data' => ProjectResource::make($project->load('tasks'))
             ]
         );
     }
@@ -56,7 +56,7 @@ class ProjectController extends Controller
     // Remove the specified resource from storage
     public function destroy(Project $project): JsonResponse
     {
-        $data = ProjectResource::make($project->load('tasks.status'));
+        $data = ProjectResource::make($project->load('tasks'));
         $project->deleteOrFail();
 
         return $this->jsonResponse(

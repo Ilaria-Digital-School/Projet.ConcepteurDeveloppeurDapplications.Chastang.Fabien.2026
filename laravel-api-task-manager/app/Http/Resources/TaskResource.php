@@ -11,12 +11,18 @@ class TaskResource extends JsonResource
     // return array<string, mixed>
     public function toArray(Request $request): array
     {
-         return [
-            "id" => $this->id,
-            // "uuid" => $this->uuid,
-            "title" => $this->title,
+        return [
+            "id"          => $this->id,
+            "uuid"        => $this->uuid,
+            "title"       => $this->title,
             "description" => $this->description,
-            "created_at" => $this->created_at->format('d/m/Y H:i')
+            "created_at"  => $this->created_at->format('d/m/Y H:i'),
+            'projects'    => ProjectResource::collection($this->whenLoaded('projects')),
+            'status'      => $this->whenPivotLoaded('project_tasks', fn() => $this->pivot->status),
+            'status_date' => $this->whenPivotLoaded(
+                'project_tasks',
+                fn() => ($this->pivot->updated_at ?? $this->pivot->created_at)->format('d/m/Y H:i')
+            ),
         ];
     }
 }

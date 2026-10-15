@@ -17,12 +17,10 @@ class Task extends Model
     // to multiple tasks: many-to-many relationship
     public function projects(): BelongsToMany
     {
-        return $this->belongsToMany(Project::class, 'project_tasks', 'task_uuid', 'project_uuid', 'uuid', 'uuid');
-    }
-
-    public function status(): BelongsToMany
-    {
-        return $this->belongsToMany(ProjectTask::class, 'project_tasks', 'task_uuid', 'project_uuid', 'uuid', 'uuid');
+        return $this->belongsToMany(Project::class, 'project_tasks', 'task_uuid', 'project_uuid', 'uuid', 'uuid')
+            ->using(ProjectTask::class)
+            ->withPivot('status')
+            ->withTimestamps();
     }
 
     // Automatically inserts a UUID when creating a task

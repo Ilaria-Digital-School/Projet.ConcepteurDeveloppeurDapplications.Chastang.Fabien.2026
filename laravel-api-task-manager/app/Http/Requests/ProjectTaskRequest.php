@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProjectTaskRequest extends FormRequest
@@ -22,12 +21,10 @@ class ProjectTaskRequest extends FormRequest
         $unicity = '|unique:project_tasks,task_uuid,NULL,task_uuid,project_uuid,'
             . $this->project_uuid;
 
-        $rules = [
+        return [
             'project_uuid' => 'bail|required|uuid|exists:projects,uuid',
             'task_uuid' => 'bail|required|uuid|exists:tasks,uuid' . $unicity,
             'status' => 'bail|required|string|in:pending,in_progress,done',
         ];
-
-        return $rules;
     }
 }

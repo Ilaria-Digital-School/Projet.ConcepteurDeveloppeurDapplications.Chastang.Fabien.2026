@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Models\Project;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProjectRequest extends FormRequest
@@ -21,16 +20,12 @@ class ProjectRequest extends FormRequest
         // Retrieves the ID of the user to be updated
         $id = $this->project instanceof Project ? $this->project->id : $this->project;
 
-        // Constraint on the email column
-        $ruleName = 'bail|required|min:10|max:255|unique:projects,name';
-        // Disables the email uniqueness constraint for the user email being updated
-        if ($this->method() === 'PUT') $ruleName .= ",$id,id";
+        // Disables the email uniqueness constraint for the project name being updated
+        $selfExcluded = $this->method() === 'PUT' ? ",$id,id" : '';
 
-        $rules = [
-            'name' => $ruleName,
+        return [
+            'name' => 'bail|required|min:10|max:255|unique:projects,name' . $selfExcluded,
             'description' => 'bail|max:1000',
         ];
-
-        return $rules;
     }
 }

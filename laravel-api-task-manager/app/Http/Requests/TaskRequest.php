@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Models\Task;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TaskRequest extends FormRequest
@@ -21,16 +20,12 @@ class TaskRequest extends FormRequest
         // Retrieves the ID of the user to be updated
         $id = $this->task instanceof Task ? $this->task->id : $this->task;
 
-        // Constraint on the name column
-        $ruleName = 'bail|required|min:10|max:255|unique:projects,name';
-        // Disables the email uniqueness constraint for the user email being updated
-        if ($this->method() === 'PUT') $ruleName .= ",$id,id";
+        // Disables the email uniqueness constraint for the task name being updated
+        $selfExcluded = $this->method() === 'PUT' ? ",$id,id" : '';
 
-        $rules = [
-            'name' => $ruleName,
+        return [
+            'name' => 'bail|required|min:10|max:255|unique:projects,name' . $selfExcluded,
             'description' => 'bail|max:1000',
         ];
-
-        return $rules;
     }
 }

@@ -2,19 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ProjectTask extends Model {
-    // A project can be linked to multiple task
-    public function tasks(): BelongsToMany
+class ProjectTask extends Pivot
+{
+    protected $table = 'project_tasks';
+
+    public $incrementing = false; // No auto-incrementing id column
+
+    public function project(): BelongsTo
     {
-        return $this->belongsToMany(Task::class, 'tasks', 'uuid');
+        return $this->belongsTo(Project::class, 'project_uuid', 'uuid');
     }
 
-    // A task can be linked to multiple projects
-    public function projects(): BelongsToMany
+    public function task(): BelongsTo
     {
-        return $this->belongsToMany(Project::class, 'projects', 'uuid');
+        return $this->belongsTo(Task::class, 'task_uuid', 'uuid');
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectTaskRequest;
-use App\Http\Resources\ProjectTaskResource;
 use App\Models\ProjectTask;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -18,9 +17,7 @@ class ProjectTaskController extends Controller
         return $this->jsonResponse(
             [
                 'message' => __('messages.project_task_created'),
-                'data' => ProjectTaskResource::make(
-                    $projectTask->load('projects.tasks.status')
-                )
+                'data' => $projectTask
             ],
             Response::HTTP_CREATED
         );
@@ -34,9 +31,7 @@ class ProjectTaskController extends Controller
         return $this->jsonResponse(
             [
                 'message' => __('messages.project_task_updated'),
-                'data' => ProjectTaskResource::make(
-                    $projectTask->load('projects.tasks.status')
-                )
+                'data' => $projectTask
             ]
         );
     }
@@ -44,13 +39,12 @@ class ProjectTaskController extends Controller
     // Remove the specified resource from storage
     public function destroy(ProjectTask $projectTask): JsonResponse
     {
-        $data = ProjectTaskResource::make($projectTask->load('projects.tasks.status'));
         $projectTask->deleteOrFail();
 
         return $this->jsonResponse(
             [
                 'message' => __('messages.project_task_deleted'),
-                $data
+                'data' => $projectTask
             ]
         );
     }
