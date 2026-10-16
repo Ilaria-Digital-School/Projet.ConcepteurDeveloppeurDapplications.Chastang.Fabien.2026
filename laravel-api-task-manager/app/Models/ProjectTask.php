@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TaskStatus;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -19,5 +20,12 @@ class ProjectTask extends Pivot
     public function task(): BelongsTo
     {
         return $this->belongsTo(Task::class, 'task_uuid', 'uuid');
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'status' => TaskStatus::class,
+        ];
     }
 }

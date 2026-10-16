@@ -18,7 +18,13 @@ class TaskResource extends JsonResource
             "description" => $this->description,
             "created_at"  => $this->created_at->format('d/m/Y H:i'),
             'projects'    => ProjectResource::collection($this->whenLoaded('projects')),
-            'status'      => $this->whenPivotLoaded('project_tasks', fn() => $this->pivot->status),
+            'status'      => $this->whenPivotLoaded(
+                'project_tasks',
+                fn() => [
+                    'value' => $this->pivot->status->value,
+                    'label' => $this->pivot->status->label(),
+                ]
+            ),
             'status_date' => $this->whenPivotLoaded(
                 'project_tasks',
                 fn() => ($this->pivot->updated_at ?? $this->pivot->created_at)->format('d/m/Y H:i')

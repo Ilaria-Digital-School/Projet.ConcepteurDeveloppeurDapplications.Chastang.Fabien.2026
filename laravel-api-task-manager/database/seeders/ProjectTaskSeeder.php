@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\TaskStatus;
 use App\Models\ProjectTask;
 use App\Models\Project;
 use App\Models\Task;
@@ -34,7 +35,7 @@ class ProjectTaskSeeder extends Seeder
                 ProjectTask::create([
                     'project_uuid' => $project->uuid,
                     'task_uuid' => $uuidTask,
-                    'status' => fake()->randomElement(['pending', 'in_progress', 'done'])
+                    'status' => fake()->randomElement(array_column(TaskStatus::cases(), 'value'))
                 ]);
             }
         }

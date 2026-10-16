@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TaskStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,7 +14,9 @@ return new class extends Migration
         Schema::create('project_tasks', function (Blueprint $table) {
             $table->uuid('project_uuid')->index();
             $table->uuid('task_uuid')->index();
-            $table->enum('status', ['pending', 'in_progress', 'done'])->default('pending')->index();
+            $table->enum('status', array_column(TaskStatus::cases(), 'value'))
+                ->default(TaskStatus::Pending->value)
+                ->index();
             $table->timestamps();
             // Uniqueness condition and foreign keys
             $table->unique(['project_uuid', 'task_uuid']);

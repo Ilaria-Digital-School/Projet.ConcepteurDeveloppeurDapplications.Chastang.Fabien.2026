@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\TaskStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ProjectTaskRequest extends FormRequest
 {
@@ -24,7 +26,7 @@ class ProjectTaskRequest extends FormRequest
         return [
             'project_uuid' => 'bail|required|uuid|exists:projects,uuid',
             'task_uuid' => 'bail|required|uuid|exists:tasks,uuid' . $unicity,
-            'status' => 'bail|required|string|in:pending,in_progress,done',
+            'status' => ['bail', 'required', 'int', Rule::enum(TaskStatus::class)],
         ];
     }
 }

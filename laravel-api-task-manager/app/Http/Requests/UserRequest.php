@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
@@ -27,6 +29,7 @@ class UserRequest extends FormRequest
             'name' => 'bail|required|min:3|max:50',
             'password' => 'bail|required|min:6|confirmed',
             'email' => 'bail|required|email|max:150|unique:users,email' . $selfExcluded,
+            'role' => ['bail', 'required', 'int', Rule::enum(UserRole::class)],
         ];
 
         return $rules;
