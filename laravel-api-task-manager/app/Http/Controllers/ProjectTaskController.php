@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TaskStatus;
 use App\Http\Requests\ProjectTaskRequest;
 use App\Models\ProjectTask;
 use Illuminate\Http\JsonResponse;
@@ -26,6 +27,11 @@ class ProjectTaskController extends Controller
     // Update the specified resource in storage: PATCH status
     public function update(ProjectTaskRequest $request, ProjectTask $projectTask): JsonResponse
     {
+        if ($projectTask->status !== TaskStatus::Pending) {
+            // Error: cannot update the project UUID or task UUID if the status is not "Pending"
+            return $this->jsonError('resource_locked', Response::HTTP_LOCKED);
+        }
+
         $projectTask->update($request->validated());
 
         return $this->jsonResponse(
@@ -39,6 +45,11 @@ class ProjectTaskController extends Controller
     // Remove the specified resource from storage
     public function destroy(ProjectTask $projectTask): JsonResponse
     {
+        if ($projectTask->status !== TaskStatus::Pending) {
+            // Error: cannot delete the project task if the status is not "Pending"
+            return $this->jsonError('resource_locked', Response::HTTP_LOCKED);
+        }
+
         $projectTask->deleteOrFail();
 
         return $this->jsonResponse(

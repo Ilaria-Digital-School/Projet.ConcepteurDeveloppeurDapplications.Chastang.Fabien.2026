@@ -26,10 +26,9 @@ class UserRequest extends FormRequest
         $selfExcluded = $this->method() === 'PUT' ? ",$id,id" : '';
 
         $rules = [
-            'name' => 'bail|required|min:3|max:50',
-            'password' => 'bail|required|min:6|confirmed',
-            'email' => 'bail|required|email|max:150|unique:users,email' . $selfExcluded,
-            'role' => ['bail', 'required', 'int', Rule::enum(UserRole::class)],
+            'name' => 'bail|required|min:3|max:100',
+            'password' => 'bail|required|min:8|confirmed',
+            'email' => 'bail|required|email|max:255|unique:users,email' . $selfExcluded,
         ];
 
         return $rules;

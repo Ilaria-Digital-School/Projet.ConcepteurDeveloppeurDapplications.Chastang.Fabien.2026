@@ -18,8 +18,8 @@ return new class extends Migration
                 ->default(TaskStatus::Pending->value)
                 ->index();
             $table->timestamps();
-            // Uniqueness condition and foreign keys
-            $table->unique(['project_uuid', 'task_uuid']);
+            // Primary key and foreign keys
+            $table->primary(['project_uuid', 'task_uuid']);
             $table->foreign('project_uuid')->references('uuid')->on('projects')->cascadeOnDelete();
             $table->foreign('task_uuid')->references('uuid')->on('tasks')->cascadeOnDelete();
         });
