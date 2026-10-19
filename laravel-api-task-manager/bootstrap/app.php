@@ -6,6 +6,7 @@ use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -20,12 +21,13 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'check.api' => CheckApiKey::class,
             'role' => CheckUserRole::class,
         ]);
 
         $middleware->appendToGroup('api', [
-            SetLocale::class
+            SetLocale::class,
+            TrimStrings::class,
+            CheckApiKey::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
