@@ -10,7 +10,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -23,9 +22,8 @@ class AuthController extends Controller
 
         // If the user exists, check his password
         if (!$user || !Hash::check($validated['password'], $user->password)) {
-            throw ValidationException::withMessages([
-                'credentials' => [__('messages.credentials_invalid')],
-            ]);
+            // Error: invalid credentials
+            return $this->jsonError('credentials_invalid', Response::HTTP_UNAUTHORIZED);
         }
 
         // Retrieve the token name if it exists; otherwise, use the User-Agent
@@ -42,19 +40,14 @@ class AuthController extends Controller
                 'user' => $user,
                 'token' => $token,
                 'token_type' => 'Bearer',
-            ],
-            Response::HTTP_OK
+            ]
         );
     }
 
     public function logout(Request $request): JsonResponse
     {
         $request->user()->currentAccessToken()->delete();
-
-        return $this->jsonResponse(
-            ['message' => __('messages.logout_successful')],
-            Response::HTTP_OK
-        );
+        return $this->jsonResponse(['message' => __('messages.logout_successful')]);
     }
 
     // Get the user making the request
@@ -64,10 +57,15 @@ class AuthController extends Controller
     }
 
     // Update the user making the request
-    public function update(UserRequest $request): JsonResponse
+    public function update(Request $request): JsonResponse
     {
-        $user = $request->user();
-        $user->update($request->validated());
+        ($user = $request->user())->update(
+            $request->validate([
+                'name' => 'bail|min:3|max:100',
+                'password' => 'bail|min:8|confirmed',
+                'email' => "bail|email|max:255|unique:users,email,{$user->id},id",
+            ])
+        );
 
         return $this->jsonResponse(
             [
@@ -80,8 +78,7 @@ class AuthController extends Controller
     // Delete the user making the request
     public function destroy(Request $request): JsonResponse
     {
-        $user = $request->user();
-        $user->deleteOrFail();
+        ($user = $request->user())->deleteOrFail();
 
         return $this->jsonResponse(
             [

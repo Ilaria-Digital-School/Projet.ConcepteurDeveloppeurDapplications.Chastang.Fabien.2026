@@ -16,6 +16,7 @@ return [
     'project_task_created' => 'La tâche a été ajoutée au projet avec succès.',
     'project_task_updated' => 'Le statut de la tâche a été modifié avec succès.',
     'project_task_deleted' => 'La tâche a été supprimée du projet avec succès.',
+    'prev_status_unauthorized' => 'Seul un super-administrateur peut revenir à un statut précédent.',
     'api_key_required' => 'La clé client "API_KEY" est obligatoire.',
     'api_key_invalid' => 'La clé client "API_KEY" est incorrecte.',
     'credentials_invalid' => 'Les identifiants sont incorrects.',

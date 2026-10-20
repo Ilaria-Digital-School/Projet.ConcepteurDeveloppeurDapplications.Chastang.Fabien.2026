@@ -39,6 +39,8 @@ Route::middleware('auth:sanctum')->group(function () {
         ->only(['store', 'update', 'destroy']);
 
     // Administrators and super-administrators: updating project task status
+    // But only a super-administrator can revert to a previous status, this
+    // functionality is implemented in the controller
     Route::middleware('role:2')->patch('/project-tasks/{projectTask}/status', SetTaskStatusController::class);
 });
 

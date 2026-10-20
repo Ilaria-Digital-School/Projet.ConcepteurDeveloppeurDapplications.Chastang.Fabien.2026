@@ -2,12 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\TaskStatus;
 use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
-use Illuminate\Validation\Rule;
 
 class ProjectTaskRequest extends FormRequest
 {

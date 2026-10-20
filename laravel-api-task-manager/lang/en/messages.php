@@ -16,6 +16,7 @@ return [
     'project_task_created' => 'The task has been successfully added to the project.',
     'project_task_updated' => 'The task status has been successfully updated.',
     'project_task_deleted' => 'The task has been successfully removed from the project.',
+    'prev_status_unauthorized' => 'Only a super-administrator can revert to a previous status.',
     'api_key_required' => 'The client key "API_KEY" is mandatory.',
     'api_key_invalid' => 'The client key "API_KEY" is incorrect.',
     'credentials_invalid' => 'The credentials are incorrect.',

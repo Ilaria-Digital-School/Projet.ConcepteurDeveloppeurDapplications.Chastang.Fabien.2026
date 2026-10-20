@@ -20,11 +20,17 @@ class TaskRequest extends FormRequest
         // Retrieves the ID of the user to be updated
         $id = $this->task instanceof Task ? $this->task->id : $this->task;
 
-        // Disables the email uniqueness constraint for the task name being updated
-        $selfExcluded = $this->method() === 'PUT' ? ",$id,id" : '';
+        $required = '|required';
+        $excluded = '';
+        if ($this->method() === 'PUT') {
+            // Disables mandatory fields for updates
+            $required = '';
+            // Disables the name uniqueness constraint for the project being updated
+            $excluded = ",$id,id";
+        }
 
         return [
-            'name' => 'bail|required|min:10|max:255|unique:projects,name' . $selfExcluded,
+            'name' => "bail$required|min:10|max:255|unique:projects,name$excluded",
             'description' => 'bail|max:1000',
         ];
     }

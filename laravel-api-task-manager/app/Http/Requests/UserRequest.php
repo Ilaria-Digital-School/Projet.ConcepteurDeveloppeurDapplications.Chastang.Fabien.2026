@@ -2,10 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
@@ -22,13 +20,19 @@ class UserRequest extends FormRequest
         // Retrieves the ID of the user to be updated
         $id = $this->user instanceof User ? $this->user->id : $this->user;
 
-        // Disables the email uniqueness constraint for the user email being updated
-        $selfExcluded = $this->method() === 'PUT' ? ",$id,id" : '';
+        $required = '|required';
+        $excluded = '';
+        if ($this->method() === 'PUT') {
+            // Disables mandatory fields for updates
+            $required = '';
+            // Disables the email uniqueness constraint for the user email being updated
+            $excluded = ",$id,id";
+        }
 
         $rules = [
-            'name' => 'bail|required|min:3|max:100',
-            'password' => 'bail|required|min:8|confirmed',
-            'email' => 'bail|required|email|max:255|unique:users,email' . $selfExcluded,
+            'name' => "bail$required|min:3|max:100",
+            'password' => "bail$required|min:8|confirmed",
+            'email' => "bail$required|email|max:255|unique:users,email$excluded",
         ];
 
         return $rules;
