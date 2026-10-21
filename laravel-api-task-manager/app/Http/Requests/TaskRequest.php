@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Task;
-use App\Utilities\ValidationConditions;
+use App\Utilities\Validation;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TaskRequest extends FormRequest
@@ -18,14 +18,14 @@ class TaskRequest extends FormRequest
     // return array<string, ValidationRule|array<mixed>|string>
     public function rules(): array
     {
-        // Get the conditions
-        $conditions = ValidationConditions::get(
+        // Retrieves the validation conditions
+        $rules = Validation::rules(
             $this->method(),
             $this->task instanceof Task ? $this->task->id : $this->task
         );
 
         return [
-            'name' => "bail{$conditions['required']}|min:10|max:255|unique:projects,name{$conditions['excluded']}",
+            'name'        => "bail{$rules['required']}|min:10|max:255|unique:projects,name{$rules['excluded']}",
             'description' => 'bail|max:1000',
         ];
     }

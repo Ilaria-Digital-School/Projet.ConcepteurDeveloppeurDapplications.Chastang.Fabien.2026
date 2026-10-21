@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TaskPriority;
 use App\Enums\TaskStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,6 +17,9 @@ return new class extends Migration
             $table->uuid('task_uuid')->index();
             $table->enum('status', array_column(TaskStatus::cases(), 'value'))
                 ->default(TaskStatus::Pending->value)
+                ->index();
+            $table->enum('priority', array_column(TaskPriority::cases(), 'value'))
+                ->default(TaskPriority::Medium->value)
                 ->index();
             $table->timestamps();
             // Primary key and foreign keys

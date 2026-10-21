@@ -6,6 +6,7 @@ use App\Http\Controllers\SetUserRoleController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ProjectTaskController;
+use App\Http\Controllers\SetTaskPriorityController;
 use App\Http\Controllers\SetTaskStatusController;
 use App\Models\ProjectTask;
 use Illuminate\Http\Response;
@@ -34,11 +35,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // All users: manage project tasks, with the exception of their status
     // ProjectTask model binding: /api/project-tasks/{projectTask}
+    // Updates only the "project_uuid" and "task_uuid" columns, and not the
+    // "status" and "priority" columns
     Route::apiResource('project-tasks', ProjectTaskController::class)
-        ->parameters(['project-tasks' => 'projectTask'])
-        ->only(['store', 'update', 'destroy']);
+        ->parameters(['project-tasks' => 'projectTask']);
 
-    // Administrators and super-administrators: updating project task status
+    // All users: updating project task "priority"
+    Route::patch('/project-tasks/{projectTask}/priority', SetTaskPriorityController::class);
+
+    // Administrators and super-administrators: updating project task "status"
     // But only a super-administrator can revert to a previous status, this
     // functionality is implemented in the controller
     Route::middleware('role:2')->patch('/project-tasks/{projectTask}/status', SetTaskStatusController::class);

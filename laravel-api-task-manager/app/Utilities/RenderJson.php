@@ -7,6 +7,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RenderJson
 {
+    public static function jsonResponse(
+        mixed $data,
+        int $httpCode = Response::HTTP_OK
+    ): JsonResponse {
+        return response()->json($data, $httpCode);
+    }
+
     public static function jsonError(
         string $message,
         int $httpCode = Response::HTTP_INTERNAL_SERVER_ERROR

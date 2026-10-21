@@ -15,7 +15,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Override;
 
 #[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
+#[Hidden(['password'])]
 class User extends Authenticatable
 {
     // use HasFactory<UserFactory>

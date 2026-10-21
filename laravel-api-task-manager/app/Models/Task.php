@@ -19,7 +19,7 @@ class Task extends Model
     {
         return $this->belongsToMany(Project::class, 'project_tasks', 'task_uuid', 'project_uuid', 'uuid', 'uuid')
             ->using(ProjectTask::class)
-            ->withPivot('status')
+            ->withPivot(['status', 'priority'])
             ->withTimestamps();
     }
 

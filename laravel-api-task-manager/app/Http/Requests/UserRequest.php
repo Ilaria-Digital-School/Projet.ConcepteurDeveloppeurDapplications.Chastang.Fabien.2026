@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
-use App\Utilities\ValidationConditions;
+use App\Utilities\Validation;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -18,16 +18,16 @@ class UserRequest extends FormRequest
     // return array<string, ValidationRule|array<mixed>|string>
     public function rules(): array
     {
-        // Get the conditions
-        $conditions = ValidationConditions::get(
+        // Retrieves the validation conditions
+        $rules = Validation::rules(
             $this->method(),
             $this->user instanceof User ? $this->user->id : $this->user
         );
 
         return [
-            'name' => "bail{$conditions['required']}|min:3|max:100",
-            'password' => "bail{$conditions['required']}|min:8|confirmed",
-            'email' => "bail{$conditions['required']}|email|max:255|unique:users,email{$conditions['excluded']}",
+            'name'     => "bail{$rules['required']}|min:3|max:100",
+            'password' => "bail{$rules['required']}|min:8|confirmed",
+            'email'    => "bail{$rules['required']}|email|max:255|unique:users,email{$rules['excluded']}",
         ];
     }
 }

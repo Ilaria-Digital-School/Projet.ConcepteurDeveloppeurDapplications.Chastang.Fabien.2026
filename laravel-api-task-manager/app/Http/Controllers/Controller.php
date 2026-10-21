@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
+use App\Utilities\RenderJson;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class Controller
 {
@@ -11,20 +12,13 @@ abstract class Controller
         mixed $data,
         int $httpCode = Response::HTTP_OK
     ): JsonResponse {
-        return response()->json($data, $httpCode);
+        return RenderJson::jsonResponse($data, $httpCode);
     }
 
     protected function jsonError(
         string $messagesKey,
         int $httpCode = Response::HTTP_INTERNAL_SERVER_ERROR
     ): JsonResponse {
-        return $this->jsonResponse(
-            [
-                'message' => __("messages.$messagesKey"),
-                'is_error' => true,
-                'code_status' => $httpCode
-            ],
-            $httpCode
-        );
+        return RenderJson::jsonResponse(__("messages.$messagesKey"), $httpCode);
     }
 }

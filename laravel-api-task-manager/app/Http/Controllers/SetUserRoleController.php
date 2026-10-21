@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Enums\UserRole;
+use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SetUserRoleController extends Controller
 {
@@ -25,7 +26,7 @@ class SetUserRoleController extends Controller
         return $this->jsonResponse(
             [
                 'message' => __('messages.user_role_updated', ['id' => $user->id]),
-                'data' => $user
+                'data' => UserResource::make($user)
             ]
         );
     }

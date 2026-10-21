@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
-use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -17,7 +16,7 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
 
-        // Retrieve the user using his email address
+        // Retrieve the user using this email address
         $user = User::where('email', $validated['email'])->first();
 
         // If the user exists, check his password
@@ -37,7 +36,7 @@ class AuthController extends Controller
         // Return the token
         return $this->jsonResponse(
             [
-                'user' => $user,
+                'user' => UserResource::make($user),
                 'token' => $token,
                 'token_type' => 'Bearer',
             ]
@@ -46,7 +45,14 @@ class AuthController extends Controller
 
     public function logout(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
+        $self = $request->user();
+        if ($request->filled('all') && filter_var($request->all, FILTER_VALIDATE_BOOL))
+            // Disconnecting the current device
+            $self->tokens()->delete();
+        else
+            // Disconnecting all devices (global logout)
+            $self->currentAccessToken()->delete();
+
         return $this->jsonResponse(['message' => __('messages.logout_successful')]);
     }
 
@@ -59,18 +65,18 @@ class AuthController extends Controller
     // Update the user making the request
     public function update(Request $request): JsonResponse
     {
-        ($user = $request->user())->update(
+        ($self = $request->user())->update(
             $request->validate([
                 'name' => 'bail|min:3|max:100',
                 'password' => 'bail|min:8|confirmed',
-                'email' => "bail|email|max:255|unique:users,email,{$user->id},id",
+                'email' => "bail|email|max:255|unique:users,email,{$self->id},id",
             ])
         );
 
         return $this->jsonResponse(
             [
-                'message' => __('messages.self_updated', ['id' => $user->id]),
-                'data' => UserResource::make($user)
+                'message' => __('messages.self_updated', ['id' => $self->id]),
+                'data' => UserResource::make($self)
             ]
         );
     }
@@ -78,12 +84,12 @@ class AuthController extends Controller
     // Delete the user making the request
     public function destroy(Request $request): JsonResponse
     {
-        ($user = $request->user())->deleteOrFail();
+        ($self = $request->user())->deleteOrFail();
 
         return $this->jsonResponse(
             [
-                'message' => __('messages.self_deleted', ['id' => $user->id]),
-                'data' => UserResource::make($user)
+                'message' => __('messages.self_deleted', ['id' => $self->id]),
+                'data' => UserResource::make($self)
             ]
         );
     }

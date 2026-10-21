@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Enums\TaskStatus;
 use App\Enums\UserRole;
+use App\Http\Resources\ProjectTaskResource;
 use App\Models\ProjectTask;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class SetTaskStatusController extends Controller
 {
@@ -20,13 +21,11 @@ class SetTaskStatusController extends Controller
             'status' => ['bail', 'required', 'int', Rule::enum(TaskStatus::class)],
         ]);
 
-        // Get the user making the request
-        $user = $request->user();
+        // Only a super-administrator can revert to a previous status
         if (
             $projectTask->status > $validated['status']
-            && $user->role->value < UserRole::SuperAdmin->value
+            && $request->user()->role->value < UserRole::SuperAdmin->value
         ) {
-            // Error: only a super-administrator can revert to a previous status
             return $this->jsonError('prev_status_unauthorized', Response::HTTP_UNAUTHORIZED);
         }
 
@@ -37,7 +36,7 @@ class SetTaskStatusController extends Controller
         return $this->jsonResponse(
             [
                 'message' => __('messages.project_task_updated'),
-                'data' => $projectTask
+                'data' => ProjectTaskResource::make($projectTask->load(['project', 'task']))
             ]
         );
     }
