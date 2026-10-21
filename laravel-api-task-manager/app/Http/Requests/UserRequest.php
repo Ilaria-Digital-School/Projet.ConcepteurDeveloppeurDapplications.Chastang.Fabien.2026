@@ -18,17 +18,16 @@ class UserRequest extends FormRequest
     // return array<string, ValidationRule|array<mixed>|string>
     public function rules(): array
     {
-        // Retrieves the ID of the user to be updated
-        $id = $this->user instanceof User ? $this->user->id : $this->user;
         // Get the conditions
-        $conditions = ValidationConditions::get($this->method(), $id);
+        $conditions = ValidationConditions::get(
+            $this->method(),
+            $this->user instanceof User ? $this->user->id : $this->user
+        );
 
-        $rules = [
+        return [
             'name' => "bail{$conditions['required']}|min:3|max:100",
             'password' => "bail{$conditions['required']}|min:8|confirmed",
             'email' => "bail{$conditions['required']}|email|max:255|unique:users,email{$conditions['excluded']}",
         ];
-
-        return $rules;
     }
 }

@@ -18,10 +18,11 @@ class ProjectRequest extends FormRequest
     // return array<string, ValidationRule|array<mixed>|string>
     public function rules(): array
     {
-        // Retrieves the ID of the user to be updated
-        $id = $this->project instanceof Project ? $this->project->id : $this->project;
         // Get the conditions
-        $conditions = ValidationConditions::get($this->method(), $id);
+        $conditions = ValidationConditions::get(
+            $this->method(),
+            $this->project instanceof Project ? $this->project->id : $this->project
+        );
 
         return [
             'name' => "bail{$conditions['required']}|min:10|max:255|unique:projects,name{$conditions['excluded']}",
