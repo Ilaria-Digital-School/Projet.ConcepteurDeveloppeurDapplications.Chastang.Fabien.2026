@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
+use App\Utilities\ValidationConditions;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -19,20 +20,13 @@ class UserRequest extends FormRequest
     {
         // Retrieves the ID of the user to be updated
         $id = $this->user instanceof User ? $this->user->id : $this->user;
-
-        $required = '|required';
-        $excluded = '';
-        if ($this->method() === 'PUT') {
-            // Disables mandatory fields for updates
-            $required = '';
-            // Disables the email uniqueness constraint for the user email being updated
-            $excluded = ",$id,id";
-        }
+        // Get the conditions
+        $conditions = ValidationConditions::get($this->method(), $id);
 
         $rules = [
-            'name' => "bail$required|min:3|max:100",
-            'password' => "bail$required|min:8|confirmed",
-            'email' => "bail$required|email|max:255|unique:users,email$excluded",
+            'name' => "bail{$conditions['required']}|min:3|max:100",
+            'password' => "bail{$conditions['required']}|min:8|confirmed",
+            'email' => "bail{$conditions['required']}|email|max:255|unique:users,email{$conditions['excluded']}",
         ];
 
         return $rules;

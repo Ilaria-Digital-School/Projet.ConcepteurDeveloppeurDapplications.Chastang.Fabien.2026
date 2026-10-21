@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Project;
+use App\Utilities\ValidationConditions;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProjectRequest extends FormRequest
@@ -19,18 +20,11 @@ class ProjectRequest extends FormRequest
     {
         // Retrieves the ID of the user to be updated
         $id = $this->project instanceof Project ? $this->project->id : $this->project;
-
-        $required = '|required';
-        $excluded = '';
-        if ($this->method() === 'PUT') {
-            // Disables mandatory fields for updates
-            $required = '';
-            // Disables the name uniqueness constraint for the project being updated
-            $excluded = ",$id,id";
-        }
+        // Get the conditions
+        $conditions = ValidationConditions::get($this->method(), $id);
 
         return [
-            'name' => "bail$required|min:10|max:255|unique:projects,name$excluded",
+            'name' => "bail{$conditions['required']}|min:10|max:255|unique:projects,name{$conditions['excluded']}",
             'description' => 'bail|max:1000',
         ];
     }
