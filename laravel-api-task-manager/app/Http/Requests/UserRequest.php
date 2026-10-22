@@ -26,7 +26,7 @@ class UserRequest extends FormRequest
 
         return [
             'name'     => "bail{$rules['required']}|min:3|max:100",
-            'password' => "bail{$rules['required']}|min:8|confirmed",
+            'password' => Validation::rulesPassword($this->method(), true),
             'email'    => "bail{$rules['required']}|email|max:255|unique:users,email{$rules['excluded']}",
         ];
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Utilities\Validation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -68,7 +69,7 @@ class AuthController extends Controller
         ($self = $request->user())->update(
             $request->validate([
                 'name' => 'bail|min:3|max:100',
-                'password' => 'bail|min:8|confirmed',
+                'password' => Validation::rulesPassword($request->method(), false),
                 'email' => "bail|email|max:255|unique:users,email,{$self->id},id",
             ])
         );

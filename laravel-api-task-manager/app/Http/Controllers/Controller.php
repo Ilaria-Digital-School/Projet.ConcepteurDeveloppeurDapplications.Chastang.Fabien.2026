@@ -19,6 +19,6 @@ abstract class Controller
         string $messagesKey,
         int $httpCode = Response::HTTP_INTERNAL_SERVER_ERROR
     ): JsonResponse {
-        return RenderJson::jsonResponse(__("messages.$messagesKey"), $httpCode);
+        return RenderJson::jsonError(__("messages.$messagesKey"), $httpCode);
     }
 }

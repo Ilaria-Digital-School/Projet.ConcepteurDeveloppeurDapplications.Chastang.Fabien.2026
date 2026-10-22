@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
+use App\Utilities\Validation;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
@@ -19,7 +19,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'email'    => 'bail|required|email|max:255',
-            'password' => 'bail|required|min:8',
+            'password' => Validation::rulesPassword($this->method(), false),
         ];
     }
 }

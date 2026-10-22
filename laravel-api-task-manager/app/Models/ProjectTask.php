@@ -26,7 +26,7 @@ class ProjectTask extends Pivot
         return $this->belongsTo(Task::class, 'task_uuid', 'uuid');
     }
 
-    // Query used by save()
+    // Set the keys for a save update query
     protected function setKeysForSaveQuery($query)
     {
         return $query
@@ -34,7 +34,7 @@ class ProjectTask extends Pivot
             ->where('task_uuid', $this->getOriginal('task_uuid', $this->task_uuid));
     }
 
-    // Query used by delete()
+    // Get the query builder for a delete operation on the pivot
     protected function getDeleteQuery()
     {
         return $this->newQueryWithoutRelationships()
@@ -42,6 +42,7 @@ class ProjectTask extends Pivot
             ->where('task_uuid', $this->task_uuid);
     }
 
+    // Get the attributes that should be cast
     protected function casts(): array
     {
         return [

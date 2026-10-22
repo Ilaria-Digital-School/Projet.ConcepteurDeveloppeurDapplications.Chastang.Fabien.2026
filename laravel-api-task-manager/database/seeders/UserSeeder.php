@@ -18,27 +18,27 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Bakary',
                 'email' => 'bakary@email.com',
-                'password' => 'Azerty:123',
+                'password' => 'Azerty/#123',
             ],
             [
                 'name' => 'Islem',
                 'email' => 'islem@email.com',
-                'password' => 'Azerty:123',
+                'password' => 'Azerty/#123',
             ],
             [
                 'name' => 'Gilbert',
                 'email' => 'gilbert@email.com',
-                'password' => 'Azerty:123',
+                'password' => 'Azerty/#123',
             ],
             [
                 'name' => 'Rhiannone',
                 'email' => 'rhiannone@email.com',
-                'password' => 'Azerty:123',
+                'password' => 'Azerty/#123',
             ],
             [
                 'name' => 'Fabien',
                 'email' => 'fabien@email.com',
-                'password' => 'Azerty:123',
+                'password' => 'Azerty/#123',
             ],
         ];
 
