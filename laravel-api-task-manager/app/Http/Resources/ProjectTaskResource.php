@@ -13,7 +13,6 @@ class ProjectTaskResource extends JsonResource
     // return array<string, mixed>
     public function toArray(Request $request): array
     {
-        // Caution: do not use within an array, collection, or list, otherwise the N+1 problem will occur
         return [
             "project"    => ProjectShortResource::make($this->whenLoaded('project')),
             "task"       => TaskShortResource::make($this->whenLoaded('task')),
