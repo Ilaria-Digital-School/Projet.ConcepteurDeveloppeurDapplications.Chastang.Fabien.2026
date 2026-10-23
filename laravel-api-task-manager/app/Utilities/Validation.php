@@ -6,10 +6,9 @@ class Validation
 {
     // The password must contain at least 10 characters, all non-whitespace, including at least
     // one lowercase letter, one uppercase letter, one digit, and one special character
-    const SPECIAL_CHR = '&~#"\'{([|_\\\\^@)\\]=+}€¨$£¤%*<>,?;.:\\/!§-';
+    const SPECIAL_CHARS = '&~#"\'{([|_\\\\^@)\\]=+}€¨$£¤%*<>,?;.:\\/!§-';
     const PSWD_PATTERN = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[' .
-        self::SPECIAL_CHR . '])[a-zA-Z\\d' .
-        self::SPECIAL_CHR . ']{10,}$/';
+        self::SPECIAL_CHARS . '])[a-zA-Z\\d' . self::SPECIAL_CHARS . ']{10,}$/';
 
     public static function rules(string $method, int|string $id): array
     {
