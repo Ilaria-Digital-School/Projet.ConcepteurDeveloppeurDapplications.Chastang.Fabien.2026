@@ -69,7 +69,7 @@ class AuthController extends Controller
         ($self = $request->user())->update(
             $request->validate([
                 'name' => 'bail|min:3|max:100',
-                'password' => Validation::rulesPassword($request->method(), false),
+                'password' => Validation::rulesPassword($request->method(), true),
                 'email' => "bail|email|max:255|unique:users,email,{$self->id},id",
             ])
         );
