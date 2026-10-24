@@ -52,27 +52,27 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // Defines the binding for the ProjectTask model
 // URL: /api/project-tasks/project-uuid,task-uuid
-Route::bind('projectTask', function (string $value) {
-    [$projectUuid, $taskUuid] = array_pad(explode(',', $value, 2), 2, null);
+Route::bind('projectTask', function (string $params) {
+    [$uuidProj, $uuidTask] = array_pad(explode(',', $params, 2), 2, null);
 
     // If any parameters are missing, throw an HttpException
-    Validation::checkParam($projectUuid && $taskUuid, 'parameters_missing');
+    Validation::checkParam($uuidProj && $uuidTask, 'parameters_missing');
 
     // Check whether both parameters are valid UUIDs,
     // if not, throw an HttpException
-    Validation::checkUuid($projectUuid);
-    Validation::checkUuid($taskUuid);
+    Validation::checkUuid($uuidProj);
+    Validation::checkUuid($uuidTask);
 
     // If the project was not found, throw an HttpException
-    Validation::checkUuidExists($projectUuid, 'projects', 'project_not_found');
+    Validation::checkUuidExists($uuidProj, 'projects', 'project_not_found');
 
     // If the task was not found, throw an HttpException
-    Validation::checkUuidExists($taskUuid, 'tasks', 'task_not_found');
+    Validation::checkUuidExists($uuidTask, 'tasks', 'task_not_found');
 
     // If the project task was not found, throw an HttpException
     abort_unless(
-        $projectTask = ProjectTask::where('project_uuid', $projectUuid)
-            ->where('task_uuid', $taskUuid)
+        $projectTask = ProjectTask::where('project_uuid', $uuidProj)
+            ->where('task_uuid', $uuidTask)
             ->first(),
         Response::HTTP_NOT_FOUND,
         __('messages.project_task_not_found')

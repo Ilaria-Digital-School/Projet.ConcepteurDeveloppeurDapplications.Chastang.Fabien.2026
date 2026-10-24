@@ -39,7 +39,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
-            fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
+            fn(Request $request) => $request->is('api/*') || $request->expectsJson()
         );
 
         $exceptions->render(function (BadRequestHttpException $e) {
@@ -63,7 +63,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (LockedHttpException $e) {
             return RenderJson::jsonError($e->getMessage(), Response::HTTP_LOCKED);
         });
+
         $exceptions->render(function (HttpException $e) {
-            return RenderJson::jsonError($e->getMessage(), $e->getStatusCode() ?: Response::HTTP_INTERNAL_SERVER_ERROR);
+            return RenderJson::jsonError(
+                $e->getMessage(),
+                $e->getStatusCode() ?: Response::HTTP_INTERNAL_SERVER_ERROR
+            );
         });
     })->create();
