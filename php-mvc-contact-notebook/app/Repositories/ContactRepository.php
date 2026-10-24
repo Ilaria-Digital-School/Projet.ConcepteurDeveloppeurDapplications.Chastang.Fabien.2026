@@ -35,7 +35,7 @@ final class ContactRepository
 
         return $rows
             ? array_map(
-                fn(array $row) => new Contact(
+                fn (array $row) => new Contact(
                     (int) $row['id'],
                     $row['name'],
                     $row['email'],
@@ -56,7 +56,7 @@ final class ContactRepository
 
         return $rows
             ? array_map(
-                fn(array $row) => new Contact(
+                fn (array $row) => new Contact(
                     (int) $row['id'],
                     $row['name'],
                     $row['email'],
