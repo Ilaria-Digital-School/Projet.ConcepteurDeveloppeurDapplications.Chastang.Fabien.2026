@@ -9,6 +9,7 @@ use App\Http\Controllers\ProjectTaskController;
 use App\Http\Controllers\SetTaskPriorityController;
 use App\Http\Controllers\SetTaskStatusController;
 use App\Models\ProjectTask;
+use App\Utilities\Validation;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
@@ -54,13 +55,29 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::bind('projectTask', function (string $value) {
     [$projectUuid, $taskUuid] = array_pad(explode(',', $value, 2), 2, null);
 
+    // If any parameters are missing, throw an HttpException
+    Validation::checkParam($projectUuid && $taskUuid, 'parameters_missing');
+
+    // Check whether both parameters are valid UUIDs,
+    // if not, throw an HttpException
+    Validation::checkUuid($projectUuid);
+    Validation::checkUuid($taskUuid);
+
+    // If the project was not found, throw an HttpException
+    Validation::checkUuidExists($projectUuid, 'projects', 'project_not_found');
+
+    // If the task was not found, throw an HttpException
+    Validation::checkUuidExists($taskUuid, 'tasks', 'task_not_found');
+
+    // If the project task was not found, throw an HttpException
     abort_unless(
-        $projectUuid && $taskUuid,
+        $projectTask = ProjectTask::where('project_uuid', $projectUuid)
+            ->where('task_uuid', $taskUuid)
+            ->first(),
         Response::HTTP_NOT_FOUND,
-        __('messages.resource_not_found')
+        __('messages.project_task_not_found')
     );
 
-    return ProjectTask::where('project_uuid', $projectUuid)
-        ->where('task_uuid', $taskUuid)
-        ->firstOrFail();
+    // Returns the binding for the ProjectTask model
+    return $projectTask;
 });

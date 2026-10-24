@@ -64,6 +64,6 @@ return Application::configure(basePath: dirname(__DIR__))
             return RenderJson::jsonError($e->getMessage(), Response::HTTP_LOCKED);
         });
         $exceptions->render(function (HttpException $e) {
-            return RenderJson::jsonError($e->getMessage(), $e->getCode() ?: Response::HTTP_INTERNAL_SERVER_ERROR);
+            return RenderJson::jsonError($e->getMessage(), $e->getStatusCode() ?: Response::HTTP_INTERNAL_SERVER_ERROR);
         });
     })->create();

@@ -11,16 +11,27 @@ class ProjectTask extends Pivot
 {
     // Pivot table
     protected $table = 'project_tasks';
+
     // No auto-incrementing id column
     public $incrementing = false;
+
     // Protected column: status
     protected $guarded = ['status'];
 
+    // Default values ​​used during creation, so that these
+    // values ​​can be retrieved when the result is displayed
+    protected $attributes = [
+        'status'   => TaskStatus::Pending->value,
+        'priority' => TaskPriority::Medium->value,
+    ];
+
+    // Relationship with the "projects" table
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class, 'project_uuid', 'uuid');
     }
 
+    // Relationship with the "tasks" table
     public function task(): BelongsTo
     {
         return $this->belongsTo(Task::class, 'task_uuid', 'uuid');
@@ -46,7 +57,7 @@ class ProjectTask extends Pivot
     protected function casts(): array
     {
         return [
-            'status' => TaskStatus::class,
+            'status'   => TaskStatus::class,
             'priority' => TaskPriority::class,
         ];
     }

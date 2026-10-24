@@ -41,7 +41,7 @@ class ProjectTaskController extends Controller
         );
     }
 
-    // Update the specified resource in storage: PATCH status
+    // Update only the project UUID and/or the task UUID, not the status or priority
     public function update(ProjectTaskRequest $request, ProjectTask $projectTask): JsonResponse
     {
         if ($projectTask->status !== TaskStatus::Pending) {
@@ -49,7 +49,13 @@ class ProjectTaskController extends Controller
             return $this->jsonError('resource_locked', Response::HTTP_LOCKED);
         }
 
-        $projectTask->update($request->validated());
+        if (
+            $request->filled('project_uuid') && $request->project_uuid !== $projectTask->project_uuid
+            || $request->filled('task_uuid') && $request->task_uuid !== $projectTask->task_uuid
+        ) {
+            // Changes have been made, an update is required
+            $projectTask->update($request->validated());
+        }
 
         return $this->jsonResponse(
             [

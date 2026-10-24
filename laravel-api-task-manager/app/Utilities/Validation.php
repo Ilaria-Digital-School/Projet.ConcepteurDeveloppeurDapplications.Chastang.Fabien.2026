@@ -2,6 +2,9 @@
 
 namespace App\Utilities;
 
+use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
+
 class Validation
 {
     // The password must contain at least 10 characters, all non-whitespace, including at least
@@ -30,5 +33,38 @@ class Validation
         if ($confirmation) $pswdRules[] = 'confirmed';
 
         return $pswdRules;
+    }
+
+    public static function checkParam(bool $testParam, string $messagesKey): void
+    {
+        abort_unless(
+            $testParam,
+            Response::HTTP_BAD_REQUEST,
+            __("messages.$messagesKey")
+        );
+    }
+
+    public static function checkUuid(string $uuid): void
+    {
+        abort_unless(
+            Validator::make(
+                ['uuid' => $uuid],
+                ['uuid' => ['uuid']]
+            )->passes(),
+            Response::HTTP_BAD_REQUEST,
+            __('messages.uuid_invalid')
+        );
+    }
+
+    public static function checkUuidExists(string $uuid, string $table, string $messagesKey): void
+    {
+        abort_if(
+            Validator::make(
+                ['uuid' => $uuid],
+                ['uuid' => ["exists:$table,uuid"]]
+            )->fails(),
+            Response::HTTP_NOT_FOUND,
+            __("messages.$messagesKey")
+        );
     }
 }

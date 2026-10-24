@@ -2,10 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Project;
-use App\Models\Task;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Response;
 
 class ProjectTaskRequest extends FormRequest
 {
@@ -19,28 +16,36 @@ class ProjectTaskRequest extends FormRequest
     // return array<string, ValidationRule|array<mixed>|string>
     public function rules(): array
     {
-        // Error: project not found
-        abort_if(
-            Project::where('project_uuid', $this->project_uuid)->count() === 0,
-            Response::HTTP_NOT_FOUND,
-            __('messages.project_not_found')
-        );
+        $setProj = $setTask = false;
+        $update = $this->method() === 'PUT' || $this->method() === 'PATH';
 
-        // Error: task not found
-        abort_if(
-            Task::where('task_uuid', $this->task_uuid)->count() === 0,
-            Response::HTTP_NOT_FOUND,
-            __('messages.task_not_found')
-        );
+        $uuidProj = $update ? $this->projectTask->project_uuid : '';
+        if ($this->filled('project_uuid') && (!$update || $this->project_uuid !== $uuidProj))
+            [$setProj, $uuidProj] = [true, $this->project_uuid];
 
-        // Uniqueness constraint on the combination
-        // of the project_uuid and task_uuid columns
-        $unicity = '|unique:project_tasks,task_uuid,NULL,task_uuid,project_uuid,'
-            . $this->project_uuid;
+        $uuidTask = $update ? $this->projectTask->task_uuid : '';
+        if ($this->filled('task_uuid') && (!$update || $this->task_uuid !== $uuidTask))
+            [$setTask, $uuidTask] = [true, $this->task_uuid];
 
-        return [
-            'project_uuid' => 'bail|required|uuid|exists:projects,uuid',
-            'task_uuid' => 'bail|required|uuid|exists:tasks,uuid' . $unicity,
-        ];
+        if (!$update || $setProj || $setTask) {
+            // Required for creation, but not for update
+            $required = $update ? '' : '|required';
+
+            // Uniqueness constraint on the combination of the project_uuid and task_uuid columns
+            if ($update && !$setTask) {
+                $uniProj = "|unique:project_tasks,project_uuid,NULL,project_uuid,task_uuid,$uuidTask";
+                $uniTask = "";
+            } else {
+                $uniProj = "";
+                $uniTask = "|unique:project_tasks,task_uuid,NULL,task_uuid,project_uuid,$uuidProj";
+            }
+
+            return [
+                'project_uuid' => "bail$required|uuid|exists:projects,uuid$uniProj",
+                'task_uuid' => "bail$required|uuid|exists:tasks,uuid$uniTask",
+            ];
+        } else {
+            return [];
+        }
     }
 }

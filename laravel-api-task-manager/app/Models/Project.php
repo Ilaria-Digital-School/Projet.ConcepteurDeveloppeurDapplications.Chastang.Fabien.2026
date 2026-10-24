@@ -13,6 +13,7 @@ class Project extends Model
 
     protected $guarded = ['uuid'];
 
+    // Relationship with the "project_tasks" pivot table
     // A project can be linked to multiple tasks, and a task
     // to multiple projects: many-to-many relationship
     public function tasks(): BelongsToMany

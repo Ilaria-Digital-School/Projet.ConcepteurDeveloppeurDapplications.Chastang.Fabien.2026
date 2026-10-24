@@ -13,13 +13,15 @@ class SetTaskPriorityController extends Controller
     // Updates the project task priority
     public function __invoke(Request $request, ProjectTask $projectTask)
     {
-        // Validates the data
+        // Validates the priority
         $validated = $request->validate([
             'priority' => ['bail', 'required', 'int', Rule::enum(TaskPriority::class)],
         ]);
 
-        // Updates the priority
-        $projectTask->update($validated);
+        if ($request->filled('priority') && $request->priority !== $projectTask->priority) {
+            // Changes have been made, an update is required
+            $projectTask->update($validated);
+        }
 
         return $this->jsonResponse(
             [

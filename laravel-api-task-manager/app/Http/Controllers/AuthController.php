@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
+    // User login
     public function login(LoginRequest $request): JsonResponse
     {
         $validated = $request->validated();
@@ -31,39 +32,41 @@ class AuthController extends Controller
             'token_name',
             $request->header('User-Agent', 'api-token')
         );
-        // Then create the token
-        $token = $user->createToken($tokenName)->plainTextToken;
 
-        // Return the token
+        // Next, create the token and return it
         return $this->jsonResponse(
             [
+                // Return the data of the logged-in user
                 'user' => UserResource::make($user),
-                'token' => $token,
+                // Create the token
+                'token' => $user->createToken($tokenName)->plainTextToken,
+                // Define the token type
                 'token_type' => 'Bearer',
             ]
         );
     }
 
+    // User logout
     public function logout(Request $request): JsonResponse
     {
         $self = $request->user();
         if ($request->filled('all') && filter_var($request->all, FILTER_VALIDATE_BOOL))
-            // Disconnecting the current device
+            // Disconnecting all devices (global logout)
             $self->tokens()->delete();
         else
-            // Disconnecting all devices (global logout)
+            // Disconnecting the current device
             $self->currentAccessToken()->delete();
 
         return $this->jsonResponse(['message' => __('messages.logout_successful')]);
     }
 
-    // Get the user making the request
+    // Get the account of the user who has made the request
     public function show(Request $request): JsonResponse
     {
         return $this->jsonResponse(['data' => UserResource::make($request->user())]);
     }
 
-    // Update the user making the request
+    // Update the account of the user who has made the request
     public function update(Request $request): JsonResponse
     {
         ($self = $request->user())->update(
@@ -82,7 +85,7 @@ class AuthController extends Controller
         );
     }
 
-    // Delete the user making the request
+    // Delete the account of the user who has made the request
     public function destroy(Request $request): JsonResponse
     {
         ($self = $request->user())->deleteOrFail();
