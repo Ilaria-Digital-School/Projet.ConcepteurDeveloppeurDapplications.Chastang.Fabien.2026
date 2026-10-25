@@ -34,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('projects', ProjectController::class);
     Route::apiResource('tasks', TaskController::class);
 
-    // All users: manage project tasks, with the exception of their status
+    // All users: manage project tasks, with the exception of their "status"
     // ProjectTask model binding: /api/project-tasks/{projectTask}
     // Updates only the "project_uuid" and "task_uuid" columns, and not the
     // "status" and "priority" columns
@@ -51,7 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 // Defines the binding for the ProjectTask model
-// URL: /api/project-tasks/project-uuid,task-uuid
+// URL: /api/project-tasks/the-project-uuid,the-task-uuid
 Route::bind('projectTask', function (string $params) {
     [$uuidProj, $uuidTask] = array_pad(explode(',', $params, 2), 2, null);
 
