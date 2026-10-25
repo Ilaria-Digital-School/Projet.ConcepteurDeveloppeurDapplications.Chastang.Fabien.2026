@@ -23,8 +23,6 @@ class ProjectTaskSeeder extends Seeder
 
         $projects = Project::all(['uuid']);
         $tasks = Task::all(['uuid']);
-        $status = array_column(TaskStatus::cases(), 'value');
-        $priorities = array_column(TaskPriority::cases(), 'value');
 
         foreach ($projects as $project) {
             $_tasks = $tasks;
@@ -32,13 +30,11 @@ class ProjectTaskSeeder extends Seeder
 
             for ($i = 1; $i <= $ntasks; $i++) {
                 $uuidTask = fake()->randomElement($_tasks)->uuid;
-                $_tasks = $_tasks->filter(fn ($task) => $task->uuid !== $uuidTask);
+                $_tasks = $_tasks->filter(fn($task) => $task->uuid !== $uuidTask);
 
-                ProjectTask::create([
+                ProjectTask::factory()->create([
                     'project_uuid' => $project->uuid,
                     'task_uuid' => $uuidTask,
-                    'status' => fake()->randomElement($status),
-                    'priority' => fake()->randomElement($priorities),
                 ]);
             }
         }

@@ -15,6 +15,8 @@ class TaskSeeder extends Seeder
         Task::truncate();
         Schema::enableForeignKeyConstraints();
 
+        Task::factory(5)->create();
+
         $tasks = [
             [
                 'title' => 'Créer la page d’accueil',
@@ -58,6 +60,6 @@ class TaskSeeder extends Seeder
             ],
         ];
 
-        foreach ($tasks as $task) Task::create($task);
+        foreach ($tasks as $task) Task::factory()->create($task);
     }
 }

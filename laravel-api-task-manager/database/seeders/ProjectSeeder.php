@@ -15,6 +15,8 @@ class ProjectSeeder extends Seeder
         Project::truncate();
         Schema::enableForeignKeyConstraints();
 
+        Project::factory(5)->create();
+
         $projects = [
             [
                 'name' => 'Site e-commerce',
@@ -34,6 +36,6 @@ class ProjectSeeder extends Seeder
             ],
         ];
 
-        foreach ($projects as $project) Project::create($project);
+        foreach ($projects as $project) Project::factory()->create($project);
     }
 }

@@ -22,13 +22,15 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('Password#1'),
             'role' => fake()->randomElement(array_column(UserRole::cases(), 'value')),
+            'created_at' => fake()->dateTimeBetween('-1 year', '-2 month'),
+            'updated_at' => fake()->dateTimeBetween('-1 month', 'now'),
         ];
     }
 
     // Indicate that the model's email address should be unverified
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }

@@ -4,11 +4,14 @@ namespace App\Models;
 
 use App\Enums\TaskPriority;
 use App\Enums\TaskStatus;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProjectTask extends Pivot
 {
+    use HasFactory;
+
     // Pivot table
     protected $table = 'project_tasks';
 
