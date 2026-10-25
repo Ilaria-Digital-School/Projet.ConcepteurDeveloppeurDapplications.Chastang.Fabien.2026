@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Enums\TaskPriority;
-use App\Enums\TaskStatus;
 use App\Models\ProjectTask;
 use App\Models\Project;
 use App\Models\Task;

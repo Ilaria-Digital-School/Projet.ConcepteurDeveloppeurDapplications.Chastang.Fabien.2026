@@ -20,21 +20,21 @@ class TaskResource extends JsonResource
             'projects'    => ProjectResource::collection($this->whenLoaded('projects')),
             'status'      => $this->whenPivotLoaded(
                 'project_tasks',
-                fn () => [
+                fn() => [
                     'value' => $this->pivot->status->value,
                     'label' => $this->pivot->status->label(),
                 ]
             ),
             'priority'      => $this->whenPivotLoaded(
                 'project_tasks',
-                fn () => [
+                fn() => [
                     'value' => $this->pivot->priority->value,
                     'label' => $this->pivot->priority->label(),
                 ]
             ),
             'project_task_date' => $this->whenPivotLoaded(
                 'project_tasks',
-                fn () => ($this->pivot->updated_at ?? $this->pivot->created_at)->format('d/m/Y H:i')
+                fn() => ($this->pivot->updated_at ?? $this->pivot->created_at)->format('d/m/Y H:i')
             ),
         ];
     }
