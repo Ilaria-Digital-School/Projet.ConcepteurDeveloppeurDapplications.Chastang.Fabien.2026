@@ -16,4 +16,9 @@ enum UserRole: int
             self::SuperAdmin => __('enums.role_super_admin'),
         };
     }
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
 }

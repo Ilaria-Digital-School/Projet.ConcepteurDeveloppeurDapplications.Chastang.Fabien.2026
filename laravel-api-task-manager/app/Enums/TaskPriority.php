@@ -16,4 +16,9 @@ enum TaskPriority: int
             self::High   => __('enums.priority_high'),
         };
     }
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
 }

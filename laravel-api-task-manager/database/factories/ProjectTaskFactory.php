@@ -14,8 +14,8 @@ class ProjectTaskFactory extends Factory
     public function definition(): array
     {
         return [
-            'status' => fake()->randomElement(array_column(TaskStatus::cases(), 'value')),
-            'priority' => fake()->randomElement(array_column(TaskPriority::cases(), 'value')),
+            'status' => fake()->randomElement(TaskStatus::values()),
+            'priority' => fake()->randomElement(TaskPriority::values()),
             'created_at' => fake()->dateTimeBetween('-6 days', '-4 days'),
             'updated_at' => fake()->dateTimeBetween('-3 days', 'now'),
         ];
