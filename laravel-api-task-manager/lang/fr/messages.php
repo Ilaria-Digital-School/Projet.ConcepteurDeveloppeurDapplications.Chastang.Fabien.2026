@@ -31,4 +31,5 @@ return [
     'forbidden_request'        => 'Requête non autorisée. L\'utilisateur ne dispose pas des droits d\'accès au contenu.',
     'resource_locked'          => 'La ressource demandée est verrouillée.',
     'uuid_invalid'             => 'Le paramètre doit être un UUID valide.',
+    'binding_param_invalid'    => 'Le paramètre doit être un nombre entier positif ou un UUID valide.',
 ];

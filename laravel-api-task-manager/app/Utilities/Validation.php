@@ -44,6 +44,14 @@ class Validation
         );
     }
 
+    public static function isId(string $id): bool
+    {
+        return Validator::make(
+            ['id' => $id],
+            ['id' => ['int', 'min:1']]
+        )->passes();
+    }
+
     public static function checkUuid(string $uuid): void
     {
         abort_unless(

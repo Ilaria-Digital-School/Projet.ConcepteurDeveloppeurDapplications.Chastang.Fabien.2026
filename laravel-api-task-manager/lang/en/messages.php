@@ -31,4 +31,5 @@ return [
     'forbidden_request'        => 'Unauthorized request. The user does not have access rights to the content.',
     'resource_locked'          => 'The resource that is being accessed is locked.',
     'uuid_invalid'             => 'The parameter must be a valid UUID.',
+    'binding_param_invalid'    => 'The parameter must be an integer or a valid UUID.',
 ];
