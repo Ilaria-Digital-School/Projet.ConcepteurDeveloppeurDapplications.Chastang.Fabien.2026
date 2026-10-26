@@ -54,24 +54,31 @@ class Validation
 
     public static function checkUuid(string $uuid): void
     {
-        abort_unless(
+        abort_if(
             Validator::make(
                 ['uuid' => $uuid],
                 ['uuid' => ['uuid']]
-            )->passes(),
+            )->fails(),
             Response::HTTP_BAD_REQUEST,
             __('messages.uuid_invalid')
         );
     }
 
-    public static function checkUuidExists(string $uuid, string $table, string $messagesKey): void
-    {
+    public static function checkUuidExists(
+        string $uuid,
+        string $table,
+        string $column,
+        string $messagesKey,
+        bool $abortExist = false
+    ): void {
+        $exists = Validator::make(
+            ['uuid' => $uuid],
+            ['uuid' => ["exists:$table,$column"]]
+        )->passes();
+
         abort_if(
-            Validator::make(
-                ['uuid' => $uuid],
-                ['uuid' => ["exists:$table,uuid"]]
-            )->fails(),
-            Response::HTTP_NOT_FOUND,
+            ($abortExist && $exists) || (!$abortExist && !$exists),
+            $abortExist ? Response::HTTP_BAD_REQUEST : Response::HTTP_NOT_FOUND,
             __("messages.$messagesKey")
         );
     }

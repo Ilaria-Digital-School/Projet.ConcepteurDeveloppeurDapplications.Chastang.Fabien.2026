@@ -12,7 +12,8 @@ class Project extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $guarded = ['uuid'];
+    // Whitelist, more secure
+    protected $fillable = ['name', 'description'];
 
     // Relationship with the "project_tasks" pivot table
     // A project can be linked to multiple tasks, and a task

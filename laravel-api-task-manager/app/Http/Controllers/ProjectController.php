@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
+use App\Utilities\Validation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -56,6 +57,9 @@ class ProjectController extends Controller
     // Remove the specified resource from storage
     public function destroy(Project $project): JsonResponse
     {
+        // If the project is referenced in the "project_tasks" table, throw an HttpException
+        Validation::checkUuidExists($project->uuid, 'project_tasks', 'project_uuid', 'project_referenced', true);
+
         $data = ProjectResource::make($project->load('tasks'));
         $project->deleteOrFail();
 

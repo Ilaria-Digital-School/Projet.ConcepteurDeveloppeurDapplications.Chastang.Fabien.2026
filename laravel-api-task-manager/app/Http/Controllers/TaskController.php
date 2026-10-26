@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
+use App\Utilities\Validation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -56,6 +57,9 @@ class TaskController extends Controller
     // Remove the specified resource from storage
     public function destroy(Task $task): JsonResponse
     {
+        // If the task is referenced in the "project_tasks" table, throw an HttpException
+        Validation::checkUuidExists($task->uuid, 'project_tasks', 'task_uuid', 'task_referenced', true);
+
         $data = TaskResource::make($task->load('projects'));
         $task->deleteOrFail();
 

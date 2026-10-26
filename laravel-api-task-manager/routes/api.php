@@ -38,6 +38,9 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // All users: manage projects and the tasks associated with them
+    // It is not possible to delete a project or a task if it is linked
+    // to another task or project
+    //
     Route::apiResource('projects', ProjectController::class);
     Route::apiResource('projects-uuid', ProjectController::class)
         ->parameters(['projects-uuid' => 'projectUuid']);
@@ -45,25 +48,30 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('tasks-uuid', TaskController::class)
         ->parameters(['tasks-uuid' => 'taskUuid']);
 
-    // All users: manage project tasks, updates only the "project_uuid" and
-    // "task_uuid" columns, and not the "status" and "priority" columns
-    // ProjectTask model binding: /api/project-tasks/{projectTask}
+    // All users: manage project tasks, updates only the project UUID and
+    // task UUID columns, and not the "status" and "priority" columns
+    // It is not possible to update the project UUID or task UUID or delete a
+    // project task if the status is not "Pending" and the priority is not "Low"
+    //
     Route::apiResource('project-tasks', ProjectTaskController::class)
         ->parameters(['project-tasks' => 'projectTask']);
 
-    // All users: updating project task "priority"
-    Route::patch('/project-tasks/{projectTask}/priority', SetTaskPriorityController::class);
-
-    // Administrators and super-administrators: updating project task "status"
-    // But only a super-administrator can revert to a previous status, this
-    // functionality is implemented in the controller
-    Route::middleware('role:2')->patch('/project-tasks/{projectTask}/status', SetTaskStatusController::class);
+    // Administrators and super-administrators: updating project task "status" and
+    // "priority", but only a super-administrator can revert to a previous status
+    //
+    Route::middleware('role:2')->group(function () {
+        Route::patch('/project-tasks/{projectTask}/priority', SetTaskPriorityController::class);
+        Route::patch('/project-tasks/{projectTask}/status', SetTaskStatusController::class);
+    });
 });
 
+///////////////////////////////////////////////////////////////////////////////
 // Defines the binding for the ProjectTask model
-// URL: /api/project-tasks/project-ID-or-project-UUID,task-ID-or-task-UUID
-Route::bind('projectTask', function (string $params) {
-    [$identProj, $identTask] = array_pad(explode(',', $params, 2), 2, null);
+// ProjectTask model binding: /api/project-tasks/{projectTask}
+// URL: /api/project-tasks/project_ID-or-project_UUID,task_ID-or-task_UUID
+
+Route::bind('projectTask', function (string $value) {
+    [$identProj, $identTask] = array_pad(explode(',', $value, 2), 2, null);
 
     // If validation or data retrieval fails, an HttpException is thrown
 
@@ -77,7 +85,7 @@ Route::bind('projectTask', function (string $params) {
         // Checks if the parameter is a valid UUID
         Validation::checkUuid($identProj);
         // Checks if the project exists
-        Validation::checkUuidExists($identProj, 'projects', 'project_not_found');
+        Validation::checkUuidExists($identProj, 'projects', 'uuid', 'project_not_found');
     }
 
     if (Validation::isId($identTask)) {
@@ -87,9 +95,49 @@ Route::bind('projectTask', function (string $params) {
         // Checks if the parameter is a valid UUID
         Validation::checkUuid($identTask);
         // Checks if the task exists
-        Validation::checkUuidExists($identTask, 'tasks', 'task_not_found');
+        Validation::checkUuidExists($identTask, 'tasks', 'uuid', 'task_not_found');
     }
 
     // Returns the binding for the ProjectTask model
     return Binding::getProjectTask($identProj, $identTask);
+});
+
+///////////////////////////////////////////////////////////////////////////////
+// Defines the binding for the Project model
+// Project model binding: /api/project-uuid/{projectUuid}
+// URL: /api/project-uuid/the_project_UUID
+
+Route::bind('projectUuid', function (string $value) {
+    $uuid = $value ?: null;
+
+    // If validation or data retrieval fails, an HttpException is thrown
+
+    // Checks if any parameters are missing
+    Validation::checkParam($uuid, 'parameters_missing');
+
+    // Checks if the parameter is a valid UUID
+    Validation::checkUuid($uuid);
+
+    // If the project exists, returns the binding for the Project model
+    return Binding::getModel($uuid, 'projects', 'project_not_found');
+});
+
+///////////////////////////////////////////////////////////////////////////////
+// Defines the binding for the Task model
+// Task model binding: /api/tasks-uuid/{taskUuid}
+// URL: /api/task-uuid/the_task_UUID
+
+Route::bind('taskUuid', function (string $value) {
+    $uuid = $value ?: null;
+
+    // If validation or data retrieval fails, an HttpException is thrown
+
+    // Checks if any parameters are missing
+    Validation::checkParam($uuid, 'parameters_missing');
+
+    // Checks if the parameter is a valid UUID
+    Validation::checkUuid($uuid);
+
+    // If the task exists, returns the binding for the Task model
+    return Binding::getModel($uuid, 'tasks', 'task_not_found');
 });

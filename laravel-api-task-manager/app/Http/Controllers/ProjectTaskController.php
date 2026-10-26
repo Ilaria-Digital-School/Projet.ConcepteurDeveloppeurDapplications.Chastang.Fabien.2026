@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TaskPriority;
 use App\Enums\TaskStatus;
 use App\Http\Requests\ProjectTaskRequest;
 use App\Http\Resources\ProjectTaskResource;
@@ -44,8 +45,12 @@ class ProjectTaskController extends Controller
     // Update only the project UUID and/or the task UUID, not the status or priority
     public function update(ProjectTaskRequest $request, ProjectTask $projectTask): JsonResponse
     {
-        if ($projectTask->status !== TaskStatus::Pending) {
-            // Error: cannot update the project UUID or task UUID if the status is not "Pending"
+        if (
+            $projectTask->status !== TaskStatus::Pending
+            || $projectTask->priority !== TaskPriority::Low
+        ) {
+            // Error: cannot update the project UUID or task UUID if the
+            // status is not "Pending" and the priority is not "Low"
             return $this->jsonError('resource_locked', Response::HTTP_LOCKED);
         }
 
@@ -68,8 +73,12 @@ class ProjectTaskController extends Controller
     // Remove the specified resource from storage
     public function destroy(ProjectTask $projectTask): JsonResponse
     {
-        if ($projectTask->status !== TaskStatus::Pending) {
-            // Error: cannot delete the project task if the status is not "Pending"
+        if (
+            $projectTask->status !== TaskStatus::Pending
+            || $projectTask->priority !== TaskPriority::Low
+        ) {
+            // Error: cannot delete the project UUID or task UUID if the
+            // status is not "Pending" and the priority is not "Low"
             return $this->jsonError('resource_locked', Response::HTTP_LOCKED);
         }
 

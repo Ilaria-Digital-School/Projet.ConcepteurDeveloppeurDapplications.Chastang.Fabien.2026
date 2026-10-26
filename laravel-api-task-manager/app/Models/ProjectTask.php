@@ -18,8 +18,8 @@ class ProjectTask extends Pivot
     // No auto-incrementing id column
     public $incrementing = false;
 
-    // Protected column: status
-    protected $guarded = ['status'];
+    // Whitelist, more secure
+    protected $fillable = ['project_uuid', 'task_uuid', 'priority'];
 
     // Default values ​​used during creation, so that these
     // values ​​can be retrieved when the result is displayed
