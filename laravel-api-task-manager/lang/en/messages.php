@@ -22,6 +22,7 @@ return [
     'parameters_missing'       => 'One or more parameters are missing.',
     'credentials_invalid'      => 'The credentials are incorrect.',
     'logout_successful'        => 'Logout successful.',
+    'user_not_found'           => 'The user was not found.',
     'project_not_found'        => 'The project was not found.',
     'project_referenced'       => 'This project is linked to a task.',
     'task_not_found'           => 'The task was not found.',

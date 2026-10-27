@@ -76,11 +76,11 @@ Route::bind('projectTask', function (string $value) {
     // If validation or data retrieval fails, an HttpException is thrown
 
     // Checks if any parameters are missing
-    Validation::checkParam($identProj && $identTask, 'parameters_missing');
+    Validation::checkParam($identProj && $identTask);
 
     if (Validation::isId($identProj)) {
         // Retrieves the project UUID
-        $identProj = Binding::getUuid($identProj, 'projects', 'project_not_found');
+        $identProj = Binding::getUuidById($identProj, 'projects', 'project_not_found');
     } else {
         // Checks if the parameter is a valid UUID
         Validation::checkUuid($identProj);
@@ -90,7 +90,7 @@ Route::bind('projectTask', function (string $value) {
 
     if (Validation::isId($identTask)) {
         // Retrieves the project UUID
-        $identTask = Binding::getUuid($identTask, 'tasks', 'task_not_found');
+        $identTask = Binding::getUuidById($identTask, 'tasks', 'task_not_found');
     } else {
         // Checks if the parameter is a valid UUID
         Validation::checkUuid($identTask);
@@ -99,7 +99,7 @@ Route::bind('projectTask', function (string $value) {
     }
 
     // Returns the binding for the ProjectTask model
-    return Binding::getProjectTask($identProj, $identTask);
+    return Binding::getPivotByUuids($identProj, $identTask);
 });
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -113,13 +113,13 @@ Route::bind('projectUuid', function (string $value) {
     // If validation or data retrieval fails, an HttpException is thrown
 
     // Checks if any parameters are missing
-    Validation::checkParam($uuid, 'parameters_missing');
+    Validation::checkParam($uuid);
 
     // Checks if the parameter is a valid UUID
     Validation::checkUuid($uuid);
 
     // If the project exists, returns the binding for the Project model
-    return Binding::getModel($uuid, 'projects', 'project_not_found');
+    return Binding::getModelByUuid($uuid, 'projects', 'project_not_found');
 });
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -133,11 +133,11 @@ Route::bind('taskUuid', function (string $value) {
     // If validation or data retrieval fails, an HttpException is thrown
 
     // Checks if any parameters are missing
-    Validation::checkParam($uuid, 'parameters_missing');
+    Validation::checkParam($uuid);
 
     // Checks if the parameter is a valid UUID
     Validation::checkUuid($uuid);
 
     // If the task exists, returns the binding for the Task model
-    return Binding::getModel($uuid, 'tasks', 'task_not_found');
+    return Binding::getModelByUuid($uuid, 'tasks', 'task_not_found');
 });

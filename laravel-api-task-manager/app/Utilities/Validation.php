@@ -9,9 +9,9 @@ class Validation
 {
     // The password must contain at least 10 characters, all non-whitespace, including at least
     // one lowercase letter, one uppercase letter, one digit, and one special character
-    const SPECIAL_CHARS = '&~#"\'{([|_\\\\^@)\\]=+}€¨$£¤%*<>,?;.:\\/!§-';
+    const SPECIAL_CHRS = '&~#"\'{([|_\\\\^@)\\]=+}€¨$£¤%*<>,?;.:\\/!§-';
     const PSWD_PATTERN = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[' .
-        self::SPECIAL_CHARS . '])[a-zA-Z\\d' . self::SPECIAL_CHARS . ']{10,}$/';
+        self::SPECIAL_CHRS . '])[a-zA-Z\\d' . self::SPECIAL_CHRS . ']{10,}$/';
 
     public static function rules(string $method, int|string $id): array
     {
@@ -35,21 +35,21 @@ class Validation
         return $pswdRules;
     }
 
-    public static function checkParam(bool $testParam, string $messagesKey): void
-    {
-        abort_unless(
-            $testParam,
-            Response::HTTP_BAD_REQUEST,
-            __("messages.$messagesKey")
-        );
-    }
-
     public static function isId(string $id): bool
     {
         return Validator::make(
             ['id' => $id],
             ['id' => ['int', 'min:1']]
         )->passes();
+    }
+
+    public static function checkParam(bool $valid): void
+    {
+        abort_unless(
+            $valid,
+            Response::HTTP_BAD_REQUEST,
+            __('messages.parameters_missing')
+        );
     }
 
     public static function checkUuid(string $uuid): void

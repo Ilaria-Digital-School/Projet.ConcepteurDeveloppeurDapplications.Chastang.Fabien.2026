@@ -22,6 +22,7 @@ return [
     'parameters_missing'       => 'Un ou plusieurs paramètres sont manquants.',
     'credentials_invalid'      => 'Les identifiants sont incorrects.',
     'logout_successful'        => 'Déconnexion réussie.',
+    'user_not_found'           => 'L\'utilisateur n\'a pas été trouvé.',
     'project_not_found'        => 'Le projet n\'a pas été trouvé.',
     'project_referenced'       => 'Ce projet est lié à une tâche.',
     'task_not_found'           => 'La tâche n\'a pas été trouvée.',
