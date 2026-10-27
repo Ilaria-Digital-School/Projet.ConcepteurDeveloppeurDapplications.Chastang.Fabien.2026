@@ -68,6 +68,39 @@ class Binding
         Validation::checkUuid($uuid);
 
         // If the model exists, return it
-        return Binding::getModelByUuid($uuid, $table, $messagesKey);
+        return self::getModelByUuid($uuid, $table, $messagesKey);
+    }
+
+    public static function getPivot(string $value): ProjectTask
+    {
+        [$identProj, $identTask] = array_pad(explode(',', $value, 2), 2, null);
+
+        // If validation or data retrieval fails, an HttpException is thrown
+
+        // Checks if any parameters are missing
+        Validation::checkParam($identProj && $identTask);
+
+        if (Validation::isId($identProj)) {
+            // Retrieves the project UUID
+            $identProj = self::getUuidById((int)$identProj, 'projects', 'project_not_found');
+        } else {
+            // Checks if the parameter is a valid UUID
+            Validation::checkUuid($identProj);
+            // Checks if the project exists
+            Validation::checkUuidExists($identProj, 'projects', 'uuid', 'project_not_found');
+        }
+
+        if (Validation::isId($identTask)) {
+            // Retrieves the project UUID
+            $identTask = self::getUuidById((int)$identTask, 'tasks', 'task_not_found');
+        } else {
+            // Checks if the parameter is a valid UUID
+            Validation::checkUuid($identTask);
+            // Checks if the task exists
+            Validation::checkUuidExists($identTask, 'tasks', 'uuid', 'task_not_found');
+        }
+
+        // Returns the binding for the ProjectTask model
+        return self::getPivotByUuids($identProj, $identTask);
     }
 }

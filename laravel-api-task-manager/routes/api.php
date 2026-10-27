@@ -9,7 +9,6 @@ use App\Http\Controllers\ProjectTaskController;
 use App\Http\Controllers\SetTaskPriorityController;
 use App\Http\Controllers\SetTaskStatusController;
 use App\Utilities\Binding;
-use App\Utilities\Validation;
 use Illuminate\Support\Facades\Route;
 
 // Autonomous account management by the user
@@ -89,33 +88,5 @@ Route::bind('taskUuid', function (string $value) {
 // ProjectTask model binding: /api/project-tasks/{projectTask}
 // URL: /api/project-tasks/project_ID-or-project_UUID,task_ID-or-task_UUID
 Route::bind('projectTask', function (string $value) {
-    [$identProj, $identTask] = array_pad(explode(',', $value, 2), 2, null);
-
-    // If validation or data retrieval fails, an HttpException is thrown
-
-    // Checks if any parameters are missing
-    Validation::checkParam($identProj && $identTask);
-
-    if (Validation::isId($identProj)) {
-        // Retrieves the project UUID
-        $identProj = Binding::getUuidById((int)$identProj, 'projects', 'project_not_found');
-    } else {
-        // Checks if the parameter is a valid UUID
-        Validation::checkUuid($identProj);
-        // Checks if the project exists
-        Validation::checkUuidExists($identProj, 'projects', 'uuid', 'project_not_found');
-    }
-
-    if (Validation::isId($identTask)) {
-        // Retrieves the project UUID
-        $identTask = Binding::getUuidById((int)$identTask, 'tasks', 'task_not_found');
-    } else {
-        // Checks if the parameter is a valid UUID
-        Validation::checkUuid($identTask);
-        // Checks if the task exists
-        Validation::checkUuidExists($identTask, 'tasks', 'uuid', 'task_not_found');
-    }
-
-    // Returns the binding for the ProjectTask model
-    return Binding::getPivotByUuids($identProj, $identTask);
+    return Binding::getPivot($value);
 });
