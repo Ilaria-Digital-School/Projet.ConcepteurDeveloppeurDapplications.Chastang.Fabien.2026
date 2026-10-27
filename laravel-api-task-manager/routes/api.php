@@ -77,13 +77,13 @@ Route::bind('userUuid', function (string $value) {
 // Project model binding: /api/project-uuid/{projectUuid}
 // URL: /api/project-uuid/the_project_UUID
 Route::bind('projectUuid', function (string $value) {
-    return Binding::getModelByUuid($value, 'projects', 'project_not_found');
+    return Binding::getModel($value, 'projects', 'project_not_found');
 });
 
 // Task model binding: /api/tasks-uuid/{taskUuid}
 // URL: /api/task-uuid/the_task_UUID
 Route::bind('taskUuid', function (string $value) {
-    return Binding::getModelByUuid($value, 'tasks', 'task_not_found');
+    return Binding::getModel($value, 'tasks', 'task_not_found');
 });
 
 // ProjectTask model binding: /api/project-tasks/{projectTask}
