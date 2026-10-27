@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Binding
 {
-    public static function getUuidById(string $id, string $table, string $messagesKey): string
+    public static function getUuidById(int $id, string $table, string $messagesKey): string
     {
         abort_unless(
             $uuid = DB::table($table)->where('id', $id)->first(['uuid'])?->uuid,

@@ -80,7 +80,7 @@ Route::bind('projectTask', function (string $value) {
 
     if (Validation::isId($identProj)) {
         // Retrieves the project UUID
-        $identProj = Binding::getUuidById($identProj, 'projects', 'project_not_found');
+        $identProj = Binding::getUuidById((int)$identProj, 'projects', 'project_not_found');
     } else {
         // Checks if the parameter is a valid UUID
         Validation::checkUuid($identProj);
@@ -90,7 +90,7 @@ Route::bind('projectTask', function (string $value) {
 
     if (Validation::isId($identTask)) {
         // Retrieves the project UUID
-        $identTask = Binding::getUuidById($identTask, 'tasks', 'task_not_found');
+        $identTask = Binding::getUuidById((int)$identTask, 'tasks', 'task_not_found');
     } else {
         // Checks if the parameter is a valid UUID
         Validation::checkUuid($identTask);
