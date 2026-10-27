@@ -17,13 +17,13 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name'              => fake()->name(),
+            'email'             => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('Password#1'),
-            'role' => fake()->randomElement(UserRole::values()),
-            'created_at' => fake()->dateTimeBetween('-1 year', '-2 month'),
-            'updated_at' => fake()->dateTimeBetween('-1 month', 'now'),
+            'password'          => static::$password ??= Hash::make('Password#1'),
+            'role'              => fake()->randomElement(UserRole::values()),
+            'created_at'        => fake()->dateTimeBetween('-1 year', '-2 month'),
+            'updated_at'        => fake()->dateTimeBetween('-1 month', 'now'),
         ];
     }
 

@@ -21,8 +21,11 @@ class Binding
         return $uuid;
     }
 
-    public static function getModelByUuid(string $uuid, string $table, string $messagesKey): User|Project|Task
-    {
+    public static function getModelByUuid(
+        string $uuid,
+        string $table,
+        string $messagesKey
+    ): User|Project|Task {
         $model = match ($table) {
             'users' => User::where('uuid', $uuid)->first(),
             'projects' => Project::where('uuid', $uuid)->first(),
@@ -47,5 +50,24 @@ class Binding
             __('messages.project_task_not_found')
         );
         return $projectTask;
+    }
+
+    public static function getModel(
+        string $value,
+        string $table,
+        string $messagesKey
+    ): User|Project|Task {
+        $uuid = $value ?: null;
+
+        // If validation or data retrieval fails, an HttpException is thrown
+
+        // Checks if any parameters are missing
+        Validation::checkParam($uuid);
+
+        // Checks if the parameter is a valid UUID
+        Validation::checkUuid($uuid);
+
+        // If the model exists, return it
+        return Binding::getModelByUuid($uuid, $table, $messagesKey);
     }
 }

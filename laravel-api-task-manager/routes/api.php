@@ -66,10 +66,28 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 ///////////////////////////////////////////////////////////////////////////////
-// Defines the binding for the ProjectTask model
+// Defines the bindings for the User, Project, Task, and ProjectTask models
+
+// User model binding: /api/user-uuid/{userUuid}
+// URL: /api/user-uuid/the_user_UUID
+Route::bind('userUuid', function (string $value) {
+    return Binding::getModel($value, 'users', 'user_not_found');
+});
+
+// Project model binding: /api/project-uuid/{projectUuid}
+// URL: /api/project-uuid/the_project_UUID
+Route::bind('projectUuid', function (string $value) {
+    return Binding::getModelByUuid($value, 'projects', 'project_not_found');
+});
+
+// Task model binding: /api/tasks-uuid/{taskUuid}
+// URL: /api/task-uuid/the_task_UUID
+Route::bind('taskUuid', function (string $value) {
+    return Binding::getModelByUuid($value, 'tasks', 'task_not_found');
+});
+
 // ProjectTask model binding: /api/project-tasks/{projectTask}
 // URL: /api/project-tasks/project_ID-or-project_UUID,task_ID-or-task_UUID
-
 Route::bind('projectTask', function (string $value) {
     [$identProj, $identTask] = array_pad(explode(',', $value, 2), 2, null);
 
@@ -100,44 +118,4 @@ Route::bind('projectTask', function (string $value) {
 
     // Returns the binding for the ProjectTask model
     return Binding::getPivotByUuids($identProj, $identTask);
-});
-
-///////////////////////////////////////////////////////////////////////////////
-// Defines the binding for the Project model
-// Project model binding: /api/project-uuid/{projectUuid}
-// URL: /api/project-uuid/the_project_UUID
-
-Route::bind('projectUuid', function (string $value) {
-    $uuid = $value ?: null;
-
-    // If validation or data retrieval fails, an HttpException is thrown
-
-    // Checks if any parameters are missing
-    Validation::checkParam($uuid);
-
-    // Checks if the parameter is a valid UUID
-    Validation::checkUuid($uuid);
-
-    // If the project exists, returns the binding for the Project model
-    return Binding::getModelByUuid($uuid, 'projects', 'project_not_found');
-});
-
-///////////////////////////////////////////////////////////////////////////////
-// Defines the binding for the Task model
-// Task model binding: /api/tasks-uuid/{taskUuid}
-// URL: /api/task-uuid/the_task_UUID
-
-Route::bind('taskUuid', function (string $value) {
-    $uuid = $value ?: null;
-
-    // If validation or data retrieval fails, an HttpException is thrown
-
-    // Checks if any parameters are missing
-    Validation::checkParam($uuid);
-
-    // Checks if the parameter is a valid UUID
-    Validation::checkUuid($uuid);
-
-    // If the task exists, returns the binding for the Task model
-    return Binding::getModelByUuid($uuid, 'tasks', 'task_not_found');
 });

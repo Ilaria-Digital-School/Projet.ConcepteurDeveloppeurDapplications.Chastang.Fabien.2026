@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('project_tasks', function (Blueprint $table) {
             $table->uuid('project_uuid')->index();
             $table->uuid('task_uuid')->index();
+            $table->uuid('user_uuid')->nullable()->index();
             $table->enum('status', TaskStatus::values())
                 ->default(TaskStatus::Pending->value)
                 ->index();
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->primary(['project_uuid', 'task_uuid']);
             $table->foreign('project_uuid')->references('uuid')->on('projects')->cascadeOnDelete();
             $table->foreign('task_uuid')->references('uuid')->on('tasks')->cascadeOnDelete();
+            $table->foreign('user_uuid')->references('uuid')->on('users')->nullOnDelete();
         });
     }
 

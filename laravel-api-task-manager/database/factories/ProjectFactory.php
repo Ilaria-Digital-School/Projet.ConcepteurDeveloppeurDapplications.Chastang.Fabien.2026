@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 // Extends Factory<Project>
@@ -11,11 +12,13 @@ class ProjectFactory extends Factory
     // return array<string, mixed>
     public function definition(): array
     {
+        $uuidUsers = User::latest()->take(5)->pluck('uuid')->toArray();
         return [
-            'name' => fake()->catchPhrase(),
+            'name'        => fake()->catchPhrase(),
             'description' => fake()->optional(0.8)->paragraph(),
-            'created_at' => fake()->dateTimeBetween('-1 year', '-2 month'),
-            'updated_at' => fake()->dateTimeBetween('-1 month', '-1 week'),
+            'user_uuid'   => fake()->randomElement($uuidUsers),
+            'created_at'  => fake()->dateTimeBetween('-1 year', '-2 month'),
+            'updated_at'  => fake()->dateTimeBetween('-1 month', '-1 week'),
         ];
     }
 
