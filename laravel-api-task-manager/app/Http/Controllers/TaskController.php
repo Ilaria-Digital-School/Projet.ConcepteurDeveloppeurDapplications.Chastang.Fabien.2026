@@ -6,6 +6,7 @@ use App\Http\Requests\TaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use App\Utilities\Validation;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -55,10 +56,14 @@ class TaskController extends Controller
     }
 
     // Remove the specified resource from storage
-    public function destroy(Task $task): JsonResponse
+    public function destroy(Request $request, Task $task): JsonResponse
     {
         // If the task is referenced in the "project_tasks" table, throw an HttpException
         Validation::checkUuidExists($task->uuid, 'project_tasks', 'task_uuid', 'task_referenced', true);
+
+        // If the user who initiated the request is neither an administrator nor a
+        // super-administrator, and did not create the task, throw an HttpException
+        Validation::checkOwner($request->user(), $task, 'not_own_cannot_delete');
 
         $data = TaskResource::make($task->load('projects'));
         $task->deleteOrFail();

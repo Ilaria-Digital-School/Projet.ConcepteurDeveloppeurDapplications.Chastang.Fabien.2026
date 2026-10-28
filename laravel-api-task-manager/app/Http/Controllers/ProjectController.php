@@ -6,6 +6,7 @@ use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use App\Utilities\Validation;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -55,10 +56,14 @@ class ProjectController extends Controller
     }
 
     // Remove the specified resource from storage
-    public function destroy(Project $project): JsonResponse
+    public function destroy(Request $request, Project $project): JsonResponse
     {
         // If the project is referenced in the "project_tasks" table, throw an HttpException
         Validation::checkUuidExists($project->uuid, 'project_tasks', 'project_uuid', 'project_referenced', true);
+
+        // If the user who initiated the request is neither an administrator nor a
+        // super-administrator, and did not create the project, throw an HttpException
+        Validation::checkOwner($request->user(), $project, 'not_own_cannot_delete');
 
         $data = ProjectResource::make($project->load('tasks'));
         $project->deleteOrFail();

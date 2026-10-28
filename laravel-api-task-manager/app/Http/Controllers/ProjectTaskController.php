@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\TaskPriority;
-use App\Enums\TaskStatus;
 use App\Http\Requests\ProjectTaskRequest;
 use App\Http\Resources\ProjectTaskResource;
 use App\Models\ProjectTask;
+use App\Utilities\Validation;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -45,14 +45,12 @@ class ProjectTaskController extends Controller
     // Update only the project UUID and/or the task UUID, not the status or priority
     public function update(ProjectTaskRequest $request, ProjectTask $projectTask): JsonResponse
     {
-        if (
-            $projectTask->status !== TaskStatus::Pending
-            || $projectTask->priority !== TaskPriority::Low
-        ) {
-            // Error: cannot update the project UUID or task UUID if the
-            // status is not "Pending" and the priority is not "Low"
-            return $this->jsonError('resource_locked', Response::HTTP_LOCKED);
-        }
+        // Cannot update the project task if the status is not "Pending" or the priority is "High"
+        Validation::checkProjectTaskProperties($projectTask);
+
+        // If the user who initiated the request is neither an administrator nor a
+        // super-administrator, and did not create the project task, throw an HttpException
+        Validation::checkOwner($request->user(), $projectTask, 'not_own_cannot_delete');
 
         if (
             $request->filled('project_uuid') && $request->project_uuid !== $projectTask->project_uuid
@@ -71,16 +69,14 @@ class ProjectTaskController extends Controller
     }
 
     // Remove the specified resource from storage
-    public function destroy(ProjectTask $projectTask): JsonResponse
+    public function destroy(Request $request, ProjectTask $projectTask): JsonResponse
     {
-        if (
-            $projectTask->status !== TaskStatus::Pending
-            || $projectTask->priority !== TaskPriority::Low
-        ) {
-            // Error: cannot delete the project UUID or task UUID if the
-            // status is not "Pending" and the priority is not "Low"
-            return $this->jsonError('resource_locked', Response::HTTP_LOCKED);
-        }
+        // Cannot delete the project task if the status is not "Pending" or the priority is "High"
+        Validation::checkProjectTaskProperties($projectTask);
+
+        // If the user who initiated the request is neither an administrator nor a
+        // super-administrator, and did not create the project task, throw an HttpException
+        Validation::checkOwner($request->user(), $projectTask, 'not_own_cannot_delete');
 
         $projectTask->deleteOrFail();
 

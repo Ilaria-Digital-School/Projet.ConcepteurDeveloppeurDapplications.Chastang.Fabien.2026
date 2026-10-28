@@ -37,8 +37,9 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // All users: manage projects and the tasks associated with them
-    // It is not possible to delete a project or a task if it is linked
-    // to another task or project
+    // It is not possible to delete a project or a task if it is linked to another
+    // task or project, furthermore, only the user who created the resource may
+    // delete it, unless that user is an administrator or super-administrator
     //
     Route::apiResource('projects', ProjectController::class);
     Route::apiResource('projects-uuid', ProjectController::class)
@@ -49,14 +50,16 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // All users: manage project tasks, updates only the project UUID and
     // task UUID columns, and not the "status" and "priority" columns
-    // It is not possible to update the project UUID or task UUID or delete a
-    // project task if the status is not "Pending" and the priority is not "Low"
+    // It is not possible to update the UUID of a project or task, or to delete
+    // a project task, if its status is not "Pending" or if its priority is
+    // "High", furthermore, only the user who created the resource may update or
+    // delete it, unless that user is an administrator or super-administrator
     //
     Route::apiResource('project-tasks', ProjectTaskController::class)
         ->parameters(['project-tasks' => 'projectTask']);
 
-    // Administrators and super-administrators: updating project task "status" and
-    // "priority", but only a super-administrator can revert to a previous status
+    // Administrators and super-administrators: updating project task status and
+    // priority, but only a super-administrator can revert to a previous status
     //
     Route::middleware('role:2')->group(function () {
         Route::patch('/project-tasks/{projectTask}/priority', SetTaskPriorityController::class);

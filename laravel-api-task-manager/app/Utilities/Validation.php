@@ -2,6 +2,13 @@
 
 namespace App\Utilities;
 
+use App\Enums\TaskPriority;
+use App\Enums\TaskStatus;
+use App\Enums\UserRole;
+use App\Models\Project;
+use App\Models\ProjectTask;
+use App\Models\Task;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -80,6 +87,27 @@ class Validation
             ($abortExist && $exists) || (!$abortExist && !$exists),
             $abortExist ? Response::HTTP_BAD_REQUEST : Response::HTTP_NOT_FOUND,
             __("messages.$messagesKey")
+        );
+    }
+
+    public static function checkOwner(
+        User $user,
+        Project|Task|ProjectTask $object,
+        string $messagesKey
+    ): void {
+        abort_unless(
+            $user->uuid === $object->user_uuid || $user->role->value > UserRole::User->value,
+            Response::HTTP_FORBIDDEN,
+            __("messages.$messagesKey")
+        );
+    }
+
+    public static function checkProjectTaskProperties(ProjectTask $projectTask): void
+    {
+        abort_if(
+            $projectTask->status === TaskStatus::Pending && $projectTask->priority !== TaskPriority::High,
+            Response::HTTP_LOCKED,
+            __('messages.resource_locked')
         );
     }
 }

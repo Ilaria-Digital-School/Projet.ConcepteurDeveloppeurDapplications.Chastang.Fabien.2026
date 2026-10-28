@@ -35,4 +35,6 @@ return [
     'resource_locked'          => 'The resource that is being accessed is locked.',
     'uuid_invalid'             => 'The parameter must be a valid UUID.',
     'binding_param_invalid'    => 'The parameter must be an integer or a valid UUID.',
+    'not_own_cannot_update'    => 'You cannot update this resource because you did not create it.',
+    'not_own_cannot_delete'    => 'You cannot delete this resource because you did not create it.',
 ];
