@@ -15,8 +15,10 @@ return new class extends Migration
             $table->uuid()->unique();
             $table->string('title')->unique();
             $table->text('description')->nullable();
-            $table->uuid('user_uuid')->index();
+            $table->uuid('user_uuid')->nullable()->index();
             $table->timestamps();
+            // Foreign key
+            $table->foreign('user_uuid')->references('uuid')->on('users')->nullOnDelete();
         });
     }
 
