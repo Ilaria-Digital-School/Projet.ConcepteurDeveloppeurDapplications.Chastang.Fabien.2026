@@ -63,7 +63,7 @@ class ProjectController extends Controller
 
         // If the user who initiated the request is neither an administrator nor a
         // super-administrator, and did not create the project, throw an HttpException
-        Validation::checkOwner($request->user(), $project, 'not_own_cannot_delete');
+        Validation::checkOwner($request->user(), $project, 'not_owner_cannot_delete');
 
         $data = ProjectResource::make($project->load('tasks'));
         $project->deleteOrFail();

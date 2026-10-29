@@ -12,7 +12,7 @@ class TaskFactory extends Factory
     // return array<string, mixed>
     public function definition(): array
     {
-        $uuidUsers = User::latest()->take(5)->pluck('uuid')->toArray();
+        $uuidUsers = User::latest()->take(6)->pluck('uuid')->toArray();
         return [
             'title'       => fake()->sentence(4),
             'description' => fake()->optional(0.6)->paragraph(),

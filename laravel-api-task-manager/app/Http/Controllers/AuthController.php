@@ -23,6 +23,10 @@ class AuthController extends Controller
 
         // If the user exists, check his password
         if (!$user || !Hash::check($validated['password'], $user->password)) {
+            // Security: add a 0.2 second delay to avoid indicating
+            // that the email address does not exist
+            if (!$user) usleep(200_000);
+
             // Error: invalid credentials
             return $this->jsonError('credentials_invalid', Response::HTTP_UNAUTHORIZED);
         }

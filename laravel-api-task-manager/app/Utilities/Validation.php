@@ -105,9 +105,21 @@ class Validation
     public static function checkProjectTaskProperties(ProjectTask $projectTask): void
     {
         abort_if(
-            $projectTask->status === TaskStatus::Pending && $projectTask->priority !== TaskPriority::High,
+            $projectTask->status !== TaskStatus::Pending || $projectTask->priority === TaskPriority::High,
             Response::HTTP_LOCKED,
             __('messages.resource_locked')
+        );
+    }
+
+    public static function checkRoleToRevertPreviousStatus(
+        int $newStatus,
+        ProjectTask $projectTask,
+        User $user
+    ): void {
+        abort_if(
+            $newStatus < $projectTask->status->value && $user->role->value < UserRole::SuperAdmin->value,
+            Response::HTTP_UNAUTHORIZED,
+            __('messages.prev_status_unauthorized')
         );
     }
 }

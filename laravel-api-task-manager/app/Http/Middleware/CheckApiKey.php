@@ -8,26 +8,21 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckApiKey extends Middleware
 {
-    // Middleware that checks for the presence of the "API_KEY" key
+    // Middleware that checks for the presence of the API key
     public function handle(Request $request, Closure $next): Response
     {
-        $apiKey = config('services.api_key');
-
-        if ($apiKey) {
-            if (!$request->hasHeader('API_KEY')) {
+        if ($apiKey = config('services.api_key')) {
+            // API_KEY is defined in the application: config\services.php
+            if (!$request->hasHeader('X-API-Key'))
                 // Error: API_KEY is mandatory
                 return $this->jsonError('api_key_required', Response::HTTP_BAD_REQUEST);
-            }
 
-            $key = $request->header('API_KEY');
-
-            if ($key !== $apiKey) {
+            if (($key = $request->header('X-API-Key')) !== $apiKey)
                 // Error: API_KEY is incorrect
                 return $this->jsonError('api_key_invalid', Response::HTTP_BAD_REQUEST);
-            }
 
             $response = $next($request);
-            $response->header('API_KEY', $key);
+            $response->header('X-API-Key', $key);
 
             return $response;
         } else {

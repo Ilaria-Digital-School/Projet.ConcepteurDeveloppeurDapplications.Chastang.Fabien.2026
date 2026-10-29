@@ -14,7 +14,7 @@ class ProjectTaskFactory extends Factory
     // return array<string, mixed>
     public function definition(): array
     {
-        $uuidUsers = User::latest()->take(5)->pluck('uuid')->toArray();
+        $uuidUsers = User::latest()->take(6)->pluck('uuid')->toArray();
         return [
             'status'     => fake()->randomElement(TaskStatus::values()),
             'priority'   => fake()->randomElement(TaskPriority::values()),

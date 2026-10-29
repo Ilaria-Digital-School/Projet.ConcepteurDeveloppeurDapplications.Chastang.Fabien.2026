@@ -50,7 +50,7 @@ class ProjectTaskController extends Controller
 
         // If the user who initiated the request is neither an administrator nor a
         // super-administrator, and did not create the project task, throw an HttpException
-        Validation::checkOwner($request->user(), $projectTask, 'not_own_cannot_delete');
+        Validation::checkOwner($request->user(), $projectTask, 'not_owner_cannot_update');
 
         if (
             $request->filled('project_uuid') && $request->project_uuid !== $projectTask->project_uuid
@@ -76,7 +76,7 @@ class ProjectTaskController extends Controller
 
         // If the user who initiated the request is neither an administrator nor a
         // super-administrator, and did not create the project task, throw an HttpException
-        Validation::checkOwner($request->user(), $projectTask, 'not_own_cannot_delete');
+        Validation::checkOwner($request->user(), $projectTask, 'not_owner_cannot_delete');
 
         $projectTask->deleteOrFail();
 

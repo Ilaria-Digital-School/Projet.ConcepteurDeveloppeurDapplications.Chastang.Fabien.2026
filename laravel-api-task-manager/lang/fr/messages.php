@@ -35,6 +35,6 @@ return [
     'resource_locked'          => 'La ressource demandée est verrouillée.',
     'uuid_invalid'             => 'Le paramètre doit être un UUID valide.',
     'binding_param_invalid'    => 'Le paramètre doit être un nombre entier positif ou un UUID valide.',
-    'not_own_cannot_update'    => 'Vous ne pouvez pas mettre à jour cette ressource car vous ne l\'avez pas créée.',
-    'not_own_cannot_delete'    => 'Vous ne pouvez pas supprimer cette ressource car vous ne l\'avez pas créée.',
+    'not_owner_cannot_update'  => 'Vous ne pouvez pas mettre à jour cette ressource car vous ne l\'avez pas créée.',
+    'not_owner_cannot_delete'  => 'Vous ne pouvez pas supprimer cette ressource car vous ne l\'avez pas créée.',
 ];

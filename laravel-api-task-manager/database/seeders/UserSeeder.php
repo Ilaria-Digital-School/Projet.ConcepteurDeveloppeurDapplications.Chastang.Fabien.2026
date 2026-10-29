@@ -34,6 +34,11 @@ class UserSeeder extends Seeder
                 'password' => 'Azerty/#123',
             ],
             [
+                'name' => 'Radhwen',
+                'email' => 'radhwen@email.com',
+                'password' => 'Azerty/#123',
+            ],
+            [
                 'name' => 'Rhiannone',
                 'email' => 'rhiannone@email.com',
                 'password' => 'Azerty/#123',

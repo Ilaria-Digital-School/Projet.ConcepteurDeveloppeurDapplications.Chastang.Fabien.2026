@@ -63,7 +63,7 @@ class TaskController extends Controller
 
         // If the user who initiated the request is neither an administrator nor a
         // super-administrator, and did not create the task, throw an HttpException
-        Validation::checkOwner($request->user(), $task, 'not_own_cannot_delete');
+        Validation::checkOwner($request->user(), $task, 'not_owner_cannot_delete');
 
         $data = TaskResource::make($task->load('projects'));
         $task->deleteOrFail();
