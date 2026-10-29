@@ -37,8 +37,11 @@ class AuthController extends Controller
             $request->header('User-Agent', 'api-token')
         );
 
-        // Next, create the token and return it
-        return $this->jsonResponse(
+        // Retrieve the API key if it is defined in the application: config\services.php -> api_key
+        $apiKey = config('services.api_key');
+
+        // Finally, create the token and return it
+        return response()->json(
             [
                 // Return the data of the logged-in user
                 'user' => UserResource::make($user),
@@ -46,7 +49,10 @@ class AuthController extends Controller
                 'token' => $user->createToken($tokenName)->plainTextToken,
                 // Define the token type
                 'token_type' => 'Bearer',
-            ]
+            ],
+            Response::HTTP_OK,
+            // Initialize the API key in the header if it is defined in the application
+            $apiKey ? ['X-API-Key' => $apiKey] : []
         );
     }
 

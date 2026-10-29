@@ -28,13 +28,13 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'role' => CheckUserRole::class,
+            'api.key'   => CheckApiKey::class,
+            'user.role' => CheckUserRole::class,
         ]);
 
         $middleware->appendToGroup('api', [
             SetLocale::class,
             TrimStrings::class,
-            CheckApiKey::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -12,13 +12,13 @@ class CheckApiKey extends Middleware
     public function handle(Request $request, Closure $next): Response
     {
         if ($apiKey = config('services.api_key')) {
-            // API_KEY is defined in the application: config\services.php
+            // The API key is defined in the application: config\services.php -> api_key
             if (!$request->hasHeader('X-API-Key'))
-                // Error: API_KEY is mandatory
+                // Error: X-API-Key is mandatory
                 return $this->jsonError('api_key_required', Response::HTTP_BAD_REQUEST);
 
             if (($key = $request->header('X-API-Key')) !== $apiKey)
-                // Error: API_KEY is incorrect
+                // Error: X-API-Key is incorrect
                 return $this->jsonError('api_key_invalid', Response::HTTP_BAD_REQUEST);
 
             $response = $next($request);

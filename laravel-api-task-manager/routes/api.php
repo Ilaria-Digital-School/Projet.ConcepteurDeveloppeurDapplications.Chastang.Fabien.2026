@@ -11,27 +11,28 @@ use App\Http\Controllers\SetTaskStatusController;
 use App\Utilities\Binding;
 use Illuminate\Support\Facades\Route;
 
-// Autonomous account management by the user
+// User login
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware('auth:sanctum')->controller(AuthController::class)->group(function () {
-    Route::get('/self', 'show');
-    Route::put('/self', 'update');
-    Route::post('/self', 'destroy');
-    Route::post('/logout', 'logout');
-});
+Route::middleware('auth:sanctum')->middleware('api.key')->group(function () {
 
-Route::middleware('auth:sanctum')->group(function () {
+    // Autonomous account management by the user
+    Route::controller(AuthController::class)->group(function () {
+        Route::get('/self', 'show');
+        Route::put('/self', 'update');
+        Route::post('/self', 'destroy');
+        Route::post('/logout', 'logout');
+    });
 
     // Administrators and super-administrators: user management, excluding their roles
-    Route::middleware('role:2')->group(function () {
+    Route::middleware('user.role:2')->group(function () {
         Route::apiResource('users', UserController::class);
         Route::apiResource('users-uuid', UserController::class)
             ->parameters(['users-uuid' => 'userUuid']);
     });
 
     // Super-administrators: modifying user roles
-    Route::middleware('role:3')->group(function () {
+    Route::middleware('user.role:3')->group(function () {
         Route::patch('/users/{user}/role', SetUserRoleController::class);
         Route::patch('/users-uuid/{userUuid}/role', SetUserRoleController::class);
     });
@@ -61,7 +62,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Administrators and super-administrators: updating project task status and
     // priority, but only a super-administrator can revert to a previous status
     //
-    Route::middleware('role:2')->group(function () {
+    Route::middleware('user.role:2')->group(function () {
         Route::patch('/project-tasks/{projectTask}/priority', SetTaskPriorityController::class);
         Route::patch('/project-tasks/{projectTask}/status', SetTaskStatusController::class);
     });
