@@ -3,14 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\ProjectTask;
-use App\Models\Project;
-use App\Models\Task;
+use Database\Factories\Utilities;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
 
 class ProjectTaskSeeder extends Seeder
 {
-    const NTASKS = 4;
+    private const NTASKS = 4;
 
     // Run the database seeds
     public function run(): void
@@ -19,20 +18,19 @@ class ProjectTaskSeeder extends Seeder
         ProjectTask::truncate();
         Schema::enableForeignKeyConstraints();
 
-        $projects = Project::all(['uuid']);
-        $tasks = Task::all(['uuid']);
+        $projects = Utilities::projectUuids();
+        $tasks = Utilities::taskUuids();
 
         foreach ($projects as $project) {
-            $_tasks = $tasks;
-            $ntasks = random_int(1, self::NTASKS);
+            [$_tasks, $ntasks] = [$tasks, random_int(1, self::NTASKS)];
 
-            for ($i = 1; $i <= $ntasks; $i++) {
-                $uuidTask = fake()->randomElement($_tasks)->uuid;
-                $_tasks = $_tasks->filter(fn($task) => $task->uuid !== $uuidTask);
+            for ($i = 0; $i < $ntasks; $i++) {
+                $taskUuid = fake()->randomElement($_tasks)->uuid;
+                $_tasks = $_tasks->filter(fn($task) => $task->uuid !== $taskUuid);
 
                 ProjectTask::factory()->create([
                     'project_uuid' => $project->uuid,
-                    'task_uuid' => $uuidTask,
+                    'task_uuid' => $taskUuid,
                 ]);
             }
         }
