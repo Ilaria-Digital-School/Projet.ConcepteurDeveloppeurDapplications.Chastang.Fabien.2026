@@ -9,14 +9,16 @@ class RenderJson
 {
     public static function jsonResponse(
         mixed $data,
-        int $httpCode = Response::HTTP_OK
+        int $httpCode = Response::HTTP_OK,
+        array $headers = []
     ): JsonResponse {
-        return response()->json($data, $httpCode);
+        return response()->json($data, $httpCode, $headers);
     }
 
     public static function jsonError(
         string $message,
-        int $httpCode = Response::HTTP_INTERNAL_SERVER_ERROR
+        int $httpCode = Response::HTTP_INTERNAL_SERVER_ERROR,
+        array $headers = []
     ): JsonResponse {
         return response()->json(
             [
@@ -24,7 +26,8 @@ class RenderJson
                 'is_error' => true,
                 'code_status' => $httpCode
             ],
-            $httpCode
+            $httpCode,
+            $headers
         );
     }
 }

@@ -30,7 +30,7 @@ class ProjectTaskSeeder extends Seeder
 
                 ProjectTask::factory()->create([
                     'project_uuid' => $project->uuid,
-                    'task_uuid' => $taskUuid,
+                    'task_uuid'    => $taskUuid,
                 ]);
             }
         }

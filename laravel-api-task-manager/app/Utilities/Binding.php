@@ -21,6 +21,27 @@ class Binding
         return $uuid;
     }
 
+    public static function checkOrGetUuid(
+        int|string $identifier,
+        string $table,
+        string $messagesKey
+    ): string {
+        if (Validation::isId($identifier)) {
+            // Retrieves the project UUID
+            $uuid = self::getUuidById((int)$identifier, $table, $messagesKey);
+        } else {
+            // Checks if the parameter is a valid UUID
+            Validation::checkUuid($identifier);
+            // Checks if the project exists
+            Validation::checkUuidExists($identifier, $table, 'uuid', $messagesKey);
+            // The UUID is valid
+            $uuid = $identifier;
+        }
+        return $uuid;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+
     public static function getModelByUuid(
         string $uuid,
         string $table,
@@ -52,6 +73,8 @@ class Binding
         return $projectTask;
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+
     public static function getModel(
         string $value,
         string $table,
@@ -80,25 +103,11 @@ class Binding
         // Checks if any parameters are missing
         Validation::checkParam($identProj && $identTask);
 
-        if (Validation::isId($identProj)) {
-            // Retrieves the project UUID
-            $identProj = self::getUuidById((int)$identProj, 'projects', 'project_not_found');
-        } else {
-            // Checks if the parameter is a valid UUID
-            Validation::checkUuid($identProj);
-            // Checks if the project exists
-            Validation::checkUuidExists($identProj, 'projects', 'uuid', 'project_not_found');
-        }
+        // Verify or retrieve the project UUID using the identifier provided as a parameter
+        $identProj = self::checkOrGetUuid($identProj, 'projects', 'project_not_found');
 
-        if (Validation::isId($identTask)) {
-            // Retrieves the project UUID
-            $identTask = self::getUuidById((int)$identTask, 'tasks', 'task_not_found');
-        } else {
-            // Checks if the parameter is a valid UUID
-            Validation::checkUuid($identTask);
-            // Checks if the task exists
-            Validation::checkUuidExists($identTask, 'tasks', 'uuid', 'task_not_found');
-        }
+        // Verify or retrieve the task UUID using the identifier provided as a parameter
+        $identTask = self::checkOrGetUuid($identTask, 'tasks', 'task_not_found');
 
         // Returns the binding for the ProjectTask model
         return self::getPivotByUuids($identProj, $identTask);

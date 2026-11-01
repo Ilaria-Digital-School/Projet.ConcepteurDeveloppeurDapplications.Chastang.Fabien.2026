@@ -19,33 +19,33 @@ class UserSeeder extends Seeder
 
         $users = [
             [
-                'name' => 'Bakary',
-                'email' => 'bakary@email.com',
+                'name'     => 'Bakary',
+                'email'    => 'bakary@email.com',
                 'password' => 'Azerty/#123',
             ],
             [
-                'name' => 'Islem',
-                'email' => 'islem@email.com',
+                'name'     => 'Islem',
+                'email'    => 'islem@email.com',
                 'password' => 'Azerty/#123',
             ],
             [
-                'name' => 'Gilbert',
-                'email' => 'gilbert@email.com',
+                'name'     => 'Gilbert',
+                'email'    => 'gilbert@email.com',
                 'password' => 'Azerty/#123',
             ],
             [
-                'name' => 'Radhwen',
-                'email' => 'radhwen@email.com',
+                'name'     => 'Radhwen',
+                'email'    => 'radhwen@email.com',
                 'password' => 'Azerty/#123',
             ],
             [
-                'name' => 'Rhiannone',
-                'email' => 'rhiannone@email.com',
+                'name'     => 'Rhiannone',
+                'email'    => 'rhiannone@email.com',
                 'password' => 'Azerty/#123',
             ],
             [
-                'name' => 'Fabien',
-                'email' => 'fabien@email.com',
+                'name'     => 'Fabien',
+                'email'    => 'fabien@email.com',
                 'password' => 'Azerty/#123',
             ],
         ];

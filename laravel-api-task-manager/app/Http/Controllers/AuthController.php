@@ -37,22 +37,22 @@ class AuthController extends Controller
             $request->header('User-Agent', 'api-token')
         );
 
-        // Retrieve the API key if it is defined in the application: config\services.php -> api_key
+        // Retrieve the API key if it is defined in the
+        // application: config\services.php -> api_key
         $apiKey = config('services.api_key');
 
-        // Finally, create the token and return it
-        return response()->json(
+        return $this->jsonResponse(
             [
-                // Return the data of the logged-in user
-                'user' => UserResource::make($user),
+                // Data of the logged-in user
+                'data'       => UserResource::make($user),
                 // Create the token
-                'token' => $user->createToken($tokenName)->plainTextToken,
+                'token'      => $user->createToken($tokenName)->plainTextToken,
                 // Define the token type
-                'token_type' => 'Bearer',
+                'token_type' => 'Bearer'
             ],
             Response::HTTP_OK,
-            // Initialize the API key in the header if it is defined in the application
-            $apiKey ? ['X-API-Key' => $apiKey] : []
+            // Initialize the header if the API key is defined
+            $apiKey ? ['X-Api-Key' => $apiKey] : []
         );
     }
 
@@ -60,12 +60,13 @@ class AuthController extends Controller
     public function logout(Request $request): JsonResponse
     {
         $self = $request->user();
-        if ($request->filled('all') && filter_var($request->all, FILTER_VALIDATE_BOOL))
-            // Disconnecting all devices (global logout)
-            $self->tokens()->delete();
-        else
+
+        if (Validation::logoutCurrentOnly($request))
             // Disconnecting the current device
             $self->currentAccessToken()->delete();
+        else
+            // Disconnecting all devices (global logout)
+            $self->tokens()->delete();
 
         return $this->jsonResponse(['message' => __('messages.logout_successful')]);
     }

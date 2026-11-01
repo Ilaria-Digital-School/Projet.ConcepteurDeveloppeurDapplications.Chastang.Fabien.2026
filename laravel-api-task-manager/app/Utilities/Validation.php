@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\ProjectTask;
 use App\Models\Task;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -42,13 +43,23 @@ class Validation
         return $pswdRules;
     }
 
-    public static function isId(string $id): bool
+    ///////////////////////////////////////////////////////////////////////////
+
+    public static function isId(int|string $id): bool
     {
         return Validator::make(
             ['id' => $id],
             ['id' => ['int', 'min:1']]
         )->passes();
     }
+
+    public static function logoutCurrentOnly(Request $request): bool
+    {
+        return $request->filled('logout_current_only')
+            && filter_var($request->logout_current_only, FILTER_VALIDATE_BOOL);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
 
     public static function checkParam(bool $valid): void
     {

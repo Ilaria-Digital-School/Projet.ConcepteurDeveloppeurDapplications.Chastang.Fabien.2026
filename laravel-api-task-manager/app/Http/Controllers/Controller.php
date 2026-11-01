@@ -10,15 +10,17 @@ abstract class Controller
 {
     protected function jsonResponse(
         mixed $data,
-        int $httpCode = Response::HTTP_OK
+        int $httpCode = Response::HTTP_OK,
+        array $headers = []
     ): JsonResponse {
-        return RenderJson::jsonResponse($data, $httpCode);
+        return RenderJson::jsonResponse($data, $httpCode, $headers);
     }
 
     protected function jsonError(
         string $messagesKey,
-        int $httpCode = Response::HTTP_INTERNAL_SERVER_ERROR
+        int $httpCode = Response::HTTP_INTERNAL_SERVER_ERROR,
+        array $headers = []
     ): JsonResponse {
-        return RenderJson::jsonError(__("messages.$messagesKey"), $httpCode);
+        return RenderJson::jsonError(__("messages.$messagesKey"), $httpCode, $headers);
     }
 }

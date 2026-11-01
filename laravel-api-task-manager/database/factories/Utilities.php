@@ -9,9 +9,9 @@ use Illuminate\Support\Collection;
 
 class Utilities
 {
-    private const NUSERS = 6;
+    private const NUSERS    = 6;
     private const NPROJECTS = 4;
-    private const NTASKS = 10;
+    private const NTASKS    = 10;
 
     public static function userUuids(): Collection
     {

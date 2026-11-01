@@ -10,8 +10,9 @@ class Middleware
 {
     protected function jsonError(
         string $messagesKey,
-        int $httpCode = Response::HTTP_INTERNAL_SERVER_ERROR
+        int $httpCode = Response::HTTP_INTERNAL_SERVER_ERROR,
+        array $headers = []
     ): JsonResponse {
-        return RenderJson::jsonError(__("messages.$messagesKey"), $httpCode);
+        return RenderJson::jsonError(__("messages.$messagesKey"), $httpCode, $headers);
     }
 }

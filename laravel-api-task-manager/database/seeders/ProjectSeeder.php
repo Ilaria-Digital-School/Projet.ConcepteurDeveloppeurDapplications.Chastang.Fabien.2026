@@ -19,19 +19,19 @@ class ProjectSeeder extends Seeder
 
         $projects = [
             [
-                'name' => 'Site e-commerce',
+                'name'        => 'Site e-commerce',
                 'description' => 'Développement d’une plateforme de vente en ligne.',
             ],
             [
-                'name' => 'Application de gestion de tâches',
+                'name'        => 'Application de gestion de tâches',
                 'description' => 'Application permettant de créer, modifier et suivre des tâches.',
             ],
             [
-                'name' => 'Plateforme de réservation',
+                'name'        => 'Plateforme de réservation',
                 'description' => 'Système de réservation en ligne pour des services.',
             ],
             [
-                'name' => 'Portfolio professionnel',
+                'name'        => 'Portfolio professionnel',
                 'description' => 'Création d’un portfolio pour présenter des projets et compétences.',
             ],
         ];

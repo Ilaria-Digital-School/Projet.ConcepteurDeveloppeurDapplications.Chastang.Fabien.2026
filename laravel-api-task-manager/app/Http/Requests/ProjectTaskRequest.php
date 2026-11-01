@@ -42,7 +42,7 @@ class ProjectTaskRequest extends FormRequest
 
             return [
                 'project_uuid' => "bail$required|uuid|exists:projects,uuid$uniProj",
-                'task_uuid' => "bail$required|uuid|exists:tasks,uuid$uniTask",
+                'task_uuid'    => "bail$required|uuid|exists:tasks,uuid$uniTask",
             ];
         } else {
             return [];
