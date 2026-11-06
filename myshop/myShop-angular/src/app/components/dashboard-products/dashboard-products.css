@@ -1,0 +1,47 @@
+.search {
+  margin: 0;
+  padding: 10px 0 0 0;
+}
+
+.search input {
+  margin-bottom: 15px;
+  margin-right: 5px;
+  width: 40%;
+  height: 28px;
+}
+
+.search select {
+  height: 28px;
+}
+
+.high-price {
+  color: var(--middle-red);
+  font-weight: bold;
+}
+
+.low-price {
+  color: var(--dark2-green);
+}
+
+.unavailable-row {
+  font-weight: 600;
+}
+
+.unavailable-cell,
+.unavailable-cell-id,
+.unavailable-cell-left {
+  color: var(--middle-red);
+}
+
+.unavailable-cell {
+  transform: scale(1.1);
+}
+
+.unavailable-cell-left {
+  transform: translateX(6px) scale(1.1);
+}
+
+.cell-left,
+.unavailable-cell-left {
+  text-align: left;
+}

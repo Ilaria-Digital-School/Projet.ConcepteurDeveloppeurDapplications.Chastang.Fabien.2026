@@ -1,0 +1,24 @@
+footer {
+  background: linear-gradient(to top, var(--dark-blue), var(--light2-blue));
+}
+
+footer h2 {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+footer a {
+  margin: 0 15px;
+}
+
+footer a i {
+  margin-right: 3px;
+}
+
+footer .copyright {
+  display: inline-block;
+  margin: 0 15px;
+  font-style: italic;
+  white-space: nowrap;
+  font-size: 14px;
+}

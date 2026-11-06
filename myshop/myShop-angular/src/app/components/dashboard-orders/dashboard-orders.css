@@ -1,0 +1,15 @@
+.search {
+  margin: 0;
+  padding: 10px 0 0 0;
+}
+
+.search input {
+  margin-bottom: 15px;
+  margin-right: 5px;
+  width: 40%;
+  height: 28px;
+}
+
+.search select {
+  height: 28px;
+}

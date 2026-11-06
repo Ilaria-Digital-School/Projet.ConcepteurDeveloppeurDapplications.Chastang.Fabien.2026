@@ -1,0 +1,28 @@
+.field-container {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.field-container {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.field-container.first {
+    margin-top: 20px;
+}
+
+.field-label {
+  margin-right: 10px;
+  cursor: default;
+  font-weight: bold;
+}
+
+.field {
+  display: inline-block;
+  margin-bottom: 0;
+  margin-right: 15px;
+  white-space: nowrap;
+}
