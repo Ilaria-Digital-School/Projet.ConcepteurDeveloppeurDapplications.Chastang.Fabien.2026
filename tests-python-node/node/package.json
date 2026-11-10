@@ -1,0 +1,11 @@
+{
+  "name": "tests-en-live-node",
+  "private": true,
+  "description": "Quatre exercices pour decouvrir Jest",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0"
+  }
+}

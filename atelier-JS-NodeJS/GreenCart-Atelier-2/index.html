@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GreenCart, produits locaux</title>
+  <link rel="icon" href="data:,">
+  <!-- Le style est fourni : vous n'avez pas à le modifier. -->
+  <style>
+    :root {
+      --vert: #2e6b30;
+      --vert-clair: #e8f3e8;
+      --texte: #1f2421;
+      --gris: #5c635e;
+      --bord: #cfd8d0;
+      --fond: #f7f9f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--texte);
+      background: var(--fond);
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.5rem 1.5rem;
+      padding: 1rem 1.5rem;
+      background: var(--vert);
+      color: #fff;
+    }
+    header h1 { margin: 0; font-size: 1.6rem; }
+    header p { margin: 0; }
+    #compteur-panier {
+      font-weight: 600;
+      background: #fff;
+      color: var(--vert);
+      padding: 0.2rem 0.8rem;
+      border-radius: 999px;
+    }
+    main {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    @media (min-width: 900px) {
+      main { grid-template-columns: 1fr 320px; align-items: start; }
+    }
+    h2 { margin-top: 0; font-size: 1.3rem; }
+    .filtres { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+    label { font-weight: 600; }
+    select, button {
+      font: inherit;
+      padding: 0.45rem 0.8rem;
+      border-radius: 6px;
+    }
+    select { border: 1px solid var(--gris); background: #fff; color: var(--texte); }
+    button {
+      border: none;
+      background: var(--vert);
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover { background: #24552a; }
+    button:disabled { background: #8a918c; cursor: not-allowed; }
+    select:focus-visible, button:focus-visible {
+      outline: 3px solid #f2b705;
+      outline-offset: 2px;
+    }
+    #message { min-height: 1.5rem; margin: 0 0 1rem; color: #8a1c1c; font-weight: 600; }
+
+    /* La grille des produits */
+    #catalogue {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .carte {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      padding: 1rem;
+      background: #fff;
+      border: 1px solid var(--bord);
+      border-radius: 10px;
+    }
+    .carte h3 { margin: 0; font-size: 1.05rem; }
+    .carte .prix { margin: 0; font-size: 1.1rem; font-weight: 700; color: var(--vert); }
+    .carte .bio {
+      align-self: flex-start;
+      margin: 0;
+      padding: 0 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--vert);
+      background: var(--vert-clair);
+      border-radius: 4px;
+    }
+    .carte button { margin-top: auto; }
+
+    /* Le panier */
+    aside {
+      padding: 1rem 1.25rem;
+      background: #fff;
+      border: 1px solid var(--bord);
+      border-radius: 10px;
+    }
+    #lignes-panier { margin: 0 0 1rem; padding-left: 1.2rem; }
+    #lignes-panier .vide { list-style: none; margin-left: -1.2rem; color: var(--gris); }
+    .totaux { margin: 0 0 1rem; }
+    .totaux div { display: flex; justify-content: space-between; padding: 0.2rem 0; }
+    .totaux dt, .totaux dd { margin: 0; }
+    .totaux .total { border-top: 1px solid var(--bord); margin-top: 0.3rem; padding-top: 0.5rem; font-weight: 700; }
+    .note { font-size: 0.9rem; color: var(--gris); }
+    #vider-panier { background: #fff; color: var(--vert); border: 1px solid var(--vert); }
+    #vider-panier:hover { background: var(--vert-clair); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>GreenCart</h1>
+    <p>Produits locaux, en direct des producteurs</p>
+    <!-- Exercice 3 : le nombre d'articles du panier s'écrit ici -->
+    <p id="compteur-panier" aria-live="polite">0 article</p>
+  </header>
+
+  <main>
+    <section aria-labelledby="titre-catalogue">
+      <h2 id="titre-catalogue">Catalogue</h2>
+
+      <!-- Exercice 2 : la liste des catégories. Sa valeur se lit avec .value -->
+      <div class="filtres">
+        <label for="choix-categorie">Catégorie</label>
+        <select id="choix-categorie">
+          <option value="toutes">Toutes</option>
+          <option value="fruits">Fruits</option>
+          <option value="legumes">Légumes</option>
+          <option value="cremerie">Crèmerie</option>
+          <option value="epicerie">Épicerie</option>
+        </select>
+      </div>
+
+      <!-- Un message pour l'utilisateur (stock atteint, erreur de chargement) -->
+      <p id="message" role="status"></p>
+
+      <!--
+        Exercice 1 : les produits s'affichent dans cette liste.
+        Chaque produit devient un élément de ce modèle :
+
+        <li class="carte">
+          <h3>Pommes Reinette</h3>
+          <p class="prix">3,38 € / kg</p>
+          <p class="bio">Bio</p>              (seulement si le produit est bio)
+          <button type="button">Ajouter au panier</button>
+        </li>
+      -->
+      <ul id="catalogue"></ul>
+    </section>
+
+    <aside aria-labelledby="titre-panier">
+      <h2 id="titre-panier">Votre panier</h2>
+
+      <!-- Exercice 3 : une ligne par produit, par exemple <li>Pommes Reinette x 2</li> -->
+      <ul id="lignes-panier">
+        <li class="vide">Votre panier est vide.</li>
+      </ul>
+
+      <!-- Exercice 4 : les montants s'écrivent dans ces trois zones -->
+      <dl class="totaux" aria-live="polite">
+        <div><dt>Total TTC</dt><dd id="sous-total">0,00 €</dd></div>
+        <div><dt>Livraison</dt><dd id="livraison">0,00 €</dd></div>
+        <div class="total"><dt>À payer</dt><dd id="total">0,00 €</dd></div>
+      </dl>
+      <p class="note">Livraison 4,90 €, offerte dès 40 € TTC.</p>
+
+      <!-- Exercice 4 : ce bouton vide le panier -->
+      <button type="button" id="vider-panier">Vider le panier</button>
+    </aside>
+  </main>
+
+  <!-- L'ordre compte : les données, puis la logique, puis la page -->
+  <script src="catalogue.js"></script>
+  <script src="logique.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

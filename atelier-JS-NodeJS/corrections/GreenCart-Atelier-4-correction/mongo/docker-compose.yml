@@ -1,0 +1,16 @@
+# Base MongoDB de l'atelier 4. Lancement : docker compose up -d
+# Au premier lancement, init/init-mongo.js charge les données GreenCart.
+# Pour repartir de zéro : docker compose down -v, puis docker compose up -d
+name: greencart-mongo
+services:
+  mongo:
+    image: mongo:7
+    ports:
+      - "127.0.0.1:27118:27017"
+    environment:
+      MONGO_INITDB_DATABASE: greencart
+    volumes:
+      - greencart-mongo-donnees:/data/db
+      - ./init:/docker-entrypoint-initdb.d:ro
+volumes:
+  greencart-mongo-donnees:

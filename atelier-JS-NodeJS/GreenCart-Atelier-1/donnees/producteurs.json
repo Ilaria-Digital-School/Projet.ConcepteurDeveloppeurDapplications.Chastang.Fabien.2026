@@ -1,0 +1,6 @@
+[
+  { "id": 1, "nom": "Ferme des Trois Chênes", "ville": "Saint-Émilion" },
+  { "id": 2, "nom": "Verger de Lucie", "ville": "Agen" },
+  { "id": 3, "nom": "Chèvrerie du Plateau", "ville": "Millau" },
+  { "id": 4, "nom": "Rucher Martin", "ville": "Bazas" }
+]

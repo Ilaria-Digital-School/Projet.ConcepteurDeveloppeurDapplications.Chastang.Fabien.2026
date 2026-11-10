@@ -1,0 +1,21 @@
+# Base MySQL de l'atelier 4. Lancement : docker compose up -d
+# Au premier lancement, les fichiers de init/ créent les tables et chargent les données GreenCart.
+# Pour repartir de zéro : docker compose down -v, puis docker compose up -d
+# Mots de passe de développement, pour un usage en local uniquement.
+name: greencart-mysql
+services:
+  mysql:
+    image: mysql:8.4
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_0900_ai_ci"]
+    ports:
+      - "127.0.0.1:3318:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: racine-dev
+      MYSQL_DATABASE: greencart
+      MYSQL_USER: greencart
+      MYSQL_PASSWORD: greencart-dev
+    volumes:
+      - greencart-mysql-donnees:/var/lib/mysql
+      - ./init:/docker-entrypoint-initdb.d:ro
+volumes:
+  greencart-mysql-donnees:
