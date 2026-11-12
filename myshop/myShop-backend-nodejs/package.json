@@ -1,5 +1,5 @@
 {
-  "name": "myshop-backend",
+  "name": "myShop-backend-nodejs",
   "version": "1.0.0",
   "type": "module",
   "main": "index.js",
