@@ -9,15 +9,13 @@
 
 // Renvoie les produits bio du catalogue, avec filter.
 function produitsBio(catalogue) {
-  // À compléter
-  return undefined;
+  return catalogue.filter(produit => produit.bio);
 }
 
 // Renvoie un tableau avec seulement les noms des produits, avec map.
 // nomsDesProduits([carottes, radis]) renvoie ['Carottes', 'Radis']
 function nomsDesProduits(produits) {
-  // À compléter
-  return undefined;
+  return produits.map(produit => produit.nom);
 }
 
 // Partie B
@@ -32,15 +30,29 @@ function nomsDesProduits(produits) {
 // Une quantité égale au stock est acceptée. Le stock du produit ne change pas.
 function ajouterAuPanier(panier, produit, quantite) {
   // À compléter
-  return undefined;
+  if (!Number.isInteger(quantite))
+    throw new Error('La quantité doit être entière.');
+  if (quantite < 1)
+    throw new Error('La quantité doit être positive.');
+  if (produit.stock < 1)
+    throw new Error('Le produit est épuisé.');
+  if (quantite > produit.stock)
+    throw new Error(`La quantité demandée dépasse le stock (${produit.stock}).`);
+
+  panier.push({ nom: produit.nom, prix: produit.prix, quantite: quantite });
+  return panier;
 }
 
 // Essaie d'ajouter au panier, sans jamais planter.
 // Si l'ajout marche, renvoie par exemple : '2 x Radis ajouté au panier'
 // Sinon, renvoie 'Impossible : ' suivi du message de l'erreur.
 function essayerAjout(panier, produit, quantite) {
-  // À compléter : try / catch autour de ajouterAuPanier
-  return undefined;
+  try {
+    ajouterAuPanier(panier, produit, quantite);
+    return `${quantite} x ${produit.nom} ajouté au panier`;
+  } catch (e) {
+    return 'Impossible : ' + e.message;
+  }
 }
 
 module.exports = { produitsBio, nomsDesProduits, ajouterAuPanier, essayerAjout };

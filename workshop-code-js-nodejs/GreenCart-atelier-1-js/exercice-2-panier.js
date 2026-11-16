@@ -18,8 +18,9 @@ const SEUIL_LIVRAISON_OFFERTE = 40;
 // puis appliquez la TVA une seule fois, à la fin.
 // Un panier vide coûte 0.
 function totalPanierTTC(panier) {
-  // À compléter : une boucle for sur le panier.
-  return prixTTC(panier.reduce((total, article) => total + article.prix * article.quantite, 0));
+  let totalHT = 0;
+  for (const prod of panier) totalHT += prod.prix * prod.quantite;
+  return prixTTC(totalHT);
 }
 
 // Renvoie les frais de livraison pour un total TTC donné.
@@ -27,14 +28,13 @@ function totalPanierTTC(panier) {
 // fraisLivraison(40) renvoie 0
 // fraisLivraison(0) renvoie 0 : un panier vide ne se livre pas
 function fraisLivraison(totalTTC) {
-  // À compléter : une condition if.
-  return totalTTC === 0 || totalTTC >= SEUIL_LIVRAISON_OFFERTE ? 0 : FRAIS_LIVRAISON;
+  if (totalTTC > 0 && totalTTC < SEUIL_LIVRAISON_OFFERTE) return FRAIS_LIVRAISON;
+  return 0;
 }
 
 // Renvoie ce que le client paie : total TTC du panier plus livraison,
 // arrondi au centime.
 function montantAPayer(panier) {
-  // À compléter : utilisez totalPanierTTC et fraisLivraison.
   const totalTTC = totalPanierTTC(panier);
   return arrondirAuCentime(totalTTC + fraisLivraison(totalTTC));
 }

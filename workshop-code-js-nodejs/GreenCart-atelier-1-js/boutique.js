@@ -9,7 +9,13 @@ const catalogue = require('./donnees/produits.json');
 // Étape 2 : importez produitsDisponibles depuis exercice-3-catalogue.js
 //           et ficheProduit depuis exercice-4-fiche.js
 
+const { produitsDisponibles } = require('./exercice-3-catalogue');
+const { ficheProduit } = require('./exercice-4-fiche');
 
-// Étape 3 : affichez un titre, puis, avec une boucle for,
-//           la fiche de chaque produit disponible.
+// Étape 3 : affichez un titre, puis, la fiche de chaque produit disponible.
 
+const disponibles = produitsDisponibles(catalogue);
+
+console.log(`GreenCart : ${disponibles.length}\n`);
+
+disponibles.forEach(disponible => console.log(ficheProduit(disponible)));

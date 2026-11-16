@@ -10,7 +10,6 @@ const TVA = 0.055; // 5,5 %
 // arrondirAuCentime(3.376) renvoie 3.38
 // arrondirAuCentime(2.531) renvoie 2.53
 function arrondirAuCentime(montant) {
-  // À compléter : remplacez la ligne ci-dessous par votre code.
   return Math.round(100 * montant) / 100;
 }
 
@@ -18,7 +17,6 @@ function arrondirAuCentime(montant) {
 // prixTTC(10) renvoie 10.55
 // prixTTC(3.2) renvoie 3.38
 function prixTTC(prixHT) {
-  // À compléter : utilisez TVA et arrondirAuCentime.
   return arrondirAuCentime((1 + TVA) * prixHT);
 }
 

@@ -9,6 +9,9 @@
 // Règle : app.js s'occupe de la page (DOM, clics, localStorage).
 // Les calculs restent dans logique.js.
 
+// A shorthand function to retrieve a given element in jQuery-style
+const $ = id => document.getElementById(id);
+
 // ------------------------------------------------------------------
 // Les éléments de la page
 // ------------------------------------------------------------------
@@ -22,7 +25,7 @@
 // Exercice 4 : récupérez #sous-total, #livraison, #total et #vider-panier
 
 // Déjà récupéré pour vous : la zone de message
-const zoneMessage = document.getElementById("message");
+const zoneMessage = $("message");
 
 // La clé sous laquelle le panier est rangé dans localStorage
 const CLE_PANIER = "greencart-panier";
@@ -30,7 +33,7 @@ const CLE_PANIER = "greencart-panier";
 // Les données de la page
 let catalogue = CATALOGUE;
 // Exercice 4 : remplacez [] par le panier relu dans localStorage
-let panier = [];
+let panier = panierDepuisTexte(localStorage.getItem(CLE_PANIER));
 
 // ------------------------------------------------------------------
 // Exercice 1 : afficher les produits reçus dans la liste #catalogue
@@ -48,6 +51,34 @@ function afficherCatalogue(produits) {
   //
   // Exercice 4 : si estEpuise(produit), grisez la carte avec style,
   //   désactivez le bouton (disabled) et écrivez "Épuisé" dessus.
+  // ----------------------------------------------------------------
+  const listeCatalogue = $("catalogue");
+  listeCatalogue.innerHTML = "";
+
+  for (const produit of produits) {
+    // Exercice 1
+    const carte = document.createElement("li");
+    const bio = produit.bio ? '<p class="bio">Bio</p>' : '';
+    carte.classList.add("carte");
+    carte.innerHTML = `
+      <h3>${produit.nom}</h3>
+      <p class="prix">${libellePrix(produit)}</p>
+      ${bio}
+      <button>Ajouter au panier</button>
+    `;
+    listeCatalogue.appendChild(carte);
+
+    // Exercice 3
+    const bouton = carte.querySelector("button");
+    bouton.addEventListener("click", () => ajouter(produit));
+
+    // Exercice 4
+    if (estEpuise(produit)) {
+      carte.style.opacity = "0.5";
+      bouton.disabled = true;
+      bouton.textContent = "Épuisé";
+    }
+  }
 }
 
 // ------------------------------------------------------------------
@@ -57,6 +88,10 @@ function ajouter(produit) {
   // 1. panier = ajouterAuPanier(panier, produit)
   // 2. Exercice 4 : enregistrez le panier dans localStorage
   // 3. afficherPanier()
+  // ----------------------------------------------------------------
+  panier = ajouterAuPanier(panier, produit);
+  localStorage.setItem(CLE_PANIER, panierEnTexte(panier));
+  afficherPanier();
 }
 
 // ------------------------------------------------------------------
@@ -71,6 +106,42 @@ function afficherPanier() {
   // 3. Écrivez le nombre d'articles dans #compteur-panier.
   // 4. Exercice 4 : total TTC, livraison et montant à payer, écrits avec
   //    formaterEuros. Panier vide : laissez 0,00 € partout.
+  // ----------------------------------------------------------------
+  const lignesPanier = $("lignes-panier");
+  lignesPanier.innerHTML = "";
+
+  const panier = panierDepuisTexte(localStorage.getItem(CLE_PANIER));
+  let compteur, sousTotal, livraison, total;
+
+  if (panier.length === 0) {
+    const li = document.createElement("li");
+    li.textContent = "Votre panier est vide";
+    li.classList.add("vide");
+    lignesPanier.appendChild(li);
+
+    compteur = 0;
+    sousTotal = livraison = total = "0,00 €";
+  } else {
+    for (const produit of panier) {
+      const prod = trouverParId(catalogue, produit.produitId);
+      const li = document.createElement("li");
+      li.textContent = `${prod.nom} x ${produit.quantite}`;
+      lignesPanier.appendChild(li);
+    }
+
+    let totalPanier = totalPanierTTC(panier, catalogue);
+    [compteur, sousTotal, livraison, total] = [
+      nombreArticles(panier),
+      formaterEuros(totalPanier),
+      formaterEuros(fraisLivraison(totalPanier)),
+      formaterEuros(montantAPayer(panier, catalogue))
+    ];
+  }
+
+  $("compteur-panier").textContent = compteur + (compteur > 1 ? " articles" : " article");
+  $("sous-total").textContent = sousTotal;
+  $("livraison").textContent = livraison;
+  $("total").textContent = total;
 }
 
 // ------------------------------------------------------------------
@@ -79,17 +150,23 @@ function afficherPanier() {
 // Écoutez l'événement "change" de la liste déroulante.
 // Sa valeur (.value) vaut "toutes", "fruits", "legumes"...
 // Réaffichez le catalogue avec filtrerParCategorie.
+// ------------------------------------------------------------------
+$("choix-categorie").addEventListener("change", (event) => {
+  const categorie = event.target.value;
+  const produitsFiltres = filtrerParCategorie(catalogue, categorie);
+  afficherCatalogue(produitsFiltres);
+});
 
 // ------------------------------------------------------------------
 // Exercice 4 : le bouton « Vider le panier »
 // ------------------------------------------------------------------
 // Au clic : panier vide, removeItem dans localStorage, afficherPanier().
-
 // ------------------------------------------------------------------
-// Au chargement de la page
-// ------------------------------------------------------------------
-afficherCatalogue(catalogue);
-afficherPanier();
+$("vider-panier").addEventListener("click", () => {
+  panier = [];
+  localStorage.removeItem(CLE_PANIER);
+  afficherPanier();
+});
 
 // ------------------------------------------------------------------
 // Exercice 5 (bonus) : charger le catalogue avec fetch
@@ -98,22 +175,22 @@ afficherPanier();
 // Décommentez ce squelette, complétez les trois « À FAIRE », puis
 // supprimez les deux lignes « Au chargement de la page » ci-dessus :
 // chargerCatalogue() les remplace.
-//
-// async function chargerCatalogue() {
-//   try {
-//     // await attend la réponse du serveur
-//     const reponse = await fetch("produits.json");
-//     if (!reponse.ok) {
-//       // le serveur a répondu, mais sans le fichier (404 par exemple)
-//       throw new Error("Réponse " + reponse.status);
-//     }
-//     // À FAIRE : lisez le JSON de la réponse (await reponse.json())
-//     //           et rangez-le dans la variable catalogue
-//   } catch (erreur) {
-//     // À FAIRE : écrivez un message clair dans zoneMessage
-//     //           et reprenez catalogue = CATALOGUE
-//   }
-//   // À FAIRE : affichez le catalogue et le panier
-// }
-//
-// chargerCatalogue();
+// ------------------------------------------------------------------
+async function chargerCatalogue() {
+  try {
+    // await attend la réponse du serveur
+    const reponse = await fetch("produits.json");
+    if (!reponse.ok) {
+      // le serveur a répondu, mais sans le fichier (404 par exemple)
+      throw new Error("Réponse " + reponse.status);
+    }
+    catalogue = await reponse.json();
+  } catch (erreur) {
+    zoneMessage.textContent = "Impossible de charger le catalogue : " + erreur.message;
+    catalogue = CATALOGUE;
+  }
+  afficherCatalogue(catalogue);
+  afficherPanier();
+}
+
+chargerCatalogue();

@@ -6,6 +6,7 @@
 // Étape 1 : importez prixTTC depuis le fichier de l'exercice 1.
 // (Regardez la ligne d'import en haut de exercice-2-panier.js.)
 
+const { prixTTC } = require('./exercice-1-prix');
 
 // Étape 2 : écrivez la fonction.
 // Renvoie la fiche du produit, par exemple :
@@ -15,12 +16,17 @@
 // Le prix a toujours deux chiffres après la virgule, et une virgule.
 // (bio) seulement si le produit est bio. (épuisé) seulement si le stock vaut 0.
 function ficheProduit(produit) {
-  // À compléter
-  return undefined;
+  const bio = produit.bio ? ' (bio)' : '';
+  const soldOut = produit.stock ? '' : ' (épuisé)';
+  return `${produit.nom}${bio} : ${prixTTC(produit.prix).toLocaleString(
+    'fr-FR',
+    { minimumFractionDigits: 2 }
+  )} € TTC / ${produit.unite}${soldOut}`;
 }
 
 // Étape 3 : exportez ficheProduit, pour que boutique.js puisse s'en servir.
 
+module.exports = { ficheProduit };
 
 // Vos essais : lancez  node exercice-4-fiche.js
 if (require.main === module) {

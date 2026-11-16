@@ -10,23 +10,26 @@
 // Renvoie l'élément de la liste qui a cet id, ou null s'il n'existe pas.
 // Marche pour les produits comme pour les producteurs.
 function trouverParId(liste, id) {
-  // À compléter
-  return undefined;
+  for (const prod of liste) if (prod.id === id) return prod;
+  return null;
 }
 
 // Renvoie un nouveau tableau avec les produits dont le nom contient le texte.
 // Les majuscules ne comptent pas : "pomme" trouve "Pommes Reinette".
 // Si rien ne correspond, renvoie un tableau vide.
 function rechercherParNom(catalogue, texte) {
-  // À compléter : toLowerCase et indexOf
-  return undefined;
+  const result = [], search = texte.toLowerCase();
+  for (const prod of catalogue)
+    if (prod.nom.toLowerCase().indexOf(search) > -1) result.push(prod);
+  return result;
 }
 
 // Renvoie un nouveau tableau avec les produits dont le stock est supérieur à 0.
 // Le catalogue reçu ne doit pas être modifié.
 function produitsDisponibles(catalogue) {
-  // À compléter : un tableau vide, puis push
-  return undefined;
+  const result = [];
+  for (const prod of catalogue) if (prod.stock > 0) result.push(prod);
+  return result;
 }
 
 module.exports = { trouverParId, rechercherParNom, produitsDisponibles };

@@ -35,7 +35,7 @@ function prixTTC(prixHT) {
 
 // Écrit un montant à la française : 3.38 devient "3,38 €"
 function formaterEuros(montant) {
-  return montant.toFixed(2).replace(".", ",") + " €";
+  return montant.toLocaleString("fr-FR", { minimumFractionDigits: 2 }) + " €";
 }
 
 // Cherche l'élément de la liste qui a cet id. Renvoie null s'il n'existe pas.
@@ -86,7 +86,7 @@ function montantAPayer(panier, catalogue) {
 
 // Pommes Reinette (3.2 HT, au kg) doit donner "3,38 € / kg"
 function libellePrix(produit) {
-  // À FAIRE : utilisez prixTTC et formaterEuros, puis ajoutez " / " et l'unité.
+  return formaterEuros(prixTTC(produit.prix)) + " / " + produit.unite;
 }
 
 // ------------------------------------------------------------------
@@ -97,7 +97,12 @@ function libellePrix(produit) {
 // "toutes" renvoie tous les produits.
 // Le catalogue d'origine ne doit pas changer.
 function filtrerParCategorie(catalogue, categorie) {
-  // À FAIRE : un tableau vide, une boucle for, un if, push.
+  const products = [];
+  const all = categorie === "toutes";
+  catalogue.forEach(prod => {
+    if (all || prod.categorie === categorie) products.push(prod)
+  });
+  return products;
 }
 
 // ------------------------------------------------------------------
@@ -109,12 +114,18 @@ function filtrerParCategorie(catalogue, categorie) {
 // - produit absent : une nouvelle ligne { produitId: produit.id, quantite: 1 }
 // - jamais plus que le stock : un produit épuisé ne s'ajoute pas
 function ajouterAuPanier(panier, produit) {
-  // À FAIRE
+  const prod = panier.find(p => p.produitId === produit.id);
+  if (prod) {
+    if (prod.quantite < produit.stock) prod.quantite++;
+  } else if (produit.stock > 0) {
+    panier.push({ produitId: produit.id, quantite: 1 });
+  }
+  return panier;
 }
 
 // Nombre total d'articles : [{ produitId: 1, quantite: 2 }, { produitId: 4, quantite: 3 }] donne 5
 function nombreArticles(panier) {
-  // À FAIRE
+  return panier.reduce((count, prod) => count + prod.quantite, 0);
 }
 
 // ------------------------------------------------------------------
@@ -123,18 +134,18 @@ function nombreArticles(panier) {
 
 // true si le produit n'a plus de stock, false sinon
 function estEpuise(produit) {
-  // À FAIRE
+  return produit.stock === 0;
 }
 
 // Transforme le panier (un tableau) en texte JSON
 function panierEnTexte(panier) {
-  // À FAIRE
+  return JSON.stringify(panier);
 }
 
 // L'inverse : du texte JSON vers le panier.
 // Si le texte vaut null (rien d'enregistré) ou "", renvoyez un panier vide : []
 function panierDepuisTexte(texte) {
-  // À FAIRE
+  return JSON.parse(texte || "[]");
 }
 
 // ------------------------------------------------------------------
