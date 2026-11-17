@@ -16,13 +16,20 @@ const $ = id => document.getElementById(id);
 // Les éléments de la page
 // ------------------------------------------------------------------
 // Exercice 1 : récupérez la liste <ul id="catalogue">
-// const listeCatalogue = ...
+const listeCatalogue = $("catalogue");
 
 // Exercice 2 : récupérez la liste déroulante <select id="choix-categorie">
+const choixCategorie = $("choix-categorie");
 
 // Exercice 3 : récupérez <ul id="lignes-panier"> et <p id="compteur-panier">
+const lignesPanier = $("lignes-panier");
+const compteurPanier = $("compteur-panier");
 
 // Exercice 4 : récupérez #sous-total, #livraison, #total et #vider-panier
+const sousTotal = $("sous-total");
+const livraison = $("livraison");
+const total = $("total");
+const viderPanier = $("vider-panier");
 
 // Déjà récupéré pour vous : la zone de message
 const zoneMessage = $("message");
@@ -52,7 +59,6 @@ function afficherCatalogue(produits) {
   // Exercice 4 : si estEpuise(produit), grisez la carte avec style,
   //   désactivez le bouton (disabled) et écrivez "Épuisé" dessus.
   // ----------------------------------------------------------------
-  const listeCatalogue = $("catalogue");
   listeCatalogue.innerHTML = "";
 
   for (const produit of produits) {
@@ -64,7 +70,7 @@ function afficherCatalogue(produits) {
       <h3>${produit.nom}</h3>
       <p class="prix">${libellePrix(produit)}</p>
       ${bio}
-      <button>Ajouter au panier</button>
+      <button type="button">Ajouter au panier</button>
     `;
     listeCatalogue.appendChild(carte);
 
@@ -74,7 +80,7 @@ function afficherCatalogue(produits) {
 
     // Exercice 4
     if (estEpuise(produit)) {
-      carte.style.opacity = "0.5";
+      carte.style.opacity = "0.6";
       bouton.disabled = true;
       bouton.textContent = "Épuisé";
     }
@@ -107,30 +113,28 @@ function afficherPanier() {
   // 4. Exercice 4 : total TTC, livraison et montant à payer, écrits avec
   //    formaterEuros. Panier vide : laissez 0,00 € partout.
   // ----------------------------------------------------------------
-  const lignesPanier = $("lignes-panier");
   lignesPanier.innerHTML = "";
 
   const panier = panierDepuisTexte(localStorage.getItem(CLE_PANIER));
-  let compteur, sousTotal, livraison, total;
+  let vCompteurPanier, vSousTotal, vLivraison, vTotal;
 
   if (panier.length === 0) {
-    const li = document.createElement("li");
-    li.textContent = "Votre panier est vide";
-    li.classList.add("vide");
-    lignesPanier.appendChild(li);
+    lignesPanier.innerHTML = '<li class="vide">Votre panier est vide</li>';
 
-    compteur = 0;
-    sousTotal = livraison = total = "0,00 €";
+    vCompteurPanier = 0;
+    vSousTotal = vLivraison = vTotal = "0,00 €";
   } else {
     for (const produit of panier) {
       const prod = trouverParId(catalogue, produit.produitId);
-      const li = document.createElement("li");
-      li.textContent = `${prod.nom} x ${produit.quantite}`;
-      lignesPanier.appendChild(li);
+      if (prod) {
+        const li = document.createElement("li");
+        li.textContent = `${prod.nom} x ${produit.quantite}`;
+        lignesPanier.appendChild(li);
+      }
     }
 
     let totalPanier = totalPanierTTC(panier, catalogue);
-    [compteur, sousTotal, livraison, total] = [
+    [vCompteurPanier, vSousTotal, vLivraison, vTotal] = [
       nombreArticles(panier),
       formaterEuros(totalPanier),
       formaterEuros(fraisLivraison(totalPanier)),
@@ -138,10 +142,10 @@ function afficherPanier() {
     ];
   }
 
-  $("compteur-panier").textContent = compteur + (compteur > 1 ? " articles" : " article");
-  $("sous-total").textContent = sousTotal;
-  $("livraison").textContent = livraison;
-  $("total").textContent = total;
+  compteurPanier.textContent = vCompteurPanier + (vCompteurPanier > 1 ? " articles" : " article");
+  sousTotal.textContent = vSousTotal;
+  livraison.textContent = vLivraison;
+  total.textContent = vTotal;
 }
 
 // ------------------------------------------------------------------
@@ -151,9 +155,8 @@ function afficherPanier() {
 // Sa valeur (.value) vaut "toutes", "fruits", "legumes"...
 // Réaffichez le catalogue avec filtrerParCategorie.
 // ------------------------------------------------------------------
-$("choix-categorie").addEventListener("change", (event) => {
-  const categorie = event.target.value;
-  const produitsFiltres = filtrerParCategorie(catalogue, categorie);
+choixCategorie.addEventListener("change", () => {
+  const produitsFiltres = filtrerParCategorie(catalogue, choixCategorie.value);
   afficherCatalogue(produitsFiltres);
 });
 
@@ -162,7 +165,7 @@ $("choix-categorie").addEventListener("change", (event) => {
 // ------------------------------------------------------------------
 // Au clic : panier vide, removeItem dans localStorage, afficherPanier().
 // ------------------------------------------------------------------
-$("vider-panier").addEventListener("click", () => {
+viderPanier.addEventListener("click", () => {
   panier = [];
   localStorage.removeItem(CLE_PANIER);
   afficherPanier();

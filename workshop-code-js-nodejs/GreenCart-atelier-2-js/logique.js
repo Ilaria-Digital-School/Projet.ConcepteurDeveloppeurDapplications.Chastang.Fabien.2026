@@ -114,10 +114,12 @@ function filtrerParCategorie(catalogue, categorie) {
 // - produit absent : une nouvelle ligne { produitId: produit.id, quantite: 1 }
 // - jamais plus que le stock : un produit épuisé ne s'ajoute pas
 function ajouterAuPanier(panier, produit) {
-  const prod = panier.find(p => p.produitId === produit.id);
+  if (produit.stock <= 0) return panier;
+
+  const prod = trouverParId(panier, produit.id);
   if (prod) {
     if (prod.quantite < produit.stock) prod.quantite++;
-  } else if (produit.stock > 0) {
+  } else {
     panier.push({ produitId: produit.id, quantite: 1 });
   }
   return panier;
@@ -134,7 +136,7 @@ function nombreArticles(panier) {
 
 // true si le produit n'a plus de stock, false sinon
 function estEpuise(produit) {
-  return produit.stock === 0;
+  return produit.stock <= 0;
 }
 
 // Transforme le panier (un tableau) en texte JSON
