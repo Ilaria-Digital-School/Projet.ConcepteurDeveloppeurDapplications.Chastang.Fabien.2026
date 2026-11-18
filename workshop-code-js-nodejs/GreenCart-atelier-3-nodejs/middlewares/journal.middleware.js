@@ -2,7 +2,7 @@
 // Exercice 4.1
 const journal = (req, res, next) => {
   // À compléter : affichez dans la console la méthode et l'URL de la requête.
-
+  console.log(`${req.method} ${req.url}`);
   next();
 };
 

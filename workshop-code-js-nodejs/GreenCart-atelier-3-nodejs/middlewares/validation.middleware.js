@@ -8,9 +8,18 @@ const validerProduit = (req, res, next) => {
 
   // À compléter : une vérification par règle de l'énoncé.
   // Exemple pour la première règle :
-  // if (typeof produit.nom !== 'string' || produit.nom === '') {
-  //   return res.status(400).json({ message: 'Le nom est obligatoire' });
-  // }
+  if (!produit || typeof produit.nom !== 'string' || produit.nom.trim() === '') {
+    return res.status(400).json({ message: 'Le nom doit être une chaîne de caractères non vide' });
+  }
+  if (!CATEGORIES.includes(produit.categorie)) {
+    return res.status(400).json({ message: `La catégorie doit être l'une des suivantes : "${CATEGORIES.join('", "')}"` });
+  }
+  if (!Number.isFinite(produit.prix) || produit.prix <= 0) {
+    return res.status(400).json({ message: 'Le prix doit être un nombre positif' });
+  }
+  if (!Number.isFinite(produit.stock) || produit.stock < 0 || !Number.isInteger(produit.stock)) {
+    return res.status(400).json({ message: 'Le stock doit être un nombre entier positif ou nul' });
+  }
 
   next();
 };

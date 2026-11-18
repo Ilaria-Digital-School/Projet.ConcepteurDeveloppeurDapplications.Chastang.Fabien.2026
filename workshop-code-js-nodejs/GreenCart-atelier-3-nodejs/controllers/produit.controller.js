@@ -11,6 +11,11 @@ const listerProduits = (req, res, next) => {
     // Exercice 1 : si l'URL contient ?categorie=..., ne renvoyez que
     // les produits de cette catégorie. Sinon, renvoyez tout.
 
+    const categorie = req.query.categorie;
+    if (categorie) {
+      const filtres = produits.filter((produit) => produit.categorie === categorie);
+      res.json(filtres ? filtres : []);
+    }
     res.json(produits);
   } catch (err) {
     next(err);
@@ -23,7 +28,6 @@ const afficherProduit = (req, res, next) => {
     // req.params.id est une chaîne : "3". Les id du modèle sont des nombres.
     const id = Number(req.params.id);
     const produit = Produit.trouverParId(id);
-
     if (!produit) {
       return res.status(404).json({ message: 'Produit introuvable' });
     }
@@ -37,7 +41,11 @@ const afficherProduit = (req, res, next) => {
 const creerProduit = (req, res, next) => {
   try {
     // À compléter. Remplacez la ligne ci-dessous.
-    res.status(501).json({ message: 'creerProduit est à compléter' });
+    const produit = Produit.creer(req.body);
+    if (!produit) {
+      return res.status(400).json({ message: 'Données de produit invalides' });
+    }
+    res.status(201).json(produit);
   } catch (err) {
     next(err);
   }
@@ -47,7 +55,12 @@ const creerProduit = (req, res, next) => {
 const modifierProduit = (req, res, next) => {
   try {
     // À compléter. Remplacez la ligne ci-dessous.
-    res.status(501).json({ message: 'modifierProduit est à compléter' });
+    const id = Number(req.params.id);
+    const produitModifie = Produit.remplacer(id, req.body);
+    if (!produitModifie) {
+      return res.status(404).json({ message: 'Produit introuvable' });
+    }
+    res.json(produitModifie);
   } catch (err) {
     next(err);
   }
@@ -57,7 +70,12 @@ const modifierProduit = (req, res, next) => {
 const supprimerProduit = (req, res, next) => {
   try {
     // À compléter. Remplacez la ligne ci-dessous.
-    res.status(501).json({ message: 'supprimerProduit est à compléter' });
+    const id = Number(req.params.id);
+    const produitSupprime = Produit.supprimer(id);
+    if (!produitSupprime) {
+      return res.status(404).json({ message: 'Produit introuvable' });
+    }
+    res.status(204).send();
   } catch (err) {
     next(err);
   }
